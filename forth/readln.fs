@@ -19,17 +19,6 @@
 ( set IN> to IN( and set IN> @ to null )
 : (infl) 0 IN( @ DUP IN> ! ! ;
 
-( Initializes the readln subsystem )
-: (c<$)
-    H@ IN( !
-    INBUFSZ ALLOT
-    H@ IN) !
-    ( We need two extra bytes. 1 for the last typed 0x0a and
-      one for the following NULL. )
-    2 ALLOT
-    (infl)
-;
-
 ( handle backspace: go back one char in IN>, if possible, then
   emit SPC + BS )
 : (inbs)
@@ -73,10 +62,23 @@
 ;
 
 ( And finally, implement a replacement for the (c<) routine )
-: (c<)
+: (rdln<)
     IN> @ C@                    ( c )
     ( not EOL? good, inc and return )
     DUP IF 1 IN> +! EXIT THEN   ( c )
     ( EOL ? readline. we still return typed char though )
     (rdln)                      ( c )
 ;
+
+( Initializes the readln subsystem )
+: (c<$)
+    H@ IN( !
+    INBUFSZ ALLOT
+    H@ IN) !
+    ( We need two extra bytes. 1 for the last typed 0x0a and
+      one for the following NULL. )
+    2 ALLOT
+    (infl)
+    ['] (rdln<) 0x0c RAM+ !
+;
+
