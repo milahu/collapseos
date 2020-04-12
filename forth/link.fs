@@ -57,17 +57,19 @@
 ( a o ol -- a+n )
 : RLATOM
     ROT             ( o ol a )
-    DUP @ 0x24 = IF
-        ( addrWord? we need to offset it )
-        2 +         ( o ol a+2 )
-        ROT OVER    ( ol a o a )
-        @ -^        ( ol a n-o )
-        OVER !      ( ol a )
-        SWAP DROP   ( a )
-        2 +         ( a+2 )
-        EXIT        ( no need for ASKIP )
-    THEN
     DUP @           ( o ol a n )
+    DUP 0x24 = IF
+        ( 0x24 is an addrWord, which should be offsetted in
+          the same way that a regular word would. To achieve
+          this, we skip ASKIP and instead of skipping 4 bytes
+          like a numberWord, we skip only 2, which means that
+          our number will be treated like a regular wordref.
+        )
+        DROP
+        2 +         ( o ol a+2 )
+        ROT ROT 2DROP ( a )
+        EXIT
+    THEN
     ROT             ( o a n ol )
     < IF ( under limit, do nothing )
         SWAP DROP    ( a )
