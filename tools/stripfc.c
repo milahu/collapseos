@@ -13,15 +13,17 @@ by more than once space or by a newline. Hackish, but works.
 
 int main()
 {
-    int spccnt = 0;
+    int spccnt = 2; // if the first char is a (, consider it a comment opener.
     int incomment = 0;
     int c;
     c = getchar();
     while ( c != EOF ) {
         if (c == '\n') {
-            // We still spit newlines whenever we see them, Forth interpreter
-            // doesn't like when they're not there...
-            putchar(c);
+            if (!incomment) {
+                // We still spit newlines whenever we see them, Forth interpreter
+                // doesn't like when they're not there...
+                putchar(c);
+            }
             spccnt += 2;
         } else if (c == ' ') {
             spccnt++;
