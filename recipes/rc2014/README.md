@@ -214,6 +214,17 @@ And there you have it, a stage2 binary that you've assembled yourself. Now,
 here's for your homework: use the same technique to add the contents of
 `readln.fs` to stage2 so that you have a full-featured interpreter.
 
+Name it `stage3.bin` (the version without any source code appended and no
+`INIT` word defined), you'll need this binary for sub-recipes written for the
+RC2014.
+
+Here's a little cheatsheet, but seriously, you should figure most of it
+yourself. Tough love they call it.
+
+* `cat stage2.bin pre.fs ../../forth/readln.fs run.fs > stage2r.bin`
+* Don't forget `(c<$)`.
+* `RLDICT` is like `RLCORE` but with a chosen target.
+
 [rc2014]: https://rc2014.co.uk
 [romwrite]: https://github.com/hsoft/romwrite
 [stage2]: ../../emul
