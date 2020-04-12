@@ -67,7 +67,9 @@ stage on the RC2014 itself!
 To build your stage 1, run `make` in this folder, this will yield `os.bin`.
 This will contain that tiny core and, appended to it, the Forth source code it
 needs to run to bootstrap itself. When it's finished bootstrapping, you will
-get a prompt to a full Forth interpreter.
+get a prompt to an almost-full Forth interpreter (there's not enough space in
+8K to fit both link.fs and readln.fs, so we ditch readln. Our prompt is raw. No
+backspace no buffer. Hardcore mode.)
 
 ### Emulate
 
@@ -125,157 +127,92 @@ there are compiled based on a 0x8000-or-so base offset. What we need is a
 0xa00-or-so base offset, that is, something suitable to be appended to the boot
 binary, in ROM, in binary form.
 
-We can't simply adjust offsets. For complicated reasons, that can't be reliably
-done. We have to re-interpret that same source code, but from a ROM offset. But
-how are we going to do that? After all, ROM is called ROM for a reason.
+Fortunately, inside the compiled source is the contents of link.fs which will
+allow us to relink our compiled dictionary so that in can be relocated in ROM,
+next to our boot binary. I won't go into relinking details. Look at the source.
+For now, let's just use it:
 
-Memory maps.
+    RLCORE
 
-What we're going to do is to set up a memory map targeting our ROM and point it
-to our RAM. Then we can recompile the source as if we were in ROM, right after
-our boot binary. Forth won't ever notice it's actually in RAM.
+That command will take the dict from `' H@` up to `CURRENT`, copy it in free
+memory and then relocate it. It will print 3 addresses during its processing.
 
-Alright, let's do this. First, let's have a look around. Where is the end of
-our boot binary? To know, find the word ";", which is the last word of icore:
+The first address is the top copied address. The process didn't touch memory
+above this point. The second address is the wordref of the last copied entry.
+The 3rd is the bottom address of the copied dict. When that last address is
+printed, the processing is over (because we don't have a `>` prompt, we don't
+have any other indicator that the process is over).
 
-    > ' ; .X
-    097d>
-    > 64 0x0970 DUMP
-    :70 0035 0958 00da ff43 .5.X...C
-    :78 003b 3500 810e 0020 .;5....
-    :80 0043 0093 07f4 03ef .C......
-    :88 0143 005f 0f00 0131 .C._...1
-    :90 3132 2052 414d 2b20 12 RAM+
-    :98 4845 5245 2021 0a20 HERE !.
-    :a0 3a20 4840 2048 4552 : H@ HER
-    :a8 4520 4020 3b0a 203a E @ ;. :
+### Assembling the stage 2 binary
 
-See that `_` at 0x98b? That's the name of our hook word. 4 bytes later is its
-wordref. That's the end of our boot binary. 0x98f, that's an address to write
-down.
+At that point, we have a fully relocated binary in memory. Depending on our
+situations, the next steps differ.
 
-Right after that is our appended source code. The first part is `pre.fs` and
-can be ignored. What we want starts at the definition of the `H@` word, which
-is at 0x9a0. Another address to write down.
+* If we're on a RC2014 that has writing capabilities to permanent storage,
+  we'll want to assemble that binary directly on the RC2014 and write it to
+  permanent storage.
+* If we're on a RC2014 that doesn't have those capabilities, we'll want to dump
+  memory on our modern environment using `/tools/memdump` and then assemble that
+  binary there.
+* If we're in the emulator, we'll want to dump our memory using `CTRL+E` and
+  then assemble our stage 2 binary from that dump.
 
-So our memory map will target 0x98f. Where will we place it? It doesn't matter
-much, we have plenty of RAM. Where's `HERE`?
+In these instructions, we assume an emulated environment. I'll use actual
+offsets of an actual assembling session, but these of course are only examples.
+It is very likely that these will not be the same offsets for you.
 
-    > H@ .X
-    8c3f>
+So you've pressed `CTRL+E` and you have a `memdump` file. Open it with a hex
+editor (I like `hexedit`) to have a look around and to decide what we'll extract
+from that memdump. `RLCORE` already gave you important offsets (in my case,
+`9a3c`, `99f6` and `8d60`), but although the beginning of will always be the
+same (`8d60`), the end offset depends on the situation.
 
-Alright, let's go wide and use 0xa000 as our map destination. But before we do,
-let's copy the content of our ROM into RAM because there's our source code
-there and if we don't copy it before setting up the memory map, we'll shadow it.
+If you look at data between `99f6` and `9a3c`, you'll see that this data is not
+100% dictionary entry material. Some of it is buffer data allocated at
+initialization. To locate the end of a word, look for `0043`, the address for
+`EXIT`. In my case, it's at `9a1a` and it's the end of the `INIT` word.
 
-Let's be lazy and don't even check where the source stop. Let's assume it stops
-at 0x1fff, the end of the ROM.
+Moreover, the `INIT` routine that is in there is not quite what we want,
+because it doesn't contain the `HERE` adjustment that we find in `pre.fs`.
+We'll want to exclude it from our binary, so let's go a bit further, at `99cf`,
+ending at `99de`.
 
-    > 0x98f 0xa000 0x2000 0x98f - MOVE
-    > 64 0xa000 DUMP
-    :00 3131 3220 5241 4d2b 112 RAM+
-    :08 2048 4552 4520 210a  HERE !.
-    :10 203a 2048 4020 4845  : H@ HE
-    :18 5245 2040 203b 0a20 RE @ ;.
-    :20 3a20 2d5e 2053 5741 : -^ SWA
-    :28 5020 2d20 3b0a 203a P - ;. :
-    :30 205b 2049 4e54 4552  [ INTER
-    :38 5052 4554 2031 2046 PRET 1 F
+So, the end of our compiled dict is actually `99de`. Alright, let's extract it:
 
-Looks fine. Now, let's create a memory map. A memory map word is rather simple.
-It is called before each `@/C@/!/C!` operation and is given the opportunity to
-tweak the address on PSP's TOS. Let's go with our map:
+    dd if=memdump bs=1 skip=36192 count=3198 > dict.bin
 
-    > : MMAP
-    DUP 0x98f < IF EXIT THEN
-    DUP 0x1fff > IF EXIT THEN
-    [ 0xa000 0x98f - LITN ] +
-    ;
-    > 0x98e MMAP .X
-    098e> 0x98f MMAP .X
-    a000> 0xabc MMAP .X
-    a12b> 0x1fff MMAP .X
-    b66e> 0x2000 MMAP .X
-    2000>
+`36192` is `8d60` and `3198` is `99de-8d60`. This needs to be prepended by the
+boot binary. But that one, we already have. It's `z80c.bin`
 
-This looks good. Let's apply it for real:
+    cat z80c.bin dict.bin > stage2.bin
 
-    > ' MMAP (mmap*) !
-    > 64 0x980 DUMP
+Is it ready to run yet? no. There are 3 adjustments we need to manually make
+using our hex editor.
 
-    :80 0043 0093 07f4 03ef .C......
-    :88 0143 005f 0f00 0131 .C._...1
-    :90 3132 2052 414d 2b20 12 RAM+
-    :98 4845 5245 2021 0a20 HERE !.
-    :a0 3a20 4840 2048 4552 : H@ HER
-    :a8 4520 4020 3b0a 203a E @ ;. :
-    :b0 202d 5e20 5357 4150  -^ SWAP
-    :b8 202d 203b 0a20 3a20  - ;. :
+1. We need to link `H@` to the hook word of the boot binary. In my case, it's
+   a matter of writing `02` at `08ec` and `00` at `08ed`, `H@`'s prev field.
+2. We need to end our binary with a hook word. It can have a zero-length name
+   and the prev field needs to properly point to the previous wordref. In my
+   case, that was `RLCORE` at offset `1559` for a `stage2.bin` size of `1568`,
+   which means that I appended `0F 00 00` at the end of the file.
+3. Finally, we need to adjust `LATEST` which is at offset `08`. This needs to
+   point to the last wordref of the file, which is equal to the length of
+   `stage2.bin` because we've just added a hook word. This means that we write
+   `6B` at offset `08` and `15` at offset `09`.
 
-But how do we know that it really works? Because we can write in ROM!
+Now are we ready yet? ALMOST! There's one last thing we need to do: add runtime
+source. In our case, because we have a compiled dict, the only source we need
+to include is `pre.fs` and `run.fs`:
 
-    > 'X' 0x98f !
-    > 64 0x980 DUMP
+    cat stage2.bin pre.fs run.fs > stage2r.bin
 
-    :80 0043 0093 07f4 03ef .C......
-    :88 0143 005f 0f00 0131 .C._...X
-    :90 0032 2052 414d 2b20 .2 RAM+
-    :98 4845 5245 2021 0a20 HERE !.
-    :a0 3a20 4840 2048 4552 : H@ HER
-    :a8 4520 4020 3b0a 203a E @ ;. :
-    :b0 202d 5e20 5357 4150  -^ SWAP
-    :b8 202d 203b 0a20 3a20  - ;. :
-    > 64 0xa000 DUMP
+That's it! our binary is ready to run!
 
-    :00 5800 3220 5241 4d2b X.2 RAM+
-    :08 2048 4552 4520 210a  HERE !.
-    :10 203a 2048 4020 4845  : H@ HE
-    :18 5245 2040 203b 0a20 RE @ ;.
-    :20 3a20 2d5e 2053 5741 : -^ SWA
-    :28 5020 2d20 3b0a 203a P - ;. :
-    :30 205b 2049 4e54 4552  [ INTER
-    :38 5052 4554 2031 2046 PRET 1 F
+    ../../emul/hw/rc2014/classic stage2r.bin
 
-We're now ready for a re-bootstrap. Here's what we're gonna do:
-
-1. Bring `CURRENT` and `HERE` back to `0x98f`.
-2. Set `CINPTR` to `icore`'s `(c<)`.
-
-`(c<)` word is the main input of the interpreter. Right now, your `(c<)` comes
-from the `readln` unit, which makes the main `INTERPRET` loop wait for your
-keystrokes before interpreting your words.
-
-But this can be changed. At the moment where we change `CINPTR`, the interpret
-loop will start reading from it, so we'll lose control. That is why we must
-prepare things carefully before that. We'll re-gain control at the end of the
-bootstrap source, in `run.fs`, where `(c<)` is set to `readln`'s `(c<)`
-
-`(c<)` word is the main input of the interpreter. Right now, your `(c<)` comes
-from the `readln` unit, which makes the main `INTERPRET` loop wait for your
-keystrokes before interpreting your words.
-
-But this can be changed. At the moment where we change `CINPTR`, the interpret
-loop will start reading from it, so we'll lose control. That is why we must
-prepare things carefully before that. We'll re-gain control at the end of the
-bootstrap source, in `run.fs`, where `(c<)` is set to `readln`'s `(c<)`.
-
-At this moment, `icore`'s `(c<)` is shadowed by `readln`, but at the moment
-`CURRENT` changes, it will be accessible again. However, this all has to change
-in one shot, so we need to prepare a compiled word for it if we don't want to
-lose access to our interpret loop in the middle of our operation.
-
-    > : KAWABUNGA!
-    ( 60 == (c<) pointer )
-    0x9a0 0x60 RAM+ !
-    0x98f CURRENT !
-    0x98f HERE !
-    ( 0c == CINPTR )
-    (find) (c<) DROP 0x0c RAM+ !
-    ;
-
-Ready? Set? KAWABUNGA!
-
-TODO: make this work...
+And there you have it, a stage2 binary that you've assembled yourself. Now,
+here's for your homework: use the same technique to add the contents of
+`readln.fs` to stage2 so that you have a full-featured interpreter.
 
 [rc2014]: https://rc2014.co.uk
 [romwrite]: https://github.com/hsoft/romwrite
