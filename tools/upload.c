@@ -5,7 +5,7 @@
 
 #include "common.h"
 
-/* Push specified file to specified device running the BASIC shell and verify
+/* Push specified file to specified device running Forth and verify
  * that the sent contents is correct.
  */
 
@@ -35,11 +35,17 @@ int main(int argc, char **argv)
         return 1;
     }
     rewind(fp);
-    int fd = open(argv[1], O_RDWR|O_NOCTTY);
+    int fd = open(argv[1], O_RDWR|O_NOCTTY|O_SYNC);
+    if (fd < 0) {
+        fprintf(stderr, "Could not open %s\n", argv[1]);
+        return 1;
+    }
+    set_interface_attribs(fd, 0, 0);
+    set_blocking(fd, 1);
     char s[0x40];
-    sprintf(s, "m=0x%04x", memptr);
-    sendcmdp(fd, s);
-    sprintf(s, "while m<0x%04x getc:puth a:poke m a:m=m+1", memptr+bytecount);
+    sprintf(s,
+        ": _ 0x%04x 0x%04x DO KEY DUP .x I C! LOOP ; _",
+        memptr+bytecount, memptr);
     sendcmd(fd, s);
 
     int returncode = 0;
@@ -49,7 +55,7 @@ int main(int argc, char **argv)
         unsigned char c = s[0];
         write(fd, &c, 1);
         usleep(1000); // let it breathe
-        read(fd, s, 2); // read hex pair
+        mread(fd, s, 2); // read hex pair
         s[2] = 0; // null terminate
         unsigned char c2 = strtol(s, NULL, 16);
         if (c != c2) {
@@ -60,6 +66,8 @@ int main(int argc, char **argv)
             returncode = 1;
         }
     }
+    mread(fd, s, 2); // "> " prompt
+    sendcmdp(fd, "FORGET _");
     printf("Done!\n");
     fclose(fp);
     return returncode;
