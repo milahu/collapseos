@@ -118,12 +118,14 @@ PC ORG @ 1 + ! ( main )
     SP 0xfffa LDddnn,
     RAMSTART SP LD(nn)dd, ( RAM+00 == INITIAL_SP )
     IX RS_ADDR LDddnn,
+( HERE begins at RAMEND )
+    HL RAMSTART 0x80 + LDddnn,
+    RAMSTART 0x04 + LD(nn)HL, ( RAM+04 == HERE )
 ( LATEST is a label to the latest entry of the dict. It is
   written at offset 0x08 by the process or person building
   Forth. )
     0x08 LDHL(nn),
     RAMSTART 0x02 + LD(nn)HL, ( RAM+02 == CURRENT )
-    RAMSTART 0x04 + LD(nn)HL, ( RAM+04 == HERE )
     EXDEHL,
     HL L1 @ LDddnn,
     0x03 CALLnn,        ( 03 == find )

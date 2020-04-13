@@ -170,8 +170,11 @@ advanced to the address following the null.
 *** Initialization sequence
 
 On boot, we jump to the "main" routine in boot.fs which does very few things.
-It sets up the SP register, CURRENT and HERE to LATEST (saved in stable ABI),
-then look for the BOOT word and calls it.
+
+1. Set SP to 0x10000-6
+2. Sets HERE to RAMEND (RAMSTART+0x80).
+3. Sets CURRENT to value of LATEST field in stable ABI.
+4. Look for the word "BOOT" and calls it.
 
 In a normal system, BOOT is in icore and does a few things:
 
@@ -192,9 +195,9 @@ as such until you set a new (c<).
 Note that there is no EMIT in a bare system. You have to take care of supplying
 one before your load core.fs and its higher levels.
 
-Also note that this initialization code is fighting for space with HERE: New
-entries to the dict will overwrite that code! Also, because we're barebone, we
-can't have comments. This leads to peculiar code in this area. If you see weird
-whitespace usage, it's probably because not using those whitespace would result
-in dict entry creation overwriting the code before it has the chance to be
-interpreted.
+In the "/emul" binaries, "HERE" is readjusted to "CURRENT @" so that we don't
+have to relocate compiled dicts. Note that in this context, the initialization
+code  is fighting for space with HERE: New entries to the dict will overwrite
+that code! Also, because we're barebone, we can't have comments. This can lead
+to peculiar code in this area where we try to "waste" space in initialization
+code.

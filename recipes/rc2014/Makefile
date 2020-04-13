@@ -1,4 +1,4 @@
-TARGET = os.bin
+TARGET = stage1.bin
 BASEDIR = ../..
 FDIR = $(BASEDIR)/forth
 EDIR = $(BASEDIR)/emul/forth
@@ -13,7 +13,7 @@ BOOTSRCS = conf.fs \
 	$(FDIR)/icore.fs \
 	$(EDIR)/xstop.fs
 
-PATHS = pre.fs \
+PATHS = \
 	$(FDIR)/core.fs \
 	$(FDIR)/cmp.fs \
 	$(FDIR)/str.fs \

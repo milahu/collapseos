@@ -29,7 +29,7 @@ $(BIN2C):
 forth/forth0.bin: $(SLATEST)
 	cp forth/z80c.bin $@
 	$(SLATEST) $@
-	cat forth/emul.fs >> $@
+	cat forth/pre.fs forth/emul.fs >> $@
 
 forth/forth0-bin.h: forth/forth0.bin $(BIN2C)
 	$(BIN2C) KERNEL < forth/forth0.bin | tee $@ > /dev/null
@@ -43,14 +43,14 @@ forth/stage1dbg: forth/stage.c $(OBJS) forth/forth0-bin.h
 # We don't really need to use stripfc, but we do it anyway to test that we
 # don't mistakenly break our code with that tool. It's easier to debug here.
 forth/core.bin: $(FORTHSRC_PATHS) forth/stage1
-	cat $(FORTHSRC_PATHS) ./forth/stop.fs | $(STRIPFC) | ./forth/stage1 | tee $@ > /dev/null
+	cat $(FORTHSRC_PATHS) ./forth/stop.fs | $(STRIPFC) | ./forth/stage1 > $@
 
 forth/forth1.bin: forth/core.bin $(SLATEST)
 	cat forth/z80c.bin forth/core.bin > $@
 	$(SLATEST) $@
 
 forth/forth1-bin.h: forth/forth1.bin $(BIN2C)
-	$(BIN2C) KERNEL < forth/forth1.bin | tee $@ > /dev/null
+	$(BIN2C) KERNEL < forth/forth1.bin > $@
 
 forth/stage2: forth/stage.c $(OBJS) forth/forth1-bin.h 
 	$(CC) -DSTAGE2 forth/stage.c $(OBJS) -o $@

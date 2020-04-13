@@ -202,9 +202,9 @@ using our hex editor.
 
 Now are we ready yet? ALMOST! There's one last thing we need to do: add runtime
 source. In our case, because we have a compiled dict, the only source we need
-to include is `pre.fs` and `run.fs`:
+to include is `run.fs`:
 
-    cat stage2.bin pre.fs run.fs > stage2r.bin
+    cat stage2.bin run.fs > stage2r.bin
 
 That's it! our binary is ready to run!
 
@@ -212,7 +212,8 @@ That's it! our binary is ready to run!
 
 And there you have it, a stage2 binary that you've assembled yourself. Now,
 here's for your homework: use the same technique to add the contents of
-`readln.fs` to stage2 so that you have a full-featured interpreter.
+`readln.fs` and `adev.fs` to stage2 so that you have a full-featured
+interpreter.
 
 Name it `stage3.bin` (the version without any source code appended and no
 `INIT` word defined), you'll need this binary for sub-recipes written for the
@@ -221,8 +222,8 @@ RC2014.
 Here's a little cheatsheet, but seriously, you should figure most of it
 yourself. Tough love they call it.
 
-* `cat stage2.bin pre.fs ../../forth/readln.fs run.fs > stage2r.bin`
-* Don't forget `(c<$)`.
+* `cat stage2.bin ../../forth/readln.fs ../../forth/adev.fs run.fs > stage2r.bin`
+* Don't forget `RDLN$` and `ADEV$`.
 * `RLDICT` is like `RLCORE` but with a chosen target.
 
 [rc2014]: https://rc2014.co.uk
