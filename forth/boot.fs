@@ -260,8 +260,7 @@ PC ORG @ 0x1e + ! ( chkPS )
     HL DECss,
     HL DECss,
     HL DECss,
-    A ORr,           ( clear carry )
-    SP SBCHLss,
+    SP SUBHLss,
     HL POPqq,
     CNC RETcc,      ( INITIAL_SP >= SP? good )
     JR, L1 BWR ( abortUnderflow )
@@ -269,8 +268,7 @@ PC ORG @ 0x1e + ! ( chkPS )
 L3 BSET ( chkRS )
     IX PUSHqq, HL POPqq,
     DE RS_ADDR LDddnn,
-    A ORr,           ( clear carry )
-    DE SBCHLss,
+    DE SUBHLss,
     CNC RETcc,      ( IX >= RS_ADDR? good )
     JR, L1 BWR ( abortUnderflow )
 

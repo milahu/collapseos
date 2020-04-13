@@ -168,8 +168,7 @@ CODE -
     DE POPqq,
     HL POPqq,
     chkPS,
-    A ORr,
-    DE SBCHLss,
+    DE SUBHLss,
     HL PUSHqq,
 ;CODE
 
@@ -335,8 +334,7 @@ CODE CMP
     HL  POPqq,
     DE  POPqq,
     chkPS,
-    A ORr,      ( clear carry )
-    DE SBCHLss,
+    DE SUBHLss,
     ( 40 == flagsToBC )
     40 CALLnn,
     BC PUSHqq,
