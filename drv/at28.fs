@@ -1,0 +1,17 @@
+( With dst being assumed to be an AT28 EEPROM, perform !
+  operation while doing the right thing. Checks data integrity
+  and ABORT on mismatch.
+)
+( a n -- )
+: AT28!
+    2DUP C! SWAP
+	( as long as writing operation is running, IO/6 will toggle at each
+	  read attempt. We know that write is finished when we read the same
+	  value twice. )
+    BEGIN ( n1 a )
+        DUP C@      ( n1 a n2 )
+        OVER C@     ( n1 a n2 n3 )
+    = UNTIL
+    ( We're finished writing. do we have a mismatch? )
+    C@ = NOT IF ABORT" mismatch" THEN
+;
