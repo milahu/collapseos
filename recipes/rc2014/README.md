@@ -225,6 +225,7 @@ yourself. Tough love they call it.
 * `cat stage2.bin ../../forth/readln.fs ../../forth/adev.fs run.fs > stage2r.bin`
 * Don't forget `RDLN$` and `ADEV$`.
 * `RLDICT` is like `RLCORE` but with a chosen target.
+* `stripfc` can help you deal with size constraints.
 
 [rc2014]: https://rc2014.co.uk
 [romwrite]: https://github.com/hsoft/romwrite
