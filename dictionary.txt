@@ -30,10 +30,10 @@ to been consistent in their use. Here's their definitions:
 @ - Fetch
 $ - Initialize
 ^ - Arguments in their opposite order
-> - Pointer in a buffer
+< - Input
+> - 1. Pointer in a buffer 2. Opposite of "<".
 ( - Lower boundary
 ) - Upper boundary
-< - Input
 * - Word indirection (pointer to word)
 ~ - Container for native code. Usually not an executable word.
 ? - Is it ...? (example: IMMED?)
@@ -122,6 +122,16 @@ HERE        -- a            Push HERE's address
 H@          -- a            HERE @
 MOVE        a1 a2 u --      Copy u bytes from a1 to a2, starting with a1, going
                             up.
+*** Addressed devices ***
+
+See usage.txt for details.
+
+ADEV$       --              Initialize adev subsystem
+A@          a -- c          Indirect C@
+A!          c a --          Indirect C!
+A@*         -- a            Address for A@ word
+A!*         -- a            Address for A! word
+AMOVE       src dst u --    Same as MOVE, but with A@ and A!
 
 *** Arithmetic / Bits ***
 

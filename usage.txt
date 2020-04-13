@@ -86,3 +86,39 @@ flag to true. For example, "<>{ <>}" yields true.
 To check whether A is in between B and C inclusively, you would write:
 
 A <>{ B 1 - &> C 1 + &< <>}
+
+*** Addressed devices
+
+The adev unit provides a simple but powerful abstraction over C@ and C!: A@ and
+A!. These work the same way as C@ and C! (but for performance reasons, aren't
+used in core words), but are indirect calls.
+
+Upon initialization, the default to C@ and C!, but can be set to any word
+through A@* and A!*.
+
+On top of that, it provides a few core-like words such as AMOVE.
+
+Let's demonstrate its use through a toy example:
+
+    > : F! SWAP 1 + SWAP C! ;
+    > 8 H@ DUMP
+
+    :54 0000 0000 0000 0000 ........
+    > 9 H@ A!
+    > 8 H@ DUMP
+
+    :54 0900 0000 0000 0000 ........
+    > ' F! A!* !
+    > 9 H@ 1 + A!
+    > 8 H@ DUMP
+
+    :54 090a 0000 0000 0000 ........
+    > H@ H@ 2 + 2 AMOVE
+    > 8 H@ DUMP
+
+    :54 090a 0a0b 0000 0000 ........
+    > 
+
+Of course, you might want to end up using adev in this kind of ad-hoc way to
+have some kind of mapping function, but what you'll mostly want to to is to
+plug device drivers into those words.

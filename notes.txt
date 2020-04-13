@@ -90,7 +90,8 @@ RAMSTART   INITIAL_SP
 +4e        INTJUMP
 +51        CURRENTPTR
 +53        readln's variables
-+55        FUTURE USES
++55        adev's variables
++57        FUTURE USES
 +59        z80a's variables
 +5b        FUTURE USES
 +70        DRIVERS
