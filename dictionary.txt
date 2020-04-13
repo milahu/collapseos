@@ -38,25 +38,31 @@ $ - Initialize
 ~ - Container for native code. Usually not an executable word.
 ? - Is it ...? (example: IMMED?)
 
-*** Defining words ***
+*** Entry management ***
 (find)      a -- a f        Read at a and find it in dict. If found, f=1 and
                             a = wordref. If not found, f=0 and a = string addr.
-: x ...     --              Define a new word
-;           R:I --          Exit a colon definition
-,           n --            Write n in HERE and advance it.
 ' x         -- a            Push addr of word x to a. If not found, aborts
 ['] x       --              *I* Like "'", but spits the addr as a number
                             literal. If not found, aborts.
-(           --              *I* Comment. Ignore rest of line until ")" is read.
+,           n --            Write n in HERE and advance it.
 ALLOT       n --            Move HERE by n bytes
 C,          b --            Write byte b in HERE and advance it.
+DELW        a --            Delete wordref at a. If it shadows another
+                            definition, that definition is unshadowed.
+FORGET x    --              Rewind the dictionary (both CURRENT and HERE) up to
+                            x's previous entry.
+PREV        a -- a          Return a wordref's previous entry.
+WHLEN       a -- n          Get word header length from wordref. That is, name
+                            length + 3. a is a wordref
+
+*** Defining words ***
+: x ...     --              Define a new word
+;           R:I --          Exit a colon definition
 CREATE x    --              Create cell named x. Doesn't allocate a PF.
 [COMPILE] x --              Compile word x and write it to HERE. IMMEDIATE
                             words are *not* executed.
 COMPILE x   --              Meta compiles. Kind of blows the mind. See below.
 CONSTANT x  n --            Creates cell x that when called pushes its value
-DELW        a --            Delete wordref at a. If it shadows another
-                            definition, that definition is unshadowed.
 DOES>       --              See description in usage.txt
 IMMED?      a -- f          Checks whether wordref at a is immediate.
 IMMEDIATE   --              Flag the latest defined word as immediate.
@@ -72,6 +78,7 @@ input stream is executed immediately. In this context, branching doesn't work.
 (br)        --              Branches by the number specified in the 2 following
                             bytes. Can be negative.
 (?br)       f --            Branch if f is false.
+(           --              *I* Comment. Ignore rest of line until ")" is read.
 [           --              Begin interetative mode. In a definition, words
                             between here and "]" will be executed instead of
                             compiled.
