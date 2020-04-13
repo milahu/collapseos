@@ -1,8 +1,6 @@
 /forth/stage1
 /forth/stage1dbg
 /forth/stage2
-/forth/stage2dbg
 /forth/forth
-/runbin/runbin
 /*/*-bin.h
 /*/*.bin

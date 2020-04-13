@@ -49,14 +49,6 @@ the power of a full Forth intepreter, including an assembler, to assemble
 Normally, running this step should yield the exact same `boot.bin` and
 `z80c.bin` as before, unless of course you've changed the source.
 
-## runbin
-
-This is a very simple tool that reads binary z80 code from stdin, loads it in
-memory starting at address 0 and then run the code until it halts. The exit
-code of the program is the value of `A` when the program halts.
-
-This is used for unit tests.
-
 ## Problems?
 
 If the libz80-wrapped zasm executable works badly (hangs, spew garbage, etc.),

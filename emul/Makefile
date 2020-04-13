@@ -1,4 +1,4 @@
-TARGETS = runbin/runbin forth/forth
+TARGETS = forth/forth
 BIN2C = ../tools/bin2c
 # Those Forth source files are in a particular order
 BOOTSRCS = ./forth/conf.fs \
@@ -57,9 +57,6 @@ forth/stage2: forth/stage.c $(OBJS) forth/forth1-bin.h
 
 forth/forth: forth/forth.c $(OBJS) forth/forth1-bin.h 
 	$(CC) forth/forth.c $(OBJS) -o $@
-
-runbin/runbin: runbin/runbin.c $(OBJS)
-	$(CC) runbin/runbin.c $(OBJS) -o $@
 
 libz80/libz80.o: libz80/z80.c
 	$(MAKE) -C libz80/codegen opcodes
