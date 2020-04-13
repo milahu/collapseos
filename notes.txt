@@ -89,17 +89,10 @@ RAMSTART   INITIAL_SP
 +2e        BOOT C< PTR
 +4e        INTJUMP
 +51        CURRENTPTR
-+53        readln's IN(
-+55        readln's IN)
-+57        readln's IN>
-+59        z80a's ORG
-+5b        z80a's L1
-+5d        z80a's L2
-+5f        z80a's L3
-+61        z80a's L4
-+63        z80a's L5
-+65        z80a's L6
-+67        FUTURE USES
++53        readln's variables
++55        FUTURE USES
++59        z80a's variables
++5b        FUTURE USES
 +70        DRIVERS
 +80        RAMEND
 

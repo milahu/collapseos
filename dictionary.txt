@@ -21,6 +21,23 @@ directly, but as part of another word.
 
 "*I*" in description indicates an IMMEDIATE word.
 
+*** Symbols ***
+
+Throughout words, different symbols are used in different contexts, but we try
+to been consistent in their use. Here's their definitions:
+
+! - Store
+@ - Fetch
+$ - Initialize
+^ - Arguments in their opposite order
+> - Pointer in a buffer
+( - Lower boundary
+) - Upper boundary
+< - Input
+* - Word indirection (pointer to word)
+~ - Container for native code. Usually not an executable word.
+? - Is it ...? (example: IMMED?)
+
 *** Defining words ***
 (find)      a -- a f        Read at a and find it in dict. If found, f=1 and
                             a = wordref. If not found, f=0 and a = string addr.

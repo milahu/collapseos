@@ -1,21 +1,11 @@
 ( Z80 assembler )
 
-( Splits word into msb/lsb, lsb being on TOS )
-: SPLITB
-    256 /MOD SWAP
-;
-
+: Z80AMEM+ 0x59 RAM+ @ + ;
 
 ( H@ offset at which we consider our PC 0. Used to compute
   PC. To have a proper PC, call  "H@ ORG !" at the beginning
   of your assembly process. )
-: ORG 0x59 RAM+ ;
-: PC H@ ORG @ - ;
-
-( A, spits an assembled byte, A,, spits an assembled word
-  Both increase PC. To debug, change C, to .X )
-: A, C, ;
-: A,, SPLITB A, A, ;
+: ORG 0 Z80AMEM+ ;
 
 ( Labels are a convenient way of managing relative jump
   calculations. Backward labels are easy. It is only a matter
@@ -27,13 +17,31 @@
   To avoid using dict memory in compilation targets, we
   pre-declare label variables here, which means we have a
   limited number of it. For now, 6 ought to be enough. )
+: L1 2 Z80AMEM+ ;
+: L2 4 Z80AMEM+ ;
+: L3 6 Z80AMEM+ ;
+: L4 8 Z80AMEM+ ;
+: L5 10 Z80AMEM+ ;
+: L6 12 Z80AMEM+ ;
 
-: L1 0x5b RAM+ ;
-: L2 0x5d RAM+ ;
-: L3 0x5f RAM+ ;
-: L4 0x61 RAM+ ;
-: L5 0x63 RAM+ ;
-: L6 0x65 RAM+ ;
+: Z80A$
+    ( 59 == z80a's memory )
+    H@ 0x59 RAM+ !
+    14 ALLOT
+;
+
+( Splits word into msb/lsb, lsb being on TOS )
+: SPLITB
+    256 /MOD SWAP
+;
+
+
+: PC H@ ORG @ - ;
+
+( A, spits an assembled byte, A,, spits an assembled word
+  Both increase PC. To debug, change C, to .X )
+: A, C, ;
+: A,, SPLITB A, A, ;
 
 ( There are 2 label types: backward and forward. For each
   type, there are two actions: set and write. Setting a label
