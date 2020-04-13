@@ -7,7 +7,8 @@ itself.
 
 ## Gathering parts
 
-* A RC2014 Classic that could install the base recipe
+* A RC2014 Classic
+* `stage3.bin` from the base recipe
 * An extra AT28C64B
 * 1x 40106 inverter gates
 * Proto board, RC2014 header pins, wires, IC sockets, etc.
@@ -32,52 +33,33 @@ in write protection mode, but I preferred building my own module.
 
 I don't think you need a schematic. It's really simple.
 
-## Building the kernel
+## Using the at28 driver
 
-For this recipe to work, we need a block device for the `at28w` program to read
-from. The easiest way to go around would be to use a SD card, but maybe you
-haven't built a SPI relay yet and it's quite a challenge to do so.
+The AT28 driver is at `drv/at28.fs` and is a pure forth source file so it's
+rather easy to set up from the base Stage 3 binary:
 
-Therefore, for this recipe, we'll have `at28w` read from a memory map and we'll
-upload contents to write to memory through our serial link.
-
-`at28w` is designed to be ran as a "user application", but in this case, because
-we run from a kernel without a filesystem and that `pgm` can't run without it,
-we'll integrate `at28w` directly in our kernel and expose it as an extra shell
-command (renaming it to `a28w` to fit the 4 chars limit).
-
-For all this to work, you'll need [glue code that looks like this](glue.asm).
-Running `make` in this directory will produce a `os.bin` with that glue code
-that you can install in the same way you did with the basic RC2014 recipe.
-
-If your range is different than `0x2000-0x3fff`, you'll have to modify
-`AT28W_MEMSTART` before you build.
+    cat ../stage3.bin ../pre.fs ../../../drv/at28.fs ../run.fs > os.bin
+    ../../../emul/hw/rc2014/classic os.bin
 
 ## Writing contents to the AT28
 
-The memory map is configured to start at `0xd000`. The first step is to upload
-contents at that address as documented in ["Load code in RAM and run it"][load].
+The driver provides `AT28!` which can be plugged in adev's `A!*`.
 
-You have to know the size of the contents you've loaded because you'll pass it
-as at argument to `a28w`. You can run:
+It's not in the Stage 3 binary, but because it's a small piece of Forth code,
+let's just run its definition code:
 
-    Collapse OS
-    > bsel 0
-    > seek 00 0000
-    > a28w <size-of-contents>
+    cat ../../../drv/at28.fs | ./stripfc | ./exec <tty device>
 
-It takes a little while to write. About 1 second per 0x100 bytes (soon, I'll
-implement page writing which should make it much faster).
+Then, upload your binary to some place in memory, for example `a000`. To do so,
+run this from your modern computer:
 
-If the program doesn't report an error, you're all good! The program takes care
-of verifying each byte, so everything should be in place. You can verify
-yourself by `peek`-ing around the `0x2000-0x3fff` range.
+    ./upload <tty device> a000 <filename>
 
-Note that to write a single byte to the AT28 eeprom, you don't need a special
-program. You can, while you're in the `0x2000-0x3fff` range, run `poke 1` and
-send an arbitrary char. It will work. The problem is with writing multiple
-bytes: you have to wait until the eeprom is finished writing before writing to
-a new address, something a regular `poke` doesn't do but `at28w` does.
+Then, activate `AT28!` with `' AT28! A!* !` and then run
+`0xa000 0x2000 <size-of-bin> AMOVE`. `AT28!` checks every myte for integrity,
+so it there's no error, you should be fine. Your content is now on the EEPROM!
 
-[load]: ../../../doc/load-run-code.md
-
+Why not upload content directly to `0x2000` after having activated `AT28!`?
+Technically, you could. It was my first idea too. However, at the time of this
+writing, I always get weird mismatch errors about halfway through. Maybe that
+the ACIA interrupt does something wrong...

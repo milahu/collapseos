@@ -65,6 +65,7 @@ int main(int argc, char **argv)
             // we don't exit now because we need to "consume" our whole program.
             returncode = 1;
         }
+        usleep(1000); // let it breathe
     }
     mread(fd, s, 2); // "> " prompt
     sendcmdp(fd, "FORGET _");

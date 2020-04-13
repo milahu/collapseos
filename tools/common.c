@@ -8,7 +8,9 @@
 void mread(int fd, char *s, int count)
 {
     while (count) {
-        while (read(fd, s, 1) == 0);
+        while (read(fd, s, 1) == 0) {
+            usleep(1000);
+        }
         s++;
         count--;
     }
