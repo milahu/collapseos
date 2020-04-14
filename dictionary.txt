@@ -207,3 +207,7 @@ CR
 LF
 SPC
 
+*** Disk ***
+
+LIST        n --            Prints the contents of the block n on screen in the
+                            form of 16 lines of 64 columns.

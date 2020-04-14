@@ -32,4 +32,5 @@
 : BS 8 EMIT ;
 : LF 10 EMIT ;
 : CR 13 EMIT ;
+: CRLF CR LF ;
 : SPC 32 EMIT ;

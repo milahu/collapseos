@@ -62,7 +62,7 @@
         EMIT
         1 +
     LOOP
-    LF
+    CRLF
 ;
 
 ( n a -- )

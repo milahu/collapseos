@@ -1,5 +1,4 @@
 TARGETS = forth/forth
-BIN2C = ../tools/bin2c
 # Those Forth source files are in a particular order
 BOOTSRCS = ./forth/conf.fs \
 	../forth/xcomp.fs \
@@ -10,11 +9,13 @@ BOOTSRCS = ./forth/conf.fs \
 	./forth/xstop.fs
 
 FORTHSRCS = core.fs cmp.fs print.fs str.fs parse.fs readln.fs fmt.fs z80a.fs \
-	link.fs
+	link.fs blk.fs
 FORTHSRC_PATHS = ${FORTHSRCS:%=../forth/%} forth/run.fs
 OBJS = emul.o libz80/libz80.o
 SLATEST = ../tools/slatest
 STRIPFC = ../tools/stripfc
+BIN2C = ../tools/bin2c
+BLKPACK = ../tools/blkpack
 
 .PHONY: all
 all: $(TARGETS)
@@ -22,6 +23,7 @@ all: $(TARGETS)
 $(STRIPFC):
 $(SLATEST):
 $(BIN2C):
+$(BLKPACK):
 	$(MAKE) -C ../tools
 
 # z80c.bin is not in the prerequisites because it's a bootstrap
@@ -55,7 +57,10 @@ forth/forth1-bin.h: forth/forth1.bin $(BIN2C)
 forth/stage2: forth/stage.c $(OBJS) forth/forth1-bin.h 
 	$(CC) -DSTAGE2 forth/stage.c $(OBJS) -o $@
 
-forth/forth: forth/forth.c $(OBJS) forth/forth1-bin.h 
+blkfs: $(BLKPACK)
+	$(BLKPACK) ../blk > $@
+
+forth/forth: forth/forth.c $(OBJS) forth/forth1-bin.h blkfs
 	$(CC) forth/forth.c $(OBJS) -o $@
 
 libz80/libz80.o: libz80/z80.c
