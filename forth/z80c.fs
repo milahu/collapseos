@@ -149,10 +149,10 @@ CODE NOT
     A L LDrr,
     H ORr,
     HL 0 LDddnn,
-    JRNZ, L1 FWR ( skip )
-    ( false, make 1 )
-    HL INCss,
-L1 FSET ( skip )
+    IFNZ, ( skip )
+        ( false, make 1 )
+        HL INCss,
+    THEN, ( skip )
     HL PUSHqq,
 ;CODE
 
@@ -203,17 +203,17 @@ CODE /MOD
     A B LDrr,
     B 16 LDrn,
     HL 0 LDddnn,
-L1 BSET ( loop )
-    SCF,
-    C RLr,
-    RLA,
-    HL ADCHLss,
-    DE SBCHLss,
-    JRNC, L2 FWR ( skip )
-    DE ADDHLss,
-    C DECr,
-L2 FSET ( skip )
-    DJNZ, L1 BWR ( loop )
+    BEGIN, ( loop )
+        SCF,
+        C RLr,
+        RLA,
+        HL ADCHLss,
+        DE SBCHLss,
+        IFNC, ( skip )
+            DE ADDHLss,
+            C DECr,
+        THEN, ( skip )
+    DJNZ, AGAIN, ( loop )
     B A LDrr,
     HL PUSHqq,
     BC PUSHqq,
@@ -315,16 +315,16 @@ CODE SCMP
     DE  POPqq,
     HL  POPqq,
     chkPS,
-L1 BSET ( loop )
-    LDA(DE),
-    (HL) CPr,
-    JRNZ, L2 FWR ( not equal? break early to "end".
-                   NZ is set. )
-    A ORr,   ( if our char is null, stop )
-    HL INCss,
-    DE INCss,
-    JRNZ, L1 BWR ( loop )
-L2 FSET ( end )
+    BEGIN, ( loop )
+        LDA(DE),
+        (HL) CPr,
+        JRNZ, L1 FWR ( not equal? break early to "end".
+                       NZ is set. )
+        A ORr,   ( if our char is null, stop )
+        HL INCss,
+        DE INCss,
+    JRNZ, AGAIN, ( loop )
+L1 FSET ( end )
     ( 40 == flagsToBC )
     40 CALLnn,
     BC PUSHqq,
@@ -347,13 +347,13 @@ CODE _find
     chkPS,
     ( 3 == find )
     3 CALLnn,
-    JRZ, L1 FWR ( found )
-    ( not found )
-    HL PUSHqq,
-    DE 0 LDddnn,
-    DE PUSHqq,
-    JPNEXT,
-L1 FSET ( found )
+    IFZ, ( found )
+        ( not found )
+        HL PUSHqq,
+        DE 0 LDddnn,
+        DE PUSHqq,
+        JPNEXT,
+    THEN, ( found )
     DE PUSHqq,
     DE 1 LDddnn,
     DE PUSHqq,

@@ -16,18 +16,16 @@
 
   To avoid using dict memory in compilation targets, we
   pre-declare label variables here, which means we have a
-  limited number of it. For now, 6 ought to be enough. )
+  limited number of it. For now, 4 ought to be enough. )
 : L1 2 Z80AMEM+ ;
 : L2 4 Z80AMEM+ ;
 : L3 6 Z80AMEM+ ;
 : L4 8 Z80AMEM+ ;
-: L5 10 Z80AMEM+ ;
-: L6 12 Z80AMEM+ ;
 
 : Z80A$
     ( 59 == z80a's memory )
     H@ 0x59 RAM+ !
-    14 ALLOT
+    10 ALLOT
 ;
 
 ( Splits word into msb/lsb, lsb being on TOS )
@@ -42,42 +40,6 @@
   Both increase PC. To debug, change C, to .X )
 : A, C, ;
 : A,, SPLITB A, A, ;
-
-( There are 2 label types: backward and forward. For each
-  type, there are two actions: set and write. Setting a label
-  is declaring where it is. It has to be performed at the
-  label's destination. Writing a label is writing its offset
-  difference to the binary result. It has to be done right
-  after a relative jump operation. Yes, labels are only for
-  relative jumps.
-
-  For backward labels, set happens before write. For forward
-  labels, write happen before set. The write operation writes
-  a dummy placeholder, and then the set operation writes the
-  offset at that placeholder's address.
-
-  Variable actions are expected to be called with labels in
-  front of them. Example, "L2 FSET"
-
-  About that "1 -": z80 relative jumps record "e-2", that is,
-  the offset that *counts the 2 bytes of the jump itself*.
-  Because we set the label *after* the jump OP1 itself, that's
-  1 byte that is taken care of. We still need to adjust by
-  another byte before writing the offset.
-)
-
-: BSET PC SWAP ! ;
-: BWR @ PC - 1 - A, ;
-( same as BSET, but we need to write a placeholder )
-: FWR BSET 0 A, ;
-: FSET
-    @ DUP PC        ( l l pc )
-    -^ 1 -          ( l off )
-    ( warning: l is a PC offset, not a mem addr! )
-    SWAP ORG @ +    ( off addr )
-    C!
-;
-
 
 ( "r" register constants )
 7 CONSTANT A
@@ -375,3 +337,52 @@
 ( Routines )
 ( 29 == chkPS )
 : chkPS, 29 CALLnn, ;
+
+( Flow
+
+  There are 2 label types: backward and forward. For each
+  type, there are two actions: set and write. Setting a label
+  is declaring where it is. It has to be performed at the
+  label's destination. Writing a label is writing its offset
+  difference to the binary result. It has to be done right
+  after a relative jump operation. Yes, labels are only for
+  relative jumps.
+
+  For backward labels, set happens before write. For forward
+  labels, write happen before set. The write operation writes
+  a dummy placeholder, and then the set operation writes the
+  offset at that placeholder's address.
+
+  Variable actions are expected to be called with labels in
+  front of them. Example, "L2 FSET"
+
+  About that "1 -": z80 relative jumps record "e-2", that is,
+  the offset that *counts the 2 bytes of the jump itself*.
+  Because we set the label *after* the jump OP1 itself, that's
+  1 byte that is taken care of. We still need to adjust by
+  another byte before writing the offset.
+)
+
+( Place BEGIN, where you want to jump back and AGAIN after
+  a relative jump operator. Just like BSET and BWR. )
+: BEGIN, PC ;
+: AGAIN, PC - 1 - A, ;
+
+: BSET PC SWAP ! ;
+: BWR @ AGAIN, ;
+( same as BSET, but we need to write a placeholder )
+: FJR, PC 0 A, ;
+: IFZ, JRZ, FJR, ;
+: IFNZ, JRNZ, FJR, ;
+: IFC, JRC, FJR, ;
+: IFNC, JRNC, FJR, ;
+: THEN,
+    DUP PC          ( l l pc )
+    -^ 1 -          ( l off )
+    ( warning: l is a PC offset, not a mem addr! )
+    SWAP ORG @ +    ( off addr )
+    C!
+;
+: FWR BSET 0 A, ;
+: FSET @ THEN, ;
+

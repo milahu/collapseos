@@ -159,7 +159,7 @@ PC ORG @ 4 + ! ( find )
   adjust. Because the compare loop pre-decrements, instead
   of DECing HL twice, we DEC it once. )
     HL DECss,
-L3 BSET ( inner )
+BEGIN, ( inner )
     ( DE is a wordref, first step, do our len correspond? )
     HL PUSHqq,          ( --> lvl 1 )
     DE PUSHqq,          ( --> lvl 2 )
@@ -172,15 +172,15 @@ L3 BSET ( inner )
     DE DECss, ( Skip prev field. One less because we )
     DE DECss, ( pre-decrement )
     B C LDrr, ( loop C times )
-L5 BSET ( loop )
+BEGIN, ( loop )
     ( pre-decrement for easier Z matching )
     DE DECss,
     HL DECss,
     LDA(DE),
     (HL) CPr,
-    JRNZ, L6 FWR ( loopend )
-    DJNZ, L5 BWR ( loop )
-L4 FSET L6 FSET ( loopend )
+    JRNZ, L3 FWR ( loopend )
+    DJNZ, AGAIN, ( loop )
+L4 FSET L3 FSET ( loopend )
 ( At this point, Z is set if we have a match. In all cases,
   we want to pop HL and DE )
     DE POPqq,           ( <-- lvl 2 )
@@ -201,14 +201,14 @@ L4 FSET L6 FSET ( loopend )
     ( HL is prev field's addr. Is offset zero? )
     A D LDrr,
     E ORr,
-    JRZ, L6 FWR ( noprev )
-    ( get absolute addr from offset )
-    ( carry cleared from "or e" )
-    DE SBCHLss,
-    EXDEHL,             ( result in DE )
-L6 FSET ( noprev )
+    IFZ, ( noprev )
+        ( get absolute addr from offset )
+        ( carry cleared from "or e" )
+        DE SBCHLss,
+        EXDEHL,             ( result in DE )
+    THEN, ( noprev )
     HL POPqq,           ( <-- lvl 1 )
-    JRNZ, L3 BWR ( inner, try to match again )
+    JRNZ, AGAIN, ( inner, try to match again )
     ( Z set? end of dict, unset Z )
 L1 FSET ( fail )
     A XORr,
