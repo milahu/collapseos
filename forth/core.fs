@@ -94,12 +94,20 @@
     H@
 ; IMMEDIATE
 
+( Increase loop counter and returns whether we should loop. )
+: _
+    R>          ( IP, keep for later )
+    R> 1 +      ( ip i+1 )
+    DUP >R      ( ip i )
+    I' =        ( ip f )
+    SWAP >R     ( f )
+;
+
 ( One could think that we should have a sub word to avoid all
   these COMPILE, but we can't because otherwise it messes with
   the RS )
 : LOOP
-    COMPILE R> 1 LITN COMPILE + COMPILE DUP COMPILE >R
-    COMPILE I' COMPILE = COMPILE (?br)
+    COMPILE _ COMPILE (?br)
     H@ - ,
     COMPILE R> COMPILE DROP COMPILE R> COMPILE DROP
 ; IMMEDIATE
