@@ -1,0 +1,16 @@
+Glossary
+
+Stack notation: "<stack before> -- <stack after>". Rightmost is
+top of stack (TOS). For example, in "a b -- c d", b is TOS
+before, d is TOS after. "R:" means that the Return Stack is
+modified. "I:" prefix means "IMMEDIATE", that is, that this
+stack transformation is made at compile time.
+
+Word references (wordref): When we say we have a "word
+reference", it's a pointer to a words *code link*. For example,
+the label "PLUS:" in this unit is a word reference. Why not
+refer to the beginning of the word struct? Because we actually
+seldom refer to the name and prev link, except during
+compilation, so defining "word reference" this way makes the
+code easier to understand.
+                                                        (cont.)

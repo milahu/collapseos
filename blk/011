@@ -1,0 +1,16 @@
+Chained comparisons
+
+The unit "cmp.fs" contains words to facilitate chained
+comparisons with a single reference number. This allows, for
+example, to easily express "a == b or a == c" or "a > b and a <
+c".
+
+The way those chained comparison words work is that, unlike
+single comparison operators, they don't have a "n1 n2 -- f"
+signature, but rather a "n1 f n2 -- n1 f" signature. That is,
+each operator "carries over" the reference number in addition
+to the latest flag.
+
+
+
+                                                        (cont.)

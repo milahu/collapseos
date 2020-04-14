@@ -1,0 +1,5 @@
+(cont.)
+PREV        a -- a          Return a wordref's previous entry.
+WHLEN       a -- n          Get word header length from
+                            wordref. That is, name length + 3.
+                            a is a wordref

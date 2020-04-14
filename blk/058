@@ -1,0 +1,10 @@
+Strings
+
+LIT    --         Write a LIT entry. You're expected to write
+                  actual string to HERE right afterwards.
+LIT< x --         Read following word and write to HERE as a
+                  string literal.
+LITS   a --       Write word at addr a as a atring literal.
+SCMP   a1 a2 -- n Compare strings a1 and a2. See CMP
+SCPY   a --       Copy string at addr a into HERE.
+SLEN   a -- n     Push length of str at a.

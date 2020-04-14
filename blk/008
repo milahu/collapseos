@@ -1,0 +1,16 @@
+I/O
+
+A little word about inputs. There are two kind of inputs:
+direct and buffered.  As a general rule, we read line in a
+buffer, then feed words in it to the interpreter. That's what
+"WORD" does. If it's at the End Of Line, it blocks and wait
+until another line is entered.
+
+KEY input, however, is direct. Regardless of the input buffer's
+state, KEY will return the next typed key.
+
+PARSING AND BOOTSTRAP: Parsing number literal is a very "core"
+activity of Forth, and therefore generally seen as having to be
+implemented in native code.  However, Collapse OS' Forth
+supports many kinds of literals: decimal, hex, char, binary.
+This incurs a significant complexity penalty.           (cont.)

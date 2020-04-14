@@ -1,0 +1,16 @@
+Compilation vs meta-compilation
+
+Compilation vs meta-compilation. When you compile a word with
+"[COMPILE] foo", its straightforward: It writes down to HERE
+wither the address of the word or a number literal.
+
+When you *meta* compile, it's a bit more mind blowing. It
+fetches the address of the word specified by the caller, then
+writes that number as a literal, followed by a reference to
+",".
+
+Example: ": foo [COMPILE] bar;" is the equivalent of ": foo bar
+;" if bar is not an immediate. However, ": foo COMPILE bar ;"
+is the equivalent of ": foo ['] bar , ;". Got it?
+
+Meta-compile only works with real words, not number literals.

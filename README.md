@@ -35,6 +35,15 @@ run Collapse OS in different contexts][jsemul].
 Using those while following along with the [User Guide](doc/) is your quickest
 path to giving Collapse OS a try.
 
+## Documentation
+
+Usage documentation is in-system. Run `0 LIST` for an introduction. You can
+also open `blk/000` in a modern text editor.
+
+See `/emul/README.md` for getting an emulated system running.
+
+There is also `/notes.txt` for implementation notes.
+
 ## Organisation of this repository
 
 * `forth`: Forth is slowly taking over this project (see issue #4). It comes
@@ -66,4 +75,3 @@ A more traditional [mailing list][listserv] and IRC (#collapseos on freenode) ch
 [discussion]: https://www.reddit.com/r/collapseos
 [listserv]: http://lists.sonic.net/mailman/listinfo/collapseos
 [forth-issue]: https://github.com/hsoft/collapseos/issues/4  
-

@@ -1,0 +1,12 @@
+Collapse OS usage guide
+
+This document is not meant to be an introduction to Forth, but
+to instruct the user about the peculiarities of this Forth
+implemenation. Be sure to refer to dictionary for a word
+reference.
+
+Contents
+
+ 4 DOES>                        6 Compilation vs meta-comp.
+ 8 I/O                         11 Chained comparisons
+14 Addressed devices

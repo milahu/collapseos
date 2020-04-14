@@ -1,0 +1,10 @@
+Addressed devices
+
+See B14 for details.
+
+ADEV$       --              Initialize adev subsystem
+A@          a -- c          Indirect C@
+A!          c a --          Indirect C!
+A@*         -- a            Address for A@ word
+A!*         -- a            Address for A! word
+AMOVE       src dst u --    Same as MOVE, but with A@ and A!

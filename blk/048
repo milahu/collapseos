@@ -1,0 +1,7 @@
+Return Stack
+
+>R          n -- R:n        Pops PS and push to RS
+R>          R:n -- n        Pops RS and push to PS
+I           -- n            Copy RS TOS to PS
+I'          -- n            Copy RS second item to PS
+J           -- n            Copy RS third item to PS

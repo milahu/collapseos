@@ -1,0 +1,12 @@
+Arithmetic / Bits
+
++           a b -- c        a + b -> c
+-           a b -- c        a - b -> c
+-^          a b -- c        b - a -> c
+*           a b -- c        a * b -> c
+/           a b -- c        a / b -> c
+MOD         a b -- c        a % b -> c
+/MOD        a b -- r q      r:remainder q:quotient
+AND         a b -- c        a & b -> c
+OR          a b -- c        a | b -> c
+XOR         a b -- c        a ^ b -> c

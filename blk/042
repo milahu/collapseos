@@ -1,0 +1,16 @@
+Flow
+
+Note about flow words: flow words can only be used in
+definitions. In the INTERPRET loop, they don't have the desired
+effect because each word from the input stream is executed
+immediately. In this context, branching doesn't work.
+
+(br)  --   Branches by the number specified in the 2 following
+           bytes. Can be negative.
+(?br) f -- Branch if f is false.
+(     --   *I* Comment. Ignore rest of line until ")" is read.
+[     --   Begin interpretative mode. In a definition, words
+           between here and "]" will be executed instead of
+           compiled.
+]     --   End interpretative mode.
+ABORT --   Resets PS and RS and returns to interpreter. (cont.)
