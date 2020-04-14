@@ -11,5 +11,6 @@
     ['] EFS@ BLK@* !
     RDLN$
     Z80A$
+    LIT< _sys [entry]
     INTERPRET
 ;

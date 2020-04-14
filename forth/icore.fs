@@ -146,10 +146,9 @@
     AGAIN
 ;
 
-: (entry)
-    HERE @    ( h )
-    WORD         ( h s )
-    SCPY         ( h )
+: [entry]
+    HERE @       ( w h )
+    SWAP SCPY    ( h )
     ( Adjust HERE -1 because SCPY copies the null )
     HERE @ 1 - ( h h' )
     DUP HERE ! ( h h' )
@@ -160,6 +159,8 @@
     C,
     HERE @ CURRENT !
 ;
+
+: (entry) WORD [entry] ;
 
 : INTERPRET
     BEGIN

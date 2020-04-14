@@ -144,3 +144,8 @@
     DUP WHLEN - HERE !  ( w )
     PREV CURRENT !
 ;
+
+: EMPTY
+    LIT< _sys (find) NOT IF ABORT THEN
+    DUP HERE ! CURRENT !
+;
