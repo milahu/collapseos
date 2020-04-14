@@ -41,11 +41,12 @@ path to giving Collapse OS a try.
            from this folder.
 * `recipes`: collection of recipes that assemble parts together on a specific
              machine.
+* `blk`: Collapse OS filesystem's content. See `000` for intro.
 * `doc`: User guide for when you've successfully installed Collapse OS.
 * `tools`: Tools for working with Collapse OS from "modern" environments. For
            example, tools for facilitating data upload to a Collapse OS machine
            through a serial port.
-* `emul`: Emulated applications, such as zasm and the shell.
+* `emul`: Emulated applications.
 * `tests`: Automated test suite for the whole project.
 
 ## Status

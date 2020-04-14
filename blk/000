@@ -1,0 +1,15 @@
+Collapse OS file system
+
+This is a Forth-style filesystems which is very simple. It is a
+list of 1024 bytes block, organised in 16 lines of 64 columns
+each. You refer to blocks by numbers. You show them with LIST.
+You interpret them with LOAD.
+
+Conventions: When you see "(cont.)" at the bottom right of a
+block, it means that the next block continues the same kind of
+contents. This of course only work for informational text.
+
+Block numbers are abbreviated with prefix "B". "BX" means
+"block X".
+
+The master index of this filesystem is at B1.
