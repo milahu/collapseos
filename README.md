@@ -42,8 +42,6 @@ also open `blk/000` in a modern text editor.
 
 See `/emul/README.md` for getting an emulated system running.
 
-There is also `/notes.txt` for implementation notes.
-
 ## Organisation of this repository
 
 * `forth`: Forth is slowly taking over this project (see issue #4). It comes

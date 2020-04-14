@@ -1,0 +1,16 @@
+Word routines
+
+This is the description of all word routine you can encounter
+in this Forth implementation. That is, a wordref will always
+point to a memory offset containing one of these numbers.
+
+0x17: nativeWord. This words PFA contains native binary code
+and is jumped to directly.
+
+0x0e: compiledWord. This word's PFA contains an atom list and
+its execution is described in "EXECUTION MODEL" above.
+
+0x0b: cellWord. This word is usually followed by a 2-byte value
+in its PFA.  Upon execution, the *address* of the PFA is pushed
+to PS.
+                                                        (cont.)

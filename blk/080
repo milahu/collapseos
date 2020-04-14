@@ -1,0 +1,16 @@
+System variables
+
+There are some core variables in the core system that are
+referred to directly by their address in memory throughout the
+code. The place where they live is configurable by the RAMSTART
+constant in conf.fs, but their relative offset is not. In fact,
+they're mostly referred to directly as their numerical offset
+along with a comment indicating what this offset refers to.
+
+This system is a bit fragile because every time we change those
+offsets, we have to be careful to adjust all system variables
+offsets, but thankfully, there aren't many system variables.
+Here's a list of them:
+
+
+                                                        (cont.)

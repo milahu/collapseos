@@ -1,0 +1,16 @@
+Initialization sequence
+
+On boot, we jump to the "main" routine in boot.fs which does
+very few things.
+
+1. Set SP to 0x10000-6
+2. Sets HERE to RAMEND (RAMSTART+0x80).
+3. Sets CURRENT to value of LATEST field in stable ABI.
+4. Look for the word "BOOT" and calls it.
+
+In a normal system, BOOT is in icore and does a few things:
+
+1. Find "(parse)" and set "(parse*)" to it.
+2. Find "(c<)" a set CINPTR to it (what C< calls).
+3. Write LATEST in SYSTEM SCRATCHPAD ( see below )
+4. Find "INIT". If found, execute. Otherwise, "INTERPRET"(cont)

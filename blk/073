@@ -1,0 +1,16 @@
+EXECUTING A WORD
+
+At it's core, executing a word is pushing the wordref on PS and
+calling EXECUTE. Then, we let the word do its things. Some
+words are special, but most of them are of the compiledWord
+type, and that's their execution that we describe here.
+
+First of all, at all time during execution, the Interpreter
+Pointer (IP) points to the wordref we're executing next.
+
+When we execute a compiledWord, the first thing we do is push
+IP to the Return Stack (RS). Therefore, RS' top of stack will
+contain a wordref to execute next, after we EXIT.
+
+At the end of every compiledWord is an EXIT. This pops RS, sets
+IP to it, and continues.

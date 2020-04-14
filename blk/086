@@ -1,0 +1,16 @@
+(cont.)
+0x2b: doesWord. This word is created by "DOES>" and is followed
+by a 2-byte value as well as the adress where "DOES>" was
+compiled. At that address is an atom list exactly like in a
+compiled word. Upon execution, after having pushed its cell
+addr to PSP, it execute its reference exactly like a
+compiledWord.
+
+0x20: numberWord. No word is actually compiled with this
+routine, but atoms are.  Atoms with a reference to the number
+words routine are followed, *in the atom list*, of a 2-byte
+number. Upon execution, that number is fetched and IP is
+avdanced by an extra 2 bytes.
+
+0x24: addrWord. Exactly like a numberWord, except that it is
+treated differently by meta-tools.                      (cont.)

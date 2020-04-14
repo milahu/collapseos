@@ -20,11 +20,11 @@ BLKPACK = ../tools/blkpack
 .PHONY: all
 all: $(TARGETS)
 
-$(STRIPFC):
-$(SLATEST):
-$(BIN2C):
 $(BLKPACK):
 	$(MAKE) -C ../tools
+$(STRIPFC): $(BLKPACK)
+$(SLATEST): $(BLKPACK)
+$(BIN2C): $(BLKPACK)
 
 # z80c.bin is not in the prerequisites because it's a bootstrap
 # binary that should be updated manually through make updatebootstrap.
@@ -77,5 +77,5 @@ updatebootstrap: forth/stage2
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) emul.o forth/*-bin.h forth/forth?.bin
+	rm -f $(TARGETS) emul.o forth/*-bin.h forth/forth?.bin blkfs
 	$(MAKE) -C ../tools clean

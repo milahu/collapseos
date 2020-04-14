@@ -1,0 +1,6 @@
+(cont.) FUTURE USES section is unused for now.          
+
+DRIVERS section is reserved for recipe-specific
+drivers. Here is a list of known usages:
+
+* 0x70-0x78: ACIA buffer pointers in RC2014 recipes.
