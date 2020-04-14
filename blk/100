@@ -1,0 +1,10 @@
+Block explorer
+
+This is an application to conveniently browse the contents of
+the disk blocks. You can launch it with "102 LOAD".
+
+USAGE: When loaded, the Forth interpreter is replaced by the
+explorer interpreter. Typing "Q" quits the program.
+
+Typing a decimal number followed by space or return lists the
+contents of that block.

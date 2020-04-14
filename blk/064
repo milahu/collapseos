@@ -3,3 +3,4 @@ Disk
 BLK> -- a Address of the current block variable.
 LIST n -- Prints the contents of the block n on screen in the
           form of 16 lines of 64 columns.
+LOAD n -- Interprets Forth code from block n

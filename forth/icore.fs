@@ -178,7 +178,7 @@
 
 ( system c< simply reads source from binary, starting at
   LATEST. Convenient way to bootstrap a new system. )
-: (c<)
+: (boot<)
     ( 2e == BOOT C< PTR )
     0x2e RAM+ @   ( a )
     DUP C@        ( a c )
@@ -192,7 +192,7 @@
     ( 2e == SYSTEM SCRATCHPAD )
     CURRENT @ 0x2e RAM+ !
     ( 0c == CINPTR )
-    LIT< (c<) (find) DROP 0x0c RAM+ !
+    LIT< (boot<) (find) DROP 0x0c RAM+ !
     LIT< INIT (find)
     IF EXECUTE
     ELSE DROP INTERPRET THEN
