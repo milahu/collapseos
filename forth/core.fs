@@ -18,7 +18,7 @@
 : BEGIN H@ ; IMMEDIATE
 : AGAIN COMPILE (br) H@ - , ; IMMEDIATE
 : UNTIL COMPILE (?br) H@ - , ; IMMEDIATE
-: ( BEGIN LIT< ) WORD SCMP NOT UNTIL ; IMMEDIATE
+: ( BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
 ( Hello, hello, krkrkrkr... do you hear me?
   Ah, voice at last! Some lines above need comments
   BTW: Forth lines limited to 64 cols because of default

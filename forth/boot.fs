@@ -27,7 +27,7 @@ NOP, NOP,         ( 20, numberWord )
 NOP, NOP,         ( 22, litWord )
 NOP, NOP,         ( 24, addrWord )
 NOP, NOP,         ( 26, unused )
-0 JPnn,           ( 28, flagsToBC )
+RAMSTART 0x4e + JPnn, ( 28, RST 28 )
 0 JPnn,           ( 2b, doesWord )
 NOP, NOP,         ( 2e, unused )
 RAMSTART 0x4e + JPnn, ( RST 30 )
@@ -216,16 +216,6 @@ L1 FSET ( fail )
 L4 FSET ( end )
     HL POPqq,
     BC POPqq,
-    RET,
-
-PC ORG @ 0x29 + ! ( flagsToBC )
-    BC 0 LDddnn,
-    CZ RETcc, ( equal )
-    BC INCss,
-    CC RETcc, ( > )
-    ( < )
-    BC DECss,
-    BC DECss,
     RET,
 
 PC ORG @ 0x12 + ! ( pushRS )

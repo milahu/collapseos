@@ -311,10 +311,13 @@ CODE (resRS)
     IX RS_ADDR LDddnn,
 ;CODE
 
-CODE SCMP
+CODE S=
     DE  POPqq,
     HL  POPqq,
     chkPS,
+    ( pre-push false )
+    BC 0 LDddnn,
+    BC PUSHqq,
     BEGIN, ( loop )
         LDA(DE),
         (HL) CPr,
@@ -324,10 +327,11 @@ CODE SCMP
         HL INCss,
         DE INCss,
     JRNZ, AGAIN, ( loop )
+    ( success, change false to true )
+    HL POPqq,
+    HL INCss,
+    HL PUSHqq,
 L1 FSET ( end )
-    ( 40 == flagsToBC )
-    40 CALLnn,
-    BC PUSHqq,
 ;CODE
 
 CODE CMP
@@ -335,8 +339,16 @@ CODE CMP
     DE  POPqq,
     chkPS,
     DE SUBHLss,
-    ( 40 == flagsToBC )
-    40 CALLnn,
+    BC 0 LDddnn,
+    IFZ,
+        ( not equal )
+        BC INCss,
+        IFC,
+            ( < )
+            BC DECss,
+            BC DECss,
+        THEN,
+    THEN,
     BC PUSHqq,
 ;CODE
 
