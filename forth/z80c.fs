@@ -85,13 +85,13 @@ CODE 2OVER
     HL POPqq,       ( D )
     DE POPqq,       ( C )
     BC POPqq,       ( B )
-    IY POPqq,       ( A )
+    EXX, HL POPqq, EXX, ( A )
     chkPS,
-    IY PUSHqq,      ( A )
+    EXX, HL PUSHqq, EXX, ( A )
     BC PUSHqq,      ( B )
     DE PUSHqq,      ( C )
     HL PUSHqq,      ( D )
-    IY PUSHqq,      ( A )
+    EXX, HL PUSHqq, EXX, ( A )
     BC PUSHqq,      ( B )
 ;CODE
 
@@ -101,11 +101,11 @@ CODE 2SWAP
     HL POPqq,       ( D )
     DE POPqq,       ( C )
     BC POPqq,       ( B )
-    IY POPqq,       ( A )
+    EXX, HL POPqq, EXX, ( A )
     chkPS,
     DE PUSHqq,      ( C )
     HL PUSHqq,      ( D )
-    IY PUSHqq,      ( A )
+    EXX, HL PUSHqq, EXX, ( A )
     BC PUSHqq,      ( B )
 ;CODE
 

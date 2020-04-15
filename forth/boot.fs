@@ -320,7 +320,7 @@ PC ORG @ 0x34 + ! ( execute )
 
 PC ORG @ 0x0f + ! ( compiledWord )
 ( Execute a list of atoms, which always end with EXIT.
-  IY points to that list. What do we do:
+  DE points to that list. What do we do:
   1. Push current IP to RS
   2. Set new IP to the second atom of the list
   3. Execute the first atom of the list. )
