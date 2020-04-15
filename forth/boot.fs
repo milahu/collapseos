@@ -315,7 +315,6 @@ PC ORG @ 0x34 + ! ( execute )
     H 0 LDrn,
     ( HL points to code pointer )
     IY INCss,
-    IY INCss,
     ( IY points to PFA )
     JP(HL),
 
@@ -338,7 +337,7 @@ PC ORG @ 0x0f + ! ( compiledWord )
     0x33 JPnn,      ( 33 == execute )
 
 PC ORG @ 0x0c + ! ( cellWord )
-( Pushes the PFA directly )
+( Pushes PFA directly )
     IY PUSHqq,
     JPNEXT,
 

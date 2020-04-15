@@ -237,7 +237,7 @@ XCURRENT @ ( to PSP )
     ( We cannot use LITN as IMMEDIATE because of bootstrapping
       issues. Same thing for ",".
       32 == NUMBER 14 == compiledWord )
-    [ 32 H@ ! 2 ALLOT 14 H@ ! 2 ALLOT ] ,
+    [ 32 H@ ! 2 ALLOT 14 H@ ! 2 ALLOT ] C,
     BEGIN
     WORD
     (find)

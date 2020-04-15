@@ -6,7 +6,7 @@ A dictionary entry has this structure:
   bigger than input buffer, of course). not null-terminated
 - 2b prev offset
 - 1b size + IMMEDIATE flag
-- 2b code pointer
+- 1b code pointer (always jumps in the <0x100 range)
 - Parameter field (PF)
 
 The prev offset is the number of bytes between the prev field

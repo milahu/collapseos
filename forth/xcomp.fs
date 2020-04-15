@@ -34,7 +34,7 @@ VARIABLE XOFF
 : X:
     (xentry)
     ( 0e == compiledWord )
-    [ 0x0e LITN ] ,
+    [ 0x0e LITN ] C,
     BEGIN
     WORD
     ( cross compile CURRENT )

@@ -82,7 +82,7 @@
 )
 ( ol o a1 a2 -- )
 : RLWORD
-    SWAP DUP @              ( ol o a2 a1 n )
+    SWAP DUP C@             ( ol o a2 a1 n )
     ( 0e == compiledWord, 2b == doesWord )
     DUP <>{ 0x0e &= 0x2b |= <>} NOT IF
         ( unwind all args )
@@ -95,7 +95,7 @@
     ( ol o a2 a1 n )
     0x2b = IF 2 + THEN
     ( ol o a2 a1 )
-    2 +                         ( ol o a2 a1+2 )
+    1 +                         ( ol o a2 a1+1 )
     BEGIN                       ( ol o a2 a1 )
         2OVER                   ( ol o a2 a1 ol o )
         SWAP                    ( ol o a2 a1 o ol )

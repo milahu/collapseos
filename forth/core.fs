@@ -58,7 +58,7 @@
 : CREATE
     (entry)            ( empty header with name )
     11                 ( 11 == cellWord )
-    ,                  ( write it )
+    C,                 ( write it )
 ;
 
 ( We run this when we're in an entry creation context. Many
@@ -71,11 +71,11 @@
 : DOES>
     ( Overwrite cellWord in CURRENT )
     ( 43 == doesWord )
-    43 CURRENT @ !
+    43 CURRENT @ C!
     ( When we have a DOES>, we forcefully place HERE to 4
       bytes after CURRENT. This allows a DOES word to use ","
       and "C," without messing everything up. )
-    CURRENT @ 4 + HERE !
+    CURRENT @ 3 + HERE !
     ( HERE points to where we should write R> )
     R> ,
     ( We're done. Because we've popped RS, we'll exit parent

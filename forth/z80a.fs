@@ -324,7 +324,7 @@
     ( same as CREATE, but with native word )
     (entry)
     ( 23 == nativeWord )
-    23 ,
+    23 C,
 ;
 
 : ;CODE JPNEXT, ;
