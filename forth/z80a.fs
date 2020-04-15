@@ -372,10 +372,10 @@
 : BWR @ AGAIN, ;
 ( same as BSET, but we need to write a placeholder )
 : FJR, PC 0 A, ;
-: IFZ, JRZ, FJR, ;
-: IFNZ, JRNZ, FJR, ;
-: IFC, JRC, FJR, ;
-: IFNC, JRNC, FJR, ;
+: IFZ, JRNZ, FJR, ;
+: IFNZ, JRZ, FJR, ;
+: IFC, JRNC, FJR, ;
+: IFNC, JRC, FJR, ;
 : THEN,
     DUP PC          ( l l pc )
     -^ 1 -          ( l off )

@@ -149,10 +149,10 @@ CODE NOT
     A L LDrr,
     H ORr,
     HL 0 LDddnn,
-    IFNZ, ( skip )
+    IFZ,
         ( false, make 1 )
         HL INCss,
-    THEN, ( skip )
+    THEN,
     HL PUSHqq,
 ;CODE
 
@@ -209,10 +209,10 @@ CODE /MOD
         RLA,
         HL ADCHLss,
         DE SBCHLss,
-        IFNC, ( skip )
+        IFC,
             DE ADDHLss,
             C DECr,
-        THEN, ( skip )
+        THEN,
     DJNZ, AGAIN, ( loop )
     B A LDrr,
     HL PUSHqq,
@@ -340,10 +340,10 @@ CODE CMP
     chkPS,
     DE SUBHLss,
     BC 0 LDddnn,
-    IFZ,
+    IFNZ,
         ( not equal )
         BC INCss,
-        IFC,
+        IFNC,
             ( < )
             BC DECss,
             BC DECss,
@@ -359,13 +359,14 @@ CODE _find
     chkPS,
     ( 3 == find )
     3 CALLnn,
-    IFZ, ( found )
+    IFNZ,
         ( not found )
         HL PUSHqq,
         DE 0 LDddnn,
         DE PUSHqq,
         JPNEXT,
-    THEN, ( found )
+    THEN,
+    ( found )
     DE PUSHqq,
     DE 1 LDddnn,
     DE PUSHqq,

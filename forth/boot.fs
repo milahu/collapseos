@@ -201,7 +201,7 @@ L4 FSET L3 FSET ( loopend )
     ( HL is prev field's addr. Is offset zero? )
     A D LDrr,
     E ORr,
-    IFZ, ( noprev )
+    IFNZ, ( noprev )
         ( get absolute addr from offset )
         ( carry cleared from "or e" )
         DE SBCHLss,
