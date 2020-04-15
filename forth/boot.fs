@@ -45,18 +45,18 @@ NOP,              ( unused )
 0 A,,   ( prev )
 4 A,
 L1 BSET ( EXIT )
-    0x17 A,,         ( nativeWord )
+    0x17 A,         ( nativeWord )
     0x14 CALLnn,     ( popRS )
     RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
     JPNEXT,
 
-NOP, NOP, NOP,   ( unused )
+NOP, NOP, NOP, NOP,  ( unused )
 
 '(' A, 'b' A, 'r' A, ')' A,
 PC L1 @ - A,, ( prev )
 4 A,
 L1 BSET ( BR )
-    0x17 A,,         ( nativeWord )
+    0x17 A,         ( nativeWord )
 L2 BSET ( used in CBR )
     RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
     E (HL) LDrr,
@@ -67,11 +67,13 @@ L2 BSET ( used in CBR )
     RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
     JPNEXT,
 
+NOP,  ( unused )
+
 '(' A, '?' A, 'b' A, 'r' A, ')' A,
 PC L1 @ - A,, ( prev )
 5 A,
 H@ XCURRENT !        ( set current tip of dict )
-    0x17 A,,         ( nativeWord )
+    0x17 A,          ( nativeWord )
     HL POPqq,
     chkPS,
     A H LDrr,
