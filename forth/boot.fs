@@ -1,6 +1,13 @@
 ( Configuration words: RAMSTART, RS_ADDR )
 H@ 256 /MOD 2 PC! 2 PC!
 
+( RESERVED REGISTERS
+
+  At all times, IX points to RSP TOS and IY is IP. SP points
+  to PSP TOS, but you can still use the stack in native code.
+  you just have to make sure you've restored it before "next".
+)
+
 ( STABLE ABI
   Those jumps below are supposed to stay at these offsets,
   always. If they change bootstrap binaries have to be
@@ -44,10 +51,10 @@ NOP,              ( unused )
 'E' A, 'X' A, 'I' A, 'T' A,
 0 A,,   ( prev )
 4 A,
-L1 BSET ( EXIT )
+L1 BSET ( EXIT, 0x43 )
     0x17 A,         ( nativeWord )
-    0x14 CALLnn,     ( popRS )
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    0x14 CALLnn,    ( popRS )
+    HL PUSHqq, IY POPqq, ( --> IP )
     JPNEXT,
 
 NOP, NOP, NOP, NOP,  ( unused )
@@ -58,13 +65,13 @@ PC L1 @ - A,, ( prev )
 L1 BSET ( BR )
     0x17 A,         ( nativeWord )
 L2 BSET ( used in CBR )
-    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
+    IY PUSHqq, HL POPqq, ( <-- IP )
     E (HL) LDrr,
     HL INCss,
     D (HL) LDrr,
     HL DECss,
     DE ADDHLss,
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    HL PUSHqq, IY POPqq, ( --> IP )
     JPNEXT,
 
 NOP,  ( unused )
@@ -80,10 +87,8 @@ H@ XCURRENT !        ( set current tip of dict )
     L ORr,
     JRZ, L2 BWR ( BR + 2. False, branch )
     ( True, skip next 2 bytes and don't branch )
-    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
-    HL INCss,
-    HL INCss,
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    IY INCss,
+    IY INCss,
     JPNEXT,
 
 ( END OF STABLE ABI )
@@ -101,12 +106,10 @@ PC ORG @ 0x24 + ! ( addrWord )
   compiled word list. What we need to do to fetch that number
   is to play with the IP.
 )
-    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
-    E (HL) LDrr,
-    HL INCss,
-    D (HL) LDrr,
-    HL INCss,
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    E 0 IY+ LDrIXY,
+    D 1 IY+ LDrIXY,
+    IY INCss,
+    IY INCss,
     DE PUSHqq,
     JPNEXT,
 
@@ -115,7 +118,7 @@ PC ORG @ 0x22 + ! ( litWord )
   string literal. Instead of being followed by a 2 bytes
   number, it's followed by a null-terminated string. When
   called, puts the string's address on PS )
-    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
+    IY PUSHqq, HL POPqq, ( <-- IP )
     HL PUSHqq,
     ( skip to null char )
     A XORr, ( look for null )
@@ -125,7 +128,7 @@ PC ORG @ 0x22 + ! ( litWord )
 	( CPIR advances HL regardless of comparison, so goes one
       char after NULL. This is good, because that's what we
       want... )
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    HL PUSHqq, IY POPqq, ( --> IP )
     JPNEXT,
 
 ( Name of BOOT word )
@@ -294,17 +297,10 @@ PC ORG @ 0x1b + ! ( next )
 	( Before we continue: are stacks within bounds? )
     0x1d CALLnn, ( chkPS )
     L2 @ CALLnn, ( chkRS )
-    DE RAMSTART 0x06 + LDdd(nn), ( RAMSTART+0x06 == IP )
-    H D LDrr,
-    L E LDrr,
-    DE INCss,
-    DE INCss,
-    RAMSTART 0x06 + DE LD(nn)dd, ( RAMSTART+0x06 == IP )
-	( HL is an atom list pointer. We need to go into it to
-      have a wordref )
-    E (HL) LDrr,
-    HL INCss,
-    D (HL) LDrr,
+    E 0 IY+ LDrIXY,
+    D 1 IY+ LDrIXY,
+    IY INCss,
+    IY INCss,
     ( continue to execute )
 
 PC ORG @ 0x34 + ! ( execute )
@@ -324,7 +320,7 @@ PC ORG @ 0x0f + ! ( compiledWord )
   1. Push current IP to RS
   2. Set new IP to the second atom of the list
   3. Execute the first atom of the list. )
-    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
+    IY PUSHqq, HL POPqq, ( <-- IP )
     0x11 CALLnn,     ( 11 == pushRS )
     EXDEHL,          ( HL points to PFA )
     ( While we increase, dereference into DE for execute call
@@ -333,7 +329,7 @@ PC ORG @ 0x0f + ! ( compiledWord )
     HL INCss,
     D (HL) LDrr,
     HL INCss,
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    HL PUSHqq, IY POPqq, ( --> IP )
     0x33 JPnn,      ( 33 == execute )
 
 PC ORG @ 0x0c + ! ( cellWord )
