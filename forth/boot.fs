@@ -86,6 +86,46 @@ H@ XCURRENT !        ( set current tip of dict )
 
 ( END OF STABLE ABI )
 
+( We want numberWord and litWord routine to be below the 0x100
+  offset so that we can reduce the size of the routine field
+  in words to 1 byte. )
+( addrWord is the exact same thing as a numberWord except that
+  it is treated differently by meta-tools. See notes.txt )
+PC ORG @ 0x20 + ! ( numberWord )
+PC ORG @ 0x24 + ! ( addrWord )
+( This is not a word, but a number literal. This works a bit
+  differently than others: PF means nothing and the actual
+  number is placed next to the numberWord reference in the
+  compiled word list. What we need to do to fetch that number
+  is to play with the IP.
+)
+    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
+    E (HL) LDrr,
+    HL INCss,
+    D (HL) LDrr,
+    HL INCss,
+    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    DE PUSHqq,
+    JPNEXT,
+
+PC ORG @ 0x22 + ! ( litWord )
+( Similarly to numberWord, this is not a real word, but a
+  string literal. Instead of being followed by a 2 bytes
+  number, it's followed by a null-terminated string. When
+  called, puts the string's address on PS )
+    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
+    HL PUSHqq,
+    ( skip to null char )
+    A XORr, ( look for null )
+    B A LDrr,
+    C A LDrr,
+    CPIR,
+	( CPIR advances HL regardless of comparison, so goes one
+      char after NULL. This is good, because that's what we
+      want... )
+    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
+    JPNEXT,
+
 ( Name of BOOT word )
 L1 BSET
 'B' A, 'O' A, 'O' A, 'T' A, 0 A,
@@ -272,14 +312,12 @@ PC ORG @ 0x34 + ! ( execute )
     IY POPqq,        ( is a wordref )
     chkPS,
     L 0 IY+ LDrIXY,
-    H 1 IY+ LDrIXY,
+    H 0 LDrn,
     ( HL points to code pointer )
     IY INCss,
     IY INCss,
     ( IY points to PFA )
     JP(HL),
-
-( WORD ROUTINES )
 
 PC ORG @ 0x0f + ! ( compiledWord )
 ( Execute a list of atoms, which always end with EXIT.
@@ -317,41 +355,3 @@ PC ORG @ 0x2c + ! ( doesWord )
     H 3 IY+ LDrIXY,
     HL PUSHqq, IY POPqq,
     0x0e JPnn, ( 0e == compiledWord )
-
-
-( addrWord is the exact same thing as a numberWord except that
-  it is treated differently by meta-tools. See notes.txt )
-PC ORG @ 0x20 + ! ( numberWord )
-PC ORG @ 0x24 + ! ( addrWord )
-( This is not a word, but a number literal. This works a bit
-  differently than others: PF means nothing and the actual
-  number is placed next to the numberWord reference in the
-  compiled word list. What we need to do to fetch that number
-  is to play with the IP.
-)
-    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
-    E (HL) LDrr,
-    HL INCss,
-    D (HL) LDrr,
-    HL INCss,
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
-    DE PUSHqq,
-    JPNEXT,
-
-PC ORG @ 0x22 + ! ( litWord )
-( Similarly to numberWord, this is not a real word, but a
-  string literal. Instead of being followed by a 2 bytes
-  number, it's followed by a null-terminated string. When
-  called, puts the string's address on PS )
-    RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
-    HL PUSHqq,
-    ( skip to null char )
-    A XORr, ( look for null )
-    B A LDrr,
-    C A LDrr,
-    CPIR,
-	( CPIR advances HL regardless of comparison, so goes one
-      char after NULL. This is good, because that's what we
-      want... )
-    RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
-    JPNEXT,
