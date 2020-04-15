@@ -190,7 +190,7 @@ BEGIN, ( inner )
     LDA(DE),
     0x7f ANDn,          ( remove IMMEDIATE flag )
     C CPr,
-    JRNZ, L4 FWR ( loopend )
+    JRNZ, L2 FWR ( loopend )
     ( match, let's compare the string then )
     DE DECss, ( Skip prev field. One less because we )
     DE DECss, ( pre-decrement )
@@ -203,12 +203,12 @@ BEGIN, ( loop )
     (HL) CPr,
     JRNZ, L3 FWR ( loopend )
     DJNZ, AGAIN, ( loop )
-L4 FSET L3 FSET ( loopend )
+L2 FSET L3 FSET ( loopend )
 ( At this point, Z is set if we have a match. In all cases,
   we want to pop HL and DE )
     DE POPqq,           ( <-- lvl 2 )
     HL POPqq,           ( <-- lvl 1 )
-    JRZ, L4 FWR ( end, match? we're done! )
+    JRZ, L2 FWR ( end, match? we're done! )
     ( no match, go to prev and continue )
     HL PUSHqq,          ( --> lvl 1 )
     DE DECss,
@@ -236,7 +236,7 @@ L4 FSET L3 FSET ( loopend )
 L1 FSET ( fail )
     A XORr,
     A INCr,
-L4 FSET ( end )
+L2 FSET ( end )
     HL POPqq,
     BC POPqq,
     RET,
@@ -277,7 +277,7 @@ PC ORG @ 0x1e + ! ( chkPS )
     CNC RETcc,      ( INITIAL_SP >= SP? good )
     JR, L1 BWR ( abortUnderflow )
 
-L3 BSET ( chkRS )
+L2 BSET ( chkRS )
     IX PUSHqq, HL POPqq,
     DE RS_ADDR LDddnn,
     DE SUBHLss,
@@ -291,7 +291,7 @@ PC ORG @ 0x1b + ! ( next )
   it by 2 before jumping. )
 	( Before we continue: are stacks within bounds? )
     0x1d CALLnn, ( chkPS )
-    L3 @ CALLnn, ( chkRS )
+    L2 @ CALLnn, ( chkRS )
     DE RAMSTART 0x06 + LDdd(nn), ( RAMSTART+0x06 == IP )
     H D LDrr,
     L E LDrr,
