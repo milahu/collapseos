@@ -52,37 +52,52 @@
 : < CMP -1 = ;
 : > CMP 1 = ;
 
+( r c -- r f )
+( Parse digit c and accumulate into result r.
+  Flag f is 0 when c was a valid digit, 1 when c was WS,
+  -1 when c was an invalid digit. )
+: _pdacc
+    DUP 0x21 < IF DROP 1 EXIT THEN
+    ( parse char )
+    '0' -
+    ( if bad, return "r -1" )
+    DUP 0 < IF DROP -1 EXIT THEN   ( bad )
+    DUP 9 > IF DROP -1 EXIT THEN   ( bad )
+    ( good, add to running result )
+    SWAP 10 * +                    ( r*10+n )
+    0                              ( good )
+;
+
 : (parsed)      ( a -- n f )
     ( read first char outside of the loop. it *has* to be
       nonzero. )
-    DUP C@                    ( a c )
-    DUP NOT IF EXIT THEN      ( a 0 )
+    DUP C@                        ( a c )
     ( special case: do we have a negative? )
     DUP '-' = IF
         ( Oh, a negative, let's recurse and reverse )
         DROP 1 +                  ( a+1 )
-        (parsed)                     ( n f )
-        SWAP 0 SWAP               ( f 0 n )
+        (parsed)                  ( n f )
+        0 ROT                     ( f 0 n )
         - SWAP EXIT               ( 0-n f )
     THEN
-    ( running result, staring at zero )
+    ( running result from first char )
     0 SWAP                               ( a r c )
-    ( Loop over chars )
-    BEGIN
-    ( parse char )
-    '0' -
-    ( if bad, return "a 0" )
-    DUP 0 < IF 2DROP 0 EXIT THEN   ( bad )
-    DUP 9 > IF 2DROP 0 EXIT THEN   ( bad )
-    ( good, add to running result )
-    SWAP 10 * +                    ( a r*10+n )
-    SWAP 1 + SWAP                  ( a+1 r )
-    ( read next char )
-    OVER C@
-    DUP NOT UNTIL
-    ( we're done and it's a success. We have "a r c", we want
-      "r 1". )
-    DROP SWAP DROP 1
+    _pdacc                               ( a r f )
+    DUP IF
+        ( first char was not a valid digit )
+        2DROP 0 EXIT                     ( a 0 )
+    THEN
+    BEGIN                         ( a r 0 )
+        DROP SWAP 1 +             ( r a+1 )
+        DUP C@                    ( r a c )
+        ROT SWAP                  ( a r c )
+        _pdacc                    ( a r f )
+    DUP UNTIL
+    ( a r f -- f is 1 on success, -1 on error, normalize
+      to bool. )
+    1 =         ( a r f )
+    ( we want "r f" )
+    ROT DROP
 ;
 
 ( This is only the "early parser" in earlier stages. No need
