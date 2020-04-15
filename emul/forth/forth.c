@@ -118,7 +118,9 @@ int main(int argc, char *argv[])
         tcsetattr(0, TCSAFLUSH, &termInfo);
         emul_printdebug();
     }
-    fclose(blkfp);
+    if (blkfp != NULL) {
+        fclose(blkfp);
+    }
     fclose(fp);
     return retcode;
 }
