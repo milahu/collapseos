@@ -22,6 +22,8 @@ all: $(TARGETS)
 
 $(BLKPACK):
 	$(MAKE) -C ../tools
+
+.PHONY: $(STRIPFC) $(SLATEST) $(BIN2C)
 $(STRIPFC): $(BLKPACK)
 $(SLATEST): $(BLKPACK)
 $(BIN2C): $(BLKPACK)
