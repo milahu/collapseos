@@ -12,9 +12,7 @@
 
 : .               ( n -- )
     ( handle negative )
-    ( that "0 1 -" thing is because we don't parse negative
-      number correctly yet. )
-    DUP 0 < IF '-' EMIT 0 1 - * THEN
+    DUP <0 IF '-' EMIT -1 * THEN
     _
     BEGIN
     DUP '9' > IF DROP EXIT THEN ( stop indicator, we're done )

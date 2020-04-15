@@ -5,6 +5,6 @@ LIT    --         Write a LIT entry. You're expected to write
 LIT< x --         Read following word and write to HERE as a
                   string literal.
 LITS   a --       Write word at addr a as a atring literal.
-S=     a1 a2 -- f Compare strings a1 and a2, return true if equal
+S=     a1 a2 -- f Returns whether string a1 == a2.
 SCPY   a --       Copy string at addr a into HERE.
 SLEN   a -- n     Push length of str at a.
