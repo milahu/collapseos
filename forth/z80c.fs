@@ -14,6 +14,9 @@
   This unit expects the same conf as boot.fs.
 )
 
+CODE EXECUTE
+    0x33 JPnn,      ( 33 == execute )
+
 ( a b c -- b c a )
 CODE ROT
     HL POPqq,       ( C )

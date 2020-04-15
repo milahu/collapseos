@@ -31,13 +31,13 @@ RAMSTART 0x4e + JPnn, ( 28, RST 28 )
 0 JPnn,           ( 2b, doesWord )
 NOP, NOP,         ( 2e, unused )
 RAMSTART 0x4e + JPnn, ( RST 30 )
-NOP, NOP, NOP,    ( unused )
+0 JPnn,           ( 33, execute )
 NOP, NOP,         ( unused )
 RAMSTART 0x4e + JPnn, ( RST 38 )
 NOP,              ( unused )
 
 ( BOOT DICT
-  There are only 5 words in the boot dict, but these words'
+  There are only 3 words in the boot dict, but these words'
   offset need to be stable, so they're part of the "stable
   ABI"
 )
@@ -70,7 +70,7 @@ L2 BSET ( used in CBR )
 '(' A, '?' A, 'b' A, 'r' A, ')' A,
 PC L1 @ - A,, ( prev )
 5 A,
-L1 BSET ( CBR )
+H@ XCURRENT !        ( set current tip of dict )
     0x17 A,,         ( nativeWord )
     HL POPqq,
     chkPS,
@@ -83,22 +83,6 @@ L1 BSET ( CBR )
     HL INCss,
     RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
     JPNEXT,
-
-'E' A, 'X' A, 'E' A, 'C' A, 'U' A, 'T' A, 'E' A,
-PC L1 @ - A,, ( prev )
-7 A,
-H@ XCURRENT !        ( set current tip of dict )
-L2 BSET ( used frequently below )
-    0x17 A,,         ( nativeWord )
-    IY POPqq,        ( is a wordref )
-    chkPS,
-    L 0 IY+ LDrIXY,
-    H 1 IY+ LDrIXY,
-    ( HL points to code pointer )
-    IY INCss,
-    IY INCss,
-    ( IY points to PFA )
-    JP(HL),
 
 ( END OF STABLE ABI )
 
@@ -130,7 +114,7 @@ PC ORG @ 1 + ! ( main )
     HL L1 @ LDddnn,
     0x03 CALLnn,        ( 03 == find )
     DE PUSHqq,
-    L2 @ 2 + JPnn,
+    0x33 JPnn,          ( 33 == execute )
 
 PC ORG @ 4 + ! ( find )
 ( Find the entry corresponding to word name where (HL) points
@@ -238,7 +222,7 @@ L1 BSET ( abortUnderflow )
     DE RAMSTART 0x02 + LDdd(nn),   ( RAM+02 == CURRENT )
     0x03 CALLnn, ( find )
     DE PUSHqq,
-    L2 @ 2 + JPnn, ( EXECUTE, skip nativeWord )
+    0x33 JPnn,          ( 33 == execute )
 
 
 PC ORG @ 0x1e + ! ( chkPS )
@@ -282,7 +266,18 @@ PC ORG @ 0x1b + ! ( next )
     HL INCss,
     D (HL) LDrr,
     DE PUSHqq,
-    L2 @ 2 + JPnn, ( EXECUTE, skip nativeWord )
+    ( continue to execute )
+
+PC ORG @ 0x34 + ! ( execute )
+    IY POPqq,        ( is a wordref )
+    chkPS,
+    L 0 IY+ LDrIXY,
+    H 1 IY+ LDrIXY,
+    ( HL points to code pointer )
+    IY INCss,
+    IY INCss,
+    ( IY points to PFA )
+    JP(HL),
 
 ( WORD ROUTINES )
 
@@ -302,7 +297,7 @@ PC ORG @ 0x0f + ! ( compiledWord )
     L 0 IY+ LDrIXY,
     H 1 IY+ LDrIXY,
     HL PUSHqq,      ( arg for EXECUTE )
-    L2 @ 2 + JPnn, ( EXECUTE, skip nativeWord )
+    0x33 JPnn,      ( 33 == execute )
 
 PC ORG @ 0x0c + ! ( cellWord )
 ( Pushes the PFA directly )
