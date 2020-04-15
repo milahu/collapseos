@@ -15,6 +15,8 @@
 )
 
 CODE EXECUTE
+    DE POPqq,
+    chkPS,
     0x33 JPnn,      ( 33 == execute )
 
 ( a b c -- b c a )

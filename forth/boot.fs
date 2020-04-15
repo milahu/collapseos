@@ -20,7 +20,7 @@ NOP,              ( 0a, unused )
 0 JPnn,           ( 0e, compiledWord )
 0 JPnn,           ( 11, pushRS )
 0 JPnn,           ( 14, popRS )
-JP(IY), NOP,      ( 17, nativeWord )
+EXDEHL, JP(HL), NOP, ( 17, nativeWord )
 0 JPnn,           ( 1a, next )
 0 JPnn,           ( 1d, chkPS )
 NOP, NOP,         ( 20, numberWord )
@@ -153,7 +153,6 @@ PC ORG @ 1 + ! ( main )
     EXDEHL,
     HL L1 @ LDddnn,
     0x03 CALLnn,        ( 03 == find )
-    DE PUSHqq,
     0x33 JPnn,          ( 33 == execute )
 
 PC ORG @ 4 + ! ( find )
@@ -261,7 +260,6 @@ L1 BSET ( abortUnderflow )
     HL PC 7 - LDddnn,
     DE RAMSTART 0x02 + LDdd(nn),   ( RAM+02 == CURRENT )
     0x03 CALLnn, ( find )
-    DE PUSHqq,
     0x33 JPnn,          ( 33 == execute )
 
 
@@ -305,17 +303,17 @@ PC ORG @ 0x1b + ! ( next )
     E (HL) LDrr,
     HL INCss,
     D (HL) LDrr,
-    DE PUSHqq,
     ( continue to execute )
 
 PC ORG @ 0x34 + ! ( execute )
-    IY POPqq,        ( is a wordref )
-    chkPS,
-    L 0 IY+ LDrIXY,
-    H 0 LDrn,
+    ( DE points to wordref )
+    EXDEHL,
+    E (HL) LDrr,
+    D 0 LDrn,
+    EXDEHL,
     ( HL points to code pointer )
-    IY INCss,
-    ( IY points to PFA )
+    DE INCss,
+    ( DE points to PFA )
     JP(HL),
 
 PC ORG @ 0x0f + ! ( compiledWord )
@@ -326,19 +324,19 @@ PC ORG @ 0x0f + ! ( compiledWord )
   3. Execute the first atom of the list. )
     RAMSTART 0x06 + LDHL(nn), ( RAMSTART+0x06 == IP )
     0x11 CALLnn,     ( 11 == pushRS )
-    IY PUSHqq, HL POPqq,
+    EXDEHL,          ( HL points to PFA )
+    ( While we increase, dereference into DE for execute call
+      later. )
+    E (HL) LDrr,
     HL INCss,
+    D (HL) LDrr,
     HL INCss,
     RAMSTART 0x06 + LD(nn)HL, ( RAMSTART+0x06 == IP )
-	( IY still is our atom reference )
-    L 0 IY+ LDrIXY,
-    H 1 IY+ LDrIXY,
-    HL PUSHqq,      ( arg for EXECUTE )
     0x33 JPnn,      ( 33 == execute )
 
 PC ORG @ 0x0c + ! ( cellWord )
 ( Pushes PFA directly )
-    IY PUSHqq,
+    DE PUSHqq,
     JPNEXT,
 
 PC ORG @ 0x2c + ! ( doesWord )
@@ -349,8 +347,11 @@ PC ORG @ 0x2c + ! ( doesWord )
   linkfrom the PFA, and then continue as a regular
   compiledWord.
 )
-    IY PUSHqq, ( like a regular cell )
-    L 2 IY+ LDrIXY,
-    H 3 IY+ LDrIXY,
-    HL PUSHqq, IY POPqq,
+    DE PUSHqq, ( like a regular cell )
+    EXDEHL,
+    HL INCss,
+    HL INCss,
+    E (HL) LDrr,
+    HL INCss,
+    D (HL) LDrr,
     0x0e JPnn, ( 0e == compiledWord )
