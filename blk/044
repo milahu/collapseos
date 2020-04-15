@@ -1,3 +1,4 @@
 (cont.)
 UNTIL     f --         *I* Jump backwards to BEGIN if f is
                        false.
+EXIT!     --           Exit current INTERPRET loop.

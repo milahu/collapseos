@@ -149,3 +149,12 @@
     LIT< _sys (find) NOT IF ABORT THEN
     DUP HERE ! CURRENT !
 ;
+
+( Drop RSP until I-2 == INTERPRET. )
+: EXIT!
+    ['] INTERPRET       ( I )
+    BEGIN               ( I )
+    DUP                 ( I I )
+    R> DROP I 2 - @     ( I I a )
+    = UNTIL
+;
