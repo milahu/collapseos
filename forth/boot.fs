@@ -51,7 +51,7 @@ NOP,              ( unused )
 'E' A, 'X' A, 'I' A, 'T' A,
 0 A,,   ( prev )
 4 A,
-L1 BSET ( EXIT, 0x43 )
+H@ XCURRENT !        ( set current tip of dict, 0x43 )
     0x17 A,         ( nativeWord )
     0x14 CALLnn,    ( popRS )
     HL PUSHqq, IY POPqq, ( --> IP )
@@ -59,11 +59,7 @@ L1 BSET ( EXIT, 0x43 )
 
 NOP, NOP, NOP, NOP,  ( unused )
 
-'(' A, 'b' A, 'r' A, ')' A,
-PC L1 @ - A,, ( prev )
-4 A,
-L1 BSET ( BR )
-    0x17 A,         ( nativeWord )
+CODE (br)            ( 0x58 )
 L2 BSET ( used in CBR )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
@@ -72,11 +68,7 @@ L2 BSET ( used in CBR )
 
 NOP, NOP, NOP, NOP, ( unused )
 
-'(' A, '?' A, 'b' A, 'r' A, ')' A,
-PC L1 @ - A,, ( prev )
-5 A,
-H@ XCURRENT !        ( set current tip of dict )
-    0x17 A,          ( nativeWord )
+CODE (?br)           ( 0x70 )
     HL POPqq,
     chkPS,
     A H LDrr,
