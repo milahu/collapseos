@@ -158,6 +158,11 @@
 0x0b OP1qq DECss,
 0x09 OP1qq ADDHLss,
 
+: ADDIXss, 0xdd A, ADDHLss, ;
+: ADDIXIX, HL ADDIXss, ;
+: ADDIYss, 0xfd A, ADDHLss, ;
+: ADDIYIY, HL ADDIYss, ;
+
 : _1rr
     C@              ( rd rr op )
     ROT             ( rr op rd )

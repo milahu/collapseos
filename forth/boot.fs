@@ -65,16 +65,12 @@ PC L1 @ - A,, ( prev )
 L1 BSET ( BR )
     0x17 A,         ( nativeWord )
 L2 BSET ( used in CBR )
-    IY PUSHqq, HL POPqq, ( <-- IP )
-    E (HL) LDrr,
-    HL INCss,
-    D (HL) LDrr,
-    HL DECss,
-    DE ADDHLss,
-    HL PUSHqq, IY POPqq, ( --> IP )
+    E 0 IY+ LDrIXY,
+    D 1 IY+ LDrIXY,
+    DE ADDIYss,
     JPNEXT,
 
-NOP,  ( unused )
+NOP, NOP, NOP, NOP, ( unused )
 
 '(' A, '?' A, 'b' A, 'r' A, ')' A,
 PC L1 @ - A,, ( prev )
