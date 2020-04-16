@@ -169,7 +169,7 @@ same (`8d60`), the end offset depends on the situation.
 
 If you look at data between `99f6` and `9a3c`, you'll see that this data is not
 100% dictionary entry material. Some of it is buffer data allocated at
-initialization. To locate the end of a word, look for `0043`, the address for
+initialization. To locate the end of a word, look for `0042`, the address for
 `EXIT`. In my case, it's at `9a1a` and it's the end of the `INIT` word.
 
 Moreover, the `INIT` routine that is in there is not quite what we want,
