@@ -20,7 +20,7 @@
 ;
 
 : BLK@
-    DUP BLK> = IF DROP EXIT THEN
+    DUP BLK> @ = IF DROP EXIT THEN
     DUP BLK> ! BLK@* @ EXECUTE
 ;
 

@@ -5,5 +5,6 @@ VARIABLE ACC
     IF _LIST 0 THEN
     ACC !
 ;
-: B BLK> @ 1- DUP BLK> ! _LIST ;
-: N BLK> @ 1+ DUP BLK> ! _LIST ;
+: L BLK> @ _LIST ;
+: B BLK> @ 1- BLK> ! L ;
+: N BLK> @ 1+ BLK> ! L ;

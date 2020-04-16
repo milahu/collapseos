@@ -1,0 +1,2 @@
+T ( n -- ): select line n for editing.
+P xxx(return): put typed line on selected line.

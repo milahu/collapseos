@@ -1,0 +1,13 @@
+( Line numbers for the user are 1-based, but in code, they're
+  0-based. )
+VARIABLE EDPOS
+: _bpos 64 * BLK( + ;
+: T 1- DUP EDPOS ! _bpos (print) CRLF ;
+: P
+    EDPOS @ _bpos C<
+    64 0 DO ( bpos c )
+        DUP 0xd = IF DROP 0 THEN
+        2DUP SWAP I + C!
+        DUP IF DROP C< THEN
+    LOOP
+;
