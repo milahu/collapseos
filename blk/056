@@ -6,3 +6,11 @@ Logic
 CMP n1 n2 -- n Compare n1 and n2 and set n to -1, 0, or 1.
                n=0: a1=a2. n=1: a1>a2. n=-1: a1<a2.
 NOT f -- f     Push the logical opposite of f
+
+
+
+
+
+
+
+

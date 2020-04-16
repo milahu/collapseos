@@ -9,3 +9,8 @@ SWAP        a b -- b a
 2DUP        a b -- a b a b
 2OVER       a b c d -- a b c d a b
 2SWAP       a b c d -- c d a b
+
+
+
+
+

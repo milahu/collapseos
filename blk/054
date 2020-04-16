@@ -12,3 +12,5 @@ OR          a b -- c        a | b -> c
 XOR         a b -- c        a ^ b -> c
 
 Shortcuts: 1+ 2+ 1- 2-
+
+
