@@ -179,3 +179,6 @@
     R> DROP I 2- @     ( I I a )
     = UNTIL
 ;
+
+( a -- a+1 c )
+: C@+ DUP C@ SWAP 1+ SWAP ;

@@ -5,22 +5,21 @@
 
 : (print)
     BEGIN
-    DUP C@   ( a c )
+    C@+      ( a+1 c )
     ( exit if null )
     DUP NOT IF 2DROP EXIT THEN
     EMIT     ( a )
-    1 +      ( a+1 )
     AGAIN
 ;
 
 : ."
     34 ,        ( 34 == litWord )
     BEGIN
-        C< DUP          ( c c )
+        C<
         ( 34 is ASCII for " )
-        DUP 34 = IF DROP DROP 0 0 THEN
-        C,
-    0 = UNTIL
+        DUP 34 = IF DROP 0 THEN
+        DUP C,
+    NOT UNTIL
     COMPILE (print)
 ; IMMEDIATE
 

@@ -5,6 +5,7 @@ Memory
 ?        a --            Print value of addr a
 +!       n a --          Increase value of addr a by n
 C@       a -- c          Set c to byte at address a
+C@+      a -- a+1 c      Fetch c from a and inc a.
 C!       c a --          Store byte c in address a
 CURRENT  -- a            Set a to wordref of last added entry.
 CURRENT* -- a            A pointer to active CURRENT*. Useful

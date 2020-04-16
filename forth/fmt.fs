@@ -54,11 +54,10 @@
     LOOP
     DROP
     8 0 DO
-        DUP C@
+        C@+
         DUP <>{ 0x20 &< 0x7e |> <>}
         IF DROP '.' THEN
         EMIT
-        1+
     LOOP
     CRLF
 ;

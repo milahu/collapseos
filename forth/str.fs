@@ -1,7 +1,5 @@
 : SLEN      ( a -- n )
     DUP     ( astart aend )
-    BEGIN
-    DUP C@ 0 = IF -^ EXIT THEN
-    1+
-    AGAIN
+    BEGIN C@+ NOT UNTIL
+    1- -^
 ;
