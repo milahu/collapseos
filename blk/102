@@ -1,2 +1,14 @@
-: foo ." Hello world! " 42 . ;
-foo
+103 LOAD
+VARIABLE _K
+
+: PGM
+    100 _LIST
+    BEGIN
+        KEY
+        DUP 'Q' = IF DROP EXIT THEN
+        DUP 58 ( '9'+1 ) < IF _NUM
+        ELSE
+            _K ! _K (find) IF EXECUTE THEN
+        THEN
+    AGAIN
+; PGM

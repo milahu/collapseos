@@ -7,4 +7,4 @@ USAGE: When loaded, the Forth interpreter is replaced by the
 explorer interpreter. Typing "Q" quits the program.
 
 Typing a decimal number followed by space or return lists the
-contents of that block.
+contents of that block. B for previous block, N for next.
