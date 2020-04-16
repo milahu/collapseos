@@ -29,7 +29,7 @@
 : LIST
     BLK@
     16 0 DO
-        I 1 + .2 SPC
+        I 1+ .2 SPC
         64 I * BLK( + (print)
         CRLF
     LOOP

@@ -14,7 +14,7 @@
 ( points to INBUF )
 : IN( 2 RDLNMEM+ ;
 ( points to INBUF's end )
-: IN) INBUFSZ 2 + RDLNMEM+ ;
+: IN) INBUFSZ 2+ RDLNMEM+ ;
 
 ( flush input buffer )
 ( set IN> to IN( and set IN> @ to null )
@@ -25,7 +25,7 @@
 : (inbs)
     ( already at IN( ? )
     IN> @ IN( = IF EXIT THEN
-    IN> @ 1 - IN> !
+    IN> @ 1- IN> !
     SPC BS
 ;
 

@@ -2,6 +2,6 @@
     DUP     ( astart aend )
     BEGIN
     DUP C@ 0 = IF -^ EXIT THEN
-    1 +
+    1+
     AGAIN
 ;

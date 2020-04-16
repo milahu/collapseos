@@ -75,7 +75,7 @@
     ( special case: do we have a negative? )
     DUP '-' = IF
         ( Oh, a negative, let's recurse and reverse )
-        DROP 1 +                  ( a+1 )
+        DROP 1+                   ( a+1 )
         (parsed)                  ( n f )
         0 ROT                     ( f 0 n )
         - SWAP EXIT               ( 0-n f )
@@ -88,7 +88,7 @@
         2DROP 0 EXIT                     ( a 0 )
     THEN
     BEGIN                         ( a r 0 )
-        DROP SWAP 1 +             ( r a+1 )
+        DROP SWAP 1+              ( r a+1 )
         DUP C@                    ( r a c )
         ROT SWAP                  ( a r c )
         _pdacc                    ( a r f )
@@ -113,18 +113,18 @@
 
 : ,
     HERE @ !
-    HERE @ 2 + HERE !
+    HERE @ 2+ HERE !
 ;
 
 : C,
     HERE @ C!
-    HERE @ 1 + HERE !
+    HERE @ 1+ HERE !
 ;
 
 ( The NOT is to normalize the negative/positive numbers to 1
   or 0. Hadn't we wanted to normalize, we'd have written:
   32 CMP 1 - )
-: WS? 33 CMP 1 + NOT ;
+: WS? 33 CMP 1+ NOT ;
 
 : TOWORD
     BEGIN
@@ -141,8 +141,8 @@
     BEGIN
         ( We take advantage of the fact that char MSB is
           always zero to pre-write our null-termination )
-        OVER !            ( a )
-        1 +                  ( a+1 )
+        OVER !               ( a )
+        1+                   ( a+1 )
         C<                   ( a c )
         DUP WS?
     UNTIL
@@ -157,7 +157,7 @@
         DUP C@    ( a c )
         DUP C,    ( a c )
         NOT IF DROP EXIT THEN
-        1 +          ( a+1 )
+        1+        ( a+1 )
     AGAIN
 ;
 
@@ -165,8 +165,8 @@
     HERE @       ( w h )
     SWAP SCPY    ( h )
     ( Adjust HERE -1 because SCPY copies the null )
-    HERE @ 1 - ( h h' )
-    DUP HERE ! ( h h' )
+    HERE @ 1-    ( h h' )
+    DUP HERE !   ( h h' )
     SWAP -       ( sz )
     ( write prev value )
     HERE @ CURRENT @ - ,
@@ -220,7 +220,7 @@
     32 , ,
 ;
 
-: IMMED? 1 - C@ 0x80 AND ;
+: IMMED? 1- C@ 0x80 AND ;
 
 ( ';' can't have its name right away because, when created, it
   is not an IMMEDIATE yet and will not be treated properly by

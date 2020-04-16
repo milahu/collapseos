@@ -1,6 +1,6 @@
 : H@ HERE @ ;
 : IMMEDIATE
-    CURRENT @ 1 -
+    CURRENT @ 1-
     DUP C@ 128 OR SWAP C!
 ;
 : [ INTERPRET 1 FLAGS ! ; IMMEDIATE
@@ -52,7 +52,7 @@
     2 ALLOT
     DUP H@ -^ SWAP  ( a-H a )
     !
-    H@ 2 -          ( push a. -2 for allot offset )
+    H@ 2-          ( push a. -2 for allot offset )
 ; IMMEDIATE
 
 : CREATE
@@ -97,7 +97,7 @@
 ( Increase loop counter and returns whether we should loop. )
 : _
     R>          ( IP, keep for later )
-    R> 1 +      ( ip i+1 )
+    R> 1+       ( ip i+1 )
     DUP >R      ( ip i )
     I' =        ( ip f )
     SWAP >R     ( f )
@@ -123,7 +123,7 @@
 ;
 
 : DELW
-    1 - 0 SWAP C!
+    1- 0 SWAP C!
 ;
 
 : PREV
@@ -132,7 +132,7 @@
 ;
 
 : WHLEN
-    1 - C@      ( name len field )
+    1- C@      ( name len field )
     127 AND     ( 0x7f. remove IMMEDIATE flag )
     3 +         ( fixed header len )
 ;
@@ -155,6 +155,6 @@
     ['] INTERPRET       ( I )
     BEGIN               ( I )
     DUP                 ( I I )
-    R> DROP I 2 - @     ( I I a )
+    R> DROP I 2- @     ( I I a )
     = UNTIL
 ;

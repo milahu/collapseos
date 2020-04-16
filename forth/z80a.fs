@@ -371,7 +371,7 @@
 ( Place BEGIN, where you want to jump back and AGAIN after
   a relative jump operator. Just like BSET and BWR. )
 : BEGIN, PC ;
-: AGAIN, PC - 1 - A, ;
+: AGAIN, PC - 1- A, ;
 
 : BSET PC SWAP ! ;
 : BWR @ AGAIN, ;
@@ -383,11 +383,10 @@
 : IFNC, JRC, FJR, ;
 : THEN,
     DUP PC          ( l l pc )
-    -^ 1 -          ( l off )
+    -^ 1-           ( l off )
     ( warning: l is a PC offset, not a mem addr! )
     SWAP ORG @ +    ( off addr )
     C!
 ;
 : FWR BSET 0 A, ;
 : FSET @ THEN, ;
-

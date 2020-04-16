@@ -30,13 +30,13 @@
     DUP <>{ 0x70 &= 0x58 |= 0x20 |= 0x24 |= <>}
     IF DROP 4 + EXIT THEN
     ( regular word )
-    0x22 = NOT IF 2 + EXIT THEN
+    0x22 = NOT IF 2+ EXIT THEN
     ( it's a lit, skip to null char )
     ( a )
-    1 + ( we skip by 2, but the loop below is pre-inc... )
-    BEGIN 1 + DUP C@ NOT UNTIL
+    1+ ( we skip by 2, but the loop below is pre-inc... )
+    BEGIN 1+ DUP C@ NOT UNTIL
     ( skip null char )
-    1 +
+    1+
 ;
 
 ( Get word addr, starting at name's address )
@@ -57,7 +57,7 @@
           our number will be treated like a regular wordref.
         )
         DROP
-        2 +         ( o ol a+2 )
+        2+          ( o ol a+2 )
         ROT ROT 2DROP ( a )
         EXIT
     THEN
@@ -93,9 +93,9 @@
     ( doesWord is processed exactly like a compiledWord, but
       starts 2 bytes further. )
     ( ol o a2 a1 n )
-    0x2b = IF 2 + THEN
+    0x2b = IF 2+ THEN
     ( ol o a2 a1 )
-    1 +                         ( ol o a2 a1+1 )
+    1+                          ( ol o a2 a1+1 )
     BEGIN                       ( ol o a2 a1 )
         2OVER                   ( ol o a2 a1 ol o )
         SWAP                    ( ol o a2 a1 o ol )
@@ -136,11 +136,11 @@
       prev word is a "hook word", that is, an empty word. )
     ( H@ == target )
     DUP H@ !
-    DUP 1 - C@ 0x7f AND         ( t namelen )
+    DUP 1- C@ 0x7f AND          ( t namelen )
     SWAP 3 - @                  ( namelen po )
     -^                          ( o )
     ( H@+2 == offset )
-    H@ 2 + !                    ( )
+    H@ 2+ !                     ( )
     ( We have our offset, now let's copy our memory chunk )
     H@ @ DUP WHLEN -            ( src )
     DUP H@ -^                   ( src u )
@@ -162,7 +162,7 @@
         DUP ROT                 ( wr wr we )
         ( call RLWORD. we need a sig: ol o wr we )
         H@ @                    ( wr wr we ol )
-        H@ 2 + @                ( wr wr we ol o )
+        H@ 2+ @                 ( wr wr we ol o )
         2SWAP                   ( wr ol o wr we )
         RLWORD                  ( wr )
         ( wr becomes wr's prev and we is wr-header )

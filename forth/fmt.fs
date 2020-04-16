@@ -50,7 +50,7 @@
         256 /MOD SWAP
         .x .x
         SPC
-        2 +
+        2+
     LOOP
     DROP
     8 0 DO
@@ -58,7 +58,7 @@
         DUP <>{ 0x20 &< 0x7e |> <>}
         IF DROP '.' THEN
         EMIT
-        1 +
+        1+
     LOOP
     CRLF
 ;

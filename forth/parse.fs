@@ -5,9 +5,9 @@
 : (parsec)          ( a -- n f )
     ( apostrophe is ASCII 39 )
     DUP C@ 39 = NOT IF 0 EXIT THEN      ( a 0 )
-    DUP 2 + C@ 39 = NOT IF 0 EXIT THEN  ( a 0 )
+    DUP 2+ C@ 39 = NOT IF 0 EXIT THEN   ( a 0 )
     ( surrounded by apos, good, return )
-    1 + C@ 1                            ( n 1 )
+    1+ C@ 1                             ( n 1 )
 ;
 
 ( returns negative value on error )
@@ -28,7 +28,7 @@
     ( '0': ASCII 0x30 'x': 0x78 0x7830: 30768 )
     DUP @ 30768 = NOT IF 0 EXIT THEN    ( a 0 )
     ( We have "0x" prefix )
-    2 +
+    2+
     ( validate slen )
     DUP SLEN                            ( a l )
     DUP 0 = IF DROP 0 EXIT THEN         ( a 0 )
@@ -40,7 +40,7 @@
     hexdig                              ( a r n )
     DUP 0 < IF DROP DROP 1 EXIT THEN    ( a 0 )
     SWAP 16 * +                         ( a r*16+n )
-    SWAP 1 + SWAP                       ( a+1 r )
+    SWAP 1+ SWAP                        ( a+1 r )
     AGAIN
 ;
 
@@ -58,7 +58,7 @@
     ( '0': ASCII 0x30 'b': 0x62 0x6230: 25136 )
     DUP @ 25136 = NOT IF 0 EXIT THEN    ( a 0 )
     ( We have "0b" prefix )
-    2 +
+    2+
     ( validate slen )
     DUP SLEN                            ( a l )
     DUP 0 = IF DROP 0 EXIT THEN         ( a 0 )
@@ -70,7 +70,7 @@
     bindig                              ( a r n )
     DUP 0 < IF DROP DROP 1 EXIT THEN    ( a 0 )
     SWAP 2 * +                          ( a r*2+n )
-    SWAP 1 + SWAP                       ( a+1 r )
+    SWAP 1+ SWAP                        ( a+1 r )
     AGAIN
 ;
 

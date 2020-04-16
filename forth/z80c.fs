@@ -381,3 +381,48 @@ CODE (im1)
     IM1,
     EI,
 ;CODE
+
+CODE 0
+    HL 0 LDddnn,
+    HL PUSHqq,
+;CODE
+
+CODE 1
+    HL 1 LDddnn,
+    HL PUSHqq,
+;CODE
+
+CODE -1
+    HL -1 LDddnn,
+    HL PUSHqq,
+;CODE
+
+CODE 1+
+    HL POPqq,
+    chkPS,
+    HL INCss,
+    HL PUSHqq,
+;CODE
+
+CODE 1-
+    HL POPqq,
+    chkPS,
+    HL DECss,
+    HL PUSHqq,
+;CODE
+
+CODE 2+
+    HL POPqq,
+    chkPS,
+    HL INCss,
+    HL INCss,
+    HL PUSHqq,
+;CODE
+
+CODE 2-
+    HL POPqq,
+    chkPS,
+    HL DECss,
+    HL DECss,
+    HL PUSHqq,
+;CODE
