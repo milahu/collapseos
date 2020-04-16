@@ -27,7 +27,7 @@
 : ASKIP
     DUP @       ( a n )
     ( ?br or br or NUMBER )
-    DUP <>{ 0x70 &= 0x58 |= 0x20 |= 0x24 |= <>}
+    DUP <>{ 0x67 &= 0x53 |= 0x20 |= 0x24 |= <>}
     IF DROP 4 + EXIT THEN
     ( regular word )
     0x22 = NOT IF 2+ EXIT THEN
@@ -155,9 +155,9 @@
       as variable space. )
     4 +                         ( u+4 )
     DUP H@ +                    ( u we )
-    DUP .X LF
+    DUP .X CRLF
     SWAP CURRENT @ +            ( we wr )
-    DUP .X LF
+    DUP .X CRLF
     BEGIN                       ( we wr )
         DUP ROT                 ( wr wr we )
         ( call RLWORD. we need a sig: ol o wr we )
@@ -174,7 +174,7 @@
         ( Are we finished? We're finished if wr-4 <= H@ )
         DUP 4 - H@ <=
     UNTIL
-    H@ 4 + .X LF
+    H@ 4 + .X CRLF
 ;
 
 ( Relink a regular Forth full interpreter. )
