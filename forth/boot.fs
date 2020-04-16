@@ -41,7 +41,6 @@ RAMSTART 0x4e + JPnn, ( RST 30 )
 0 JPnn,           ( 33, execute )
 NOP, NOP,         ( unused )
 RAMSTART 0x4e + JPnn, ( RST 38 )
-NOP,              ( unused )
 
 ( BOOT DICT
   There are only 3 words in the boot dict, but these words'
@@ -51,24 +50,20 @@ NOP,              ( unused )
 'E' A, 'X' A, 'I' A, 'T' A,
 0 A,,   ( prev )
 4 A,
-H@ XCURRENT !        ( set current tip of dict, 0x43 )
+H@ XCURRENT !        ( set current tip of dict, 0x42 )
     0x17 A,         ( nativeWord )
     0x14 CALLnn,    ( popRS )
     HL PUSHqq, IY POPqq, ( --> IP )
     JPNEXT,
 
-NOP, NOP, NOP, NOP,  ( unused )
-
-CODE (br)            ( 0x58 )
+CODE (br)            ( 0x53 )
 L2 BSET ( used in CBR )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
     DE ADDIYss,
     JPNEXT,
 
-NOP, NOP, NOP, NOP, ( unused )
-
-CODE (?br)           ( 0x70 )
+CODE (?br)           ( 0x67 )
     HL POPqq,
     chkPS,
     A H LDrr,
