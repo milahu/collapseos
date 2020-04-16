@@ -1,16 +1,15 @@
 (cont.)
-ABORT" x" --           *I* Compiles a ." followed by a ABORT.
-AGAIN     I:a --       *I* Jump backwards to preceeding BEGIN.
-BEGIN     -- I:a       *I* Marker for backward branching with
-                       AGAIN.
-ELSE      I:a --       *I* Compiles a (fbr) and set branching
-                       cell at a.
-EXECUTE   a --         Execute wordref at addr a
-IF        -- I:a       *I* Compiles a (fbr?) and pushes its
-                       cell's addr
-INTERPRET --           Get a line from stdin, compile it in tmp
-                       memory, then execute the compiled
-                       contents.
-QUIT      R:drop --    Return to interpreter prompt immediately
-RECURSE   R:I -- R:I-2 Run the current word again.
-THEN      I:a --       *I* Set branching cell at a.     (cont.)
+(br)      --   Branches by the number specified in the 2
+               following bytes. Can be negative.
+(?br)     f -- Branch if f is false.
+(         --   *I* Comment. Ignore input until ")" is read.
+[         --   Begin interpretative mode. In a definition,
+               execute words instead of compiling them.
+]         --   End interpretative mode.
+ABORT     --   Resets PS and RS and returns to interpreter.
+ABORT" x" --   *I* Compiles a ." followed by a ABORT.
+EXECUTE   a -- Execute wordref at addr a
+INTERPRET --   Get a line from stdin, compile it in tmp memory,
+               then execute the compiled contents.
+QUIT      --   Return to interpreter prompt immediately
+EXIT!     --   Exit current INTERPRET loop.

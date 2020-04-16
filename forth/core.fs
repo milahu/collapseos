@@ -55,6 +55,27 @@
     H@ 2-          ( push a. -2 for allot offset )
 ; IMMEDIATE
 
+( During a CASE, the stack grows by 1 at each ENDOF so that
+  we can fill all those ENDOF branching addrs. So that we
+  know when to stop, we put a 0 on PSP. That's our stopgap. )
+: CASE 0 ; IMMEDIATE
+: OF
+    COMPILE OVER COMPILE =
+    [COMPILE] IF
+; IMMEDIATE
+: ENDOF [COMPILE] ELSE ; IMMEDIATE
+
+( At this point, we have something like "0 e1 e2 e3 val". We
+  want top drop val, and then call THEN as long as we don't
+  hit 0. )
+: ENDCASE
+    BEGIN
+        DUP NOT IF DROP EXIT THEN
+        [COMPILE] THEN
+    AGAIN
+    COMPILE DROP
+; IMMEDIATE
+
 : CREATE
     (entry)            ( empty header with name )
     11                 ( 11 == cellWord )
