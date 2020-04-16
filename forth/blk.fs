@@ -19,10 +19,14 @@
     -1 BLK> !
 ;
 
+( n -- )
 : BLK@
     DUP BLK> @ = IF DROP EXIT THEN
     DUP BLK> ! BLK@* @ EXECUTE
 ;
+
+( -- )
+: BLK! BLK> @ BLK!* @ EXECUTE ;
 
 : .2 DUP 10 < IF SPC THEN . ;
 

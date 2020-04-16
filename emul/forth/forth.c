@@ -12,8 +12,9 @@
 // failing, send a non-zero value to RET_PORT to indicate failure
 #define RET_PORT 0x01
 // Port for block reads. Write 2 bytes, MSB first, on that port and then
-// read 1024 bytes from the same port.
+// read 1024 bytes from the DATA port.
 #define BLK_PORT 0x03
+#define BLKDATA_PORT 0x04
 
 static int running;
 static FILE *fp;
@@ -44,7 +45,16 @@ static void iowr_ret(uint8_t val)
     retcode = val;
 }
 
-static uint8_t iord_blk()
+static void iowr_blk(uint8_t val)
+{
+    blkid <<= 8;
+    blkid |= val;
+    if (blkfp != NULL) {
+        fseek(blkfp, blkid*1024, SEEK_SET);
+    }
+}
+
+static uint8_t iord_blkdata()
 {
     uint8_t res = 0;
     if (blkfp != NULL) {
@@ -56,12 +66,10 @@ static uint8_t iord_blk()
     return res;
 }
 
-static void iowr_blk(uint8_t val)
+static void iowr_blkdata(uint8_t val)
 {
-    blkid <<= 8;
-    blkid |= val;
     if (blkfp != NULL) {
-        fseek(blkfp, blkid*1024, SEEK_SET);
+        putc(val, blkfp);
     }
 }
 
@@ -99,8 +107,9 @@ int main(int argc, char *argv[])
     m->iord[STDIO_PORT] = iord_stdio;
     m->iowr[STDIO_PORT] = iowr_stdio;
     m->iowr[RET_PORT] = iowr_ret;
-    m->iord[BLK_PORT] = iord_blk;
     m->iowr[BLK_PORT] = iowr_blk;
+    m->iord[BLKDATA_PORT] = iord_blkdata;
+    m->iowr[BLKDATA_PORT] = iowr_blkdata;
     // initialize memory
     for (int i=0; i<sizeof(KERNEL); i++) {
         m->mem[i] = KERNEL[i];
