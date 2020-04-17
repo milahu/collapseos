@@ -1,5 +1,6 @@
 T ( n -- ): select line n for editing.
-P xxx(return): put typed line on selected line.
+P xxx: put typed line on selected line.
+U xxx: insert typed line on selected line.
 
 
 
