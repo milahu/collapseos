@@ -68,8 +68,8 @@ static void iowr_sdc_cslow(uint8_t val)
 
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: ./classic /path/to/rom\n");
+    if (argc < 2) {
+        fprintf(stderr, "Usage: ./classic /path/to/rom [sdcard.img]\n");
         return 1;
     }
     FILE *fp = fopen(argv[1], "r");
@@ -107,6 +107,10 @@ int main(int argc, char *argv[])
 
     acia_init(&acia);
     sdc_init(&sdc);
+    if (argc == 3) {
+        fprintf(stderr, "Setting up SD card image\n");
+        sdc.fp = fopen(argv[2], "r+");
+    }
     m->iord[ACIA_CTL_PORT] = iord_acia_ctl;
     m->iord[ACIA_DATA_PORT] = iord_acia_data;
     m->iowr[ACIA_CTL_PORT] = iowr_acia_ctl;
@@ -151,6 +155,9 @@ int main(int argc, char *argv[])
         printf("Done!\n");
         tcsetattr(0, TCSADRAIN, &saved_term);
         emul_printdebug();
+    }
+    if (sdc.fp) {
+        fclose(sdc.fp);
     }
     return 0;
 }

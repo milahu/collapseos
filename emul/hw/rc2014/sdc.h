@@ -19,6 +19,12 @@ typedef struct {
     // One byte response. When all other response buffers are empty, return
     // this.
     uint8_t resp;
+    // File used for contents read/write
+    FILE *fp;
+    // number of bytes read into the current CMD17. -1 means no CMD17 active.
+    int cmd17bytes;
+    // running crc16 during read and write operations.
+    uint16_t crc16;
 } SDC;
 
 void sdc_init(SDC *sdc);
