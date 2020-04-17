@@ -133,6 +133,8 @@
     COMPILE R> COMPILE DROP COMPILE R> COMPILE DROP
 ; IMMEDIATE
 
+: LEAVE R> R> DROP I 1- >R >R ;
+
 ( a1 a2 u -- )
 : MOVE
     ( u ) 0 DO
