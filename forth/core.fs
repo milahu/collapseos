@@ -178,6 +178,7 @@
     DUP                 ( I I )
     R> DROP I 2- @     ( I I a )
     = UNTIL
+    DROP
 ;
 
 ( a -- a+1 c )

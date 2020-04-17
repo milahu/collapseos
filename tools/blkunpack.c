@@ -26,7 +26,6 @@ int main(int argc, char *argv[])
         }
         if (c) {
             // not an empty block
-            printf("%s\n", fullpath);
             FILE *fp = fopen(fullpath, "w");
             for (int i=0; i<16; i++) {
                 int len = strlen(&buf[i*64]);

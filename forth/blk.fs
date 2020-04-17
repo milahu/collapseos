@@ -7,26 +7,35 @@
 : BLK!* 2 BLKMEM+ ;
 ( Current blk pointer in ( )
 : BLK> 4 BLKMEM+ ;
-: BLK( 6 BLKMEM+ ;
+( Whether buffer is dirty )
+: BLKDTY 6 BLKMEM+ ;
+: BLK( 8 BLKMEM+ ;
 
 : BLK$
     H@ 0x57 RAM+ !
-    ( 1024 for the block, 6 for variables )
-    1030 ALLOT
+    ( 1024 for the block, 8 for variables )
+    1032 ALLOT
     ( LOAD detects end of block with ASCII EOT. This is why
       we write it there. EOT == 0x04 )
     4 C,
+    0 BLKDTY !
     -1 BLK> !
+;
+
+( -- )
+: BLK!
+    BLK> @ BLK!* @ EXECUTE
+    0 BLKDTY !
 ;
 
 ( n -- )
 : BLK@
     DUP BLK> @ = IF DROP EXIT THEN
+    BLKDTY @ IF BLK! THEN
     DUP BLK> ! BLK@* @ EXECUTE
 ;
 
-( -- )
-: BLK! BLK> @ BLK!* @ EXECUTE ;
+: BLK!! 1 BLKDTY ! ;
 
 : .2 DUP 10 < IF SPC THEN . ;
 
@@ -42,7 +51,10 @@
 : _
     (boot<)
     DUP 4 = IF
-        DROP
+        ( We drop our char, but also "a" from WORD: it won't
+          have the opportunity to balance PSP because we're
+          EXIT!ing. )
+        2DROP
         ( We're finished interpreting )
         EXIT!
     THEN

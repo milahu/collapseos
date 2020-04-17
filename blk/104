@@ -10,7 +10,7 @@ VARIABLE EDPOS
         2DUP SWAP I + C!
         DUP IF DROP C< THEN
     LOOP
+    2DROP
+    BLK!!
 ;
-
-
 
