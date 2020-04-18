@@ -20,6 +20,7 @@ void sdc_init(SDC *sdc)
     sdc->resp = 0xff;
     sdc->fp = NULL;
     sdc->cmd17bytes = -1;
+    sdc->cmd24bytes = -2;
 }
 
 void sdc_cslow(SDC *sdc)
@@ -62,6 +63,47 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
             sdc->sendidx = 3;
             sdc->cmd17bytes = -1;
         }
+        return;
+    }
+    if (sdc->cmd24bytes == -1) {
+        if (val == 0xff) {
+            // it's ok to receive idle bytes before the data token.
+            return;
+        }
+        if (val == 0xfe) {
+            // data token, good
+            sdc->cmd24bytes = 0;
+        } else {
+            // something is wrong, cancel cmd24
+            sdc->cmd24bytes = -2;
+        }
+        return;
+    }
+    if (sdc->cmd24bytes >= 0) {
+        if (sdc->cmd24bytes < 512) {
+            if (sdc->fp) {
+                putc(val, sdc->fp);
+            }
+            sdc->crc16 = crc16(sdc->crc16, val);
+        } else if (sdc->cmd24bytes == 512) {
+            // CRC MSB
+            if (val == (sdc->crc16>>8)) {
+                fprintf(stderr, "Good CRC16 MSB\n");
+            } else {
+                fprintf(stderr, "Bad CRC16 MSB\n");
+            }
+        } else {
+            if (val == (sdc->crc16&0xff)) {
+                fprintf(stderr, "Good CRC16 LSB\n");
+            } else {
+                fprintf(stderr, "Bad CRC16 LSB\n");
+            }
+            // valid response for CMD24
+            sdc->sendbuf[4] = 0x05;
+            sdc->sendidx = 4;
+            sdc->cmd24bytes = -3;
+        }
+        sdc->cmd24bytes++;
         return;
     }
     if ((sdc->recvidx == 0) && ((val > 0x7f) || (val < 0x40))) {
@@ -136,6 +178,17 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
         sdc->sendbuf[4] = 0xfe;
         sdc->sendidx = 3;
         sdc->cmd17bytes = 0;
+        sdc->crc16 = 0;
+        return;
+    }
+    if (cmd == 24) {
+        fprintf(stderr, "cmd24\n");
+        if (sdc->fp) {
+            fseek(sdc->fp, arg2*512, SEEK_SET);
+        }
+        sdc->sendbuf[4] = 0x00;
+        sdc->sendidx = 4;
+        sdc->cmd24bytes = -1;
         sdc->crc16 = 0;
         return;
     }

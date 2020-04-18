@@ -23,6 +23,9 @@ typedef struct {
     FILE *fp;
     // number of bytes read into the current CMD17. -1 means no CMD17 active.
     int cmd17bytes;
+    // number of bytes received for the current CMD24. -2 means no CMD24 active.
+    // -1 means we're still waiting for the data token.
+    int cmd24bytes;
     // running crc16 during read and write operations.
     uint16_t crc16;
 } SDC;
