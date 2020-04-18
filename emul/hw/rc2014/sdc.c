@@ -122,6 +122,7 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
     uint8_t cmd = b[0] & 0x3f;
     uint16_t arg1 = (b[1] << 8) | b[2];
     uint16_t arg2 = (b[3] << 8) | b[4];
+    // printf("cmd %02x %04x %04x\n", cmd, arg1, arg2);
     if (sdc->initstat == 8) {
         // At this stage, we're expecting CMD0
         if (cmd == 0) {
