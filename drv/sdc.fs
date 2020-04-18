@@ -156,10 +156,7 @@
     0
 ;
 
-: _err
-    _desel
-    ABORT" SDC error"
-;
+: _err _desel ABORT" SDerr" ;
 
 ( dstaddr blkno -- )
 : _sdc@
@@ -193,4 +190,37 @@
     _sdc@
     1+ BLK( 512 + SWAP
     _sdc@
+;
+
+( srcaddr blkno -- )
+: _sdc!
+    _sel
+    0x58    ( CMD24 )
+    0 ROT   ( a cmd 0 blkno )
+    _cmd
+    IF _err THEN
+    _idle DROP
+    0xfe _sdcSR DROP
+    0 SWAP           ( crc a )
+    512 0 DO         ( crc a )
+        C@+          ( crc a+1 n )
+        ROT OVER     ( a n crc n )
+        _crc16       ( a n crc )
+        SWAP         ( a crc n )
+        _sdcSR DROP  ( a crc )
+        SWAP         ( crc a )
+    LOOP
+    DROP             ( crc )
+    256 /MOD         ( lsb msb )
+    _sdcSR DROP      ( lsb )
+    _sdcSR DROP
+    _wait DROP
+    _desel
+;
+
+: SDC!
+    2 * DUP BLK( SWAP    ( b a b )
+    _sdc!
+    1+ BLK( 512 + SWAP
+    _sdc!
 ;

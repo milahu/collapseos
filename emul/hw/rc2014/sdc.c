@@ -183,7 +183,6 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
         return;
     }
     if (cmd == 24) {
-        fprintf(stderr, "cmd24\n");
         if (sdc->fp) {
             fseek(sdc->fp, arg2*512, SEEK_SET);
         }
