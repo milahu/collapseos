@@ -50,6 +50,18 @@
     LOOP
 ;
 
+( c n -- c )
+( Computes n into crc c with polynomial 0x1021 )
+: _crc16
+    SWAP DUP 256 /    ( n c c>>8 )
+    ROT XOR           ( c x )
+    DUP 16 / XOR      ( c x^x>>4 )
+    SWAP 256 *        ( x c<<8 )
+    OVER 4096 * XOR   ( x c^x<<12 )
+    OVER 32 * XOR     ( x c^x<<5 )
+    XOR               ( c )
+;
+
 ( send-and-crc7 )
 ( n c -- c )
 : _s+crc SWAP DUP _sdcSR DROP _crc7 ;
@@ -100,7 +112,7 @@
 ( Initialize a SD card. This should be called at least 1ms
   after the powering up of the card. r is result.
   Zero means success, non-zero means error. )
-: SDCINIT
+: SDC$
     ( Wake the SD card up. After power up, a SD card has to
       receive at least 74 dummy clocks with CS and DI high. We
       send 80. )
@@ -142,4 +154,31 @@
     NOT UNTIL
     ( Out of idle mode! Success! )
     0
+;
+
+( dstaddr blkno -- f )
+: SDC@
+    _sel
+    0x51    ( CMD17 )
+    0 ROT   ( a cmd 0 blkno )
+    _cmd
+    IF _desel 0 EXIT THEN
+    _wait
+    0xfe = NOT IF _desel 0 EXIT THEN
+    0 SWAP           ( crc a )
+    512 0 DO         ( crc a )
+        DUP          ( crc a a )
+        _idle        ( crc a a n )
+        DUP ROT      ( crc a n n a )
+        C!           ( crc a n )
+        ROT SWAP     ( a crc n )
+        _crc16       ( a crc )
+        SWAP 1+      ( crc a+1 )
+    LOOP
+    DROP             ( crc1 )
+    _idle 256 *
+    _idle +          ( crc2 )
+    _wait DROP
+    _desel
+    =   ( success if crc1 == crc2 )
 ;
