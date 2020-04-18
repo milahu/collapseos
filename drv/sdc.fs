@@ -87,7 +87,7 @@
     ( send CRC )
     0x01 OR        ( ensure stop bit )
     _sdcSR DROP
-	( And now we just have to wait for a valid response... )
+    ( And now we just have to wait for a valid response... )
     _wait
 ;
 
@@ -118,7 +118,7 @@
       send 80. )
     10 0 DO 0xff SDC_SPI PC! LOOP
 
-	( call cmd0 and expect a 0x01 response (card idle)
+    ( call cmd0 and expect a 0x01 response (card idle)
 	  this should be called multiple times. we're actually
       expected to. let's call this for a maximum of 10 times. )
     0  ( dummy )
@@ -130,7 +130,7 @@
     LOOP
     0x01 = NOT IF 1 EXIT THEN
 
-	( Then comes the CMD8. We send it with a 0x01aa argument
+    ( Then comes the CMD8. We send it with a 0x01aa argument
       and expect a 0x01aa argument back, along with a 0x01 R1
       response. )
     0b01001000 0 0x1aa  ( CMD8 )
@@ -139,7 +139,7 @@
     0 = NOT IF 3 EXIT THEN      ( arg1 check )
     0x01 = NOT IF 4 EXIT THEN   ( r check )
 
-	( Now we need to repeatedly run CMD55+CMD41 (0x40000000)
+    ( Now we need to repeatedly run CMD55+CMD41 (0x40000000)
       until the card goes out of idle mode, that is, when
       it stops sending us 0x01 response and send us 0x00
       instead. Any other response means that initialization
@@ -156,15 +156,20 @@
     0
 ;
 
-( dstaddr blkno -- f )
-: SDC@
+: _err
+    _desel
+    ABORT" SDC error"
+;
+
+( dstaddr blkno -- )
+: _sdc@
     _sel
     0x51    ( CMD17 )
     0 ROT   ( a cmd 0 blkno )
     _cmd
-    IF _desel 0 EXIT THEN
+    IF _err THEN
     _wait
-    0xfe = NOT IF _desel 0 EXIT THEN
+    0xfe = NOT IF _err THEN
     0 SWAP           ( crc a )
     512 0 DO         ( crc a )
         DUP          ( crc a a )
@@ -180,5 +185,12 @@
     _idle +          ( crc2 )
     _wait DROP
     _desel
-    =   ( success if crc1 == crc2 )
+    = NOT IF _err THEN
+;
+
+: SDC@
+    2 * DUP BLK( SWAP    ( b a b )
+    _sdc@
+    1+ BLK( 512 + SWAP
+    _sdc@
 ;
