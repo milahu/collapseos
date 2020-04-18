@@ -51,6 +51,7 @@
 : = CMP NOT ;
 : < CMP -1 = ;
 : > CMP 1 = ;
+: 0< 32767 > ;
 
 ( r c -- r f )
 ( Parse digit c and accumulate into result r.
@@ -61,7 +62,7 @@
     ( parse char )
     '0' -
     ( if bad, return "r -1" )
-    DUP 0 < IF DROP -1 EXIT THEN   ( bad )
+    DUP 0< IF DROP -1 EXIT THEN    ( bad )
     DUP 9 > IF DROP -1 EXIT THEN   ( bad )
     ( good, add to running result )
     SWAP 10 * +                    ( r*10+n )

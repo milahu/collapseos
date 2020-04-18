@@ -11,14 +11,14 @@
 ;
 
 ( returns negative value on error )
-: hexdig            ( c -- n )
+: _            ( c -- n )
     ( '0' is ASCII 48 )
     48 -
-    DUP 0 < IF EXIT THEN                ( bad )
+    DUP 0< IF EXIT THEN                 ( bad )
     DUP 10 < IF EXIT THEN               ( good )
     ( 'a' is ASCII 97. 59 = 97 - 48 )
     49 -
-    DUP 0 < IF EXIT THEN                ( bad )
+    DUP 0< IF EXIT THEN                 ( bad )
     DUP 6 < IF 10 + EXIT THEN           ( good )
     ( bad )
     255 -
@@ -31,24 +31,23 @@
     2+
     ( validate slen )
     DUP SLEN                            ( a l )
-    DUP 0 = IF DROP 0 EXIT THEN         ( a 0 )
+    DUP NOT IF DROP 0 EXIT THEN         ( a 0 )
     4 > IF DROP 0 EXIT THEN             ( a 0 )
-    0 ( a r )
+    0  ( a r )
     BEGIN
-    OVER C@
-    DUP 0 = IF DROP SWAP DROP 1 EXIT THEN ( r, 1 )
-    hexdig                              ( a r n )
-    DUP 0 < IF DROP DROP 1 EXIT THEN    ( a 0 )
-    SWAP 16 * +                         ( a r*16+n )
-    SWAP 1+ SWAP                        ( a+1 r )
+    SWAP C@+                            ( r a+1 c )
+    DUP NOT IF 2DROP 1 EXIT THEN        ( r, 1 )
+    _                                   ( r a n )
+    DUP 0< IF ROT 2DROP 0 EXIT THEN     ( a 0 )
+    ROT 16 * +                          ( a r*16+n )
     AGAIN
 ;
 
 ( returns negative value on error )
-: bindig            ( c -- n )
+: _            ( c -- n )
     ( '0' is ASCII 48 )
     48 -
-    DUP 0 < IF EXIT THEN                ( bad )
+    DUP 0< IF EXIT THEN                 ( bad )
     DUP 2 < IF EXIT THEN                ( good )
     ( bad )
     255 -
@@ -65,12 +64,11 @@
     16 > IF DROP 0 EXIT THEN            ( a 0 )
     0 ( a r )
     BEGIN
-    OVER C@
-    DUP 0 = IF DROP SWAP DROP 1 EXIT THEN ( r, 1 )
-    bindig                              ( a r n )
-    DUP 0 < IF DROP DROP 1 EXIT THEN    ( a 0 )
-    SWAP 2 * +                          ( a r*2+n )
-    SWAP 1+ SWAP                        ( a+1 r )
+    SWAP C@+                               ( r a+1 c )
+    DUP NOT IF 2DROP 1 EXIT THEN           ( r 1 )
+    _                                      ( r a n )
+    DUP 0< IF ROT 2DROP 0 EXIT THEN        ( a 0 )
+    ROT 2 * +                              ( a r*2+n )
     AGAIN
 ;
 
