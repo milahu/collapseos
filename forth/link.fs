@@ -33,7 +33,7 @@
     0x22 = NOT IF 2+ EXIT THEN
     ( it's a lit, skip to null char )
     ( a )
-    1+ ( we skip by 2, but the loop below is pre-inc... )
+    1+  ( we skip by 2, but the loop below is pre-inc... )
     BEGIN 1+ DUP C@ NOT UNTIL
     ( skip null char )
     1+
@@ -58,17 +58,17 @@
         )
         DROP
         2+          ( o ol a+2 )
-        ROT ROT 2DROP ( a )
+        ROT ROT 2DROP  ( a )
         EXIT
     THEN
     ROT             ( o a n ol )
-    < IF ( under limit, do nothing )
+    < IF  ( under limit, do nothing )
         SWAP DROP    ( a )
     ELSE
         ( o a )
-        SWAP OVER @ ( a o n )
-        -^          ( a n-o )
-        OVER !      ( a )
+        SWAP OVER @  ( a o n )
+        -^           ( a n-o )
+        OVER !       ( a )
     THEN
     ASKIP
 ;

@@ -15,7 +15,7 @@
     DUP <0 IF '-' EMIT -1 * THEN
     _
     BEGIN
-    DUP '9' > IF DROP EXIT THEN ( stop indicator, we're done )
+    DUP '9' > IF DROP EXIT THEN  ( stop indicator, we're done )
     EMIT
     AGAIN
 ;
@@ -32,7 +32,7 @@
 : .x
     256 MOD     ( ensure < 0x100 )
     16 /MOD     ( l h )
-    _ EMIT ( l )
+    _ EMIT      ( l )
     _ EMIT
 ;
 

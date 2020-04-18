@@ -29,7 +29,7 @@ ACIA_MEM: Address in memory that can be used variables shared
 
 : ACIA$
     H@ DUP DUP ACIA( ! ACIAR> !
-    1+ ACIAW> ! ( write index starts one position later )
+    1+ ACIAW> !  ( write index starts one position later )
     ACIABUFSZ ALLOT
     H@ ACIA) !
 ( setup ACIA
@@ -42,7 +42,7 @@ ACIA_MEM: Address in memory that can be used variables shared
 
 ( setup interrupt )
     ( 4e == INTJUMP )
-    0xc3 0x4e RAM+ C! ( JP upcode )
+    0xc3 0x4e RAM+ C!  ( JP upcode )
     ['] ~ACIA 0x4f RAM+ !
     (im1)
 ;
