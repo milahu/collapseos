@@ -13,13 +13,18 @@
 #include <termios.h>
 #include "../../emul.h"
 #include "acia.h"
+#include "sdc.h"
 
 #define RAMSTART 0x8000
 #define ACIA_CTL_PORT 0x80
 #define ACIA_DATA_PORT 0x81
+#define SDC_CSHIGH 0x06
+#define SDC_CSLOW 0x05
+#define SDC_SPI 0x04
 #define MAX_ROMSIZE 0x2000
 
 static ACIA acia;
+static SDC sdc;
 
 static uint8_t iord_acia_ctl()
 {
@@ -41,10 +46,30 @@ static void iowr_acia_data(uint8_t val)
     acia_data_wr(&acia, val);
 }
 
+static uint8_t iord_sdc_spi()
+{
+    return sdc_spi_rd(&sdc);
+}
+
+static void iowr_sdc_spi(uint8_t val)
+{
+    sdc_spi_wr(&sdc, val);
+}
+
+static void iowr_sdc_cshigh(uint8_t val)
+{
+    sdc_cshigh(&sdc);
+}
+
+static void iowr_sdc_cslow(uint8_t val)
+{
+    sdc_cslow(&sdc);
+}
+
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: ./classic /path/to/rom\n");
+    if (argc < 2) {
+        fprintf(stderr, "Usage: ./classic /path/to/rom [sdcard.img]\n");
         return 1;
     }
     FILE *fp = fopen(argv[1], "r");
@@ -81,10 +106,19 @@ int main(int argc, char *argv[])
     }
 
     acia_init(&acia);
+    sdc_init(&sdc);
+    if (argc == 3) {
+        fprintf(stderr, "Setting up SD card image\n");
+        sdc.fp = fopen(argv[2], "r+");
+    }
     m->iord[ACIA_CTL_PORT] = iord_acia_ctl;
     m->iord[ACIA_DATA_PORT] = iord_acia_data;
     m->iowr[ACIA_CTL_PORT] = iowr_acia_ctl;
     m->iowr[ACIA_DATA_PORT] = iowr_acia_data;
+    m->iord[SDC_SPI] = iord_sdc_spi;
+    m->iowr[SDC_SPI] = iowr_sdc_spi;
+    m->iowr[SDC_CSHIGH] = iowr_sdc_cshigh;
+    m->iowr[SDC_CSLOW] = iowr_sdc_cslow;
 
     char tosend = 0;
     while (emul_step()) {
@@ -125,6 +159,9 @@ int main(int argc, char *argv[])
         printf("Done!\n");
         tcsetattr(0, TCSADRAIN, &saved_term);
         emul_printdebug();
+    }
+    if (sdc.fp) {
+        fclose(sdc.fp);
     }
     return 0;
 }
