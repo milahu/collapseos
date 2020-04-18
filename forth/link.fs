@@ -39,9 +39,6 @@
     1+
 ;
 
-( Get word addr, starting at name's address )
-: '< ' DUP WHLEN - ;
-
 ( Relink atom at a, applying offset o with limit ol.
   Returns a, appropriately skipped.
 )
@@ -127,6 +124,10 @@
   The output of this word is 3 numbers: top copied address,
   top copied CURRENT, and then the beginning of the copied dict
   at the end to indicate that we're finished processing.
+
+  Note that the last word is always skipped because it's not
+  possible to reliably detect its end. If you need that last
+  word, define a dummy word before calling RLDICT.
 )
 ( target -- )
 : RLDICT
@@ -142,7 +143,7 @@
     ( H@+2 == offset )
     H@ 2+ !                     ( )
     ( We have our offset, now let's copy our memory chunk )
-    H@ @ DUP WHLEN -            ( src )
+    H@ @ WORD(                  ( src )
     DUP H@ -^                   ( src u )
     DUP ROT SWAP                ( u src u )
     H@ 4 +                      ( u src u dst )
@@ -154,9 +155,9 @@
       offset by u+4. +4 before, remember, we're using 4 bytes
       as variable space. )
     4 +                         ( u+4 )
-    DUP H@ +                    ( u we )
+    DUP CURRENT @ WORD( +       ( u we )
     DUP .X CRLF
-    SWAP CURRENT @ +            ( we wr )
+    SWAP CURRENT @ PREV +       ( we wr )
     DUP .X CRLF
     BEGIN                       ( we wr )
         DUP ROT                 ( wr wr we )
@@ -169,7 +170,7 @@
         DUP                     ( wr wr )
         PREV                    ( oldwr newwr )
         SWAP                    ( wr oldwr )
-        DUP WHLEN -             ( wr we )
+        WORD(                   ( wr we )
         SWAP                    ( we wr )
         ( Are we finished? We're finished if wr-4 <= H@ )
         DUP 4 - H@ <=

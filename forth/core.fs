@@ -154,17 +154,18 @@
     -                           ( a-o )
 ;
 
-: WHLEN
-    1- C@      ( name len field )
+: WORD(
+    DUP 1- C@   ( name len field )
     127 AND     ( 0x7f. remove IMMEDIATE flag )
     3 +         ( fixed header len )
+    -
 ;
 
 : FORGET
     ' DUP               ( w w )
     ( HERE must be at the end of prev's word, that is, at the
       beginning of w. )
-    DUP WHLEN - HERE !  ( w )
+    WORD( HERE !  ( w )
     PREV CURRENT !
 ;
 
