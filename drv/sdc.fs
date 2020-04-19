@@ -1,12 +1,3 @@
-: SDC_CSHIGH 6 ;
-: SDC_CSLOW 5 ;
-: SDC_SPI 4 ;
-
-: _sdcSR SDC_SPI PC! SDC_SPI PC@ ;
-
-: _sel 0 SDC_CSLOW PC! ;
-: _desel 0 SDC_CSHIGH PC! ;
-
 ( -- n )
 : _idle 0xff _sdcSR ;
 
@@ -93,30 +84,31 @@
 
 ( cmd arg1 arg2 -- r )
 ( Send a command that expects a R1 response, handling CS. )
-: SDCMDR1 _sel _cmd _desel ;
+: SDCMDR1 _sdcSel _cmd _sdcDesel ;
 
 ( cmd arg1 arg2 -- r arg1 arg2 )
 ( Send a command that expects a R7 response, handling CS. A R7
   is a R1 followed by 4 bytes. arg1 contains bytes 0:1, arg2
   has 2:3 )
 : SDCMDR7
-    _sel
+    _sdcSel
     _cmd        ( r )
     _idle 256 * ( r h )
     _idle +     ( r arg1 )
     _idle 256 * ( r arg1 h )
     _idle +     ( r arg1 arg2 )
-    _desel
+    _sdcDesel
 ;
 
+: _err _sdcDesel ABORT" SDerr" ;
+
 ( Initialize a SD card. This should be called at least 1ms
-  after the powering up of the card. r is result.
-  Zero means success, non-zero means error. )
+  after the powering up of the card. )
 : SDC$
     ( Wake the SD card up. After power up, a SD card has to
       receive at least 74 dummy clocks with CS and DI high. We
       send 80. )
-    10 0 DO 0xff SDC_SPI PC! LOOP
+    10 0 DO _idle DROP LOOP
 
     ( call cmd0 and expect a 0x01 response (card idle)
 	  this should be called multiple times. we're actually
@@ -128,16 +120,16 @@
         SDCMDR1
         DUP 0x01 = IF LEAVE THEN
     LOOP
-    0x01 = NOT IF 1 EXIT THEN
+    0x01 = NOT IF _err THEN
 
     ( Then comes the CMD8. We send it with a 0x01aa argument
       and expect a 0x01aa argument back, along with a 0x01 R1
       response. )
     0b01001000 0 0x1aa  ( CMD8 )
     SDCMDR7                     ( r arg1 arg2 )
-    0x1aa = NOT IF 2 EXIT THEN  ( arg2 check )
-    0 = NOT IF 3 EXIT THEN      ( arg1 check )
-    0x01 = NOT IF 4 EXIT THEN   ( r check )
+    0x1aa = NOT IF _err THEN    ( arg2 check )
+    0 = NOT IF _err THEN        ( arg1 check )
+    0x01 = NOT IF _err THEN     ( r check )
 
     ( Now we need to repeatedly run CMD55+CMD41 (0x40000000)
       until the card goes out of idle mode, that is, when
@@ -147,20 +139,17 @@
     BEGIN
         0b01110111 0 0  ( CMD55 )
         SDCMDR1
-        0x01 = NOT IF 5 EXIT THEN
+        0x01 = NOT IF _err THEN
         0b01101001 0x4000 0x0000  ( CMD41 )
         SDCMDR1
-        DUP 0x01 > IF DROP 6 EXIT THEN
+        DUP 0x01 > IF _err THEN
     NOT UNTIL
     ( Out of idle mode! Success! )
-    0
 ;
-
-: _err _desel ABORT" SDerr" ;
 
 ( dstaddr blkno -- )
 : _sdc@
-    _sel
+    _sdcSel
     0x51    ( CMD17 )
     0 ROT   ( a cmd 0 blkno )
     _cmd
@@ -181,7 +170,7 @@
     _idle 256 *
     _idle +          ( crc2 )
     _wait DROP
-    _desel
+    _sdcDesel
     = NOT IF _err THEN
 ;
 
@@ -194,7 +183,7 @@
 
 ( srcaddr blkno -- )
 : _sdc!
-    _sel
+    _sdcSel
     0x58    ( CMD24 )
     0 ROT   ( a cmd 0 blkno )
     _cmd
@@ -215,7 +204,7 @@
     _sdcSR DROP      ( lsb )
     _sdcSR DROP
     _wait DROP
-    _desel
+    _sdcDesel
 ;
 
 : SDC!

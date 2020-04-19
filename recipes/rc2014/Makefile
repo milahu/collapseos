@@ -10,6 +10,7 @@ BOOTSRCS = conf.fs \
 	$(FDIR)/boot.fs \
 	$(FDIR)/z80c.fs \
 	$(BASEDIR)/drv/acia.z80 \
+	$(BASEDIR)/drv/sdc.z80 \
 	$(FDIR)/icore.fs \
 	$(EDIR)/xstop.fs
 
