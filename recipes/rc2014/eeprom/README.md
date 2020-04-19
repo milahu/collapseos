@@ -33,24 +33,17 @@ in write protection mode, but I preferred building my own module.
 
 I don't think you need a schematic. It's really simple.
 
-## Using the at28 driver
+## Building your stage 4
 
-The AT28 driver is at `drv/at28.fs` and is a pure forth source file so it's
-rather easy to set up from the base Stage 3 binary:
-
-    cat ../stage3.bin ../pre.fs ../../../drv/at28.fs ../run.fs > os.bin
-    ../../../emul/hw/rc2014/classic os.bin
+Using the same technique as you used for building your stage 3, you can append
+required words to your boot binary. Required units are `forth/adev.fs` and
+`drv/at28.fs`.
 
 ## Writing contents to the AT28
 
 The driver provides `AT28!` which can be plugged in adev's `A!*`.
 
-It's not in the Stage 3 binary, but because it's a small piece of Forth code,
-let's just run its definition code:
-
-    cat ../../../drv/at28.fs | ./stripfc | ./exec <tty device>
-
-Then, upload your binary to some place in memory, for example `a000`. To do so,
+First, upload your binary to some place in memory, for example `a000`. To do so,
 run this from your modern computer:
 
     ./upload <tty device> a000 <filename>

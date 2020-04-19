@@ -8,7 +8,7 @@ You can't really keep pins high and low on an IO line. You need some kind of
 intermediary between z80 IOs and SPI.
 
 There are many ways to achieve this. This recipe explains how to build your own
-hacked off SPI relay for the RC2014. It can then be used with `sdc.asm` to
+hacked off SPI relay for the RC2014. It can then be used with `sdc.fs` to
 drive a SD card.
 
 ## Goal
@@ -18,10 +18,8 @@ design.
 
 ## Gathering parts
 
-* A RC2014 with Collapse OS with these features:
-  * shell
-  * blockdev
-  * sdc
+* A RC2014 Classic
+* `stage3.bin` from the base recipe
 * A MicroSD breakout board. I use Adafruit's.
 * A proto board + header pins with 39 positions so we can make a RC2014 card.
 * Diodes, resistors and stuff
@@ -34,7 +32,7 @@ design.
 
 ## Building the SPI relay
 
-The [schematic][schematic] supplied with this recipe works well with `sdc.asm`.
+The [schematic][schematic] supplied with this recipe works well with `sdc.fs`.
 Of course, it's not the only possible design that works, but I think it's one
 of the most straighforwards.
 
@@ -71,95 +69,41 @@ matter. However, it *does* matter for the `SELECT` line, so I don't follow my
 own schematic with regards to the `M1` and `A2` lines and use two inverters
 instead.
 
-## Building the kernel
+## Building your stage 4
 
-To be able to work with your SPI relay and communicate with the card, you
-should have [glue code that looks like this](glue.asm).
+Using the same technique as you used for building your stage 3, you can append
+required words to your boot binary. Required units are `forth/blk.fs` and
+`drv/sdc.fs`. You also need `drv/sdc.z80` but to save you the troubles of
+rebuilding from stage 1 for this recipe, we took the liberty of already having
+included it in the base recipe.
 
-Initially, when you don't know if things work well yet, you should comment out
-the block creation part.
+## Testing in the emulator
 
-## Reading from the SD card
+The RC2014 emulator includes SDC emulation. You can attach a SD card image to
+it by invoking it with a second argument:
 
-The first thing we'll do is fill the SD card's first 12 bytes with "Hello
-World!":
+    ../../../emul/hw/rc2014/classic stage4.bin ../../../emul/blkfs
 
-    echo "Hello World!" > /dev/sdX
+You will then run with a SD card having the contents from `/blk`.
 
-Then, insert your SD card in your SPI relay and boot the RC2014.
+## Usage
 
-Run the `sdci` command which will initialize the card. The blockdev 0 is
-already selected at initialization, but you could, to be sure, run `bsel 0` to
-select the first blockdev, which is configured to be the sd card.
+First, the SD card needs to be initialized
 
-Set your memory pointer to somewhere you can write to with `mptr 9000` and then
-you're ready to load your contents with `load d` (load the 13 bytes that you
-wrote to your sd card earlier. You can then `peek d` and see that your
-"Hello World!\n" got loaded in memory!
+    SDC$
 
-## Mounting a filesystem from the SD card
+If there is no error message, we're fine. Then, we need to hook `BLK@*` and
+`BLK!*` into the SDC driver:
 
-The Makefile compiles `helo.asm` in `cfsin` and then packs `cfsin` into a CFS
-filesystem into the `sdcard.cfs` file. That can be mounted by Collapse OS!
+    ' SDC@ BLK@* !
+    ' SDC! BLK!* !
 
-    $ cat sdcard.cfs > /dev/sdX
+And thats it! You have full access to disk block mechanism:
 
-Then, you insert your SD card in your SPI relay and go:
+    102 LOAD
+    BROWSE
 
-    Collapse OS
-    > sdci
-    > fson
-    > fls
-    helo
-    hello.txt
-    > helo
-    Hello!
-    >
-
-The `helo` command is a bit magical and is due to the hook implemented in
-`pgm.asm`: when an unknown command is typed, it looks in the currently mounted
-filesystem for a file with the same name. If it finds it, it loads it in memory
-at a predefined place (in our case, `0x9000`) and executes it.
-
-Now let that sink in for a minute. You've just mounted a filesystem on a SD
-card, loaded a file from it in memory and executed that file, all that on a
-kernel that weights less than 3 kilobytes!
-
-## Writing to a file in the SD card
-
-Now what we're going to do is to write back to a file on the SD card. From a
-system with the SD card initialized and the FS mounted, do:
-
-    > fopn 0 hello.txt
-    > bsel 1
-    > mptr 9000
-    9000
-    > load d
-    > peek d
-    48656C6C6F20576F726C64210A
-
-Now that we have our "Hello World!\n" loaded in memory, let's modify it and make
-it start with "XXX" and save it to the file. `sdcf` flushes the current SD card
-buffer to the card. It's automatically ran whenever we change sector during a
-read/write/seek, but was can also explicitly call it with `sdcf`.
-
-    > poke 3
-    [type "XXX"]
-    > peek d
-    5858586C6F20576F726C64210A
-    > seek 00 0000
-    0000
-    > save d
-    > sdcf
-
-The new "XXXlo World!\n" is now written to the card, at its proper place in CFS!
-You can verify this by pulling out the card (no need to unmount it from Collapse
-OS, but if you insert it again, you'll need to run `sdci` again), insert it in
-your modern system and run:
-
-    $ head -c 512 /dev/sdX | xxd
-
-You'll see your "XXXlo World!\n" somewhere, normally at offset `0x120`!
+(at this moment, the driver is a bit slow though...)
 
 [schematic]: spirelay/spirelay.pdf
 [inspiration]: https://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html
