@@ -110,11 +110,11 @@
 ( TODO implement RLCELL )
 
 ( Copy dict from target wordref, including header, up to HERE.
-  We're going to compact the space between that word and its
-  prev word. To do this, we're copying this whole memory area
-  in HERE and then iterate through that copied area and call
-  RLWORD on each word. That results in a dict that can be
-  concatenated to target's prev entry in a more compact way.
+  We're going relocate those words by specified offset. To do
+  this, we're copying this whole memory area in HERE and then
+  iterate through that copied area and call RLWORD on each
+  word. That results in a dict that can be concatenated to
+  target's prev entry in a more compact way.
 
   This copy of data doesn't allocate anything, so H@ doesn't
   move. Moreover, we reserve 4 bytes at H@ to write our target
@@ -129,19 +129,16 @@
   possible to reliably detect its end. If you need that last
   word, define a dummy word before calling RLDICT.
 )
-( target -- )
+( target offset -- )
 : RLDICT
     ( First of all, let's get our offset. It's easy, it's
       target's prev field, which is already an offset, minus
       its name length. We expect, in RLDICT that a target's
       prev word is a "hook word", that is, an empty word. )
-    ( H@ == target )
-    DUP H@ !
-    DUP 1- C@ 0x7f AND          ( t namelen )
-    SWAP 3 - @                  ( namelen po )
-    -^                          ( o )
     ( H@+2 == offset )
-    H@ 2+ !                     ( )
+    H@ 2+ !                     ( target )
+    ( H@ == target )
+    H@ !                        ( )
     ( We have our offset, now let's copy our memory chunk )
     H@ @ WORD(                  ( src )
     DUP H@ -^                   ( src u )
@@ -180,5 +177,9 @@
 
 ( Relink a regular Forth full interpreter. )
 : RLCORE
-    LIT< H@ (find) DROP RLDICT
+    LIT< H@ (find) DROP         ( target )
+    DUP 3 - @                   ( t prevoff )
+    ( subtract H@ name length )
+    2-                          ( t o )
+    RLDICT
 ;

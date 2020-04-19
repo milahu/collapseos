@@ -210,22 +210,49 @@ That's it! our binary is ready to run!
 
     ../../emul/hw/rc2014/classic stage2r.bin
 
-And there you have it, a stage2 binary that you've assembled yourself. Now,
-here's for your homework: use the same technique to add the contents of
-`readln.fs` and `adev.fs` to stage2 so that you have a full-featured
-interpreter.
+And there you have it, a stage2 binary that you've assembled yourself.
 
-Name it `stage3.bin` (the version without any source code appended and no
-`INIT` word defined), you'll need this binary for sub-recipes written for the
-RC2014.
+### Assembling stage 3
 
-Here's a little cheatsheet, but seriously, you should figure most of it
-yourself. Tough love they call it.
+Stage 2 gives you a useable prompt, but bare. Because 8K isn't a lot of space
+to cram source code, we're limited in what we can include for this stage.
 
-* `cat stage2.bin ../../forth/readln.fs ../../forth/adev.fs run.fs > stage2r.bin`
-* Don't forget `RDLN$` and `ADEV$`.
-* `RLDICT` is like `RLCORE` but with a chosen target.
-* `stripfc` can help you deal with size constraints.
+However, now that we have a usable prompt, we can do a lot (be cautious though:
+there is no `readln` yet, so you have no backspace), for example, build a
+stage 3 with `readln`.
+
+Copy the unit's source
+
+    cat ../../forth/readln.fs | ../../tools/stripfc | xclip
+
+and just paste it in your terminal. If you're doing the real thing and not
+using the emulator, pasting so much code at once might freeze up the RC2014, so
+it is recommended that you use `/tools/exec` that let the other side enough
+time to breathe.
+
+After your pasting, you'll have a compiled dict of that code in memory. You'll
+need to relocate it in the same way you did for stage 2, but instead of using
+`RLCORE`, which is a convenience word hardcoded for stage 1, we'll parametrize
+`RLDICT`, the word doing the real work.
+
+`RLDICT` takes 2 arguments, `target` and `offset`. `target` is the first word
+of your relocated dict. In our case, it's going to be `' INBUFSZ`. `offset` is
+the offset we'll apply to every eligible word references in our dict. In our
+case, that offset is the offset of the *beginning* of the `INBUFSZ` entry (that
+is, `' INBUFSZ WORD(` minus the offset of the last word (which should be a hook
+word) in the ROM binary.
+
+That offset can be conveniently fetched from code because it is the value of
+the `LATEST` constant in stable ABI, which is at offset `0x08`. Therefore, our
+offset value is:
+
+    ' INBUFSZ WORD( 0x08 @ -
+
+You can now run `RLDICT` and proceed with concatenation (and manual adjustments
+of course) as you did with stage 2. Don't forget to adjust `run.fs` so that it
+initializes `RDLN$` instead of creating a minimal `(c<)`.
+
+Keep that `stage3.bin` around, you will need it for further recipes.
 
 [rc2014]: https://rc2014.co.uk
 [romwrite]: https://github.com/hsoft/romwrite

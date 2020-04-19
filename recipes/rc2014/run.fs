@@ -1,7 +1,7 @@
 : (c<) KEY DUP EMIT ;
 : INIT
     ACIA$
-    ." Collapse OS" CR LF
+    ." Collapse OS" CRLF
     ( 0c == CINPTR )
     ['] (c<) 0x0c RAM+ !
 ;
