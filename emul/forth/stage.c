@@ -4,6 +4,7 @@
 #include "../emul.h"
 #ifdef STAGE2
 #include "forth1-bin.h"
+#include "blkfs-bin.h"
 #else
 #include "forth0-bin.h"
 #endif
@@ -34,6 +35,10 @@ trouble of compiling defs to binary.
 // To know which part of RAM to dump, we listen to port 2, which at the end of
 // its compilation process, spits its HERE addr to port 2 (MSB first)
 #define HERE_PORT 0x02
+// Port for block reads. Write 2 bytes, MSB first, on that port and then
+// read 1024 bytes from the DATA port.
+#define BLK_PORT 0x03
+#define BLKDATA_PORT 0x04
 
 static int running;
 // We support double-pokes, that is, a first poke to tell where to start the
@@ -41,6 +46,8 @@ static int running;
 // then ending HERE and we start at sizeof(KERNEL).
 static uint16_t start_here = 0;
 static uint16_t end_here = 0;
+static uint16_t blkid = 0;
+static unsigned int blkpos = 0;
 
 static uint8_t iord_stdio()
 {
@@ -68,6 +75,20 @@ static void iowr_here(uint8_t val)
     end_here |= val;
 }
 
+#ifdef STAGE2
+static void iowr_blk(uint8_t val)
+{
+    blkid <<= 8;
+    blkid |= val;
+    blkpos = blkid * 1024;
+}
+
+static uint8_t iord_blkdata()
+{
+    return BLKFS[blkpos++];
+}
+#endif
+
 int main(int argc, char *argv[])
 {
     Machine *m = emul_init();
@@ -75,6 +96,10 @@ int main(int argc, char *argv[])
     m->iord[STDIO_PORT] = iord_stdio;
     m->iowr[STDIO_PORT] = iowr_stdio;
     m->iowr[HERE_PORT] = iowr_here;
+#ifdef STAGE2
+    m->iowr[BLK_PORT] = iowr_blk;
+    m->iord[BLKDATA_PORT] = iord_blkdata;
+#endif
     // initialize memory
     for (int i=0; i<sizeof(KERNEL); i++) {
         m->mem[i] = KERNEL[i];

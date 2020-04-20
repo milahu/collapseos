@@ -8,8 +8,7 @@ BOOTSRCS = ./forth/conf.fs \
 	../forth/icore.fs \
 	./forth/xstop.fs
 
-FORTHSRCS = core.fs cmp.fs print.fs str.fs parse.fs readln.fs fmt.fs z80a.fs \
-	link.fs blk.fs
+FORTHSRCS = core.fs cmp.fs print.fs str.fs parse.fs readln.fs fmt.fs blk.fs
 FORTHSRC_PATHS = ${FORTHSRCS:%=../forth/%} forth/run.fs
 OBJS = emul.o libz80/libz80.o
 SLATEST = ../tools/slatest
@@ -58,11 +57,14 @@ forth/forth1.bin: forth/core.bin $(SLATEST)
 forth/forth1-bin.h: forth/forth1.bin $(BIN2C)
 	$(BIN2C) KERNEL < forth/forth1.bin > $@
 
-forth/stage2: forth/stage.c $(OBJS) forth/forth1-bin.h 
+forth/stage2: forth/stage.c $(OBJS) forth/forth1-bin.h forth/blkfs-bin.h
 	$(CC) -DSTAGE2 forth/stage.c $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
+
+forth/blkfs-bin.h: blkfs $(BIN2C)
+	$(BIN2C) BLKFS < blkfs > $@
 
 forth/forth: forth/forth.c $(OBJS) forth/forth1-bin.h blkfs
 	$(CC) forth/forth.c $(OBJS) -o $@
