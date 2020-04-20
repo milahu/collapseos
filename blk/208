@@ -1,0 +1,16 @@
+Instructions list
+
+r => A B C D E H L (HL)
+ss/qq => BC DE HL AF/SP
+cc => CNZ CZ CNC CC CPO CPE CP CM
+
+LD [rr, rn, ddnn, (nn)HL, HL(nn), dd(nn), (nn)dd, rIXY, IXYr,
+    (DE)A, A(DE)]
+ADD [r, n, HLss, IXss, IXIX, IYss, IYIY]
+ADC [r, HLss]
+CP  [r]
+SBC [r, HLss]
+SUB [r, n]
+PUSH [qq]  POP [qq]
+INC [r, ss]            DEC [r, ss]
+AND [r, n] OR [r, n]   XOR [r, n]                       (cont.)

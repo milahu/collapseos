@@ -1,0 +1,9 @@
+: THEN,
+    DUP PC          ( l l pc )
+    -^ 1-           ( l off )
+    ( warning: l is a PC offset, not a mem addr! )
+    SWAP ORG @ +    ( off addr )
+    C!
+;
+: FWR BSET 0 A, ;
+: FSET @ THEN, ;

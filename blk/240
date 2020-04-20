@@ -1,0 +1,11 @@
+( nn -- )
+: OP3nn
+    CREATE C,
+    DOES>
+    C@ A,
+    A,,
+;
+0xcd OP3nn CALLnn,
+0xc3 OP3nn JPnn,
+0x22 OP3nn LD(nn)HL,
+0x2a OP3nn LDHL(nn),

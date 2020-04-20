@@ -1,0 +1,14 @@
+( 26 == next )
+: JPNEXT, 26 JPnn, ;
+( 29 == chkPS )
+: chkPS, 29 CALLnn, ;
+
+: CODE
+    ( same as CREATE, but with native word )
+    (entry)
+    ( 23 == nativeWord )
+    23 C,
+;
+
+: ;CODE JPNEXT, ;
+

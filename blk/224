@@ -1,0 +1,7 @@
+: OP2 CREATE , DOES> @ 256 /MOD A, A, ;
+0xedb1 OP2 CPIR,
+0xed46 OP2 IM0,
+0xed56 OP2 IM1,
+0xed5e OP2 IM2,
+0xed44 OP2 NEG,
+0xed4d OP2 RETI,

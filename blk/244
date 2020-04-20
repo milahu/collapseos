@@ -1,0 +1,3 @@
+( Macros )
+( clear carry + SBC )
+: SUBHLss, A ORr, SBCHLss, ;

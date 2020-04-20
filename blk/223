@@ -1,0 +1,13 @@
+( ixy+- HL rd )
+: LDIXYr,
+    ( dd/fd has already been spit )
+    LDrr,           ( ixy+- )
+    A,
+;
+
+( rd ixy+- HL )
+: LDrIXY,
+    ROT             ( ixy+- HL rd )
+    SWAP            ( ixy+- rd HL )
+    LDIXYr,
+;

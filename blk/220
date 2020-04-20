@@ -1,0 +1,15 @@
+( qq -- also works for ss )
+: OP1qq
+    CREATE C,
+    DOES>
+    C@              ( qq op )
+    SWAP            ( op qq )
+    <<4             ( op qq<<4 )
+    OR A,
+;
+0xc5 OP1qq PUSHqq,             0xc1 OP1qq POPqq,
+0x03 OP1qq INCss,              0x0b OP1qq DECss,
+0x09 OP1qq ADDHLss,
+
+: ADDIXss, 0xdd A, ADDHLss, ;  : ADDIXIX, HL ADDIXss, ;
+: ADDIYss, 0xfd A, ADDHLss, ;  : ADDIYIY, HL ADDIYss, ;

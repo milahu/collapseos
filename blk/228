@@ -1,0 +1,11 @@
+( r n -- )
+: OP2rn
+    CREATE C,
+    DOES>
+    C@              ( r n op )
+    ROT             ( n op r )
+    <<3             ( n op r<<3 )
+    OR A, A,
+;
+0x06 OP2rn LDrn,
+

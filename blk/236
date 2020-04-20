@@ -1,0 +1,12 @@
+( ss -- )
+: OP2ss
+    CREATE C,
+    DOES>
+    0xed A,
+    C@ SWAP         ( op ss )
+    <<4             ( op ss<< 4 )
+    OR A,
+;
+0x4a OP2ss ADCHLss,
+0x42 OP2ss SBCHLss,
+
