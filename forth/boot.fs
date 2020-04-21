@@ -6,9 +6,8 @@ H@ 256 /MOD 2 PC! 2 PC!
   At all times, IX points to RSP TOS and IY is IP. SP points
   to PSP TOS, but you can still use the stack in native code.
   you just have to make sure you've restored it before "next".
-)
 
-( STABLE ABI
+  STABLE ABI
   Those jumps below are supposed to stay at these offsets,
   always. If they change bootstrap binaries have to be
   adjusted because they rely on them. Those entries are
@@ -265,21 +264,17 @@ PC ORG @ 0x1e + ! ( chkPS )
     CNC RETcc,      ( INITIAL_SP >= SP? good )
     JR, L1 BWR ( abortUnderflow )
 
-L2 BSET ( chkRS )
-    IX PUSHqq, HL POPqq,
-    DE RS_ADDR LDddnn,
-    DE SUBHLss,
-    CNC RETcc,      ( IX >= RS_ADDR? good )
-    JR, L1 BWR ( abortUnderflow )
-
-
 PC ORG @ 0x1b + ! ( next )
 ( This routine is jumped to at the end of every word. In it,
   we jump to current IP, but we also take care of increasing
   it by 2 before jumping. )
 	( Before we continue: are stacks within bounds? )
     0x1d CALLnn, ( chkPS )
-    L2 @ CALLnn, ( chkRS )
+    ( check RS )
+    IX PUSHqq, HL POPqq,
+    DE RS_ADDR LDddnn,
+    DE SUBHLss,
+    JRC, L1 BWR ( IX < RS_ADDR? abortUnderflow )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
     IY INCss,
