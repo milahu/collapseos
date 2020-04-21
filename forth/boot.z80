@@ -424,52 +424,11 @@ CODE (roll)
     LDDR,
 ;CODE
 
-( a b -- a b a b )
-CODE 2DUP
-    HL POPqq,       ( B )
-    DE POPqq,       ( A )
-    chkPS,
-    DE PUSHqq,      ( A )
-    HL PUSHqq,      ( B )
-    DE PUSHqq,      ( A )
-    HL PUSHqq,      ( B )
-;CODE
-
 ( a b -- )
 CODE 2DROP
     HL POPqq,
     HL POPqq,
     chkPS,
-;CODE
-
-( a b c d -- a b c d a b )
-
-CODE 2OVER
-    HL POPqq,       ( D )
-    DE POPqq,       ( C )
-    BC POPqq,       ( B )
-    EXX, HL POPqq, EXX, ( A )
-    chkPS,
-    EXX, HL PUSHqq, EXX, ( A )
-    BC PUSHqq,      ( B )
-    DE PUSHqq,      ( C )
-    HL PUSHqq,      ( D )
-    EXX, HL PUSHqq, EXX, ( A )
-    BC PUSHqq,      ( B )
-;CODE
-
-( a b c d -- c d a b )
-
-CODE 2SWAP
-    HL POPqq,       ( D )
-    DE POPqq,       ( C )
-    BC POPqq,       ( B )
-    EXX, HL POPqq, EXX, ( A )
-    chkPS,
-    DE PUSHqq,      ( C )
-    HL PUSHqq,      ( D )
-    EXX, HL PUSHqq, EXX, ( A )
-    BC PUSHqq,      ( B )
 ;CODE
 
 CODE AND

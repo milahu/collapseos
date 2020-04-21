@@ -55,13 +55,6 @@
     H@ 2-          ( push a. -2 for allot offset )
 ; IMMEDIATE
 
-: ROLL
-    DUP NOT IF EXIT THEN
-    1+ DUP PICK          ( n val )
-    SWAP 2 * (roll)      ( val )
-    SWAP DROP
-;
-
 ( During a CASE, the stack grows by 1 at each ENDOF so that
   we can fill all those ENDOF branching addrs. So that we
   know when to stop, we put a 0 on PSP. That's our stopgap. )
@@ -142,6 +135,17 @@
 ; IMMEDIATE
 
 : LEAVE R> R> DROP I 1- >R >R ;
+
+: ROLL
+    DUP NOT IF EXIT THEN
+    1+ DUP PICK          ( n val )
+    SWAP 2 * (roll)      ( val )
+    SWAP DROP
+;
+
+: 2DUP OVER OVER ;
+: 2OVER 3 PICK 3 PICK ;
+: 2SWAP 3 ROLL 3 ROLL ;
 
 ( a1 a2 u -- )
 : MOVE
