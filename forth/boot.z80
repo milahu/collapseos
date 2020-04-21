@@ -403,6 +403,27 @@ CODE PICK
     BC PUSHqq,
 ;CODE
 
+( this is only a part of ROLL, the other part is performed in
+  high level Forth. This receives from PSP the number of bytes
+  to copy and then performs A move-by-2 operation from SP.
+  This copies SP's TOS and overwrites the last item involved.
+
+  For example, if stack is "1 2 3 4", calling with "4" would
+  result in the stack "1 3 4 4". Never call with 0, there is
+  no sanity check.
+)
+CODE (roll)
+    HL POPqq,
+    B H LDrr,
+    C L LDrr,
+    SP ADDHLss,
+    D H LDrr,
+    E L LDrr,
+    HL DECss,
+    HL DECss,
+    LDDR,
+;CODE
+
 ( a b -- a b a b )
 CODE 2DUP
     HL POPqq,       ( B )
