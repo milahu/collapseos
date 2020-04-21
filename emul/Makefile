@@ -3,8 +3,7 @@ TARGETS = forth/forth
 BOOTSRCS = ./forth/conf.fs \
 	../forth/xcomp.fs \
 	./forth/xcomp.fs \
-	../forth/boot.fs \
-	../forth/z80c.fs \
+	../forth/boot.z80 \
 	../forth/icore.fs \
 	./forth/xstop.fs
 
