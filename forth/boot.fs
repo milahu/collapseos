@@ -243,7 +243,7 @@ PC ORG @ 0x15 + ! ( popRS )
     RET,
 
 '(' A, 'u' A, 'f' A, 'l' A, 'w' A, ')' A, 0 A,
-L1 BSET ( abortUnderflow )
+L2 BSET ( abortUnderflow )
     HL PC 7 - LDddnn,
     DE RAMSTART 0x02 + LDdd(nn),   ( RAM+02 == CURRENT )
     0x03 CALLnn, ( find )
@@ -262,7 +262,7 @@ PC ORG @ 0x1e + ! ( chkPS )
     SP SUBHLss,
     HL POPqq,
     CNC RETcc,      ( INITIAL_SP >= SP? good )
-    JR, L1 BWR ( abortUnderflow )
+    JR, L2 BWR ( abortUnderflow )
 
 PC ORG @ 0x1b + ! ( next )
 ( This routine is jumped to at the end of every word. In it,
@@ -274,7 +274,7 @@ PC ORG @ 0x1b + ! ( next )
     IX PUSHqq, HL POPqq,
     DE RS_ADDR LDddnn,
     DE SUBHLss,
-    JRC, L1 BWR ( IX < RS_ADDR? abortUnderflow )
+    JRC, L2 BWR ( IX < RS_ADDR? abortUnderflow )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
     IY INCss,

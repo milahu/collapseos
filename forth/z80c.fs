@@ -62,6 +62,24 @@ CODE OVER
     DE PUSHqq,      ( A )
 ;CODE
 
+CODE PICK
+    HL POPqq,
+    chkPS,
+    ( x2 )
+    L SLAr,
+    H RLr,
+    SP ADDHLss,
+    C (HL) LDrr,
+    HL INCss,
+    B (HL) LDrr,
+    ( check PS range before returning )
+    EXDEHL,
+    RAMSTART LDHL(nn), ( RAM+00 == INITIAL_SP )
+    DE SUBHLss,
+    CC L2 @ JPccnn,    ( abortUnderflow )
+    BC PUSHqq,
+;CODE
+
 ( a b -- a b a b )
 CODE 2DUP
     HL POPqq,       ( B )
@@ -77,6 +95,7 @@ CODE 2DUP
 CODE 2DROP
     HL POPqq,
     HL POPqq,
+    chkPS,
 ;CODE
 
 ( a b c d -- a b c d a b )
