@@ -1,3 +1,5 @@
+: JPccnn, SWAP <<3 0xc2 OR A, A,, ;
+
 ( 26 == next )
 : JPNEXT, 26 JPnn, ;
 ( 29 == chkPS )
