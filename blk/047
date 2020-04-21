@@ -1,0 +1,7 @@
+(cont.)
+PICK        Pick nth item from stack. "0 PICK" = DUP,
+            "1 PICK" = OVER.
+ROLL        Rotate PSP over n items. "1 ROLL" = SWAP,
+            "2 ROLL" = ROT. 0 is noop.
+
+

@@ -433,6 +433,17 @@ CODE 2DROP
     chkPS,
 ;CODE
 
+CODE S0
+    RAMSTART LDHL(nn), ( RAM+00 == INITIAL_SP )
+    HL PUSHqq,
+;CODE
+
+CODE 'S
+    HL 0 LDddnn,
+    SP ADDHLss,
+    HL PUSHqq,
+;CODE
+
 CODE AND
     HL POPqq,
     DE POPqq,

@@ -9,8 +9,8 @@ SWAP        a b -- b a
 2DUP        a b -- a b a b
 2OVER       a b c d -- a b c d a b
 2SWAP       a b c d -- c d a b
-PICK        Pick nth item from stack. "0 PICK" = DUP,
-            "1 PICK" = OVER.
-ROLL        Rotate PSP over n items. "1 ROLL" = SWAP,
-            "2 ROLL" = ROT. 0 is noop.
-
+'S          Returns current stack pointer, not counting the
+            push it's making right now.
+S0          Returns address of PSP TOS. When PSP is empty,
+            'S == S0
+                                                        (cont.)
