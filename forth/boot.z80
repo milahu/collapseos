@@ -281,6 +281,7 @@ PC ORG @ 0x1b + ! ( next )
     IY INCss,
     ( continue to execute )
 
+L3 BSET
 PC ORG @ 0x34 + ! ( execute )
     ( DE points to wordref )
     EXDEHL,
@@ -292,6 +293,7 @@ PC ORG @ 0x34 + ! ( execute )
     ( DE points to PFA )
     JP(HL),
 
+L1 BSET
 PC ORG @ 0x0f + ! ( compiledWord )
 ( Execute a list of atoms, which always end with EXIT.
   DE points to that list. What do we do:
@@ -308,7 +310,7 @@ PC ORG @ 0x0f + ! ( compiledWord )
     D (HL) LDrr,
     HL INCss,
     HL PUSHqq, IY POPqq, ( --> IP )
-    0x33 JPnn,      ( 33 == execute )
+    JR, L3 BWR      ( execute )
 
 PC ORG @ 0x0c + ! ( cellWord )
 ( Pushes PFA directly )
@@ -330,7 +332,7 @@ PC ORG @ 0x2c + ! ( doesWord )
     E (HL) LDrr,
     HL INCss,
     D (HL) LDrr,
-    0x0e JPnn, ( 0e == compiledWord )
+    JR, L1 BWR   ( compiledWord )
 
 ( Core words )
   KEY and EMIT are not defined here. There're
@@ -340,7 +342,7 @@ PC ORG @ 0x2c + ! ( doesWord )
 CODE EXECUTE
     DE POPqq,
     chkPS,
-    0x33 JPnn,      ( 33 == execute )
+    JR, L3 BWR      ( execute )
 
 ( a b c -- b c a )
 CODE ROT
