@@ -1,0 +1,14 @@
+: X:
+    (xentry) [ 0x0e LITN ] C,
+    BEGIN WORD
+    XCURRENT @ SWAP ( xcur w ) _find ( a f )
+    IF   ( a )
+        DUP IMMED? IF ABORT THEN
+        DUP XOFF @ > IF XOFF @ - THEN ,
+    ELSE ( w )
+        0x02 RAM+ @ SWAP ( cur w ) _find ( a f )
+        IF DUP IMMED? NOT IF ABORT THEN EXECUTE
+        ELSE (parse*) @ EXECUTE LITN THEN
+    THEN
+    AGAIN
+;

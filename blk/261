@@ -1,0 +1,6 @@
+(cont.)
+See example in /emul/forth/xcomp.fs
+
+Why limit ourselves to icore? Oh, I've tried cross-compiling
+the whole shebang. I tried. And failed. Too dynamic.
+

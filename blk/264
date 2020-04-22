@@ -1,0 +1,14 @@
+The "X:" word
+
+Because the ";" word goes back only one level in RSP and
+this limits our ability to separate X: in sub words and this
+means a rather cramped B265. This means no inline comments,
+hence this block here.
+
+0x0e is compiledWord. first _find is on xdict. If found, we
+compile it with offsets. We abort on IMMED? because we're
+never supposed to encounter an immediate at this point.
+
+If not found, we try the same word on system dict (RAM+02).
+If found and is immediate, execute. If founf and not immediate,
+error. If not found, try number.

@@ -1,3 +1,4 @@
+262 LOAD
 : CODE XCODE ;
 : IMMEDIATE XIMM ;
 : : [ ' X: , ] ;

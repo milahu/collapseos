@@ -25,7 +25,7 @@
   expected to have been loaded prior to icore and redefines
   ":" and other defining words. So, in other words, when
   compiling icore, ":" doesn't means what you think it means,
-  go look in xcomp.
+  go look in B260.
 )
 
 : RAM+
