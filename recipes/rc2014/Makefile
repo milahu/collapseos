@@ -15,7 +15,6 @@ BOOTSRCS = conf.fs \
 PATHS = \
 	$(FDIR)/core.fs \
 	$(FDIR)/cmp.fs \
-	$(FDIR)/str.fs \
 	$(FDIR)/parse.fs \
 	$(BASEDIR)/drv/acia.fs \
 	$(FDIR)/print.fs \

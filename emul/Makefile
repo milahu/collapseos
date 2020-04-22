@@ -6,7 +6,7 @@ BOOTSRCS = ./forth/conf.fs \
 	../forth/icore.fs \
 	./forth/xstop.fs
 
-FORTHSRCS = core.fs cmp.fs print.fs str.fs parse.fs readln.fs fmt.fs blk.fs
+FORTHSRCS = core.fs cmp.fs print.fs parse.fs readln.fs fmt.fs blk.fs
 FORTHSRC_PATHS = ${FORTHSRCS:%=../forth/%} forth/run.fs
 OBJS = emul.o libz80/libz80.o
 SLATEST = ../tools/slatest

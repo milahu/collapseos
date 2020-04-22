@@ -29,10 +29,6 @@
     DUP @ 30768 = NOT IF 0 EXIT THEN    ( a 0 )
     ( We have "0x" prefix )
     2+
-    ( validate slen )
-    DUP SLEN                            ( a l )
-    DUP NOT IF DROP 0 EXIT THEN         ( a 0 )
-    4 > IF DROP 0 EXIT THEN             ( a 0 )
     0  ( a r )
     BEGIN
     SWAP C@+                            ( r a+1 c )
@@ -58,10 +54,6 @@
     DUP @ 25136 = NOT IF 0 EXIT THEN    ( a 0 )
     ( We have "0b" prefix )
     2+
-    ( validate slen )
-    DUP SLEN                            ( a l )
-    DUP 0 = IF DROP 0 EXIT THEN         ( a 0 )
-    16 > IF DROP 0 EXIT THEN            ( a 0 )
     0 ( a r )
     BEGIN
     SWAP C@+                               ( r a+1 c )
