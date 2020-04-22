@@ -419,6 +419,7 @@ CODE (roll)
     B H LDrr,
     C L LDrr,
     SP ADDHLss,
+    HL INCss,
     D H LDrr,
     E L LDrr,
     HL DECss,
