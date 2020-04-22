@@ -489,12 +489,7 @@ CODE NOT
     chkPS,
     A L LDrr,
     H ORr,
-    HL 0 LDddnn,
-    IFZ,
-        ( false, make 1 )
-        HL INCss,
-    THEN,
-    HL PUSHqq,
+    PUSHZ,
 ;CODE
 
 CODE +
@@ -656,9 +651,6 @@ CODE S=
     DE  POPqq,
     HL  POPqq,
     chkPS,
-    ( pre-push false )
-    BC 0 LDddnn,
-    BC PUSHqq,
     BEGIN, ( loop )
         LDA(DE),
         (HL) CPr,
@@ -668,11 +660,8 @@ CODE S=
         HL INCss,
         DE INCss,
     JRNZ, AGAIN, ( loop )
-    ( success, change false to true )
-    HL POPqq,
-    HL INCss,
-    HL PUSHqq,
 L1 FSET ( end )
+    PUSHZ,
 ;CODE
 
 CODE CMP
@@ -703,14 +692,12 @@ CODE _find
     IFNZ,
         ( not found )
         HL PUSHqq,
-        DE 0 LDddnn,
-        DE PUSHqq,
+        PUSH0,
         JPNEXT,
     THEN,
     ( found )
     DE PUSHqq,
-    DE 1 LDddnn,
-    DE PUSHqq,
+    PUSH1,
 ;CODE
 
 CODE (im1)
@@ -718,15 +705,8 @@ CODE (im1)
     EI,
 ;CODE
 
-CODE 0
-    HL 0 LDddnn,
-    HL PUSHqq,
-;CODE
-
-CODE 1
-    HL 1 LDddnn,
-    HL PUSHqq,
-;CODE
+CODE 0 PUSH0, ;CODE
+CODE 1 PUSH1, ;CODE
 
 CODE -1
     HL -1 LDddnn,

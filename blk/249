@@ -1,0 +1,6 @@
+( Macros )
+( clear carry + SBC )
+: SUBHLss, A ORr, SBCHLss, ;
+: PUSH0, BC 0 LDddnn, BC PUSHqq, ;
+: PUSH1, BC 1 LDddnn, BC PUSHqq, ;
+: PUSHZ, BC 0 LDddnn, IFZ, BC INCss, THEN, BC PUSHqq, ;
