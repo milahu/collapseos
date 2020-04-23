@@ -9,7 +9,7 @@ BOOTSRCS = conf.fs \
 	$(BASEDIR)/drv/acia.z80 \
 	$(BASEDIR)/drv/sdc.z80 \
 	$(FDIR)/icore.fs \
-	$(EDIR)/xstop.fs
+	$(EDIR)/stop.fs
 
 PATHS = \
 	$(FDIR)/core.fs \

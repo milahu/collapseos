@@ -1,6 +1,7 @@
 262 LOAD  ( xcomp )
 : CODE XCODE ;
 : IMMEDIATE XIMM ;
+: (entry) (xentry) ;
 : : [ ' X: , ] ;
 
 CURRENT @ XCURRENT !

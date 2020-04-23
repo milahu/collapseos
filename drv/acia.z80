@@ -12,7 +12,7 @@ ACIA_MEM
   +6 ACIA)
 )
 
-(xentry) ~ACIA
+(entry) ~ACIA
     AF PUSHqq,
     HL PUSHqq,
     DE PUSHqq,

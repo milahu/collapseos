@@ -3,7 +3,7 @@ TARGETS = forth/forth
 BOOTSRCS = ./forth/conf.fs \
 	./forth/xcomp.fs \
 	../forth/icore.fs \
-	./forth/xstop.fs
+	./forth/stop.fs
 
 FORTHSRCS = core.fs cmp.fs print.fs parse.fs readln.fs fmt.fs blk.fs
 FORTHSRC_PATHS = ${FORTHSRCS:%=../forth/%} forth/run.fs
