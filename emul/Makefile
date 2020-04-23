@@ -2,7 +2,6 @@ TARGETS = forth/forth
 # Those Forth source files are in a particular order
 BOOTSRCS = ./forth/conf.fs \
 	./forth/xcomp.fs \
-	../forth/boot.z80 \
 	../forth/icore.fs \
 	./forth/xstop.fs
 

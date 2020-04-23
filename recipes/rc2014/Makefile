@@ -6,7 +6,6 @@ STAGE2 = $(EDIR)/stage2
 EMUL = $(BASEDIR)/emul/hw/rc2014/classic
 BOOTSRCS = conf.fs \
 	$(EDIR)/xcomp.fs \
-	$(FDIR)/boot.z80 \
 	$(BASEDIR)/drv/acia.z80 \
 	$(BASEDIR)/drv/sdc.z80 \
 	$(FDIR)/icore.fs \
