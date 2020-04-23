@@ -1,0 +1,7 @@
+: SDC@
+    2 * DUP BLK( SWAP    ( b a b )
+    _sdc@
+    1+ BLK( 512 + SWAP
+    _sdc@
+;
+

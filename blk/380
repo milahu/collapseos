@@ -1,0 +1,16 @@
+: _err _sdcDesel ABORT" SDerr" ;
+
+( Initialize a SD card. This should be called at least 1ms
+  after the powering up of the card. )
+: SDC$
+( Wake the SD card up. After power up, a SD card has to receive
+  at least 74 dummy clocks with CS and DI high. We send 80. )
+    10 0 DO _idle DROP LOOP
+    ( call cmd0 and expect a 0x01 response (card idle)
+	  this should be called multiple times. we're actually
+      expected to. let's call this for a maximum of 10 times. )
+    0 ( dummy )
+    10 0 DO  ( r )
+        DROP 0x40 0 0 SDCMDR1  ( CMD0 )
+        DUP 0x01 = IF LEAVE THEN
+    LOOP 0x01 = NOT IF _err THEN                      ( cont. )

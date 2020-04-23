@@ -7,7 +7,6 @@ EMUL = $(BASEDIR)/emul/hw/rc2014/classic
 BOOTSRCS = conf.fs \
 	$(EDIR)/xcomp.fs \
 	drvz80.fs \
-	$(BASEDIR)/drv/sdc.z80 \
 	$(FDIR)/icore.fs \
 	$(EDIR)/stop.fs
 

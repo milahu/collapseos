@@ -1,0 +1,15 @@
+: _sdc@  ( dstaddr blkno -- )
+    _sdcSel 0x51 ( CMD17 ) 0 ROT ( a cmd 0 blkno ) _cmd
+    IF _err THEN
+    _wait 0xfe = NOT IF _err THEN
+    0 SWAP               ( crc a )
+    512 0 DO             ( crc a )
+        DUP _idle        ( crc a a n )
+        DUP ROT C!       ( crc a n )
+        ROT SWAP _crc16  ( a crc )
+        SWAP 1+          ( crc a+1 )
+    LOOP
+    DROP                 ( crc1 )
+    _idle 256 * _idle +  ( crc2 )
+    _wait DROP _sdcDesel
+    = NOT IF _err THEN ;

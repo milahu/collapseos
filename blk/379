@@ -1,0 +1,16 @@
+( cmd arg1 arg2 -- r )
+( Send a command that expects a R1 response, handling CS. )
+: SDCMDR1 _sdcSel _cmd _sdcDesel ;
+
+( cmd arg1 arg2 -- r arg1 arg2 )
+( Send a command that expects a R7 response, handling CS. A R7
+  is a R1 followed by 4 bytes. arg1 contains bytes 0:1, arg2
+  has 2:3 )
+: SDCMDR7
+    _sdcSel
+    _cmd                 ( r )
+    _idle 256 * _idle +  ( r arg1 )
+    _idle 256 * _idle +  ( r arg1 arg2 )
+    _sdcDesel
+;
+

@@ -1,0 +1,9 @@
+CODE _sdcSel
+    SDC_CSLOW OUTnA,
+;CODE
+
+CODE _sdcDesel
+    SDC_CSHIGH OUTnA,
+;CODE
+
+

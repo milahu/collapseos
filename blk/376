@@ -1,0 +1,16 @@
+( c n -- c )
+( Computes n into crc c with polynomial 0x09
+  Note that the result is "left aligned", that is, that 8th
+  bit to the "right" is insignificant (will be stop bit). )
+: _crc7
+    XOR           ( c )
+    8 0 DO
+        2 *       ( <<1 )
+        DUP 255 > IF
+            ( MSB was set, apply polynomial )
+            0xff AND
+            0x12 XOR  ( 0x09 << 1, we apply CRC on high bits )
+        THEN
+    LOOP
+;
+
