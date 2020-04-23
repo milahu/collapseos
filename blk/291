@@ -1,0 +1,16 @@
+PC ORG @ 4 + ! ( find )
+( Find the entry corresponding to word name where (HL) points
+  to in dictionary having its tip at DE and sets DE to point
+  to that entry. Z if found, NZ if not. )
+    BC PUSHqq,
+    HL PUSHqq,
+	( First, figure out string len )
+    BC 0 LDddnn,
+    A XORr,
+    CPIR,
+	( C has our length, negative, -1 )
+    A C LDrr,
+    NEG,
+    A DECr,
+	( special case. zero len? we never find anything. )
+    JRZ, L1 FWR ( fail-B296 )                         ( cont. )

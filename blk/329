@@ -1,0 +1,16 @@
+CODE CMP
+    HL  POPqq,
+    DE  POPqq,
+    chkPS,
+    DE SUBHLss,
+    BC 0 LDddnn,
+    IFNZ, ( < or > )
+        BC INCss,
+        IFNC, ( < )
+            BC DECss,
+            BC DECss,
+        THEN,
+    THEN,
+    BC PUSHqq,
+;CODE
+

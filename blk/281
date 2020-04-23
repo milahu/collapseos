@@ -1,0 +1,7 @@
+(cont.) STABLE ABI: The boot binary starts with a list of
+references. The address of these references have to stay to
+those addresses. The rest of the Collapse OS code depend on it.
+In fact, up until 0x67, the (?br) wordref, pretty much
+everything has to stay put.
+
+To assemble, run "282 LOAD".

@@ -1,0 +1,13 @@
+PC ORG @ 0x12 + ! ( pushRS )
+    IX INCss,
+    IX INCss,
+    0 IX+ L LDIXYr,
+    1 IX+ H LDIXYr,
+    RET,
+
+PC ORG @ 0x15 + ! ( popRS )
+    L 0 IX+ LDrIXY,
+    H 1 IX+ LDrIXY,
+    IX DECss,
+    IX DECss,
+    RET,

@@ -1,10 +1,10 @@
 Disk
 
-BLK> -- a Address of the current block variable.
-LIST n -- Prints the contents of the block n on screen in the
-          form of 16 lines of 64 columns.
-LOAD n -- Interprets Forth code from block n
-
+BLK>  -- a      Address of the current block variable.
+LIST  n --      Prints the contents of the block n on screen
+                in the form of 16 lines of 64 columns.
+LOAD  n --      Interprets Forth code from block n
+LOADR n1 n2 --  Load block range between n1 and n2, inclusive.
 
 
 

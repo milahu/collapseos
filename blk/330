@@ -1,0 +1,16 @@
+CODE _find  ( cur w -- a f )
+    HL POPqq,       ( w )
+    DE POPqq,       ( cur )
+    chkPS,
+    ( 3 == find )
+    3 CALLnn,
+    IFNZ,
+        ( not found )
+        HL PUSHqq,
+        PUSH0,
+        JPNEXT,
+    THEN,
+    ( found )
+    DE PUSHqq,
+    PUSH1,
+;CODE

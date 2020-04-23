@@ -1,0 +1,16 @@
+    C A LDrr, ( C holds our length )
+( Let's do something weird: We'll hold HL by the *tail*.
+  Because of our dict structure and because we know our
+  lengths, it's easier to compare starting from the end.
+  Currently, after CPIR, HL points to char after null. Let's
+  adjust. Because the compare loop pre-decrements, instead
+  of DECing HL twice, we DEC it once. )
+    HL DECss,
+    BEGIN, ( inner )
+    ( DE is a wordref, first step, do our len correspond? )
+        HL PUSHqq,          ( --> lvl 1 )
+        DE PUSHqq,          ( --> lvl 2 )
+        DE DECss,
+        LDA(DE),
+        0x7f ANDn,          ( remove IMMEDIATE flag )
+        C CPr,                                        ( cont. )

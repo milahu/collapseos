@@ -1,0 +1,14 @@
+CODE BYE
+    HALT,
+;CODE
+
+CODE (resSP)
+    ( INITIAL_SP == RAM+0 )
+    SP RAMSTART LDdd(nn),
+;CODE
+
+CODE (resRS)
+    IX RS_ADDR LDddnn,
+;CODE
+
+

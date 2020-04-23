@@ -1,0 +1,9 @@
+( Core words )
+( KEY and EMIT are not defined here. There're
+  expected to be defined in platform-specific code. )
+
+
+CODE EXECUTE
+    DE POPqq,
+    chkPS,
+    JR, L3 BWR      ( execute-B301 )

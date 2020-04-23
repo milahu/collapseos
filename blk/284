@@ -1,0 +1,12 @@
+( BOOT DICT: There are only 3 words in the boot dict, but
+  these words' offset need to be stable, so they're part of
+  the "stable ABI" )
+'E' A, 'X' A, 'I' A, 'T' A,
+0 A,,   ( prev )
+4 A,
+H@ XCURRENT !        ( set current tip of dict, 0x42 )
+    0x17 A,          ( nativeWord )
+    0x14 CALLnn,     ( popRS )
+    HL PUSHqq, IY POPqq, ( --> IP )
+    JPNEXT,
+

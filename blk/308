@@ -1,0 +1,10 @@
+( a b -- b a )
+CODE SWAP
+    HL POPqq,       ( B )
+    DE POPqq,       ( A )
+    chkPS,
+    HL PUSHqq,      ( B )
+    DE PUSHqq,      ( A )
+;CODE
+
+

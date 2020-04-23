@@ -1,0 +1,16 @@
+PC ORG @ 0x22 + ! ( litWord )
+( Like numberWord, but instead of being followed by a 2 bytes
+  number, it's followed by a null-terminated string. When
+  called, puts the string's address on PS )
+    IY PUSHqq, HL POPqq, ( <-- IP )
+    HL PUSHqq,
+    ( skip to null char )
+    A XORr, ( look for null )
+    B A LDrr,
+    C A LDrr,
+    CPIR,
+	( CPIR advances HL regardless of comparison, so goes one
+      char after NULL. This is good, because that's what we
+      want... )
+    HL PUSHqq, IY POPqq, ( --> IP )
+    JPNEXT,

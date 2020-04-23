@@ -1,0 +1,12 @@
+L3 BSET
+PC ORG @ 0x34 + ! ( execute )
+    ( DE points to wordref )
+    EXDEHL,
+    E (HL) LDrr,
+    D 0 LDrn,
+    EXDEHL,
+    ( HL points to code pointer )
+    DE INCss,
+    ( DE points to PFA )
+    JP(HL),
+

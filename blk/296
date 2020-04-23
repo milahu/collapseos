@@ -1,0 +1,7 @@
+    L1 FSET ( fail )
+    A XORr,
+    A INCr,
+    L2 FSET ( end )
+    HL POPqq,
+    BC POPqq,
+    RET,

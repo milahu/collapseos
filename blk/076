@@ -1,0 +1,6 @@
+STACK OVERFLOW PROTECTION: To avoid having to check for stack
+underflow after each pop operation (which can end up being
+prohibitive in terms of costs), we give ourselves a nice 6
+bytes buffer. 6 bytes because we seldom have words requiring
+more than 3 items from the stack. Then, at each "exit" call we
+check for stack underflow.

@@ -1,0 +1,11 @@
+( a b c -- b c a )
+CODE ROT
+    HL POPqq,       ( C )
+    DE POPqq,       ( B )
+    BC POPqq,       ( A )
+    chkPS,
+    DE PUSHqq,      ( B )
+    HL PUSHqq,      ( C )
+    BC PUSHqq,      ( A )
+;CODE
+

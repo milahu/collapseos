@@ -1,0 +1,15 @@
+( Low-level part of ROLL. Example:
+  "1 2 3 4 4 (roll)" --> "1 3 4 4". No sanity checks, never
+  call with 0. )
+CODE (roll)
+    HL POPqq,
+    B H LDrr,
+    C L LDrr,
+    SP ADDHLss,
+    HL INCss,
+    D H LDrr,
+    E L LDrr,
+    HL DECss,
+    HL DECss,
+    LDDR,
+;CODE

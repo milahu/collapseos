@@ -1,0 +1,11 @@
+( a b -- a b a )
+CODE OVER
+    HL POPqq,       ( B )
+    DE POPqq,       ( A )
+    chkPS,
+    DE PUSHqq,      ( A )
+    HL PUSHqq,      ( B )
+    DE PUSHqq,      ( A )
+;CODE
+
+

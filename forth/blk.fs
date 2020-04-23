@@ -86,3 +86,6 @@
         R> DROP ( BLK> )
     THEN
 ;
+
+( b1 b2 -- )
+: LOADR 1+ SWAP DO I DUP . CRLF LOAD LOOP ;

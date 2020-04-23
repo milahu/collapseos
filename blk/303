@@ -1,0 +1,5 @@
+PC ORG @ 0x0c + ! ( cellWord )
+( Pushes PFA directly )
+    DE PUSHqq,
+    JPNEXT,
+

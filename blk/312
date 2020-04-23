@@ -1,0 +1,8 @@
+( a b -- )
+CODE 2DROP
+    HL POPqq,
+    HL POPqq,
+    chkPS,
+;CODE
+
+

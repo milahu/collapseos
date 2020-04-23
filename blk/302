@@ -1,0 +1,16 @@
+L1 BSET
+PC ORG @ 0x0f + ! ( compiledWord )
+( 1. Push current IP to RS
+  2. Set new IP to the second atom of the list
+  3. Execute the first atom of the list. )
+    IY PUSHqq, HL POPqq, ( <-- IP )
+    0x11 CALLnn,     ( 11 == pushRS )
+    EXDEHL,          ( HL points to PFA )
+    ( While we increase, dereference into DE for execute call
+      later. )
+    E (HL) LDrr,
+    HL INCss,
+    D (HL) LDrr,
+    HL INCss,
+    HL PUSHqq, IY POPqq, ( --> IP )
+    JR, L3 BWR      ( execute-B301 )

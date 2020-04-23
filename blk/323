@@ -1,0 +1,14 @@
+CODE C!
+    HL POPqq,
+    DE POPqq,
+    chkPS,
+    (HL) E LDrr,
+;CODE
+
+CODE C@
+    HL POPqq,
+    chkPS,
+    L (HL) LDrr,
+    H 0 LDrn,
+    HL PUSHqq,
+;CODE

@@ -1,0 +1,13 @@
+CODE (?br)           ( 0x67 )
+    HL POPqq,
+    chkPS,
+    A H LDrr,
+    L ORr,
+    JRZ, L2 BWR ( BR + 2. False, branch )
+    ( True, skip next 2 bytes and don't branch )
+    IY INCss,
+    IY INCss,
+    JPNEXT,
+
+( END OF STABLE ABI )
+

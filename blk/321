@@ -1,0 +1,15 @@
+    BEGIN, ( loop )
+        SCF,
+        C RLr,
+        RLA,
+        HL ADCHLss,
+        DE SBCHLss,
+        IFC,
+            DE ADDHLss,
+            C DECr,
+        THEN,
+    DJNZ, AGAIN, ( loop )
+    B A LDrr,
+    HL PUSHqq,
+    BC PUSHqq,
+;CODE

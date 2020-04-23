@@ -1,10 +1,10 @@
-103 LOAD 104 LOAD 105 LOAD
+103 105 LOADR
 
 : BROWSE
     100 _LIST
     BEGIN
         KEY CASE
-            'Q' OF DROP EXIT ENDOF
+            'Q' OF EXIT ENDOF
             'B' OF B ENDOF
             'N' OF N ENDOF
             _NUM

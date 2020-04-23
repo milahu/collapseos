@@ -1,0 +1,4 @@
+    EXDEHL,
+    HL L1 @ LDddnn,
+    0x03 CALLnn,        ( 03 == find )
+    0x33 JPnn,          ( 33 == execute )

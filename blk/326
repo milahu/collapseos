@@ -1,0 +1,13 @@
+CODE >R
+    HL POPqq,
+    chkPS,
+    ( 17 == pushRS )
+    17 CALLnn,
+;CODE
+
+CODE R>
+    ( 20 == popRS )
+    20 CALLnn,
+    HL PUSHqq,
+;CODE
+

@@ -1,0 +1,16 @@
+CODE S=
+    DE  POPqq,
+    HL  POPqq,
+    chkPS,
+    BEGIN, ( loop )
+        LDA(DE),
+        (HL) CPr,
+        JRNZ, L1 FWR ( not equal? break early to "end".
+                       NZ is set. )
+        A ORr,   ( if our char is null, stop )
+        HL INCss,
+        DE INCss,
+    JRNZ, AGAIN, ( loop )
+L1 FSET ( end )
+    PUSHZ,
+;CODE

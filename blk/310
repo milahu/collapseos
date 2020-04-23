@@ -1,0 +1,16 @@
+CODE PICK
+    HL POPqq,
+    chkPS,
+    ( x2 )
+    L SLAr, H RLr,
+    SP ADDHLss,
+    C (HL) LDrr,
+    HL INCss,
+    B (HL) LDrr,
+    ( check PS range before returning )
+    EXDEHL,
+    RAMSTART LDHL(nn), ( RAM+00 == INITIAL_SP )
+    DE SUBHLss,
+    CC L2 @ JPccnn,    ( abortUnderflow-B298 )
+    BC PUSHqq,
+;CODE

@@ -1,0 +1,16 @@
+CODE *  ( DE * BC -> DE (high) and HL (low) )
+    DE POPqq, BC POPqq, chkPS,
+    HL 0 LDddnn,
+    A 0x10 LDrn,
+( loop )
+    HL ADDHLss,
+    E RLr, D RLr,
+    JRNC, 4 A, ( noinc )
+    BC ADDHLss,
+    JRNC, 1 A, ( noinc )
+    DE INCss,
+( noinc )
+    A DECr,
+    JRNZ, -14 A, ( loop )
+    HL PUSHqq,
+;CODE

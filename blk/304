@@ -1,0 +1,16 @@
+PC ORG @ 0x2c + ! ( doesWord )
+( The word was spawned from a definition word that has a
+  DOES>. PFA+2 (right after the actual cell) is a link to the
+  slot right after that DOES>. Therefore, what we need to do
+  push the cell addr like a regular cell, then follow the
+  linkfrom the PFA, and then continue as a regular
+  compiledWord. )
+    DE PUSHqq, ( like a regular cell )
+    EXDEHL,
+    HL INCss,
+    HL INCss,
+    E (HL) LDrr,
+    HL INCss,
+    D (HL) LDrr,
+    JR, L1 BWR   ( compiledWord-B302 )
+
