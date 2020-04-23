@@ -1,0 +1,12 @@
+( The NOT is to normalize the negative/positive numbers to 1
+  or 0. Hadn't we wanted to normalize, we'd have written:
+  32 CMP 1 - )
+: WS? 33 CMP 1+ NOT ;
+
+: TOWORD
+    BEGIN
+        C< DUP WS? NOT IF EXIT THEN DROP
+    AGAIN
+;
+
+

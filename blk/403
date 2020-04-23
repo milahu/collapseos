@@ -1,0 +1,14 @@
+: INTERPRET
+    BEGIN
+    WORD
+    (find)
+    IF
+        1 FLAGS !
+        EXECUTE
+        0 FLAGS !
+    ELSE
+        (parse*) @ EXECUTE
+    THEN
+    AGAIN
+;
+

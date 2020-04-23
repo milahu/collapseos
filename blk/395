@@ -1,0 +1,15 @@
+( r c -- r f )
+( Parse digit c and accumulate into result r.
+  Flag f is 0 when c was a valid digit, 1 when c was WS,
+  -1 when c was an invalid digit. )
+: _pdacc
+    DUP 0x21 < IF DROP 1 EXIT THEN
+    ( parse char )
+    '0' -
+    ( if bad, return "r -1" )
+    DUP 0< IF DROP -1 EXIT THEN    ( bad )
+    DUP 9 > IF DROP -1 EXIT THEN   ( bad )
+    ( good, add to running result )
+    SWAP 10 * +                    ( r*10+n )
+    0                              ( good )
+;

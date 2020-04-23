@@ -1,10 +1,5 @@
-TARGETS = forth/forth
+TARGETS = forth/forth forth/stage2
 # Those Forth source files are in a particular order
-BOOTSRCS = ./forth/conf.fs \
-	./forth/xcomp.fs \
-	../forth/icore.fs \
-	./forth/stop.fs
-
 FORTHSRCS = core.fs cmp.fs print.fs parse.fs readln.fs fmt.fs blk.fs
 FORTHSRC_PATHS = ${FORTHSRCS:%=../forth/%} forth/run.fs
 OBJS = emul.o libz80/libz80.o
@@ -76,7 +71,7 @@ emul.o: emul.c
 
 .PHONY: updatebootstrap
 updatebootstrap: forth/stage2
-	cat $(BOOTSRCS) | ./forth/stage2 > ./forth/z80c.bin
+	cat ./forth/xcomp.fs | ./forth/stage2 > ./forth/z80c.bin
 
 .PHONY: pack
 pack:

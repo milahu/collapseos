@@ -1,0 +1,8 @@
+: ABORT (resSP) QUIT ;
+
+: = CMP NOT ;
+: < CMP -1 = ;
+: > CMP 1 = ;
+: 0< 32767 > ;
+
+

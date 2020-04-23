@@ -1,0 +1,12 @@
+: BOOT
+    0x02 RAM+ CURRENT* !
+    LIT< (parse) (find) DROP (parse*) !
+    ( 2e == SYSTEM SCRATCHPAD )
+    CURRENT @ 0x2e RAM+ !
+    ( 0c == CINPTR )
+    LIT< (boot<) (find) DROP 0x0c RAM+ !
+    LIT< INIT (find)
+    IF EXECUTE
+    ELSE DROP INTERPRET THEN
+;
+

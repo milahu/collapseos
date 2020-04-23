@@ -1,0 +1,16 @@
+Inner core
+
+This unit represents core definitions that happen right after
+native definitions. Before core.fs.
+
+Unlike core.fs and its followers, this unit isn't self-
+sustained. Like native defs it uses the machinery of a full
+Forth interpreter, notably for flow structures.
+
+Because of that, it has to obey specific rules:
+
+1. It cannot compile a word from higher layers. Using
+   immediates is fine though.
+
+
+                                                        (cont.)

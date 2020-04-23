@@ -4,11 +4,6 @@ FDIR = $(BASEDIR)/forth
 EDIR = $(BASEDIR)/emul/forth
 STAGE2 = $(EDIR)/stage2
 EMUL = $(BASEDIR)/emul/hw/rc2014/classic
-BOOTSRCS = conf.fs \
-	$(EDIR)/xcomp.fs \
-	drvz80.fs \
-	$(FDIR)/icore.fs \
-	$(EDIR)/stop.fs
 
 PATHS = \
 	$(FDIR)/core.fs \
@@ -29,8 +24,8 @@ $(TARGET): z80c.bin $(SLATEST) $(PATHS)
 	$(SLATEST) $@
 	cat $(PATHS) | $(STRIPFC) >> $@
 
-z80c.bin: conf.fs
-	cat $(BOOTSRCS) | $(STAGE2) > $@
+z80c.bin: xcomp.fs
+	cat xcomp.fs | $(STAGE2) > $@
 
 $(SLATEST):
 	$(MAKE) -C $(BASEDIR)/tools

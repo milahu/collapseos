@@ -1,0 +1,10 @@
+: SCPY
+    BEGIN         ( a )
+        DUP C@    ( a c )
+        DUP C,    ( a c )
+        NOT IF DROP EXIT THEN
+        1+        ( a+1 )
+    AGAIN
+;
+
+

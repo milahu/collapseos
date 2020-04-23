@@ -1,0 +1,11 @@
+( This is only the "early parser" in earlier stages. No need
+  for an abort message )
+: (parse) (parsed) NOT IF ABORT THEN ;
+
+: C< 0x0c RAM+ @ EXECUTE ( 0c == CINPTR ) ;
+
+: , HERE @ ! HERE @ 2+ HERE ! ;
+
+: C, HERE @ C! HERE @ 1+ HERE ! ;
+
+

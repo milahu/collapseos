@@ -1,0 +1,16 @@
+2. If it references a word from this unit or from native
+   definitions, these need to be properly offsetted because
+   their offset at compile time are not the same as their
+   runtime offsets.
+3. Anything they refer to in the boot binary has to be properly
+   stabilized.
+4. Make sure that the words you compile are not overridden by
+   the full interpreter.
+5. When using words as immediates, make sure that they're not
+   defined in icore or, if they are, make sure that they are
+   *not* offsetted
+
+
+
+
+                                                        (cont.)
