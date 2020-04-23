@@ -1,0 +1,14 @@
+: KEY
+    ( inc then fetch )
+    ACIAR> @ 1+ DUP ACIA) @ = IF
+        DROP ACIA( @
+    THEN
+
+    ( As long as R> == W>-1, it means that buffer is empty )
+    BEGIN DUP ACIAW> @ = NOT UNTIL
+
+    ACIAR> !
+    ACIAR> @ C@
+;
+
+

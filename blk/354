@@ -1,0 +1,16 @@
+        IFNZ, ( buffer full? )
+            ( no, continue )
+            DE ADDHLss, ( restore ACIAW> )
+            ( buffer not full, let's write )
+            ACIA_IO INAn,
+            (HL) A LDrr,
+            ( advance W> )
+            HL INCss,
+            ( +2 == ACIAW> )
+            ACIA_MEM 2+ LD(nn)HL,
+            ( +6 == ACIA) )
+            DE ACIA_MEM 6 + LDdd(nn),
+            DE SUBHLss,
+
+
+                                                      ( cont. )

@@ -1,0 +1,16 @@
+            IFZ, ( end of buffer reached? )
+                ( yes )
+                ( +4 == ACIA( )
+                ACIA_MEM 4 + LDHL(nn),
+                ( +2 == ACIAW> )
+                ACIA_MEM 2+ LD(nn)HL,
+            THEN,
+        THEN,
+    THEN,
+    DE POPqq,
+    HL POPqq,
+    AF POPqq,
+    EI,
+    RETI,
+
+

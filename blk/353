@@ -1,0 +1,16 @@
+(entry) ~ACIA
+    AF PUSHqq,
+    HL PUSHqq,
+    DE PUSHqq,
+	( Read our character from ACIA into our BUFIDX )
+    ACIA_CTL INAn,
+    0x01 ANDn,   ( is ACIA rcv buf full? )
+    IFNZ,
+        ( correct interrupt cause )
+        ( +2 == ACIAW> )
+        ACIA_MEM 2+ LDHL(nn),
+        ( is it == to ACIAR>? )
+        ( +0 == ACIAR> )
+        DE ACIA_MEM LDdd(nn),
+        ( carry cleared from ANDn above )
+        DE SBCHLss,                                   ( cont. )

@@ -1,0 +1,15 @@
+ACIA driver
+
+Manage I/O from an asynchronous communication interface adapter
+(ACIA). provides "EMIT" to put c char on the ACIA as well as
+an input buffer. You have to call "~ACIA" on interrupt for
+this module to work well.
+
+CONFIGURATION
+
+ACIA_CTL: IO port for the ACIA's control registers
+ACIA_IO: IO port for the ACIA's data registers
+ACIA_MEM: Address in memory that can be used variables shared
+          with ACIA's native words. 8 bytes used.
+
+Load z80 words with "352 LOAD" and Forth words with "357 LOAD".
