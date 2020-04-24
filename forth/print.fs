@@ -26,10 +26,11 @@
 : ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
 
 : (uflw) ABORT" stack underflow" ;
-: (wnf) ABORT" word not found" ;
 
 : BS 8 EMIT ;
 : LF 10 EMIT ;
 : CR 13 EMIT ;
 : CRLF CR LF ;
 : SPC 32 EMIT ;
+
+: (wnf) (print) SPC ABORT" word not found" ;
