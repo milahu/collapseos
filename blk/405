@@ -3,6 +3,7 @@
     LIT< (parse) (find) DROP (parse*) !
     ( 2e == SYSTEM SCRATCHPAD )
     CURRENT @ 0x2e RAM+ !
+    0 0x08 RAM+ !  ( 08 == C<* override )
     ( 0c == C<* )
     LIT< (boot<) (find) DROP 0x0c RAM+ !
     ( boot< always has a char waiting. 06 == C<?* )

@@ -61,28 +61,28 @@
 ;
 
 : LOAD
-    ( save BLK>, CINPTR and boot< ptr to RSP )
+    ( save BLK>, C<* override and boot< ptr to RSP )
     BLK> @ >R
-    0x0c RAM+ @ >R
+    0x08 RAM+ @ >R
     0x2e RAM+ @ >R
     BLK@
     ( Point to beginning of BLK )
     BLK( 0x2e RAM+ !
-    ( 0c == CINPTR )
-    ['] _ 0x0c RAM+ !
+    ( 08 == C<* override )
+    ['] _ 0x08 RAM+ !
     INTERPRET
     R> 0x2e RAM+ !
-    ( Before we restore CINPTR, are we restoring it to "_"?
+    ( Before we restore C<* are we restoring it to "_"?
       if yes, it means we're in a nested LOAD which means we
       should also load back the saved BLK>. Otherwise, we can
       ignore the BLK> from RSP. )
-    I 0x0c RAM+ @ = IF
+    I 0x08 RAM+ @ = IF
         ( nested load )
-        R> DROP ( CINPTR )
+        R> DROP ( C<* )
         R> BLK@
     ELSE
         ( not nested )
-        R> 0x0c RAM+ !
+        R> 0x08 RAM+ !
         R> DROP ( BLK> )
     THEN
 ;

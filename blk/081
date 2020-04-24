@@ -3,7 +3,7 @@ RAMSTART  INITIAL_SP    +53       readln's variables
 +02       CURRENT       +55       adev's variables
 +04       HERE          +57       blk's variables
 +06       C<?*          +59       z80a's variables
-+08       FUTURE USES   +5b       FUTURE USES
++08       C<* override  +5b       FUTURE USES
 +0a       PARSEPTR      +70       DRIVERS
 +0c       C<*           +80       RAMEND
 +0e       WORDBUF
