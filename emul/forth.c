@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
-#include "../emul.h"
+#include "emul.h"
 #include "forth1-bin.h"
 
 // in sync with glue.asm

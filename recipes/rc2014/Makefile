@@ -1,7 +1,7 @@
 TARGET = stage1.bin
 BASEDIR = ../..
 FDIR = $(BASEDIR)/forth
-EDIR = $(BASEDIR)/emul/forth
+EDIR = $(BASEDIR)/emul
 STAGE2 = $(EDIR)/stage2
 EMUL = $(BASEDIR)/emul/hw/rc2014/classic
 
@@ -36,4 +36,3 @@ $(EMUL):
 .PHONY: emul
 emul: $(EMUL) $(TARGET)
 	$(EMUL) $(TARGET)
-	

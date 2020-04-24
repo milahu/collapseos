@@ -1,7 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
-#include "../emul.h"
+#include "emul.h"
 #ifdef STAGE2
 #include "forth1-bin.h"
 #include "blkfs-bin.h"

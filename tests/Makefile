@@ -2,5 +2,5 @@ EMULDIR = ../emul
 
 .PHONY: run
 run:
-	$(MAKE) -C $(EMULDIR) forth/forth
+	$(MAKE) -C $(EMULDIR) all
 	cd forth && ./runtests.sh

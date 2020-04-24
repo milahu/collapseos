@@ -1,8 +1,7 @@
 #!/bin/sh -e
 
 BASE=../..
-EXEC="${BASE}/emul/forth/forth"
-FDIR="${BASE}/forth"
+EXEC="${BASE}/emul/forth"
 TMP=$(mktemp)
 
 chk() {
