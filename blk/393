@@ -1,5 +1,4 @@
 : RAM+ [ RAMSTART LITN ] + ;
-: FLAGS 0x08 RAM+ ;
 : (parse*) 0x0a RAM+ ;
 : HERE 0x04 RAM+ ;
 : CURRENT* 0x51 RAM+ ;
@@ -8,8 +7,5 @@
 ( w -- a f )
 : (find) CURRENT @ SWAP _find ;
 
-: QUIT
-    0 FLAGS ! (resRS)
-    LIT< INTERPRET (find) DROP EXECUTE
-;
+: QUIT (resRS) LIT< INTERPRET (find) DROP EXECUTE ;
 394 407 LOADR

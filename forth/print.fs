@@ -34,3 +34,4 @@
 : SPC 32 EMIT ;
 
 : (wnf) (print) SPC ABORT" word not found" ;
+: (ok) SPC ." ok" CRLF ;

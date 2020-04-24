@@ -1,4 +1,7 @@
-(cont.) WORDBUF is the buffer used by WORD
+C<?* is a pointer to a word being called by C<?. If 0 or 1,
+will return that value as-is.
+
+WORDBUF is the buffer used by WORD
 
 BOOT C< PTR is used when Forth boots from in-memory
 source. See "Initialization sequence" below.
@@ -9,8 +12,5 @@ jump to this address. If you use one of those slots for an
 interrupt, write a jump to the appropriate offset in that RAM
 location.
 
-CURRENTPTR points to current CURRENT. The Forth CURRENT word
-doesn't return RAM+2 directly, but rather the value at this
-address. Most of the time, it points to RAM+2, but sometimes,
-when maintaining alternative dicts (during cross compilation
-for example), it can point elsewhere.                   (cont.)
+
+                                                        (cont.)

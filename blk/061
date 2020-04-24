@@ -1,6 +1,6 @@
-(cont.)
 ." xxx" --     *I* Compiles string literal xxx followed by a
                call to (print).
+C<?     -- f   Returns whether there's a char waiting in buf.
 C<      -- c   Read one char from buffered input.
 DUMP    n a -- Prints n bytes at addr a in a hexdump format.
                Prints in chunks of 8 bytes. Doesn't do partial

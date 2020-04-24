@@ -1,4 +1,4 @@
-(cont.) INITIAL_SP holds the initial Stack Pointer value so
+INITIAL_SP holds the initial Stack Pointer value so
 that we know where to reset it on ABORT
 
 CURRENT points to the last dict entry.
@@ -7,10 +7,10 @@ HERE points to current write offset.
 
 IP is the Interpreter Pointer
 
-FLAGS holds global flags. Only used for prompt output control
-for now.
-
 PARSEPTR holds routine address called on (parse)
 
-CINPTR holds routine address called on C<
+C<* holds routine address called on C<
+
+
+
                                                         (cont.)

@@ -54,17 +54,16 @@
 
 ( Read one line in input buffer and make IN> point to it )
 : (rdln)
-    ( Should we prompt? if we're executing a word, FLAGS bit
-      0, then we shouldn't. )
-    FLAGS @ 0x1 AND NOT IF '>' EMIT SPC THEN
     (infl)
     BEGIN (rdlnc) NOT UNTIL
     LF IN( IN> !
 ;
 
+: RDLN<? IN> @ C@ ;
+
 ( And finally, implement a replacement for the (c<) routine )
-: (rdln<)
-    IN> @ C@                    ( c )
+: RDLN<
+    RDLN<?                      ( c )
     ( not EOL? good, inc and return )
     DUP IF 1 IN> +! EXIT THEN   ( c )
     ( EOL ? readline. we still return typed char though )
@@ -79,6 +78,7 @@
       the last typed 0x0a and one for the following NULL. )
     INBUFSZ 4 + ALLOT
     (infl)
-    ['] (rdln<) 0x0c RAM+ !
+    ['] RDLN<? 0x06 RAM+ !
+    ['] RDLN< 0x0c RAM+ !
 ;
 

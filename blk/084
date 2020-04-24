@@ -1,15 +1,15 @@
-(cont.) FUTURE USES section is unused for now.          
+CURRENTPTR points to current CURRENT. The Forth CURRENT word
+doesn't return RAM+2 directly, but rather the value at this
+address. Most of the time, it points to RAM+2, but sometimes,
+when maintaining alternative dicts (during cross compilation
+for example), it can point elsewhere.
+
+FUTURE USES section is unused for now.          
 
 DRIVERS section is reserved for recipe-specific
 drivers. Here is a list of known usages:
 
 * 0x70-0x78: ACIA buffer pointers in RC2014 recipes.
-
-
-
-
-
-
 
 
 

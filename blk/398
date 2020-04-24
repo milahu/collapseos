@@ -2,7 +2,8 @@
   for an abort message )
 : (parse) (parsed) NOT IF ABORT THEN ;
 
-: C< 0x0c RAM+ @ EXECUTE ( 0c == CINPTR ) ;
+: C<? 0x06 RAM+ @ DUP 2 > IF EXECUTE THEN ( 06 == C<?* ) ;
+: C< 0x0c RAM+ @ EXECUTE ( 0c == C<* ) ;
 
 : , HERE @ ! HERE @ 2+ HERE ! ;
 

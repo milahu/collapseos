@@ -2,13 +2,8 @@
     BEGIN
     WORD
     (find)
-    IF
-        1 FLAGS !
-        EXECUTE
-        0 FLAGS !
-    ELSE
-        (parse*) @ EXECUTE
-    THEN
+    NOT IF (parse*) @ THEN EXECUTE
+    C<? NOT IF LIT< (ok) (find) IF EXECUTE THEN THEN
     AGAIN
 ;
 
