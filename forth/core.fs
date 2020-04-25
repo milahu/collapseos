@@ -18,7 +18,8 @@
 : BEGIN H@ ; IMMEDIATE
 : AGAIN COMPILE (br) H@ - , ; IMMEDIATE
 : UNTIL COMPILE (?br) H@ - , ; IMMEDIATE
-: ( BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
+: _ BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
+40 CURRENT @ 4 - C!
 ( Hello, hello, krkrkrkr... do you hear me?
   Ah, voice at last! Some lines above need comments
   BTW: Forth lines limited to 64 cols because of default
@@ -27,6 +28,8 @@
   "_": words starting with "_" are meant to be "private",
   that is, only used by their immediate surrondings.
 
+  40 is ASCII for '('. We do this to simplify XPACK's task of
+  not mistakenly consider '(' definition as a comment.
   LITS: 34 == litWord
   LITA: 36 == addrWord
   COMPILE: Tough one. Get addr of caller word (example above

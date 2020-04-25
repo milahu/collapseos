@@ -13,7 +13,7 @@ by more than once space or by a newline. Hackish, but works.
 
 int main()
 {
-    int spccnt = 2; // if the first char is a (, consider it a comment opener.
+    int spccnt = 1; // if the first char is a (, consider it a comment opener.
     int incomment = 0;
     int c;
     c = getchar();
@@ -24,7 +24,7 @@ int main()
                 // doesn't like when they're not there...
                 putchar(c);
             }
-            spccnt += 2;
+            spccnt += 1;
         } else if (c == ' ') {
             spccnt++;
         } else {
@@ -33,7 +33,7 @@ int main()
                     incomment = 0;
                 }
             } else {
-                if ((c == '(') && (spccnt > 1)) {
+                if ((c == '(') && spccnt) {
                     putchar(' ');
                     spccnt = 0;
                     int next = getchar();

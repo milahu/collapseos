@@ -1,0 +1,6 @@
+XPACK - pack source code
+
+The goal of this word is to pack source code in tight places,
+such as on the boot section of an EEPROM. It takes a block
+number, reads it and packs it to HERE. It normalizes all
+whitespaces to a single space and ignore comments.
