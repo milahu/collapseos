@@ -61,17 +61,21 @@
 ;
 
 : LOAD
-    ( save BLK>, C<* override and boot< ptr to RSP )
+    ( save restorable variables to RSP )
     BLK> @ >R
     0x08 RAM+ @ >R
-    0x2e RAM+ @ >R
+    0x06 RAM+ @ >R  ( C<? )
+    0x2e RAM+ @ >R  ( boot ptr )
     BLK@
     ( Point to beginning of BLK )
     BLK( 0x2e RAM+ !
     ( 08 == C<* override )
     ['] _ 0x08 RAM+ !
+    ( While we interpret, don't print "ok" after every word )
+    1 0x06 RAM+ !  ( 06 == C<? )
     INTERPRET
     R> 0x2e RAM+ !
+    R> 0x06 RAM+ !
     ( Before we restore C<* are we restoring it to "_"?
       if yes, it means we're in a nested LOAD which means we
       should also load back the saved BLK>. Otherwise, we can

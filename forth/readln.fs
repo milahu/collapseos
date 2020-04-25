@@ -59,15 +59,18 @@
     LF IN( IN> !
 ;
 
-: RDLN<? IN> @ C@ ;
-
-( And finally, implement a replacement for the (c<) routine )
+( And finally, implement C<* )
 : RDLN<
-    RDLN<?                      ( c )
-    ( not EOL? good, inc and return )
-    DUP IF 1 IN> +! EXIT THEN   ( c )
-    ( EOL ? readline. we still return typed char though )
-    (rdln)                      ( c )
+    IN> @ C@
+    DUP IF
+        ( not EOL? good, inc and return )
+        1 IN> +!
+    ELSE
+        ( EOL ? readline. we still return null though )
+        (rdln)
+    THEN
+    ( update C<? flag )
+    IN> @ C@ 0 > 0x06 RAM+ !  ( 06 == C<? )
 ;
 
 ( Initializes the readln subsystem )
@@ -78,7 +81,7 @@
       the last typed 0x0a and one for the following NULL. )
     INBUFSZ 4 + ALLOT
     (infl)
-    ['] RDLN<? 0x06 RAM+ !
     ['] RDLN< 0x0c RAM+ !
+    1 0x06 RAM+ !  ( 06 == C<? )
 ;
 

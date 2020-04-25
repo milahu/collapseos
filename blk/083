@@ -1,5 +1,6 @@
-C<?* is a pointer to a word being called by C<?. If 0 or 1,
-will return that value as-is.
+C<? is a flag indicating whether a character is waiting in the
+input stream. 1 means yes, 0 means no. It is the responsibility
+of C<* to update that flag.
 
 WORDBUF is the buffer used by WORD
 
@@ -11,6 +12,5 @@ still have to free those slots...) in boot binaries are made to
 jump to this address. If you use one of those slots for an
 interrupt, write a jump to the appropriate offset in that RAM
 location.
-
 
                                                         (cont.)
