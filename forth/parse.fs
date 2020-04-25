@@ -54,7 +54,7 @@
     DUP @ 25136 = NOT IF 0 EXIT THEN    ( a 0 )
     ( We have "0b" prefix )
     2+
-    0 ( a r )
+    0  ( a r )
     BEGIN
     SWAP C@+                               ( r a+1 c )
     DUP NOT IF 2DROP 1 EXIT THEN           ( r 1 )
