@@ -105,5 +105,11 @@ And thats it! You have full access to disk block mechanism:
 
 (at this moment, the driver is a bit slow though...)
 
+## How do I fill my SD card with Collapse OS' FS?
+
+Very easy. You see that `/emul/blkfs` file? You dump it to your raw device.
+For example, if the device you get when you insert your SD card is `/dev/sdb`,
+then you type `cat emul/blkfs | sudo tee /dev/sdb > /dev/null`.
+
 [schematic]: spirelay/spirelay.pdf
 [inspiration]: https://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html
