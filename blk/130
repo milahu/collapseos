@@ -1,0 +1,16 @@
+( Note that the last word is always skipped because it's not
+possible to reliably detect its end. If you need that last
+word, define a dummy word before calling RLDICT.
+
+We first start by copying the affected area to H@+4. This is
+where the relinking will take place.
+
+Then we iterate the new dict from the top, keeping track of
+wr, the current wordref and we, wr's end offset.
+
+Initially, we get our wr and we, withH@ and CURRENT, which we
+offset by u+4. +4 before, remember, we're using 4 bytes
+as variable space.
+
+At each iteration, we becomes wr-header and wr is fetched from
+PREV field. )

@@ -1,0 +1,16 @@
+: RLWORD ( ol o a1 a2 -- )
+    SWAP DUP C@             ( ol o a2 a1 n )
+    DUP <>{ 0x0e &= 0x2b |= <>} NOT IF ( unwind all args )
+        2DROP 2DROP EXIT THEN
+    0x2b = IF 2+ THEN ( ol o a2 a1 )
+    1+                          ( ol o a2 a1+1 )
+    BEGIN                       ( ol o a2 a1 )
+        2OVER SWAP              ( ol o a2 a1 o ol )
+        RLATOM                  ( ol o a2 a+n )
+        2DUP < IF ABORT THEN    ( Something is very wrong )
+        2DUP =                  ( ol o a2 a+n f )
+        IF ( unwind )
+            2DROP 2DROP EXIT
+        THEN
+    AGAIN
+;

@@ -1,0 +1,16 @@
+Linker
+
+Relink a dictionary by applying offsets to all word references
+in words of the "compiled" type.
+
+A typical usage of this unit would be to, right after a
+bootstrap-from-icore-from-source operation, identify the root
+word of the source part, probably "H@", and run " ' thatword
+RLDICT ". Then, take the resulting relinked binary, concatenate
+it to the boot binary, and write to boot media.
+
+LIMITATIONS
+
+This unit can't automatically detect all offsets needing
+relinking. This is a list of situations that aren't handled:
+                                                        (cont.)

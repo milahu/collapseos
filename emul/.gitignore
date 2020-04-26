@@ -3,6 +3,5 @@
 /stage2
 /forth
 /*-bin.h
-/core.bin
-/forth?.bin
+/stage1.bin
 /blkfs

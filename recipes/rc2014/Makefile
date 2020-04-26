@@ -5,16 +5,9 @@ EDIR = $(BASEDIR)/emul
 STAGE2 = $(EDIR)/stage2
 EMUL = $(BASEDIR)/emul/hw/rc2014/classic
 
-PATHS = $(FDIR)/link.fs run.fs
-STRIPFC = $(BASEDIR)/tools/stripfc
-
 .PHONY: all
 all: $(TARGET) 
-$(TARGET): z80c.bin $(PATHS)
-	cp z80c.bin $@
-	cat $(PATHS) | $(STRIPFC) >> $@
-
-z80c.bin: xcomp.fs
+$(TARGET): xcomp.fs $(STAGE2)
 	cat xcomp.fs | $(STAGE2) > $@
 
 $(SLATEST):

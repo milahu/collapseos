@@ -1,0 +1,15 @@
+( Skip atom, considering special atom types. )
+: ASKIP ( a -- a+n )
+    DUP @       ( a n )
+    ( ?br or br or NUMBER )
+    DUP <>{ 0x67 &= 0x53 |= 0x20 |= 0x24 |= <>}
+    IF DROP 4 + EXIT THEN
+    ( regular word )
+    0x22 = NOT IF 2+ EXIT THEN
+    ( it's a lit, skip to null char )
+    ( a )
+    1+  ( we skip by 2, but the loop below is pre-inc... )
+    BEGIN 1+ DUP C@ NOT UNTIL
+    ( skip null char )
+    1+
+;

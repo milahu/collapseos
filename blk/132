@@ -1,0 +1,9 @@
+( Relink a regular Forth full interpreter. )
+: RLCORE
+    LIT< H@ (find) DROP         ( target )
+    DUP 3 - @                   ( t prevoff )
+    ( subtract H@ name length )
+    2-                          ( t o )
+    RLDICT
+;
+

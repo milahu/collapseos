@@ -1,0 +1,16 @@
+( RLDICT pre-comment: Copy dict from target wordref, including
+header, up to HERE.  We're going relocate those words by
+specified offset. To do this, we're copying this whole memory
+area in HERE and then iterate through that copied area and call
+RLWORD on each word. That results in a dict that can be
+concatenated to target's prev entry in a more compact way.
+
+  This copy of data doesn't allocate anything, so H@ doesn't
+move. Moreover, we reserve 4 bytes at H@ to write our target
+and offset because otherwise, things get too complicated with
+the PSP.
+
+  The output of this word is 3 numbers: top copied address, top
+copied CURRENT, and then the beginning of the copied dict at
+the end to indicate that we're finished processing.
+                                                        cont. )

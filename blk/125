@@ -1,0 +1,16 @@
+: RLATOM ( a o ol -- a+n )
+    ROT             ( o ol a )
+    DUP @           ( o ol a n )
+    DUP 0x24 = IF
+        DROP 2+     ( o ol a+2 )
+        ROT ROT 2DROP ( a ) EXIT
+    THEN
+    ROT             ( o a n ol )
+    < IF  ( under limit, do nothing )
+        SWAP DROP    ( a )
+    ELSE ( o a )
+        SWAP OVER @  ( a o n )
+        -^           ( a n-o )
+        OVER !       ( a )
+    THEN
+    ASKIP ;
