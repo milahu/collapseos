@@ -14,4 +14,6 @@ H@ XOFF !
 282 LOAD  ( boot.z80 )
 393 LOAD  ( icore )
 (entry) _
+( Update LATEST )
+H@ XOFF @ - XOFF @ 8 + !
 H@ 256 /MOD 2 PC! 2 PC!

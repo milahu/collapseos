@@ -23,9 +23,8 @@ $(BLKUNPACK): $(BLKPACK)
 
 # z80c.bin is not in the prerequisites because it's a bootstrap
 # binary that should be updated manually through make updatebootstrap.
-forth0.bin: $(SLATEST)
+forth0.bin:
 	cp z80c.bin $@
-	$(SLATEST) $@
 	cat pre.fs emul.fs >> $@
 
 forth0-bin.h: forth0.bin $(BIN2C)
