@@ -5,15 +5,7 @@ EDIR = $(BASEDIR)/emul
 STAGE2 = $(EDIR)/stage2
 EMUL = $(BASEDIR)/emul/hw/rc2014/classic
 
-PATHS = \
-	$(FDIR)/core.fs \
-	$(FDIR)/cmp.fs \
-	$(FDIR)/parse.fs \
-	$(BASEDIR)/drv/acia.fs \
-	$(FDIR)/print.fs \
-	$(FDIR)/fmt.fs \
-	$(FDIR)/link.fs \
-	run.fs
+PATHS = $(FDIR)/link.fs run.fs
 STRIPFC = $(BASEDIR)/tools/stripfc
 
 .PHONY: all

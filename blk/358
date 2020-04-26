@@ -1,16 +1,13 @@
-: ACIA$
-    H@ DUP DUP ACIA( ! ACIAR> !
-    1+ ACIAW> !  ( write index starts one position later )
-    ACIABUFSZ ALLOT
-    H@ ACIA) !
-( setup ACIA
-  CR7 (1) - Receive Interrupt enabled
-  CR6:5 (00) - RTS low, transmit interrupt disabled.
-  CR4:2 (101) - 8 bits + 1 stop bit
-  CR1:0 (10) - Counter divide: 64 )
-    0b10010110 ACIA_CTL PC!
-( setup interrupt )
-    0xc3 0x4e RAM+ C!  ( c3==JP, 4e==INTJUMP )
-    ['] ~ACIA 0x4f RAM+ !
-    (im1)
-;
+0x20 CONSTANT ACIABUFSZ
+
+( Points to ACIA buf )
+: ACIA( [ ACIA_MEM 4 + LITN ] ;
+( Points to ACIA buf end )
+: ACIA) [ ACIA_MEM 6 + LITN ] ;
+( Read buf pointer. Pre-inc )
+: ACIAR> [ ACIA_MEM LITN ] ;
+( Write buf pointer. Post-inc )
+: ACIAW> [ ACIA_MEM 2 + LITN ] ;
+( This means that if W> == R>, buffer is full.
+  If R>+1 == W>, buffer is empty. )
+

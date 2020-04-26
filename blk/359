@@ -1,14 +1,16 @@
-: KEY
-    ( inc then fetch )
-    ACIAR> @ 1+ DUP ACIA) @ = IF
-        DROP ACIA( @
-    THEN
-
-    ( As long as R> == W>-1, it means that buffer is empty )
-    BEGIN DUP ACIAW> @ = NOT UNTIL
-
-    ACIAR> !
-    ACIAR> @ C@
+: ACIA$
+    H@ DUP DUP ACIA( ! ACIAR> !
+    1+ ACIAW> !  ( write index starts one position later )
+    ACIABUFSZ ALLOT
+    H@ ACIA) !
+( setup ACIA
+  CR7 (1) - Receive Interrupt enabled
+  CR6:5 (00) - RTS low, transmit interrupt disabled.
+  CR4:2 (101) - 8 bits + 1 stop bit
+  CR1:0 (10) - Counter divide: 64 )
+    0b10010110 ACIA_CTL PC!
+( setup interrupt )
+    0xc3 0x4e RAM+ C!  ( c3==JP, 4e==INTJUMP )
+    ['] ~ACIA 0x4f RAM+ !
+    (im1)
 ;
-
-

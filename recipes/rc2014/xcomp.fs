@@ -24,4 +24,9 @@ H@ XOFF !
 (entry) _
 ( Update LATEST )
 H@ XOFF @ - XOFF @ 8 + !
+422 441 XPACKR ( core cmp )
+446 452 XPACKR ( parse )
+358 360 XPACKR ( acia.fs )
+442 445 XPACKR ( print )
+459 463 XPACKR ( fmt )
 H@ 256 /MOD 2 PC! 2 PC!
