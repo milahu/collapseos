@@ -1,9 +1,7 @@
 ( With dst being assumed to be an AT28 EEPROM, perform !
   operation while doing the right thing. Checks data integrity
-  and ABORT on mismatch.
-)
-( n a -- )
-: AT28!
+  and ABORT on mismatch. )
+: AT28! ( n a -- )
     2DUP C!
     ( as long as writing operation is running, IO/6 will toggle at each
       read attempt. We know that write is finished when we read the same

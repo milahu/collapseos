@@ -1,0 +1,11 @@
+( Same as MOVE, but with A@ and A! )
+( src dst u -- )
+: AMOVE
+    ( u ) 0 DO
+        SWAP DUP I + A@   ( dst src x )
+        ROT SWAP OVER I + ( src dst x dst )
+        A!                ( src dst )
+    LOOP
+    2DROP
+;
+

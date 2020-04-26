@@ -183,9 +183,15 @@ So, the end of our compiled dict is actually `99de`. Alright, let's extract it:
     dd if=memdump bs=1 skip=36192 count=3198 > dict.bin
 
 `36192` is `8d60` and `3198` is `99de-8d60`. This needs to be prepended by the
-boot binary. But that one, we already have. It's `z80c.bin`
+boot binary. We already have `stage1.bin`, but this binary contains bootstrap
+source code we don't need any more. To strip it, we'll need to `dd` it out to
+`LATEST`, in my case `098b`:
 
-    cat z80c.bin dict.bin > stage2.bin
+    dd if=stage1.bin bs=1 count=2443 > s1pre.bin
+
+Now we can combine our binaries:
+
+    cat s1pre.bin dict.bin > stage2.bin
 
 Is it ready to run yet? no. There are 3 adjustments we need to manually make
 using our hex editor.
@@ -203,7 +209,12 @@ using our hex editor.
 
 Now are we ready yet? ALMOST! There's one last thing we need to do: add runtime
 source. In our case, because we have a compiled dict, the only source we need
-to include is `run.fs`:
+to include is initialization code. We've stripped it from our stage1 earlier,
+we need to re-add it.
+
+Look at `xcomp.fs`. You see that `," bla bla bla"` line? That's initialization
+code. Copy it to a file like `run.fs` (without the `,"`) and build your final
+binary:
 
     cat stage2.bin run.fs > stage2r.bin
 
