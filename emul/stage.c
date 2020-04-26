@@ -113,7 +113,9 @@ int main(int argc, char *argv[])
 #ifndef DEBUG
     // We're done, now let's spit dict data
     if (start_here == 0) {
-        start_here = sizeof(KERNEL);
+        // No starting offset? Let's use LATEST
+        start_here = m->mem[0x08];
+        start_here += m->mem[0x09] << 8;
     }
     for (int i=start_here; i<end_here; i++) {
         putchar(m->mem[i]);
