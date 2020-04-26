@@ -28,8 +28,7 @@ H@ XOFF @ - XOFF @ 8 + !
 446 452 XPACKR ( parse )
 358 360 XPACKR ( acia.fs )
 442 445 XPACKR ( print )
-459 463 XPACKR ( fmt )
+453 463 XPACKR ( readln fmt )
 123 132 XPACKR ( linker )
-," : x KEY DUP EMIT ; "
-," : _ ACIA$ (ok) ['] x 0x0c RAM+ ! ; _ "
+," : _ ACIA$ RDLN$ (ok) ; _ "
 H@ 256 /MOD 2 PC! 2 PC!

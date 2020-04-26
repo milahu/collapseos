@@ -64,12 +64,10 @@ We could have this recipe automate that 2 stage build process all automatically,
 but that would rob you of all your fun, right? Instead, we'll run that 2nd
 stage on the RC2014 itself!
 
-To build your stage 1, run `make` in this folder, this will yield `os.bin`.
+To build your stage 1, run `make` in this folder, this will yield `stage1.bin`.
 This will contain that tiny core and, appended to it, the Forth source code it
 needs to run to bootstrap itself. When it's finished bootstrapping, you will
-get a prompt to an almost-full Forth interpreter (there's not enough space in
-8K to fit both link.fs and readln.fs, so we ditch readln. Our prompt is raw. No
-backspace no buffer. Hardcore mode.)
+get a prompt to a full Forth interpreter.
 
 ### Emulate
 
@@ -122,15 +120,18 @@ Our stage 1 prompt is the result of Forth's inner core interpreting the source
 code of the Full Forth, which was appended to the binary inner core in ROM.
 This results in a compiled dictionary, in RAM, at address 0x8000+system RAM.
 
+Wouldn't it be great if we could save that compiled binary in ROM and save the
+system the trouble of recompiling itself on boot?
+
 Unfortunately, this compiled dictionary isn't usable as-is. Offsets compiled in
 there are compiled based on a 0x8000-or-so base offset. What we need is a
 0xa00-or-so base offset, that is, something suitable to be appended to the boot
 binary, in ROM, in binary form.
 
-Fortunately, inside the compiled source is the contents of link.fs which will
-allow us to relink our compiled dictionary so that in can be relocated in ROM,
-next to our boot binary. I won't go into relinking details. Look at the source.
-For now, let's just use it:
+Fortunately, inside the compiled source is the contents of the Linker (B120)
+which will allow us to relink our compiled dictionary so that in can be
+relocated in ROM, next to our boot binary. I won't go into relinking details.
+Look at the source.  For now, let's just use it:
 
     RLCORE
 
@@ -211,48 +212,6 @@ That's it! our binary is ready to run!
     ../../emul/hw/rc2014/classic stage2r.bin
 
 And there you have it, a stage2 binary that you've assembled yourself.
-
-### Assembling stage 3
-
-Stage 2 gives you a useable prompt, but bare. Because 8K isn't a lot of space
-to cram source code, we're limited in what we can include for this stage.
-
-However, now that we have a usable prompt, we can do a lot (be cautious though:
-there is no `readln` yet, so you have no backspace), for example, build a
-stage 3 with `readln`.
-
-Copy the unit's source
-
-    cat ../../forth/readln.fs | ../../tools/stripfc | xclip
-
-and just paste it in your terminal. If you're doing the real thing and not
-using the emulator, pasting so much code at once might freeze up the RC2014, so
-it is recommended that you use `/tools/exec` that let the other side enough
-time to breathe.
-
-After your pasting, you'll have a compiled dict of that code in memory. You'll
-need to relocate it in the same way you did for stage 2, but instead of using
-`RLCORE`, which is a convenience word hardcoded for stage 1, we'll parametrize
-`RLDICT`, the word doing the real work.
-
-`RLDICT` takes 2 arguments, `target` and `offset`. `target` is the first word
-of your relocated dict. In our case, it's going to be `' INBUFSZ`. `offset` is
-the offset we'll apply to every eligible word references in our dict. In our
-case, that offset is the offset of the *beginning* of the `INBUFSZ` entry (that
-is, `' INBUFSZ WORD(` minus the offset of the last word (which should be a hook
-word) in the ROM binary.
-
-That offset can be conveniently fetched from code because it is the value of
-the `LATEST` constant in stable ABI, which is at offset `0x08`. Therefore, our
-offset value is:
-
-    ' INBUFSZ WORD( 0x08 @ -
-
-You can now run `RLDICT` and proceed with concatenation (and manual adjustments
-of course) as you did with stage 2. Don't forget to adjust `run.fs` so that it
-initializes `RDLN$` instead of creating a minimal `(c<)`.
-
-Keep that `stage3.bin` around, you will need it for further recipes.
 
 [rc2014]: https://rc2014.co.uk
 [romwrite]: https://github.com/hsoft/romwrite

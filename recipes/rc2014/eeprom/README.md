@@ -8,7 +8,7 @@ itself.
 ## Gathering parts
 
 * A RC2014 Classic
-* `stage3.bin` from the base recipe
+* `stage2.bin` from the base recipe
 * An extra AT28C64B
 * 1x 40106 inverter gates
 * Proto board, RC2014 header pins, wires, IC sockets, etc.
@@ -33,11 +33,49 @@ in write protection mode, but I preferred building my own module.
 
 I don't think you need a schematic. It's really simple.
 
-## Building your stage 4
+### Assembling stage 3
 
-Using the same technique as you used for building your stage 3, you can append
-required words to your boot binary. Required units are `forth/adev.fs` and
-`drv/at28.fs`.
+Stage 2 gives you a full interpreter, but it's missing the "Addressed devices"
+module and the AT28 driver. We'll need to assemble a stage 3.
+
+TODO: fix these instructions. They are broken.
+
+However, now that we have a usable prompt, we can do a lot (be cautious though:
+there is no `readln` yet, so you have no backspace), for example, build a
+stage 3 with `readln`.
+
+Copy the unit's source
+
+    cat ../../forth/readln.fs | ../../tools/stripfc | xclip
+
+and just paste it in your terminal. If you're doing the real thing and not
+using the emulator, pasting so much code at once might freeze up the RC2014, so
+it is recommended that you use `/tools/exec` that let the other side enough
+time to breathe.
+
+After your pasting, you'll have a compiled dict of that code in memory. You'll
+need to relocate it in the same way you did for stage 2, but instead of using
+`RLCORE`, which is a convenience word hardcoded for stage 1, we'll parametrize
+`RLDICT`, the word doing the real work.
+
+`RLDICT` takes 2 arguments, `target` and `offset`. `target` is the first word
+of your relocated dict. In our case, it's going to be `' INBUFSZ`. `offset` is
+the offset we'll apply to every eligible word references in our dict. In our
+case, that offset is the offset of the *beginning* of the `INBUFSZ` entry (that
+is, `' INBUFSZ WORD(` minus the offset of the last word (which should be a hook
+word) in the ROM binary.
+
+That offset can be conveniently fetched from code because it is the value of
+the `LATEST` constant in stable ABI, which is at offset `0x08`. Therefore, our
+offset value is:
+
+    ' INBUFSZ WORD( 0x08 @ -
+
+You can now run `RLDICT` and proceed with concatenation (and manual adjustments
+of course) as you did with stage 2. Don't forget to adjust `run.fs` so that it
+initializes `RDLN$` instead of creating a minimal `(c<)`.
+
+Keep that `stage3.bin` around, you will need it for further recipes.
 
 ## Writing contents to the AT28
 
