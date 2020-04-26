@@ -1,3 +1,4 @@
+," xxx" --     Write xxx to HERE
 ." xxx" --     *I* Compiles string literal xxx followed by a
                call to (print).
 C<?     -- f   Returns whether there's a char waiting in buf.
@@ -11,6 +12,5 @@ IN>     -- a   Address of variable containing current pos in
 KEY     -- c   Get char c from direct input
 PC!     c a -- Spit c to port a
 PC@     a -- c Fetch c from port a
-WORD    -- a   Read one word from buffered input and push its
-               addr.
+
                                                         (cont.)

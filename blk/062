@@ -1,10 +1,10 @@
-(cont.)
+WORD    -- a   Read one word from buffered input and push its
+               addr.
 There are also ascii const emitters:
 BS
 CR
 LF
 SPC
-
 
 
 
