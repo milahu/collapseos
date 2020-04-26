@@ -19,7 +19,7 @@ design.
 ## Gathering parts
 
 * A RC2014 Classic
-* `stage3.bin` from the base recipe
+* `stage2.bin` from the base recipe
 * A MicroSD breakout board. I use Adafruit's.
 * A proto board + header pins with 39 positions so we can make a RC2014 card.
 * Diodes, resistors and stuff
@@ -69,20 +69,20 @@ matter. However, it *does* matter for the `SELECT` line, so I don't follow my
 own schematic with regards to the `M1` and `A2` lines and use two inverters
 instead.
 
-## Building your stage 4
+## Building your stage 3
 
-Using the same technique as you used for building your stage 3, you can append
-required words to your boot binary. Required units are `forth/blk.fs` and
-`drv/sdc.fs`. You also need `drv/sdc.z80` but to save you the troubles of
-rebuilding from stage 1 for this recipe, we took the liberty of already having
-included it in the base recipe.
+Using the same technique as you used in the `eeprom` recipe, you can append
+required words to your boot binary. Required units `blk` (B464) and the SD Card
+driver (B370). You only need the Forth part. You of course actually need
+Z80 SDC words but to save you the troubles of rebuilding from stage 1 for this
+recipe, we took the liberty of already having included it in the base recipe.
 
 ## Testing in the emulator
 
 The RC2014 emulator includes SDC emulation. You can attach a SD card image to
 it by invoking it with a second argument:
 
-    ../../../emul/hw/rc2014/classic stage4.bin ../../../emul/blkfs
+    ../../../emul/hw/rc2014/classic stage3.bin ../../../emul/blkfs
 
 You will then run with a SD card having the contents from `/blk`.
 
