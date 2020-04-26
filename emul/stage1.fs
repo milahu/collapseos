@@ -1,3 +1,4 @@
+CURRENT @ HERE !
 HERE @ 256 /MOD 2 PC! 2 PC!
 : EMIT 0 PC! ;
 : KEY 0 PC@ ;

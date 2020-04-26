@@ -25,7 +25,7 @@ $(BLKUNPACK): $(BLKPACK)
 # binary that should be updated manually through make updatebootstrap.
 forth0.bin:
 	cp z80c.bin $@
-	cat pre.fs emul.fs >> $@
+	cat stage1.fs >> $@
 
 forth0-bin.h: forth0.bin $(BIN2C)
 	$(BIN2C) KERNEL < forth0.bin | tee $@ > /dev/null
