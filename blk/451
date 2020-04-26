@@ -1,0 +1,10 @@
+: (parse)           ( a -- n )
+    (parsec) IF EXIT THEN
+    (parseh) IF EXIT THEN
+    (parseb) IF EXIT THEN
+    (parsed) IF EXIT THEN
+    ( nothing works )
+    LIT< (wnf) (find) IF EXECUTE ELSE ABORT THEN
+;
+
+' (parse) (parse*) !

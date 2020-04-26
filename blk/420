@@ -1,0 +1,14 @@
+Core words
+
+These words follow Inner core words, but unlike them, these are
+self-bootstrapping and don't depend on the Cross Compiler. They
+will typically be included in source form right after a stage1
+binary which will interpret it on boot and bootstrap itself to
+a full intepreter, which can then be relinked with the
+Relinker. There is no loader for these libraries because you
+will typically XPACK (B267) them.
+
+422 core                       438 cmp
+442 print                      446 parse
+453 readln                     459 fmt
+464 blk

@@ -1,0 +1,16 @@
+: _
+    (boot<)
+    DUP 4 = IF
+        ( We drop our char, but also "a" from WORD: it won't
+          have the opportunity to balance PSP because we're
+          EXIT!ing. )
+        2DROP
+        ( We're finished interpreting )
+        EXIT!
+    THEN
+;
+
+( pre-comment for tight LOAD: The 0x08==I check after INTERPRET
+  is to check whether we're restoring to "_", the word above.
+  if yes, then we're in a nested load. Also, the 1 in 0x06 is
+  to avoid tons of "ok" displays. )

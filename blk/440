@@ -1,0 +1,15 @@
+: _&
+    CREATE , DOES>
+    ( n1 f n2 cell )
+    ROT NOT IF 2DROP 0 EXIT THEN ( n1 true )
+    _|&
+;
+
+( All words below have this signature:
+  n1 f n2 -- n1 f )
+' = _| |=
+' = _& &=
+' > _| |>
+' > _& &>
+' < _| |<
+' < _& &<

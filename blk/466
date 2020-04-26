@@ -1,0 +1,13 @@
+: BLK! ( -- )
+    BLK> @ BLK!* @ EXECUTE
+    0 BLKDTY !
+;
+
+: BLK@ ( n -- )
+    DUP BLK> @ = IF DROP EXIT THEN
+    BLKDTY @ IF BLK! THEN
+    DUP BLK> ! BLK@* @ EXECUTE
+;
+
+: BLK!! 1 BLKDTY ! ;
+

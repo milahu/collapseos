@@ -1,0 +1,16 @@
+: H@ HERE @ ;
+: IMMEDIATE
+    CURRENT @ 1-
+    DUP C@ 128 OR SWAP C!
+;
+: [ INTERPRET ; IMMEDIATE
+: ] R> DROP ;
+: LITS 34 , SCPY ;
+: LIT< WORD LITS ; IMMEDIATE
+: LITA 36 , , ;
+: '
+    WORD (find) (?br) [ 4 , ] EXIT
+    LIT< (wnf) (find) DROP EXECUTE
+;
+: ['] ' LITA ; IMMEDIATE
+

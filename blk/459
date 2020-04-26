@@ -1,0 +1,16 @@
+: _
+    999 SWAP        ( stop indicator )
+    DUP 0 = IF '0' EXIT THEN    ( 0 is a special case )
+    BEGIN
+        DUP 0 = IF DROP EXIT THEN
+        10 /MOD         ( r q )
+        SWAP '0' + SWAP ( d q )
+    AGAIN ;
+: . ( n -- )
+    ( handle negative )
+    DUP 0< IF '-' EMIT -1 * THEN
+    _
+    BEGIN
+        DUP '9' > IF DROP EXIT THEN  ( stop indicator )
+        EMIT
+    AGAIN ;

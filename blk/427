@@ -1,0 +1,10 @@
+( During a CASE, the stack grows by 1 at each ENDOF so that
+  we can fill all those ENDOF branching addrs. So that we
+  know when to stop, we put a 0 on PSP. That's our stopgap. )
+: CASE 0 COMPILE >R ; IMMEDIATE
+: OF
+    COMPILE I COMPILE =
+    [COMPILE] IF
+; IMMEDIATE
+: ENDOF [COMPILE] ELSE ; IMMEDIATE
+

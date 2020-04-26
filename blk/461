@@ -1,0 +1,16 @@
+: _ ( a -- a+8 )
+    DUP         ( save for 2nd loop )
+    ':' EMIT DUP .x SPC
+    4 0 DO
+        DUP @ 256 /MOD SWAP
+        .x .x SPC 2+
+    LOOP
+    DROP
+    8 0 DO
+        C@+
+        DUP <>{ 0x20 &< 0x7e |> <>}
+        IF DROP '.' THEN
+        EMIT
+    LOOP
+    CRLF
+;

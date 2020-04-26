@@ -1,0 +1,13 @@
+( At this point, we have something like "0 e1 e2 e3 val". We
+  want top drop val, and then call THEN as long as we don't
+  hit 0. )
+: ENDCASE
+    BEGIN
+        DUP NOT IF
+            DROP COMPILE R> COMPILE DROP EXIT
+        THEN
+        [COMPILE] THEN
+    AGAIN
+; IMMEDIATE
+
+

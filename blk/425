@@ -1,0 +1,15 @@
+: +! SWAP OVER @ + SWAP ! ;
+: -^ SWAP - ;
+: ALLOT HERE +! ;
+
+: IF                ( -- a | a: br cell addr )
+    COMPILE (?br)
+    H@              ( push a )
+    2 ALLOT         ( br cell allot )
+; IMMEDIATE
+
+: THEN              ( a -- | a: br cell addr )
+    DUP H@ -^ SWAP   ( a-H a )
+    !
+; IMMEDIATE
+

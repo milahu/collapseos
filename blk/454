@@ -1,0 +1,16 @@
+( handle backspace: go back one char in IN>, if possible, then
+  emit SPC + BS )
+: (inbs)
+    ( already at IN( ? )
+    IN> @ IN( = IF EXIT THEN
+    IN> @ 1- IN> !
+    SPC BS
+;
+
+
+
+
+
+
+( cont.: read one char into input buffer and returns whether we
+  should continue, that is, whether CR was not met. )

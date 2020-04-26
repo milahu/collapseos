@@ -1,0 +1,13 @@
+: VARIABLE CREATE 2 ALLOT ;
+: CONSTANT CREATE , DOES> @ ;
+: / /MOD SWAP DROP ;
+: MOD /MOD DROP ;
+
+( In addition to pushing H@ this compiles 2 >R so that loop
+  variables are sent to PS at runtime )
+: DO
+    COMPILE SWAP COMPILE >R COMPILE >R
+    H@
+; IMMEDIATE
+
+
