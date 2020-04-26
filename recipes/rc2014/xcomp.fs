@@ -22,4 +22,6 @@ H@ XOFF !
 372 LOAD  ( sdc.z80 )
 393 LOAD  ( icore )
 (entry) _
+( Update LATEST )
+H@ XOFF @ - XOFF @ 8 + !
 H@ 256 /MOD 2 PC! 2 PC!

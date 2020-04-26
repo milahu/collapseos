@@ -3,10 +3,10 @@
 #include <unistd.h>
 #include "emul.h"
 #ifdef STAGE2
-#include "forth1-bin.h"
+#include "stage1-bin.h"
 #include "blkfs-bin.h"
 #else
-#include "forth0-bin.h"
+#include "stage0-bin.h"
 #endif
 
 /* Staging binaries
@@ -29,8 +29,7 @@ trouble of compiling defs to binary.
 // By the way: there's a double-echo in stagedbg. It's normal. Don't panic.
 
 //#define DEBUG
-// in sync with glue.asm
-#define RAMSTART 0x840
+#define RAMSTART 0
 #define STDIO_PORT 0x00
 // To know which part of RAM to dump, we listen to port 2, which at the end of
 // its compilation process, spits its HERE addr to port 2 (MSB first)
@@ -112,11 +111,6 @@ int main(int argc, char *argv[])
 
 #ifndef DEBUG
     // We're done, now let's spit dict data
-    if (start_here == 0) {
-        // No starting offset? Let's use LATEST
-        start_here = m->mem[0x08];
-        start_here += m->mem[0x09] << 8;
-    }
     for (int i=start_here; i<end_here; i++) {
         putchar(m->mem[i]);
     }

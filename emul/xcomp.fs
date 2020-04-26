@@ -16,4 +16,9 @@ H@ XOFF !
 (entry) _
 ( Update LATEST )
 H@ XOFF @ - XOFF @ 8 + !
+," CURRENT @ HERE ! "
+," : EMIT 0 PC! ; "
+," : KEY 0 PC@ ; "
+422 470 XPACKR
+," ' KEY 12 RAM+ ! "
 H@ 256 /MOD 2 PC! 2 PC!

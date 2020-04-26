@@ -1,10 +1,5 @@
 TARGETS = forth stage2
-# Those Forth source files are in a particular order
-FORTHSRCS = core.fs cmp.fs print.fs parse.fs readln.fs fmt.fs blk.fs
-FORTHSRC_PATHS = ${FORTHSRCS:%=../forth/%} run.fs
 OBJS = emul.o libz80/libz80.o
-SLATEST = ../tools/slatest
-STRIPFC = ../tools/stripfc
 BIN2C = ../tools/bin2c
 BLKPACK = ../tools/blkpack
 BLKUNPACK = ../tools/blkunpack
@@ -15,40 +10,26 @@ all: $(TARGETS)
 $(BLKPACK):
 	$(MAKE) -C ../tools
 
-.PHONY: $(STRIPFC) $(SLATEST) $(BIN2C)
-$(STRIPFC): $(BLKPACK)
-$(SLATEST): $(BLKPACK)
+.PHONY: $(BIN2C) $(BLKUNPACK)
 $(BIN2C): $(BLKPACK)
 $(BLKUNPACK): $(BLKPACK)
 
-# z80c.bin is not in the prerequisites because it's a bootstrap
-# binary that should be updated manually through make updatebootstrap.
-forth0.bin:
-	cp z80c.bin $@
-	cat stage1.fs >> $@
+stage0-bin.h: $(BIN2C)
+	$(BIN2C) KERNEL < stage0.bin > $@
 
-forth0-bin.h: forth0.bin $(BIN2C)
-	$(BIN2C) KERNEL < forth0.bin | tee $@ > /dev/null
-
-stage1: stage.c $(OBJS) forth0-bin.h 
+stage1: stage.c $(OBJS) stage0-bin.h 
 	$(CC) stage.c $(OBJS) -o $@
 
-stage1dbg: stage.c $(OBJS) forth0-bin.h 
+stage1dbg: stage.c $(OBJS) stage0-bin.h 
 	$(CC) -DDEBUG stage.c $(OBJS) -o $@
 
-# We don't really need to use stripfc, but we do it anyway to test that we
-# don't mistakenly break our code with that tool. It's easier to debug here.
-core.bin: $(FORTHSRC_PATHS) stage1
-	cat $(FORTHSRC_PATHS) stop.fs | $(STRIPFC) | ./stage1 > $@
+stage1.bin: stage1.fs stage1
+	./stage1 < stage1.fs > $@
 
-forth1.bin: core.bin $(SLATEST)
-	cat z80c.bin core.bin > $@
-	$(SLATEST) $@
+stage1-bin.h: stage1.bin $(BIN2C)
+	$(BIN2C) KERNEL < stage1.bin > $@
 
-forth1-bin.h: forth1.bin $(BIN2C)
-	$(BIN2C) KERNEL < forth1.bin > $@
-
-stage2: stage.c $(OBJS) forth1-bin.h blkfs-bin.h
+stage2: stage.c $(OBJS) stage1-bin.h blkfs-bin.h
 	$(CC) -DSTAGE2 stage.c $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
@@ -57,7 +38,7 @@ blkfs: $(BLKPACK)
 blkfs-bin.h: blkfs $(BIN2C)
 	$(BIN2C) BLKFS < blkfs > $@
 
-forth: forth.c $(OBJS) forth1-bin.h blkfs-bin.h
+forth: forth.c $(OBJS) stage1-bin.h blkfs-bin.h
 	$(CC) forth.c $(OBJS) -o $@
 
 libz80/libz80.o: libz80/z80.c
@@ -70,7 +51,7 @@ emul.o: emul.c
 
 .PHONY: updatebootstrap
 updatebootstrap: stage2
-	cat xcomp.fs | ./stage2 > z80c.bin
+	cat xcomp.fs | ./stage2 > stage0.bin
 
 .PHONY: pack
 pack:
@@ -82,5 +63,5 @@ unpack:
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) emul.o *-bin.h forth?.bin blkfs
+	rm -f $(TARGETS) emul.o *-bin.h stage{1,2}.bin blkfs
 	$(MAKE) -C ../tools clean

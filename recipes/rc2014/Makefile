@@ -14,14 +14,12 @@ PATHS = \
 	$(FDIR)/fmt.fs \
 	$(FDIR)/link.fs \
 	run.fs
-SLATEST = $(BASEDIR)/tools/slatest
 STRIPFC = $(BASEDIR)/tools/stripfc
 
 .PHONY: all
 all: $(TARGET) 
-$(TARGET): z80c.bin $(SLATEST) $(PATHS)
+$(TARGET): z80c.bin $(PATHS)
 	cp z80c.bin $@
-	$(SLATEST) $@
 	cat $(PATHS) | $(STRIPFC) >> $@
 
 z80c.bin: xcomp.fs
