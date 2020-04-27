@@ -1,13 +1,16 @@
+Labels are a convenient way of managing relative jump
+calculations. Backward labels are easy. It is only a matter or
+recording "HERE" and do subtractions. Forward labels record the
+place where we should write the offset, and then when we get to
+that point later on, the label records the offset there.
+
 To avoid using dict memory in compilation targets, we
 pre-declare label variables here, which means we have a limited
 number of it. For now, 4 ought to be enough.
 
-Flow
 
-There are 2 label types: backward and forward. For each type,
-there are two actions: set and write. Setting a label is
-declaring where it is. It has to be performed at the label's
-destination. Writing a label is writing its offset difference
-to the binary result. It has to be done right after a relative
-jump operation. Yes, labels are only for relative jumps.
 
+
+
+
+                                                        (cont.)

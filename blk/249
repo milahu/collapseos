@@ -4,3 +4,5 @@
 : PUSH0, BC 0 LDddnn, BC PUSHqq, ;
 : PUSH1, BC 1 LDddnn, BC PUSHqq, ;
 : PUSHZ, BC 0 LDddnn, IFZ, BC INCss, THEN, BC PUSHqq, ;
+: HLZ, A H LDrr, L ORr, ;
+: DEZ, A D LDrr, E ORr, ;

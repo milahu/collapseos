@@ -2,7 +2,7 @@
 : SPLITB
     256 /MOD SWAP
 ;
-: PC H@ ORG @ - ;
+: PC H@ ORG @ - BIN( @ + ;
 ( A, spits an assembled byte, A,, spits an assembled word
   Both increase PC. To debug, change C, to .X )
 : A, C, ; : A,, SPLITB A, A, ;

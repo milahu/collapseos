@@ -1,8 +1,7 @@
         ( DE contains prev offset )
         HL POPqq,           ( <-- lvl 2 )
         ( HL is prev field's addr. Is offset zero? )
-        A D LDrr,
-        E ORr,
+        DEZ,
         IFNZ,
             ( get absolute addr from offset )
             ( carry cleared from "or e" )
@@ -12,5 +11,6 @@
         HL POPqq,           ( <-- lvl 1 )
     JRNZ, AGAIN, ( inner-B292, try to match again )
     ( Z set? end of dict, unset Z )
+
 
                                                       ( cont. )

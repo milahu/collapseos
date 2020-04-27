@@ -1,7 +1,9 @@
 : Z80AMEM+ 0x59 RAM+ @ + ;
 : ORG 0 Z80AMEM+ ;
-: L1 2 Z80AMEM+ ; : L2 4 Z80AMEM+ ;
-: L3 6 Z80AMEM+ ; : L4 8 Z80AMEM+ ;
+: BIN( 2 Z80AMEM+ ;
+: L1 4 Z80AMEM+ ; : L2 6 Z80AMEM+ ;
+: L3 8 Z80AMEM+ ; : L4 10 Z80AMEM+ ;
+: Z80A$ H@ 0x59 RAM+ ! 12 ALLOT 0 BIN( ! ;
 : A 7 ; : B 0 ; : C 1 ; : D 2 ;
 : E 3 ; : H 4 ; : L 5 ; : (HL) 6 ;
 : BC 0 ; : DE 1 ; : HL 2 ; : AF 3 ; : SP AF ;

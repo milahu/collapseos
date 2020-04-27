@@ -3,7 +3,7 @@ PC ORG @ 0x34 + ! ( execute )
     ( DE points to wordref )
     EXDEHL,
     E (HL) LDrr,
-    D 0 LDrn,
+    D BIN( @ 256 / LDrn,
     EXDEHL,
     ( HL points to code pointer )
     DE INCss,

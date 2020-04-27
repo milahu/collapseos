@@ -1,8 +1,7 @@
 CODE NOT
     HL POPqq,
     chkPS,
-    A L LDrr,
-    H ORr,
+    HLZ,
     PUSHZ,
 ;CODE
 

@@ -1,14 +1,16 @@
+Flow
+
+There are 2 label types: backward and forward. For each type,
+there are two actions: set and write. Setting a label is
+declaring where it is. It has to be performed at the label's
+destination. Writing a label is writing its offset difference
+to the binary result. It has to be done right after a relative
+jump operation. Yes, labels are only for relative jumps.
+
 For backward labels, set happens before write. For forward
 labels, write happen before set. The write operation writes a
 dummy placeholder, and then the set operation writes the offset
 at that placeholder's address.
 
-Variable actions are expected to be called with labels in
-front of them. Example, "L2 FSET"
 
-About that "1 -": z80 relative jumps record "e-2", that is,
-the offset that *counts the 2 bytes of the jump itself*.
-Because we set the label *after* the jump OP1 itself, that's 1
-byte that is taken care of. We still need to adjust by another
-byte before writing the offset.
-
+                                                        (cont.)

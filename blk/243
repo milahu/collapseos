@@ -1,16 +1,15 @@
 : JPccnn, SWAP <<3 0xc2 OR A, A,, ;
+: BCALL, BIN( @ + CALLnn, ;
+: BJP, BIN( @ + JPnn, ;
+: BJPcc, BIN( @ + JPccnn, ;
 
-( 26 == next )
-: JPNEXT, 26 JPnn, ;
-( 29 == chkPS )
-: chkPS, 29 CALLnn, ;
+: JPNEXT, 26 BJP, ; ( 26 == next )
 
-: CODE
-    ( same as CREATE, but with native word )
+: chkPS, 29 BCALL, ; ( 29 == chkPS )
+
+: CODE ( same as CREATE, but with native word )
     (entry)
-    ( 23 == nativeWord )
-    23 C,
+    23 C, ( 23 == nativeWord )
 ;
-
 : ;CODE JPNEXT, ;
 

@@ -4,7 +4,7 @@ PC ORG @ 0x0f + ! ( compiledWord )
   2. Set new IP to the second atom of the list
   3. Execute the first atom of the list. )
     IY PUSHqq, HL POPqq, ( <-- IP )
-    0x11 CALLnn,     ( 11 == pushRS )
+    0x11 BCALL,      ( 11 == pushRS )
     EXDEHL,          ( HL points to PFA )
     ( While we increase, dereference into DE for execute call
       later. )

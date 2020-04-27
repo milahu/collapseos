@@ -2,12 +2,12 @@ CODE >R
     HL POPqq,
     chkPS,
     ( 17 == pushRS )
-    17 CALLnn,
+    17 BCALL,
 ;CODE
 
 CODE R>
     ( 20 == popRS )
-    20 CALLnn,
+    20 BCALL,
     HL PUSHqq,
 ;CODE
 
