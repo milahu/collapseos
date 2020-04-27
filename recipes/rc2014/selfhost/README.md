@@ -6,31 +6,60 @@ either for another RC2014 or for an OS upgrade.
 
 ## Gathering parts
 
-* stage4 from `sdcard` recipe. If you want to write to EEPROM as the final step,
-  you'll need a hybrid stage4 that also includes stuff from the `eeprom` recipe.
+* stage3 from `sdcard` recipe. If you want to write to EEPROM as the final step,
+  you'll need a hybrid stage3 that also includes stuff from the `eeprom` recipe.
 
 ## Building stage 1
 
-### Part 1
-
-Building the first part of stage 1 (the binary part, before the inlined-source
-part) from within Collapse OS is actually very similar from building it from a
-modern environment. If you take the time to look at the base recipe `Makefile`,
-you'll see `cat xcomp.fs | $(STAGE2)`. That command builds part 1. Open
+Build Collapse OS' stage 1 from within Collapse OS is very similar to how we do
+it from the makefile. If you take the time to look at the base recipe
+`Makefile`, you'll see `cat xcomp.fs | $(STAGE2)`. That's the thing.  Open
 `xcomp.fs` in a text editor and take a look at it.
 
 To assemble stage 1 from RC2014, all you need to do is to type those commands
 in the same order, and replace the `H@ 256 /MOD 2 PC! 2 PC!` lines with `H@ .X`.
 Those commands will inform you of the begin/end offsets of the assembled binary.
 
-The meaning of these commands is not explained here. You are encouraged to read
-the in-system documentation for more information.
+I'm not going to explain in detail what each command do, but only give you an
+overview of what is happening.  You are encouraged to read the in-system
+documentation for more information.
 
-However, one thing you should know is that because the SD card driver is a bit
-slow, some of these commands take a long time. Multiple minutes. Be patient.
+The first part is configuration of your new system. When RAM starts, where RSP
+starts, what ports to use for what device, etc. These configuration declarations
+are expected in the boot code and driver code.
+
+Then, we load the Z80 assembler and the cross compiler (xcomp for short), which
+we'll of course need for the task ahead.
+
+Then come xcomp overrides, which are needed for xcomp to be effective.
+
+At this point, we're about to begin spitting binary content, so we want to know
+where we're at. That's why you'll need to type `H@ .X` and write down the
+result. That's the starting offset.
+
+Then, we assemble the boot binary, drivers' native words, then inner core,
+close the binary with a hook word. We're finished with cross-compiling.
+
+We're at the offset that will be `CURRENT` on boot, so we update `LATEST`.
+
+Then, we spit the course code that will be interpreted by stage 1 on boot so
+that it bootstraps itself to a full interpreter. Not all units are there
+because they don't fit in 8K, but they're sufficient for our needs. We also
+need the linker so that we can relink ourselves to stage 2.
+
+Finally, we have initialization code, then a spit of the ending offset.
+
+Go ahead, run that.  However, one thing you should know is that because the SD
+card driver is a bit slow, some of these commands take a long time. Multiple
+minutes. Be patient.
 
 Once all your commands are run and that you have your begin/end offset (write
-them down somewhere), you're ready to assemble part 2.
+them down somewhere), you're at the same point as you were after the `make`
+part of the base recipe. The contents between your start and end offset is the
+exact same as the contents of `stage1.bin` when you run `make`. Continue your
+deployment from there.
+
+Good luck!
 
 ### What to do on SDerr?
 
@@ -48,7 +77,3 @@ You're looking at the offset of the last wordref of the *previous* LOAD
 operation. That offset is going in `XCURRENT`. Then, you're looking at the end
 of that word. That offset goes in `HERE`. Once you've done that, relaunch your
 LOAD.
-
-### Part 2
-
-TODO
