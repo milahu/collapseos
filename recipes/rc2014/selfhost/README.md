@@ -77,3 +77,14 @@ You're looking at the offset of the last wordref of the *previous* LOAD
 operation. That offset is going in `XCURRENT`. Then, you're looking at the end
 of that word. That offset goes in `HERE`. Once you've done that, relaunch your
 LOAD.
+
+### Verifying
+
+You can use `/tools/memdump` to dump the memory between your start/stop offsets
+so that you can compare against your reference stage 1. Before you do, you have
+to take yourself out of xcomp mode. First, run `XCOFF` to go back to your
+regular dict. Then, run `FORGET CODE` to undo the xcomp overrides you've added
+before. That will rewind `HERE`. You don't want that. Put `HERE` back to after
+your ending offset so that you don't overwrite your binary.
+
+Then, you can run `/tools/memdump`.

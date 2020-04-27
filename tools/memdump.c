@@ -5,7 +5,7 @@
 
 #include "common.h"
 
-/* Read specified number of bytes at specified memory address through a BASIC
+/* Read specified number of bytes at specified memory address through a Forth
  * remote shell and dump it to stdout.
  */
 
@@ -29,9 +29,7 @@ int main(int argc, char **argv)
 
     int fd = open(argv[1], O_RDWR|O_NOCTTY);
     char s[0x30];
-    sprintf(s, "m=0x%04x", memptr);
-    sendcmdp(fd, s);
-    sprintf(s, "while m<0x%04x peek m:puth a:m=m+1", memptr+bytecount);
+    sprintf(s, ": _ 0x%04x 0x%04x DO I @ .x LOOP ; _", memptr+bytecount, memptr);
     sendcmd(fd, s);
 
     for (int i=0; i<bytecount; i++) {
@@ -41,5 +39,6 @@ int main(int argc, char **argv)
         putchar(c);
     }
     read(fd, s, 2); // read prompt
+    sendcmdp(fd, "FORGET _");
     return 0;
 }
