@@ -6,8 +6,8 @@ VARIABLE ACC
     ACC !
 ;
 : L BLK> @ _LIST ;
-: B BLK> @ 1- BLK> ! L ;
-: N BLK> @ 1+ BLK> ! L ;
+: B BLK> @ 1- BLK@ L ;
+: N BLK> @ 1+ BLK@ L ;
 
 
 
