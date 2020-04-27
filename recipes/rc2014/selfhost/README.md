@@ -42,14 +42,14 @@ close the binary with a hook word. We're finished with cross-compiling.
 
 We're at the offset that will be `CURRENT` on boot, so we update `LATEST`.
 
-Then, we spit the course code that will be interpreted by stage 1 on boot so
+Then, we spit the source code that will be interpreted by stage 1 on boot so
 that it bootstraps itself to a full interpreter. Not all units are there
 because they don't fit in 8K, but they're sufficient for our needs. We also
 need the linker so that we can relink ourselves to stage 2.
 
 Finally, we have initialization code, then a spit of the ending offset.
 
-Go ahead, run that.  However, one thing you should know is that because the SD
+Go ahead, run that. However, one thing you should know is that because the SD
 card driver is a bit slow, some of these commands take a long time. Multiple
 minutes. Be patient.
 
@@ -80,7 +80,7 @@ LOAD.
 
 ### Verifying
 
-You can use `/tools/memdump` to dump the memory between your start/stop offsets
+You can use `/tools/memdump` to dump the memory between your begin/end offsets
 so that you can compare against your reference stage 1. Before you do, you have
 to take yourself out of xcomp mode. First, run `XCOFF` to go back to your
 regular dict. Then, run `FORGET CODE` to undo the xcomp overrides you've added
