@@ -7,10 +7,10 @@ context, branching doesn't work.
 
 f IF A ELSE B THEN: if f is true, execute A, if false, execute
 B. ELSE is optional.
+[IF] .. [THEN]: Meta-IF. Works outside definitions. No [ELSE].
 BEGIN .. f UNTIL: if f is false, branch to BEGIN.
 BEGIN .. AGAIN: Always branch to BEGIN.
 x y DO .. LOOP: LOOP increments y. if y != x, branch to DO.
-x CASE y OF A ENDOF z OF B ENDOF C ENDCASE: If x == y, execute
-A, if x == z, execute B. Otherwise, execute C. x is dropped
-in case of an OF match, *but it is kept if it reaches C*. You
-have to consume it to avoid PSP leak.                   (cont.)
+
+
+                                                        (cont.)

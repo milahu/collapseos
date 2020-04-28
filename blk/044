@@ -1,0 +1,5 @@
+INTERPRET --   Get a line from stdin, compile it in tmp memory,
+               then execute the compiled contents.
+LEAVE     --   In a DO..LOOP, exit at the next LOOP call.
+QUIT      --   Return to interpreter prompt immediately
+EXIT!     --   Exit current INTERPRET loop.

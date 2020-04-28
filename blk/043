@@ -1,4 +1,8 @@
-(cont.)
+x CASE y OF A ENDOF z OF B ENDOF C ENDCASE: If x == y, execute
+A, if x == z, execute B. Otherwise, execute C. x is dropped
+in case of an OF match, *but it is kept if it reaches C*. You
+have to consume it to avoid PSP leak.           
+
 (br)      --   Branches by the number specified in the 2
                following bytes. Can be negative.
 (?br)     f -- Branch if f is false.
@@ -9,8 +13,3 @@
 ABORT     --   Resets PS and RS and returns to interpreter.
 ABORT" x" --   *I* Compiles a ." followed by a ABORT.
 EXECUTE   a -- Execute wordref at addr a
-INTERPRET --   Get a line from stdin, compile it in tmp memory,
-               then execute the compiled contents.
-LEAVE     --   In a DO..LOOP, exit at the next LOOP call.
-QUIT      --   Return to interpreter prompt immediately
-EXIT!     --   Exit current INTERPRET loop.
