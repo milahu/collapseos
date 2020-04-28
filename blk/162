@@ -6,7 +6,8 @@ CODE KEY
 ;CODE
 
 CODE EMIT
-    BC POPqq ( c == @DSP arg )
+    BC POPqq, ( c == @DSP arg )
     chkPS,
     A 0x02 LDrn, ( @DSP )
+    0x28 RSTn,
 ;CODE
