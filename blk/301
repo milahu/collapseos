@@ -1,7 +1,10 @@
-L3 BSET
-PC ORG @ 0x34 + ! ( execute )
-    ( DE points to wordref )
-    EXDEHL,
+L3 BSET PC ORG @ 0x34 + ! ( execute )
+    EXDEHL, ( HL now points to wordref )
+    ( We don't apply BIN( reliably on stable ABI stuff, we
+      might need to adjust addr. Ugly, but well... )
+    BIN( @ [IF]
+        A XORr, H ORr, IFZ, H BIN( @ 256 / LDrn,
+    [THEN]
     E (HL) LDrr,
     D BIN( @ 256 / LDrn,
     EXDEHL,
