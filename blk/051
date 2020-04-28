@@ -1,0 +1,2 @@
+MOVE     a1 a2 u --      Copy u bytes from a1 to a2, starting
+                         with a1, going up.

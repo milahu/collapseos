@@ -1,5 +1,4 @@
-( a1 a2 u -- )
-: MOVE
+: MOVE ( a1 a2 u -- )
     ( u ) 0 DO
         SWAP DUP I + C@   ( a2 a1 x )
         ROT SWAP OVER I + ( a1 a2 x a2 )
@@ -7,10 +6,10 @@
     LOOP
     2DROP
 ;
-
-: DELW 1- 0 SWAP C! ;
-
-: PREV
-    3 - DUP @                   ( a o )
-    -                           ( a-o )
+: FILL ( a n b -- )
+    SWAP 2 PICK + ( a b a+n ) ROT ( b a+n a ) DO ( b )
+        DUP I C!
+    LOOP
 ;
+: DELW 1- 0 SWAP C! ;
+: PREV 3 - DUP @ - ;
