@@ -10,14 +10,13 @@
 CURRENT @ XCURRENT !
 
 H@ 256 /MOD 2 PC! 2 PC!
-H@ XOFF !
 0x3000 BIN( !
 282 LOAD  ( boot.z80 )
 162 LOAD  ( trs80.z80 )
 393 LOAD  ( icore )
 (entry) _
 ( Update LATEST )
-PC XOFF @ 8 + !
+PC ORG @ 8 + !
 422 463 XPACKR ( core cmp print parse readln fmt )
 ," : _ RDLN$ (ok) ; _ "
 H@ 256 /MOD 2 PC! 2 PC!

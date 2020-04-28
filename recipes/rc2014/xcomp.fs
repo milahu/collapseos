@@ -16,14 +16,13 @@ RAMSTART 0x70 + CONSTANT ACIA_MEM
 CURRENT @ XCURRENT !
 
 H@ 256 /MOD 2 PC! 2 PC!
-H@ XOFF !
 282 LOAD  ( boot.z80 )
 352 LOAD  ( acia.z80 )
 372 LOAD  ( sdc.z80 )
 393 LOAD  ( icore )
 (entry) _
 ( Update LATEST )
-H@ XOFF @ - XOFF @ 8 + !
+PC ORG @ 8 + !
 422 441 XPACKR ( core cmp )
 446 452 XPACKR ( parse )
 358 360 XPACKR ( acia.fs )

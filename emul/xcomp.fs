@@ -10,12 +10,11 @@
 CURRENT @ XCURRENT !
 
 H@ 256 /MOD 2 PC! 2 PC!
-H@ XOFF !
 282 LOAD  ( boot.z80 )
 393 LOAD  ( icore )
 (entry) _
 ( Update LATEST )
-H@ XOFF @ - XOFF @ 8 + !
+PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
 ," : EMIT 0 PC! ; "
 ," : KEY 0 PC@ ; "
