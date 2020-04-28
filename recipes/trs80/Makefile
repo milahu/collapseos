@@ -1,30 +1,8 @@
-SHELLAPPS = zasm ed
-APPTARGETS = ${SHELLAPPS:%=cfsin/%} 
-CFSTARGETS = $(APPTARGETS) cfsin/user.h
-TARGET = os.bin
-BASEDIR = ../..
-ZASM = $(BASEDIR)/emul/zasm/zasm
-KERNEL = $(BASEDIR)/kernel
-APPS = $(BASEDIR)/apps
-CFSPACK = $(BASEDIR)/tools/cfspack/cfspack
+TARGET = stage1.bin
+EDIR = ../../emul
+STAGE2 = $(EDIR)/stage2
 
 .PHONY: all
-all: $(TARGET) floppy.cfs
-$(TARGET): glue.asm
-	$(ZASM) $(KERNEL) $(APPS) < glue.asm > $@
-
-$(CFSPACK):
-	make -C $(BASEDIR)/tools/cfspack
-
-floppy.cfs: $(CFSTARGETS) $(CFSPACK)
-	$(CFSPACK) cfsin > $@
-
-$(APPTARGETS):
-	$(ZASM) $(KERNEL) $(APPS) user.h < $(APPS)/${@:cfsin/%=%}/glue.asm > $@
-
-cfsin/user.h: user.h
-	cp user.h $@
-
-.PHONY: clean
-clean:
-	rm -f $(CFSTARGETS) floppy.cfs $(TARGET)
+all: $(TARGET) 
+$(TARGET): xcomp.fs $(STAGE2)
+	cat xcomp.fs | $(STAGE2) > $@

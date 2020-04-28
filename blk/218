@@ -8,3 +8,4 @@
     OR A,
 ;
 0x04 OP1r INCr,                0x05 OP1r DECr,
+0xc7 OP1r RSTn,

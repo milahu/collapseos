@@ -3,7 +3,7 @@ OUT [nA, (C)r]         IN [An, r(C)]
 SET [br]   RES [br]    BIT [br]
 RL [r]     RLC [r]     SLA [r]     RLA         RLCA
 RR [r]     RRC [r]     SRL [r]     RRA         RRCA
-CALL [nn]  DJNZ
+CALL [nn]  RST [n]     DJNZ
 JP [nn, (HL), (IX), (IY)]
 JR [, Z, NZ, C, NC]
 

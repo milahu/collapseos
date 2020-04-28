@@ -1,0 +1,12 @@
+CODE KEY
+    A 0x01 LDrn, ( @KEY )
+    0x28 RSTn,
+    L A LDrr, H 0 LDrn,
+    HL PUSHqq,
+;CODE
+
+CODE EMIT
+    BC POPqq ( c == @DSP arg )
+    chkPS,
+    A 0x02 LDrn, ( @DSP )
+;CODE
