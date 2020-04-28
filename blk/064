@@ -5,7 +5,7 @@ LIST  n --      Prints the contents of the block n on screen
                 in the form of 16 lines of 64 columns.
 LOAD  n --      Interprets Forth code from block n
 LOADR n1 n2 --  Load block range between n1 and n2, inclusive.
-
+WIPE  --        Empties current block
 
 
 
