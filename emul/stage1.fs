@@ -25,4 +25,4 @@
 
 (entry) _
 H@ 256 /MOD 2 PC! 2 PC!
-H@ 0x08 ! ( update LATEST )
+H@ 0x08 BIN+ ! ( update LATEST )

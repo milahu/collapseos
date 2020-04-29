@@ -1,4 +1,5 @@
 : RAM+ [ RAMSTART LITN ] + ;
+: BIN+ [ BIN( @ LITN ] + ;
 : (parse*) 0x0a RAM+ ;
 : HERE 0x04 RAM+ ;
 : CURRENT* 0x51 RAM+ ;
