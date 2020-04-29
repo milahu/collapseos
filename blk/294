@@ -10,7 +10,7 @@
         DE DECss,           ( prev field )
         DE PUSHqq,          ( --> lvl 2 )
         EXDEHL,
-        E (HL) LDrr,
-        HL INCss,
-        D (HL) LDrr,
+        LDDE(HL),
+
+
                                                       ( cont. )

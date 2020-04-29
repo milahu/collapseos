@@ -3,7 +3,7 @@ L3 BSET PC ORG @ 0x34 + ! ( execute )
     ( We don't apply BIN( reliably on stable ABI stuff, we
       might need to adjust addr. Ugly, but well... )
     BIN( @ [IF]
-        A XORr, H ORr, IFZ, H BIN( @ 256 / LDrn,
+        A XORr, H ORr, IFZ, H BIN( @ 256 / LDrn, THEN,
     [THEN]
     E (HL) LDrr,
     D BIN( @ 256 / LDrn,
