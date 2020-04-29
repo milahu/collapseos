@@ -63,10 +63,10 @@ my knowledge. As far as I know, the COMM program doesn't allow this.
 What are we going to do? We're going to punch in a binary program to handle that
 kind of reception! You're gonna feel real badass about it too...
 
-## Building the binary
+## Building the stage 1
 
-You can start the process by building the binary. Running `make` in this folder
-will yield a `os.bin` file. You'll need it later.
+You can start the process by building the stage 1 binary. Running `make` in
+this folder will yield a `stage1.bin` file. You'll need it later.
 
 ## Testing serial communication
 
@@ -167,7 +167,7 @@ filename to send. Before you send the binary, make it go through
 `tools/ttysafe` first (which just takes input from stdin and spits tty-safe
 content to stdout):
 
-    ./ttysafe < os.bin > os.ttysafe
+    ./ttysafe < stage1.bin > stage1.ttysafe
 
 On OpenBSD, the invocation can look like:
 
@@ -198,11 +198,29 @@ session on the other, type a few characters, and try `pingpong` again.
 
 ## Running Collapse OS
 
-If everything went well, you can run Collapse OS with `g3000<space>`. You'll
+If everything went well, you can run Collapse OS with `g3000<return>`. You'll
 get a usable Collapse OS prompt!
 
 Like with the `recv` program, nothing stops you from dumping that binary to a
 floppy.
+
+## Saving to disk
+
+You could save your sent content as-is by following the instructions you had
+for the `RECV` program, but that would mean that your executable would boostrap
+itself every time it starts, which takes multiple seconds. You're better off
+saving a compiled version of Collapse OS, something you already have once you
+see the "ok" after running `g3000<return>`.
+
+Before you do that, however, you need to update your `LATEST` field, something
+you can do with `CURRENT @ 0x08 BIN+ !`. You also need to know where your
+binary stops, something you'll get with `H@ .X`.
+
+Then, you can go back to TRSDOS with the BREAK key followed by `o<return>` and
+proceed with writing the proper memory area to disk.
+
+TODO: make this work. this doesn't actually work. Saving it before compilation
+works though.
 
 ## Configuration
 

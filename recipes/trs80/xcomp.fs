@@ -1,5 +1,5 @@
-0x6000 CONSTANT RAMSTART
 0xf000 CONSTANT RS_ADDR
+RS_ADDR 0x80 - CONSTANT RAMSTART
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
 : CODE XCODE ;
@@ -17,6 +17,7 @@ H@ 256 /MOD 2 PC! 2 PC!
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
+," CURRENT @ HERE ! "
 422 463 XPACKR ( core cmp print parse readln fmt )
-," : _ RDLN$ (ok) ; _ "
+," : INIT CURRENT @ HERE ! RDLN$ (ok) INTERPRET ; INIT "
 H@ 256 /MOD 2 PC! 2 PC!
