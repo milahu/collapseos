@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "emul.h"
 #ifdef STAGE2
-#include "stage1-bin.h"
+#include "forth-bin.h"
 #include "blkfs-bin.h"
 #else
 #include "stage0-bin.h"

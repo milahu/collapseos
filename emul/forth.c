@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include <termios.h>
 #include "emul.h"
-#include "stage1-bin.h"
+#include "forth-bin.h"
 #include "blkfs-bin.h"
 
 // in sync with glue.asm
