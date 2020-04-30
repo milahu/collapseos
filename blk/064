@@ -1,6 +1,8 @@
 Disk
 
 BLK>  -- a      Address of the current block variable.
+COPY  s d --    Copy contents of s block to d block.
+FLUSH --        Write current block to disk if dirty.
 LIST  n --      Prints the contents of the block n on screen
                 in the form of 16 lines of 64 columns.
 LOAD  n --      Interprets Forth code from block n
