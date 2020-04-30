@@ -4,5 +4,5 @@ Drivers for the TRS-80 keyboard, video and floppy. At the
 moment, they are thin layer over the drivers provided by
 TRSDOS' SVC.
 
-Load the Z80 words with "162 LOAD" and the high level part
-with "164 LOAD".
+Load the Z80 words with "492 LOAD" and the high level part
+with "494 LOAD".

@@ -12,7 +12,7 @@ CURRENT @ XCURRENT !
 H@ 256 /MOD 2 PC! 2 PC!
 0x3000 BIN( !
 282 LOAD  ( boot.z80 )
-162 LOAD  ( trs80.z80 )
+492 LOAD  ( trs80.z80 )
 393 LOAD  ( icore )
 (entry) _
 ( Update LATEST )
