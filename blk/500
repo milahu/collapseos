@@ -1,0 +1,4 @@
+: FD@ ['] RDSEC SWAP FD@! ;
+: FD! ['] WRSEC SWAP FD@! ;
+: FD$ ['] FD@ BLK@* ! ['] FD! BLK!* ! ;
+

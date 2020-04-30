@@ -1,16 +1,1 @@
-CODE KEY
-    A 0x01 LDrn, ( @KEY )
-    0x28 RSTn,
-    L A LDrr, H 0 LDrn,
-    HL PUSHqq,
-;CODE
-CODE EMIT
-    BC POPqq, ( c == @DSP arg )
-    chkPS,
-    A 0x02 LDrn, ( @DSP )
-    0x28 RSTn,
-;CODE
-CODE BYE
-    HL 0 LDddnn,
-    A 0x16 LDrn, ( @EXIT )
-    0x28 RSTn,
+493 496 LOADR

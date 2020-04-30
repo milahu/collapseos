@@ -1,0 +1,10 @@
+CODE RDSEC ( drv cylsec addr -- f )
+    HL POPqq,
+    DE POPqq,
+    BC POPqq,
+    chkPS,
+    A 0x31 LDrn, ( @RDSEC )
+    0x28 RSTn,
+    PUSHZ,
+;CODE
+

@@ -5,4 +5,4 @@ moment, they are thin layer over the drivers provided by
 TRSDOS' SVC.
 
 Load the Z80 words with "492 LOAD" and the high level part
-with "494 LOAD".
+with "498 LOAD".
