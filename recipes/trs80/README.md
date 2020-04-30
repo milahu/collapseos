@@ -63,6 +63,10 @@ my knowledge. As far as I know, the COMM program doesn't allow this.
 What are we going to do? We're going to punch in a binary program to handle that
 kind of reception! You're gonna feel real badass about it too...
 
+## Keyboard tips
+
+* `_` is `CLEAR+ENTER`.
+
 ## Building the stage 1
 
 You can start the process by building the stage 1 binary. Running `make` in
@@ -196,31 +200,71 @@ would cause a data mismatch at the very beginning of the process, all the time.
 What I do in these cases is start a `COMM *cl` session on one side and a screen
 session on the other, type a few characters, and try `pingpong` again.
 
-## Running Collapse OS
-
-If everything went well, you can run Collapse OS with `g3000<return>`. You'll
-get a usable Collapse OS prompt!
-
-Like with the `recv` program, nothing stops you from dumping that binary to a
-floppy.
-
 ## Saving to disk
 
-You could save your sent content as-is by following the instructions you had
-for the `RECV` program, but that would mean that your executable would boostrap
-itself every time it starts, which takes multiple seconds. You're better off
-saving a compiled version of Collapse OS, something you already have once you
-see the "ok" after running `g3000<return>`.
+If everything went well, you could run Collapse OS with `g3000<return>`. You
+would get a usable Collapse OS prompt. But don't do that just yet. That
+executable bootstraps itself from code and it takes a while to do that every
+time you launch it. You don't want that right? Let's save a compiled version of
+it to disk.
 
-Before you do that, however, you need to update your `LATEST` field, something
-you can do with `CURRENT @ 0x08 BIN+ !`. You also need to know where your
-binary stops, something you'll get with `H@ .X`.
+Turn off the debugger (which can mess up some things) and save your sent
+content as-is by following the instructions you had for the `RECV` program.
+This way, if you mess up a step below, you can quickly start over. Now you can
+launch Collapse OS. Then, we need to:
 
-Then, you can go back to TRSDOS with the BREAK key followed by `o<return>` and
-proceed with writing the proper memory area to disk.
+* Reclaim wasted memory
+* Create hook entry
+* Update LATEST
+* Write down initialization code
+* Write memory to floppy
 
-TODO: make this work. this doesn't actually work. Saving it before compilation
-works though.
+### Reclaim wasted memory
+
+During initialization, `RDLN$` allocated memory in `HERE` for its input buffer.
+If you don't reclaim that space, that will be dead space in your binary.
+
+You can reclaim that space with `FORGET _` which will rewind to before we
+defined our initialization routine (see xcomp.fs).
+
+However, that is not enough. If you only do that, there will be a conflict
+between the rdln input buffer and your `HERE` space! So we need to go put that
+input buffer somewhere else first. Therefore, your commands will be:
+
+    500 ALLOT RDLN$ FORGET _
+
+### Create hook entry
+
+That one is easy:
+
+    (entry) _
+
+### Update LATEST
+
+At this point, both `HERE` and `CURRENT` point to your future `LATEST`.
+
+    H@ 0x08 BIN+ !
+
+Done.
+
+### Write down initialization code
+
+You'll do something similar to what we do in xcomp, except you'll have to add
+"HERE rewinding" code because by default, `HERE` starts at RAMSTART+0x80. So:
+
+    ," CURRENT @ HERE ! (ok) RDLN$ "
+
+As soon as `RDLN$` is called, the `C<` pointer changes and gives control to
+keyboard, giving us our full forth interpreter.
+
+### Write memory to floppy
+
+What you currently have in memory is gold. You want that on floppy. First, run
+`H@ .X` to know your upper bound (and `0 BIN+ .X` to know your lower one, but
+you're already supposed to know that one). Then, run `BYE` to return to TRSDOS
+(the TRSDOS driver overrides `BYE` so that it calls the proper SVC instead of
+just halting). Then, you can dump memory to floppy as you already did for
+`RECV`.
 
 ## Configuration
 

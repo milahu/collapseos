@@ -19,5 +19,5 @@ H@ 256 /MOD 2 PC! 2 PC!
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
 422 463 XPACKR ( core cmp print parse readln fmt )
-," : INIT CURRENT @ HERE ! RDLN$ (ok) INTERPRET ; INIT "
+," : _ RDLN$ (ok) ; _ "
 H@ 256 /MOD 2 PC! 2 PC!
