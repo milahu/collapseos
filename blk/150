@@ -1,0 +1,14 @@
+Extra words
+
+The Core words (B420) section contains the absolute minimum
+needed to get a usable Forth interpreter with input buffer and
+disk blocks access running. The goal here is to minimize the
+binary size of a minimum Collapse OS install.
+
+Extra words are words you will most likely want because they
+are generally useful. They are so useful that they are part
+of the Dictionary (B30).
+
+Some programs need them, so they will automatically LOAD them.
+To that end, the loader is conditional: it aborts if extra
+words are already present. Load with "152 LOAD".

@@ -1,7 +1,7 @@
 Entry management
 
-(find)   a -- a f Read at a and find it in dict. If found,
-                  f=1 and a = wordref. If not found, f=0 and
+'? x     -- a f   Find x it in dict. If found, f=1 and
+                  a = wordref. If not found, f=0 and
                   a = string addr.
 ' x      -- a     Push addr of word x to a. If not found,
                   aborts.

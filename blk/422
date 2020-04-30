@@ -8,9 +8,9 @@
 : LITS 34 , SCPY ;
 : LIT< WORD LITS ; IMMEDIATE
 : LITA 36 , , ;
+: '? WORD (find) ;
 : '
-    WORD (find) (?br) [ 4 , ] EXIT
+    '? (?br) [ 4 , ] EXIT
     LIT< (wnf) (find) DROP EXECUTE
 ;
 : ['] ' LITA ; IMMEDIATE
-
