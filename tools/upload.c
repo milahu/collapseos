@@ -67,7 +67,7 @@ int main(int argc, char **argv)
         }
         usleep(1000); // let it breathe
     }
-    mread(fd, s, 2); // "> " prompt
+    readprompt(fd);
     sendcmdp(fd, "FORGET _");
     printf("Done!\n");
     fclose(fp);

@@ -16,6 +16,12 @@ void mread(int fd, char *s, int count)
     }
 }
 
+void readprompt(int fd)
+{
+    char junk[3];
+    mread(fd, junk, 3); // " ok" prompt
+}
+
 void sendcmd(int fd, char *cmd)
 {
     char junk[2];
@@ -32,12 +38,12 @@ void sendcmd(int fd, char *cmd)
     usleep(1000);
 }
 
-// Send a cmd and also read the "> " prompt
+// Send a cmd and also read the " ok" prompt
 void sendcmdp(int fd, char *cmd)
 {
     char junk[2];
     sendcmd(fd, cmd);
-    mread(fd, junk, 2);
+    readprompt(fd);
 }
 
 // from https://stackoverflow.com/a/6947758
