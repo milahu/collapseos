@@ -1,4 +1,4 @@
-CODE DCSTAT ( drv -- f )
+CODE @DCSTAT ( drv -- f )
     BC POPqq,
     chkPS,
     A 0x28 LDrn, ( @DCSTAT )

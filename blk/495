@@ -1,4 +1,4 @@
-CODE RDSEC ( drv cylsec addr -- f )
+CODE @RDSEC ( drv cylsec addr -- f )
     HL POPqq,
     DE POPqq,
     BC POPqq,

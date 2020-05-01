@@ -6,7 +6,7 @@
     256 * + ( cylsec )
 ;
 : FD@! ( wref blk -- )
-    1 DCSTAT NOT IF _err THEN
+    1 @DCSTAT NOT IF _err THEN
     4 * ( wr sec )
     4 0 DO ( wr sec )
         DUP I + _cylsec ( wr sec cs )
