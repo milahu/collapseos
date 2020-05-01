@@ -1,16 +1,7 @@
-: P
-    EDPOS @ _cpos C<
-    64 0 DO ( bpos c )
-        DUP 0xd = IF DROP 0 THEN
-        2DUP SWAP I + C!
-        DUP IF DROP C< THEN
-    LOOP
-    2DROP
-    BLK!!
-;
-
+( user-facing lines are 1-based )
+: T 1- DUP 64 * EDPOS ! _pln ;
+: P _type EDBUF EDPOS @ _cpos 64 MOVE BLK!! ;
 : _mvln+ ( ln -- move ln 1 line further )
     DUP 14 > IF DROP EXIT THEN
     _lpos DUP 64 + 64 MOVE
 ;
-

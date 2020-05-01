@@ -7,6 +7,7 @@ Memory
 C@       a -- c          Set c to byte at address a
 C@+      a -- a+1 c      Fetch c from a and inc a.
 C!       c a --          Store byte c in address a
+C!+      c a -- a+1      Store byte c in a and inc a.
 CURRENT  -- a            Set a to wordref of last added entry.
 CURRENT* -- a            A pointer to active CURRENT*. Useful
                          when we have multiple active dicts.

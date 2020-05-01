@@ -10,3 +10,5 @@
 
 ( a -- a+1 c )
 : C@+ DUP C@ SWAP 1+ SWAP ;
+( c a -- a+1 )
+: C!+ SWAP OVER C! 1+ ;
