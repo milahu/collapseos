@@ -1,11 +1,16 @@
-: _mvln+ ( ln -- move ln 1 line further )
-    DUP 14 > IF DROP EXIT THEN
-    _bpos DUP 64 + 64 MOVE
+: P
+    EDPOS @ _cpos C<
+    64 0 DO ( bpos c )
+        DUP 0xd = IF DROP 0 THEN
+        2DUP SWAP I + C!
+        DUP IF DROP C< THEN
+    LOOP
+    2DROP
+    BLK!!
 ;
 
-: U
-    15 EDPOS @ - 0 DO
-        14 I - _mvln+
-    LOOP
-    P
+: _mvln+ ( ln -- move ln 1 line further )
+    DUP 14 > IF DROP EXIT THEN
+    _lpos DUP 64 + 64 MOVE
 ;
+

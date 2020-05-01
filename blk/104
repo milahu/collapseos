@@ -1,16 +1,13 @@
-( Line numbers for the user are 1-based, but in code, they're
-  0-based. )
+( Cursor position in buffer. EDPOS/64 is line number )
 VARIABLE EDPOS
-: _bpos 64 * BLK( + ;
-: T 1- DUP EDPOS ! _bpos (print) CRLF ;
-: P
-    EDPOS @ _bpos C<
-    64 0 DO ( bpos c )
-        DUP 0xd = IF DROP 0 THEN
-        2DUP SWAP I + C!
-        DUP IF DROP C< THEN
-    LOOP
-    2DROP
-    BLK!!
-;
-
+: _cpos BLK( + ;
+: _lpos 64 * _cpos ;
+: _pln ( lineno -- )
+    DUP _lpos DUP 64 + SWAP DO ( lno )
+        I EDPOS @ _cpos = IF '^' EMIT THEN
+        I C@ DUP 0x20 < IF DROP 0x20 THEN
+        EMIT
+    LOOP ( lno )
+    1+ . ;
+( user-facing lines are 1-based )
+: T 1- DUP 64 * EDPOS ! _pln ;
