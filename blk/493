@@ -1,4 +1,4 @@
-CODE KEY
+CODE (key)
     A 0x01 LDrn, ( @KEY )
     0x28 RSTn,
     L A LDrr, H 0 LDrn,
