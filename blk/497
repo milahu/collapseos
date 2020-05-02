@@ -1,0 +1,9 @@
+CODE @PUT ( c a -- f )
+    DE POPqq,
+    BC POPqq,
+    chkPS,
+    A 0x04 LDrn, ( @PUT )
+    0x28 RSTn,
+    PUSHZ,
+;CODE
+
