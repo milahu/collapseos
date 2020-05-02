@@ -2,7 +2,7 @@
 : ASKIP ( a -- a+n )
     DUP @       ( a n )
     ( ?br or br or NUMBER )
-    DUP <>{ 0x67 &= 0x53 |= 0x20 |= 0x24 |= <>}
+    DUP 0x67 = OVER 0x53 = OR OVER 0x20 = OR OVER 0x24 = OR
     IF DROP 4 + EXIT THEN
     ( regular word )
     0x22 = NOT IF 2+ EXIT THEN

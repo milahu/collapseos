@@ -1,13 +1,3 @@
-( Words useful for complex comparison operations )
-
 : >= < NOT ;
 : <= > NOT ;
 : 0>= 0< NOT ;
-
-( n1 -- n1 true )
-: <>{ 1 ;
-
-( n1 f -- f )
-: <>} SWAP DROP ;
-
-

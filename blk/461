@@ -8,7 +8,7 @@
     DROP
     8 0 DO
         C@+
-        DUP <>{ 0x20 &< 0x7e |> <>}
+        DUP 0x20 < OVER 0x7e > OR
         IF DROP '.' THEN
         EMIT
     LOOP
