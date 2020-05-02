@@ -8,5 +8,6 @@
 ( Whether buffer is dirty )
 : BLKDTY 6 BLKMEM+ ;
 : BLK( 8 BLKMEM+ ;
+: BLK) BLK( 1024 + ;
 
 

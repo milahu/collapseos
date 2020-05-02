@@ -1,0 +1,12 @@
+: F
+    FBUF _type FBUF EDPOS @ _cpos ( a1 a2 )
+    BEGIN
+        C@+ ROT ( a2+1 c2 a1 ) C@+ ROT ( a2+1 a1+1 c1 c2 )
+        = NOT IF DROP FBUF THEN
+        SWAP OVER C@ 0xd = ( a1 a2 f1 )
+        OVER BLK) = OR ( a1 a2 f1|f2 )
+    UNTIL
+    DUP BLK) < IF BLK( - FBUF + -^ EDPOS ! THEN
+    EDPOS @ 64 / _pln
+;
+

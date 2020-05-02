@@ -1,7 +1,5 @@
 : U
     15 EDPOS @ 64 / - 0 DO
         14 I - _mvln+
-    LOOP
-    P
+    LOOP P
 ;
-

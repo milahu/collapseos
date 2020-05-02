@@ -1,6 +1,7 @@
 ( Cursor position in buffer. EDPOS/64 is line number )
 VARIABLE EDPOS
-CREATE EDBUF 64 ALLOT
+CREATE IBUF 64 ALLOT
+CREATE FBUF 64 ALLOT
 : _cpos BLK( + ;
 : _lpos 64 * _cpos ;
 : _pln ( lineno -- )
@@ -9,8 +10,4 @@ CREATE EDBUF 64 ALLOT
         I C@ DUP 0x20 < IF DROP 0x20 THEN
         EMIT
     LOOP ( lno ) 1+ . ;
-: _zbuf EDBUF 64 0 FILL ;
-: _type ( -- )
-    C< DUP 0xd = IF DROP EXIT THEN _zbuf EDBUF BEGIN ( c a )
-        C!+ C< SWAP OVER 0x0d = UNTIL ( c a )
-    2DROP ;
+: _zbuf 64 0 FILL ; ( buf -- )
