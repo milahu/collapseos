@@ -1,7 +1,7 @@
 : BOOT
     0x02 RAM+ CURRENT* !
     LIT< (parse) (find) DROP (parse*) !
-    CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR)
+    CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR )
     0 0x08 RAM+ !  ( 08 == C<* override )
     LIT< (emit) (find) DROP 0x53 RAM+ ! ( 53 == EMITPTR )
     0 0x55 RAM+ !  ( 55 == EMITPTR override )
