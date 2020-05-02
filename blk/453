@@ -1,5 +1,5 @@
 64 CONSTANT INBUFSZ
-: RDLNMEM+ 0x53 RAM+ @ + ;
+: RDLNMEM+ 0x57 RAM+ @ + ;
 ( current position in INBUF )
 : IN> 0 RDLNMEM+ ;
 ( points to INBUF )

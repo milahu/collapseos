@@ -1,4 +1,4 @@
-: BLKMEM+ 0x57 RAM+ @ + ;
+: BLKMEM+ 0x59 RAM+ @ + ;
 ( n -- Fetches block n and write it to BLK( )
 : BLK@* 0 BLKMEM+ ;
 ( n -- Write back BLK( to storage at block n )

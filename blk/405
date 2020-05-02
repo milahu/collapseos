@@ -1,15 +1,15 @@
 : BOOT
     0x02 RAM+ CURRENT* !
     LIT< (parse) (find) DROP (parse*) !
-    ( 2e == SYSTEM SCRATCHPAD )
-    CURRENT @ 0x2e RAM+ !
+    CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR)
     0 0x08 RAM+ !  ( 08 == C<* override )
+    LIT< (emit) (find) DROP 0x53 RAM+ ! ( 53 == EMITPTR )
+    0 0x55 RAM+ !  ( 55 == EMITPTR override )
     ( 0c == C<* )
     LIT< (boot<) (find) DROP 0x0c RAM+ !
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ !
     LIT< INIT (find)
-    IF EXECUTE
-    ELSE DROP INTERPRET THEN
+    IF EXECUTE ELSE DROP INTERPRET THEN
 ;
 

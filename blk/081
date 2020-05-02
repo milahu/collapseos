@@ -1,16 +1,16 @@
 (cont.)
-RAMSTART  INITIAL_SP    +53       readln's variables
-+02       CURRENT       +55       adev's variables
-+04       HERE          +57       blk's variables
-+06       C<?*          +59       z80a's variables
-+08       C<* override  +5b       FUTURE USES
-+0a       PARSEPTR      +70       DRIVERS
-+0c       C<*           +80       RAMEND
-+0e       WORDBUF
+RAMSTART  INITIAL_SP    +55       EMITPTR override
++02       CURRENT       +57       readln's variables
++04       HERE          +59       blk's variables
++06       C<?           +5b       z80a's variables
++08       C<* override  +5d       adev's variables
++0a       PARSEPTR      +5f       FUTURE USES
++0c       C<*           +70       DRIVERS
++0e       WORDBUF       +80       RAMEND
 +2e       BOOT C< PTR
 +4e       INTJUMP
 +51       CURRENTPTR
-
++53       EMITPTR
 
 
                                                         (cont.)

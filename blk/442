@@ -1,4 +1,6 @@
-( EMIT is needed for this unit to compile )
+: EMIT
+    ( 0x53==EMITPTR 0x55==override )
+    85 RAM+ @ DUP NOT IF DROP 83 RAM+ @ THEN EXECUTE ;
 
 : (print)
     BEGIN

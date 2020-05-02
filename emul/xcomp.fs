@@ -16,7 +16,7 @@ H@ 256 /MOD 2 PC! 2 PC!
 ( Update LATEST )
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
-," : EMIT 0 PC! ; "
+," : (emit) 0 PC! ; CURRENT @ 83 RAM+ ! "
 ," : KEY 0 PC@ ; "
 422 470 XPACKR
 ," ' KEY 12 RAM+ ! "

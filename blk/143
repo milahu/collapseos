@@ -1,9 +1,9 @@
-: ADEVMEM+ 0x55 RAM+ @ + ;
+: ADEVMEM+ 0x5d RAM+ @ + ;
 : A@* 0 ADEVMEM+ ;
 : A!* 2 ADEVMEM+ ;
 
 : ADEV$
-    H@ 0x55 RAM+ !
+    H@ 0x5d RAM+ !
     4 ALLOT
     ['] C@ A@* !
     ['] C! A!* !
