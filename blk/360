@@ -12,6 +12,5 @@
 ( setup interrupt )
     0xc3 0x4e RAM+ C!  ( c3==JP, 4e==INTJUMP )
     ['] ~ACIA 0x4f RAM+ !
-    ['] (emit) 0x53 RAM+ ! ( 53==EMITPTR )
     (im1) ;
 

@@ -1,5 +1,5 @@
 (cont.)
-RAMSTART  INITIAL_SP    +55       EMITPTR override
+RAMSTART  INITIAL_SP    +55       RESERVED
 +02       CURRENT       +57       readln's variables
 +04       HERE          +59       blk's variables
 +06       C<?           +5b       z80a's variables
@@ -10,7 +10,7 @@ RAMSTART  INITIAL_SP    +55       EMITPTR override
 +2e       BOOT C< PTR
 +4e       INTJUMP
 +51       CURRENTPTR
-+53       EMITPTR
++53       (emit) over.
 
 
                                                         (cont.)

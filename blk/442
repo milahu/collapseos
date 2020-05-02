@@ -1,6 +1,6 @@
 : EMIT
-    ( 0x53==EMITPTR 0x55==override )
-    85 RAM+ @ DUP NOT IF DROP 83 RAM+ @ THEN EXECUTE ;
+    ( 0x53==(emit) override )
+    83 RAM+ @ DUP IF EXECUTE ELSE DROP (emit) THEN ;
 
 : (print)
     BEGIN
