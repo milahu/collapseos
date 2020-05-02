@@ -1,3 +1,4 @@
+152 LOAD ( extra )
 : foo
     CASE
         'X' OF 42 ENDOF
