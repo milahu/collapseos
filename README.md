@@ -27,33 +27,25 @@ github issue][forth-issue].
 
 Documentation is lacking, it's not ready yet, this is a WIP branch.
 
-## See it in action
+## Getting started
 
-Michael Schierl has put together [a set of emulators running in the browser that
-run Collapse OS in different contexts][jsemul].
-
-Using those while following along with the [User Guide](doc/) is your quickest
-path to giving Collapse OS a try.
-
-## Documentation
-
-Usage documentation is in-system. Run `0 LIST` for an introduction. You can
-also open `blk/000` in a modern text editor.
+Usage documentation is in-system, so access to documentation requires you to
+run Collapse OS. Fortunately, doing so in an emulator is easy.
 
 See `/emul/README.md` for getting an emulated system running.
 
+Then, run `0 LIST` for an introduction, follow instructions from there.
+
 ## Organisation of this repository
 
-* `forth`: Forth is slowly taking over this project (see issue #4). It comes
-           from this folder.
-* `recipes`: collection of recipes that assemble parts together on a specific
+* `blk`: Collapse OS filesystem's content. That's actually where Collapse OS'
+         source code is located. Everything else is peripheral.
+* `recipes`: collection of recipes that assemble Collapse OS on a specific
              machine.
-* `blk`: Collapse OS filesystem's content. See `000` for intro.
-* `doc`: User guide for when you've successfully installed Collapse OS.
 * `tools`: Tools for working with Collapse OS from "modern" environments. For
            example, tools for facilitating data upload to a Collapse OS machine
            through a serial port.
-* `emul`: Emulated applications.
+* `emul`: Tools for running Collapse OS in an emulated environment.
 * `tests`: Automated test suite for the whole project.
 
 ## Status
@@ -63,13 +55,13 @@ for more information.
 
 ## Discussion
 
-For a general discussion of Collapse OS and the ecosystem of technologies and ideas that may develop around it refer to [r/collapseos][discussion]
+For a general discussion of Collapse OS and the ecosystem of technologies and
+ideas that may develop around it refer to [r/collapseos][discussion]
 
-A more traditional [mailing list][listserv] and IRC (#collapseos on freenode) channels are also maintained.
+A more traditional [mailing list][listserv] and IRC (#collapseos on freenode)
+channels are also maintained.
 
-[libz80]: https://github.com/ggambetta/libz80
 [web]: https://collapseos.org
-[jsemul]: https://schierlm.github.io/CollapseOS-Web-Emulator/
 [discussion]: https://www.reddit.com/r/collapseos
 [listserv]: http://lists.sonic.net/mailman/listinfo/collapseos
 [forth-issue]: https://github.com/hsoft/collapseos/issues/4  
