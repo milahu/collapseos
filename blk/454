@@ -1,16 +1,12 @@
-( handle backspace: go back one char in IN>, if possible, then
-  emit SPC + BS )
-: (inbs)
-    ( already at IN( ? )
-    IN> @ IN( = IF EXIT THEN
-    IN> @ 1- IN> !
-    SPC BS
+: BLK$
+    H@ 0x59 RAM+ !
+    ( 1024 for the block, 8 for variables )
+    1032 ALLOT
+    ( LOAD detects end of block with ASCII EOT. This is why
+      we write it there. EOT == 0x04 )
+    4 C,
+    0 BLKDTY !
+    -1 BLK> !
 ;
 
-: KEY
-    85 RAM+ @ ( (key) override )
-    DUP IF EXECUTE ELSE DROP (key) THEN ;
 
-
-( cont.: read one char into input buffer and returns whether we
-  should continue, that is, whether CR was not met. )

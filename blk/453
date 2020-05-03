@@ -1,13 +1,13 @@
-64 CONSTANT INBUFSZ
-: RDLNMEM+ 0x57 RAM+ @ + ;
-( current position in INBUF )
-: IN> 0 RDLNMEM+ ;
-( points to INBUF )
-: IN( 2 RDLNMEM+ ;
-( points to INBUF's end )
-: IN) INBUFSZ 2+ RDLNMEM+ ;
+: BLKMEM+ 0x59 RAM+ @ + ;
+( n -- Fetches block n and write it to BLK( )
+: BLK@* 0 BLKMEM+ ;
+( n -- Write back BLK( to storage at block n )
+: BLK!* 2 BLKMEM+ ;
+( Current blk pointer in ( )
+: BLK> 4 BLKMEM+ ;
+( Whether buffer is dirty )
+: BLKDTY 6 BLKMEM+ ;
+: BLK( 8 BLKMEM+ ;
+: BLK) BLK( 1024 + ;
 
-( flush input buffer )
-( set IN> to IN( and set IN> @ to null )
-: (infl) 0 IN( DUP IN> ! ! ;
 

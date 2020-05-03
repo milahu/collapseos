@@ -1,0 +1,13 @@
+: EMIT
+    ( 0x53==(emit) override )
+    83 RAM+ @ DUP IF EXECUTE ELSE DROP (emit) THEN ;
+
+: (print)
+    BEGIN
+    C@+      ( a+1 c )
+    ( exit if null )
+    DUP NOT IF 2DROP EXIT THEN
+    EMIT     ( a )
+    AGAIN
+;
+

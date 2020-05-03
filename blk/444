@@ -1,9 +1,16 @@
-: BS 8 EMIT ;
-: LF 10 EMIT ;
-: CR 13 EMIT ;
-: CRLF CR LF ;
-: SPC 32 EMIT ;
-
-: (wnf) (print) SPC ABORT" word not found" ;
-: (ok) SPC ." ok" CRLF ;
-
+: _ ( a -- a+8 )
+    DUP         ( save for 2nd loop )
+    ':' EMIT DUP .x SPC
+    4 0 DO
+        DUP @ 256 /MOD SWAP
+        .x .x SPC 2+
+    LOOP
+    DROP
+    8 0 DO
+        C@+
+        DUP 0x20 < OVER 0x7e > OR
+        IF DROP '.' THEN
+        EMIT
+    LOOP
+    CRLF
+;

@@ -1,16 +1,11 @@
-( Read one line in input buffer and make IN> point to it )
-: (rdln)
-    (infl) BEGIN (rdlnc) NOT UNTIL
-    LF IN( IN> ! ;
+: .2 DUP 10 < IF SPC THEN . ;
 
-( And finally, implement C<* )
-: RDLN<
-    IN> @ C@
-    DUP IF ( not EOL? good, inc and return )
-        1 IN> +!
-    ELSE ( EOL ? readline. we still return null though )
-        (rdln)
-    THEN
-    ( update C<? flag )
-    IN> @ C@ 0 > 0x06 RAM+ !  ( 06 == C<? )
+: LIST
+    BLK@
+    16 0 DO
+        I 1+ .2 SPC
+        64 I * BLK( + (print)
+        CRLF
+    LOOP
 ;
+

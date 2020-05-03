@@ -1,16 +1,16 @@
-: ,"
-    BEGIN
-        C<
-        ( 34 is ASCII for " )
-        DUP 34 = IF DROP EXIT THEN C,
-    AGAIN ;
-
-: ."
-    34 , ( 34 == litWord ) ," 0 C,
-    COMPILE (print)
-; IMMEDIATE
-
-: ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
-
-: (uflw) ABORT" stack underflow" ;
-
+: ? @ . ;
+: _
+    DUP 9 > IF 10 - 'a' +
+    ELSE '0' + THEN
+;
+( For hex display, there are no negatives )
+: .x
+    256 MOD     ( ensure < 0x100 )
+    16 /MOD     ( l h )
+    _ EMIT      ( l )
+    _ EMIT
+;
+: .X
+    256 /MOD    ( l h )
+    .x .x
+;

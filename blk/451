@@ -1,0 +1,12 @@
+( Initializes the readln subsystem )
+: RDLN$
+    ( 57 == rdln's memory )
+    H@ 0x57 RAM+ !
+    ( 2 for IN>, plus 2 for extra bytes after buffer: 1 for
+      the last typed 0x0a and one for the following NULL. )
+    INBUFSZ 4 + ALLOT
+    (infl)
+    ['] RDLN< 0x0c RAM+ !
+    1 0x06 RAM+ !  ( 06 == C<? )
+;
+

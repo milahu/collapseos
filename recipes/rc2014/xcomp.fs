@@ -23,11 +23,9 @@ H@ 256 /MOD 2 PC! 2 PC!
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-422 441 XPACKR ( core )
-446 452 XPACKR ( parse )
+422 437 XPACKR ( core )
 358 360 XPACKR ( acia.fs )
-442 445 XPACKR ( print )
-453 463 XPACKR ( readln fmt )
+438 452 XPACKR ( print fmt readln )
 123 132 XPACKR ( linker )
 ," : _ ACIA$ RDLN$ (ok) ; _ "
 H@ 256 /MOD 2 PC! 2 PC!

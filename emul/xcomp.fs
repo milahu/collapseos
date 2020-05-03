@@ -17,6 +17,6 @@ H@ 256 /MOD 2 PC! 2 PC!
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
 ," : (emit) 0 PC! ; : (key) 0 PC@ ; "
-422 470 XPACKR
+422 459 XPACKR
 ," ' (key) 12 RAM+ ! "
 H@ 256 /MOD 2 PC! 2 PC!

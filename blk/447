@@ -1,0 +1,13 @@
+64 CONSTANT INBUFSZ
+: RDLNMEM+ 0x57 RAM+ @ + ;
+( current position in INBUF )
+: IN> 0 RDLNMEM+ ;
+( points to INBUF )
+: IN( 2 RDLNMEM+ ;
+( points to INBUF's end )
+: IN) INBUFSZ 2+ RDLNMEM+ ;
+
+( flush input buffer )
+( set IN> to IN( and set IN> @ to null )
+: (infl) 0 IN( DUP IN> ! ! ;
+

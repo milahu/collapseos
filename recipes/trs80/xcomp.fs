@@ -18,7 +18,7 @@ H@ 256 /MOD 2 PC! 2 PC!
 ( Update LATEST )
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
-422 470 XPACKR ( core cmp print parse readln fmt blk )
+422 459 XPACKR ( core print readln fmt blk )
 499 500 XPACKR ( trs80.fs )
 ," : _ BLK$ FD$ (ok) RDLN$ ; _ "
 H@ 256 /MOD 2 PC! 2 PC!
