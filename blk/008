@@ -1,16 +1,16 @@
-I/O
+Interpreter I/O
 
-A little word about inputs. There are two kind of inputs:
-direct and buffered.  As a general rule, we read line in a
-buffer, then feed words in it to the interpreter. That's what
-"WORD" does. If it's at the End Of Line, it blocks and wait
-until another line is entered.
+The INTERPRET loop, the heart of Collapse OS, feeds itself
+from the C< word, which yields a character every time it is
+called. If no character is available to interpret, it blocks.
 
-KEY input, however, is direct. Regardless of the input buffer's
-state, KEY will return the next typed key.
+During normal operations, C< is simply a buffered layer over
+KEY, which has the same behavior (but unbuffered). Before
+yielding any character, the C< routine fetches a whole line
+from KEY, puts it in a buffer, then yields the buffered line,
+one character at once.
 
-PARSING AND BOOTSTRAP: Parsing number literal is a very "core"
-activity of Forth, and therefore generally seen as having to be
-implemented in native code.  However, Collapse OS' Forth
-supports many kinds of literals: decimal, hex, char, binary.
-This incurs a significant complexity penalty.           (cont.)
+Both C< and KEY can be overridden by setting an alternate
+routine at the proper RAM offset (see B80). For example, C<
+overrides are used during LOAD so that input comes from
+disk blocks instead of keyboard.                        (cont.)

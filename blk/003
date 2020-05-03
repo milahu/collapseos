@@ -2,15 +2,15 @@ Collapse OS usage guide
 
 This document is not meant to be an introduction to Forth, but
 to instruct the user about the peculiarities of this Forth
-implemenation. Be sure to refer to dictionary for a word
-reference.
+implementation. The recommended introductory book is Starting
+Forth by Leo Brodie. This is the reference that was used to
+build this implementation and many of the conventions described
+in this book are followed in Collapse OS. Be sure to refer to
+the dictionary (B30) for a word reference.
 
 Contents
 
- 4 DOES>                        6 Compilation vs meta-comp.
- 8 I/O                         14 Addressed devices         
-18 Signed-ness
-
-
-
+ 4 Number literals              6 Compilation vs meta-comp.
+ 8 Interpreter I/O             11 Signed-ness
+14 Addressed devices         
 

@@ -1,16 +1,11 @@
-DOES>
+Number literals
 
-Used inside a colon definition that itself uses CREATE, DOES>
-transforms that newly created word into a "does cell", that is,
-a regular cell ( when called, puts the cell's addr on PS), but
-right after that, it executes words that appear after the
-DOES>.
+Traditional Forth often use HEX/DEC switches to go from decimal
+to hexadecimal parsing. Collapse OS parses literals in a way
+that is closer to C.
 
-"does cells" always allocate 4 bytes (2 for the cell, 2 for the
-DOES> link) and there is no need for ALLOT in colon definition.
-
-At compile time, colon definition stops processing words when
-reaching the DOES>.
-
-Example: ": CONSTANT CREATE HERE @ ! DOES> @ ;"
-
+Straight numbers are decimals, numbers starting with "0x"
+are hexadecimals (example "0x12ef"), "0b" prefixes indicate
+binary (example "0b1010"), char literals are single characters
+surrounded by ' (example 'X'). Char literals can't be used for
+whitespaces.

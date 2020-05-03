@@ -1,16 +1,6 @@
-(cont.) What if we could implement those parsing routines in
-Forth? "But it's a core routine!" you say. Yes, but here's the
-deal: at its native core, only decimal parsing is supported. It
-lives in the "(parsed)" word. The interpreter's main loop is
-initially set to simply call that word.
+KEY overrides can be used to, for example, temporarily give
+prompt control to a RS-232 device instead of the keyboard.
 
-However, in core.fs, "(parsex)", "(parsec)" and "(parseb)" are
-implemented, in Forth, then "(parse)", which goes through them
-all is defined. Then, "(parsef)", which is the variable in
-which the interpreter's word pointer is set, is updated to that
-new "(parse)" word.
-
-This way, we have a full-featured (and extensible) parsing with
-a tiny native core.
-
-
+Interpreter output is unbuffered and only has EMIT. This
+word can also be overriden, mostly as a companion to the
+raison d'etre of your KEY override.
