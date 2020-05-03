@@ -16,10 +16,22 @@ void mread(int fd, char *s, int count)
     }
 }
 
+void mexpect(int fd, char ec)
+{
+    char c;
+    mread(fd, &c, 1);
+    if (c != ec) {
+        fprintf(stderr, "Expected %d but got %d\n", ec, c);
+    }
+}
+
 void readprompt(int fd)
 {
-    char junk[3];
-    mread(fd, junk, 3); // " ok" prompt
+    mexpect(fd, ' ');
+    mexpect(fd, 'o');
+    mexpect(fd, 'k');
+    mexpect(fd, '\r');
+    mexpect(fd, '\n');
 }
 
 void sendcmd(int fd, char *cmd)
@@ -34,14 +46,14 @@ void sendcmd(int fd, char *cmd)
         usleep(1000);
     }
     write(fd, "\r", 1);
-    mread(fd, junk, 2); // sends back \r\n
+    mexpect(fd, '\r');
+    mexpect(fd, '\n');
     usleep(1000);
 }
 
 // Send a cmd and also read the " ok" prompt
 void sendcmdp(int fd, char *cmd)
 {
-    char junk[2];
     sendcmd(fd, cmd);
     readprompt(fd);
 }
