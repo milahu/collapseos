@@ -2,8 +2,7 @@
 : _            ( c -- n )
     ( '0' is ASCII 48 )
     48 -
-    DUP 0< IF EXIT THEN                 ( bad )
-    DUP 10 < IF EXIT THEN               ( good )
+    DUP 0< ( bad ) OVER 10 < ( good ) OR IF EXIT THEN
     ( 'a' is ASCII 97. 59 = 97 - 48 )
     49 -
     DUP 0< IF EXIT THEN                 ( bad )
