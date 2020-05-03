@@ -10,7 +10,7 @@ very few things.
 
 In a normal system, BOOT is in icore and does a few things:
 
-1. Find "(parse)" and set "(parse*)" to it.
-2. Find "(c<)" a set CINPTR to it (what C< calls).
-3. Write LATEST in SYSTEM SCRATCHPAD ( see below )
+1. Find "(c<)" a set CINPTR to it (what C< calls).
+2. Initialize all overrides to 0.
+3. Write LATEST in BOOT C< PTR ( see below )
 4. Find "INIT". If found, execute. Otherwise, "INTERPRET"(cont)

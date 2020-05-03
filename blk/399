@@ -1,12 +1,14 @@
-( The NOT is to normalize the negative/positive numbers to 1
-  or 0. Hadn't we wanted to normalize, we'd have written:
-  32 CMP 1 - )
-: WS? 33 CMP 1+ NOT ;
-
-: TOWORD
-    BEGIN
-        C< DUP WS? NOT IF EXIT THEN DROP
-    AGAIN
+( returns negative value on error )
+: _            ( c -- n )
+    ( '0' is ASCII 48 )
+    48 -
+    DUP 0< ( bad ) OVER 10 < ( good ) OR IF EXIT THEN
+    ( 'a' is ASCII 97. 59 = 97 - 48 )
+    49 -
+    DUP 0< IF EXIT THEN                 ( bad )
+    DUP 6 < IF 10 + EXIT THEN           ( good )
+    ( bad )
+    255 -
 ;
 
 

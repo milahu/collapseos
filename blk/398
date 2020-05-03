@@ -1,16 +1,11 @@
-( This is only the "early parser" in earlier stages. No need
-  for an abort message )
-: (parse) (parsed) NOT IF ABORT THEN ;
+( strings being sent to parse routines are always null
+  terminated )
 
-: C<? 0x06 RAM+ @ ;
-: C<
-    0x08 RAM+ @  ( 08 == C<* override )
-    DUP NOT IF DROP 0x0c RAM+ @ THEN  ( 0c == C<* )
-    EXECUTE
+: (parsec)          ( a -- n f )
+    ( apostrophe is ASCII 39 )
+    DUP C@ 39 = OVER 2+ C@ 39 = AND     ( a f )
+    NOT IF 0 EXIT THEN   ( a 0 )
+    ( surrounded by apos, good, return )
+    1+ C@ 1                             ( n 1 )
 ;
-
-: , HERE @ ! HERE @ 2+ HERE ! ;
-
-: C, HERE @ C! HERE @ 1+ HERE ! ;
-
 

@@ -1,9 +1,8 @@
-: INTERPRET
-    BEGIN
-    WORD
-    (find)
-    NOT IF (parse*) @ THEN EXECUTE
-    C<? NOT IF LIT< (ok) (find) IF EXECUTE THEN THEN
-    AGAIN
+: (parse)           ( a -- n )
+    (parsec) IF EXIT THEN
+    (parseh) IF EXIT THEN
+    (parseb) IF EXIT THEN
+    (parsed) IF EXIT THEN
+    ( nothing works )
+    LIT< (wnf) (find) IF EXECUTE ELSE ABORT THEN
 ;
-

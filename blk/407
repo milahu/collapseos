@@ -1,16 +1,10 @@
-XCURRENT @ ( to PSP )
-: :
-    (entry)
-    ( We cannot use LITN as IMMEDIATE because of bootstrapping
-      issues. Same thing for ",".
-      32 == NUMBER 14 == compiledWord )
-    [ 32 H@ ! 2 ALLOT 14 H@ ! 2 ALLOT ] C,
-    BEGIN
-        WORD
-        (find)
-        ( is word )
-        IF DUP IMMED? IF EXECUTE ELSE , THEN
-        ( maybe number )
-        ELSE (parse*) @ EXECUTE LITN THEN
-    AGAIN ;
-( from PSP ) ';' SWAP 4 - C!
+: SCPY
+    BEGIN         ( a )
+        DUP C@    ( a c )
+        DUP C,    ( a c )
+        NOT IF DROP EXIT THEN
+        1+        ( a+1 )
+    AGAIN
+;
+
+

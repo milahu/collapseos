@@ -1,15 +1,12 @@
-: BOOT
-    0x02 RAM+ CURRENT* !
-    LIT< (parse) (find) DROP (parse*) !
-    CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR )
-    0 0x08 RAM+ !  ( 08 == C<* override )
-    0 0x53 RAM+ !  ( 53 == (emit) override )
-    0 0x55 RAM+ !  ( 55 == (key) override )
-    ( 0c == C<* )
-    LIT< (boot<) (find) DROP 0x0c RAM+ !
-    ( boot< always has a char waiting. 06 == C<?* )
-    1 0x06 RAM+ !
-    LIT< INIT (find)
-    IF EXECUTE ELSE DROP INTERPRET THEN
+( The NOT is to normalize the negative/positive numbers to 1
+  or 0. Hadn't we wanted to normalize, we'd have written:
+  32 CMP 1 - )
+: WS? 33 CMP 1+ NOT ;
+
+: TOWORD
+    BEGIN
+        C< DUP WS? NOT IF EXIT THEN DROP
+    AGAIN
 ;
+
 

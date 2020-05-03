@@ -4,5 +4,11 @@
 : < CMP -1 = ;
 : > CMP 1 = ;
 : 0< 32767 > ;
+: >= < NOT ;
+: <= > NOT ;
+: 0>= 0< NOT ;
 
-
+( a -- a+1 c )
+: C@+ DUP C@ SWAP 1+ SWAP ;
+( c a -- a+1 )
+: C!+ SWAP OVER C! 1+ ;

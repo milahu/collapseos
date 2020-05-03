@@ -1,10 +1,10 @@
-: SCPY
-    BEGIN         ( a )
-        DUP C@    ( a c )
-        DUP C,    ( a c )
-        NOT IF DROP EXIT THEN
-        1+        ( a+1 )
-    AGAIN
+( returns negative value on error )
+: _            ( c -- n )
+    ( '0' is ASCII 48 )
+    48 -
+    DUP 0< ( bad ) OVER 2 < ( good ) OR IF EXIT THEN
+    ( bad )
+    255 -
 ;
 
 

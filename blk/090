@@ -1,7 +1,7 @@
-(cont.) On a bare system (only boot+icore), this sequence will
-result in "(parse)" reading only decimals and (c<) reading
-characters from memory starting from CURRENT (this is why we
-put CURRENT in SYSTEM SCRATCHPAD, it tracks current pos ).
+On a bare system (only boot+icore), this sequence will result
+in (c<) reading characters from memory starting from CURRENT
+(this is why we put CURRENT in BOOT C< PTR, it tracks current
+pos ).
 
 This means that you can put initialization code in source form
 right into your binary, right after your last compiled dict

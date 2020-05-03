@@ -4,8 +4,6 @@ I/O
                   result in n as well as whether parsing was a
                   success in f (false = failure, true =
                   success)
-(parse*) -- a     Variable holding the current pointer for
-                  system number parsing. By default, (parse).
 (print)  a --     Print string at addr a.
 .        n --     Print n in its decimal form
 .x       n --     Print n's LSB in hex form. Always 2
@@ -13,4 +11,6 @@ I/O
 .X       n --     Print n in hex form. Always 4 characters.
                   Numbers are never considered negative.
                   "-1 .X" --> ffff
+
+
                                                         (cont.)

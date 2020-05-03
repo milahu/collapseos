@@ -1,6 +1,5 @@
 : RAM+ [ RAMSTART LITN ] + ;
 : BIN+ [ BIN( @ LITN ] + ;
-: (parse*) 0x0a RAM+ ;
 : HERE 0x04 RAM+ ;
 : CURRENT* 0x51 RAM+ ;
 : CURRENT CURRENT* @ ;
@@ -13,4 +12,4 @@
     0 0x08 RAM+ !  ( 08 == C<* override )
     LIT< INTERPRET (find) DROP EXECUTE
 ;
-394 407 LOADR
+394 413 LOADR

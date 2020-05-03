@@ -1,14 +1,16 @@
-( LITN has to be defined after the last immediate usage of
-  it to avoid bootstrapping issues )
-: LITN 32 , , ( 32 == NUMBER ) ;
-
-: IMMED? 1- C@ 0x80 AND ;
-
-( ';' can't have its name right away because, when created, it
-  is not an IMMEDIATE yet and will not be treated properly by
-  xcomp. )
-: _
-    ['] EXIT ,
-    R> DROP     ( exit : )
-; IMMEDIATE
-
+( Read word from C<, copy to WORDBUF, null-terminate, and
+  return, make HL point to WORDBUF. )
+: WORD
+    0x0e RAM+  ( 0e == WORDBUF )
+    TOWORD     ( a c )
+    BEGIN
+        ( We take advantage of the fact that char MSB is
+          always zero to pre-write our null-termination )
+        OVER ! 1+            ( a+1 )
+        C<                   ( a c )
+        DUP WS?
+    UNTIL
+    ( a this point, PS is: a WS )
+    ( null-termination is already written )
+    2DROP
+    0x0e RAM+ ;
