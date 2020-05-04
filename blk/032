@@ -1,4 +1,3 @@
-(cont.)
 Atom: A word of the type compiledWord contains, in its PF, a
 list of what we call "atoms". Those atoms are most of the time
 word references, but they can also be references to NUMBER and

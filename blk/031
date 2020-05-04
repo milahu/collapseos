@@ -7,10 +7,10 @@ modified. "I:" prefix means "IMMEDIATE", that is, that this
 stack transformation is made at compile time.
 
 Word references (wordref): When we say we have a "word
-reference", it's a pointer to a words *code link*. For example,
-the label "PLUS:" in this unit is a word reference. Why not
-refer to the beginning of the word struct? Because we actually
-seldom refer to the name and prev link, except during
-compilation, so defining "word reference" this way makes the
-code easier to understand.
+reference", it's a pointer to a word's *code link*. For
+example, the address that "' DUP" is a wordref, that is, a
+reference to the code link of the word DUP.
+
+PF: Parameter field. The area following the code link of a
+word. For example, "' H@ 1+" points to the PF of the word H@.
                                                         (cont.)
