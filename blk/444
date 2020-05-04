@@ -12,5 +12,5 @@
         IF DROP '.' THEN
         EMIT
     LOOP
-    CRLF
+    NL
 ;

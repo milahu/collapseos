@@ -3,7 +3,8 @@
 : CR 13 EMIT ;
 : CRLF CR LF ;
 : SPC 32 EMIT ;
+: NL 0x0a RAM+ @ ( NLPTR ) DUP IF EXECUTE ELSE DROP CRLF THEN ;
 
 : (wnf) (print) SPC ABORT" word not found" ;
-: (ok) SPC ." ok" CRLF ;
+: (ok) SPC ." ok" NL ;
 

@@ -4,8 +4,8 @@
     DUP ROT SWAP H@ 4 +         ( u src u dst )
     SWAP MOVE                   ( u )
     4 + DUP CURRENT @ WORD( +   ( u we )
-    DUP .X CRLF
-    SWAP CURRENT @ PREV + DUP .X CRLF ( we wr )
+    DUP .X NL
+    SWAP CURRENT @ PREV + DUP .X NL ( we wr )
     BEGIN                       ( we wr )
         DUP ROT                 ( wr wr we )
         H@ @ H@ 2+ @            ( wr wr we ol o )
@@ -13,4 +13,4 @@
         DUP PREV SWAP           ( wr oldwr )
         WORD( SWAP              ( we wr )
         DUP 4 - H@ <= ( are we finished? )
-    UNTIL H@ 4 + .X CRLF ;
+    UNTIL H@ 4 + .X NL ;

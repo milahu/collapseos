@@ -19,7 +19,7 @@
     ['] EFS! BLK!* !
     RDLN$
     LIT< _sys [entry]
-    ." Collapse OS" CRLF
+    ." Collapse OS" NL
     INTERPRET
 ;
 

@@ -1,5 +1,5 @@
 VARIABLE ACC
-: _LIST ." Block " DUP . CRLF LIST ;
+: _LIST ." Block " DUP . NL LIST ;
 : _NUM
     ACC @ SWAP _pdacc
     IF _LIST 0 THEN

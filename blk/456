@@ -5,7 +5,7 @@
     16 0 DO
         I 1+ .2 SPC
         64 I * BLK( + (print)
-        CRLF
+        NL
     LOOP
 ;
 
