@@ -1,16 +1,16 @@
-( Note that the last word is always skipped because it's not
-possible to reliably detect its end. If you need that last
-word, define a dummy word before calling RLDICT.
-
-We first start by copying the affected area to H@+4. This is
-where the relinking will take place.
-
-Then we iterate the new dict from the top, keeping track of
-wr, the current wordref and we, wr's end offset.
-
-Initially, we get our wr and we, withH@ and CURRENT, which we
-offset by u+4. +4 before, remember, we're using 4 bytes
-as variable space.
-
-At each iteration, we becomes wr-header and wr is fetched from
-PREV field. )
+: RLDICT ( target offset -- )
+    H@ 2+ ! H@ ! ( H@+2 == offset, H@ == target )
+    H@ @ WORD( DUP H@ -^        ( src u )
+    DUP ROT SWAP H@ 4 +         ( u src u dst )
+    SWAP MOVE                   ( u )
+    4 + DUP CURRENT @ WORD( +   ( u we )
+    DUP .X CRLF
+    SWAP CURRENT @ PREV + DUP .X CRLF ( we wr )
+    BEGIN                       ( we wr )
+        DUP ROT                 ( wr wr we )
+        H@ @ H@ 2+ @            ( wr wr we ol o )
+        2SWAP RLWORD            ( wr )
+        DUP PREV SWAP           ( wr oldwr )
+        WORD( SWAP              ( we wr )
+        DUP 4 - H@ <= ( are we finished? )
+    UNTIL H@ 4 + .X CRLF ;
