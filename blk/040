@@ -8,7 +8,7 @@ CREATE x    --     Create cell named x. Doesn't allocate a PF.
 COMPILE x   --     Meta compiles. See B6.
 CONSTANT x  n --   Creates cell x that when called pushes its
                    value.
-DOES>       --     See B4.
+DOES>       --     See B17.
 IMMED?      a -- f Checks whether wordref at a is immediate.
 IMMEDIATE   --     Flag the latest defined word as immediate.
 LITA        n --   Write address n as a literal.

@@ -1,0 +1,16 @@
+DOES>
+
+Used inside a colon definition that itself uses CREATE, DOES>
+transforms that newly created word into a "does cell", that is,
+a regular cell ( when called, puts the cell's addr on PS), but
+right after that, it executes words that appear after the
+DOES>.
+
+"does cells" always allocate 4 bytes (2 for the cell, 2 for the
+DOES> link) and there is no need for ALLOT in colon definition.
+
+At compile time, colon definition stops processing words when
+reaching the DOES>.
+
+Example: ": CONSTANT CREATE HERE @ ! DOES> @ ;"
+
