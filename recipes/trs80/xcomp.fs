@@ -20,5 +20,6 @@ PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
 422 459 XPACKR ( core print readln fmt blk )
 499 500 XPACKR ( trs80.fs )
-," : _ BLK$ FD$ (ok) RDLN$ ; _ "
+( 0x0a == NLPTR. TRS-80 wants CR-only newlines )
+," : _ ['] CR 0x0a RAM+ ! BLK$ FD$ (ok) RDLN$ ; _ "
 H@ 256 /MOD 2 PC! 2 PC!
