@@ -1,0 +1,11 @@
+When a word modifies the buffer, it sets the buffer as dirty
+by calling BLK!!. BLK@ checks, before it reads its buffer,
+whether the current buffer is dirty and implicitly calls BLK!
+when it is.
+
+The index of the block currently in memory is kept in BLK>.
+
+Many blocks contain code. That code can be interpreted through
+LOAD. Programs stored in blocks frequently have "loader blocks"
+that take care of loading all blocks relevant to the program.
+
