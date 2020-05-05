@@ -1,14 +1,8 @@
 ( returns negative value on error )
 : _            ( c -- n )
-    ( '0' is ASCII 48 )
-    48 -
-    DUP 0< ( bad ) OVER 10 < ( good ) OR IF EXIT THEN
-    ( 'a' is ASCII 97. 59 = 97 - 48 )
-    49 -
-    DUP 0< IF EXIT THEN                 ( bad )
-    DUP 6 < IF 10 + EXIT THEN           ( good )
-    ( bad )
-    255 -
+    DUP '0' '9' =><= IF '0' - EXIT THEN
+    DUP 'a' 'f' =><= IF 0x57 ( 'a' - 10 ) - EXIT THEN
+    DROP -1 ( bad )
 ;
 
 

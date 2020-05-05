@@ -7,7 +7,9 @@
 : >= < NOT ;
 : <= > NOT ;
 : 0>= 0< NOT ;
-
+( n l h -- f )
+: >< 2 PICK > ( n l f ) ROT ROT > AND ;
+: =><= 2 PICK >= ( n l f ) ROT ROT >= AND ;
 ( a -- a+1 c )
 : C@+ DUP C@ SWAP 1+ SWAP ;
 ( c a -- a+1 )
