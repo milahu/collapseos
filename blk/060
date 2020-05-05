@@ -4,7 +4,7 @@ I/O
                   result in n as well as whether parsing was a
                   success in f (false = failure, true =
                   success)
-(print)  a --     Print string at addr a.
+(print)  a --     Print string at addr a. Stops at 0x0 or 0xd.
 .        n --     Print n in its decimal form
 .x       n --     Print n's LSB in hex form. Always 2
                   characters.

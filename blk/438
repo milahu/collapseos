@@ -4,10 +4,10 @@
 
 : (print)
     BEGIN
-    C@+      ( a+1 c )
-    ( exit if null )
-    DUP NOT IF 2DROP EXIT THEN
-    EMIT     ( a )
+        C@+      ( a+1 c )
+        ( exit if null or 0xd )
+        DUP 13 = OVER NOT OR IF 2DROP EXIT THEN
+        EMIT     ( a )
     AGAIN
 ;
 

@@ -2,7 +2,8 @@
 1 5 LOADR+
 
 : BROWSE
-    L BEGIN
+    0 ACC ! L
+    BEGIN
         KEY CASE
             'Q' OF EXIT ENDOF
             'B' OF B ENDOF
