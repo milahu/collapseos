@@ -12,4 +12,4 @@
     0 0x08 RAM+ !  ( 08 == C<* override )
     LIT< INTERPRET (find) DROP EXECUTE
 ;
-394 413 LOADR
+1 20 LOADR+

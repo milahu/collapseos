@@ -1,9 +1,8 @@
-152 LOAD ( extras )
-103 107 LOADR
+50 LOAD+ ( B152, extras )
+1 5 LOADR+
 
 : BROWSE
-    100 _LIST
-    BEGIN
+    L BEGIN
         KEY CASE
             'Q' OF EXIT ENDOF
             'B' OF B ENDOF

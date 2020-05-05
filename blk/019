@@ -9,3 +9,8 @@ Many blocks contain code. That code can be interpreted through
 LOAD. Programs stored in blocks frequently have "loader blocks"
 that take care of loading all blocks relevant to the program.
 
+Blocks spanning multipls disks are tricky. If your media isn't
+large enough to hold all Collapse OS blocks in one unit, you'll
+have to make it span multiple disks. Block reference in
+informational texts aren't a problem: When you swap your disk,
+you mentally adjust the block number you fetch.         (cont.)
