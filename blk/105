@@ -1,5 +1,5 @@
 : _type ( buf -- )
-    C< DUP 0xd = IF DROP EXIT THEN OVER DUP _zbuf ( c a )
+    C< DUP 0xd = IF 2DROP EXIT THEN OVER DUP _zbuf ( c a )
     BEGIN ( c a )
         C!+ C< SWAP
     OVER 0x0d = UNTIL ( c a ) C! ;

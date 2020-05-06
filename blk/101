@@ -2,7 +2,7 @@ T ( n -- ): select line n for editing.
 P xxx: put typed line on selected line.
 U xxx: insert typed line on selected line.
 F xxx: find typed string in block.
-
+I xxx: insert typed string at cursor
 
 
 

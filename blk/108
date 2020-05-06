@@ -1,0 +1,15 @@
+: _ilen ( length of str in IBUF )
+    IBUF BEGIN C@+ EOL? UNTIL IBUF - 1- ;
+: I
+    IBUF _type EDPOS @ 64 /MOD ( cno lno )
+    1+ 64 * _cpos ( cno next-line-ptr )
+    SWAP 63 -^ _ilen ( nlp nb-of-chars-to-move ilen )
+    2DUP > IF
+        SWAP OVER - 1+ ( nlp ilen nbc ) 0 DO ( a ilen )
+            SWAP 1- 2DUP -^ ( ilen a-1 a-ilen-1 ) C@ OVER C!
+            SWAP ( a ilen )
+        LOOP
+    ELSE DROP ( ilen becomes nbc )
+    THEN
+    SWAP DROP IBUF EDPOS @ _cpos ROT MOVE
+;
