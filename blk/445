@@ -1,9 +1,6 @@
 : DUMP ( n a -- )
     LF
-    BEGIN
-        OVER 1 < IF 2DROP EXIT THEN
-        _
-        SWAP 8 - SWAP
-    AGAIN
+    SWAP 8 /MOD SWAP IF 1+ THEN
+    0 DO _ LOOP
 ;
 
