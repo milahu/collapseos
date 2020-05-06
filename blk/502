@@ -1,0 +1,16 @@
+( We process the 0x20 exception by pre-putting a mask in the
+  (HL) we're going to write to. If it wasn't a 0x20, we put a
+  0xff mask. If it was a 0x20, we put a 0x7f mask. )
+: @GET,
+    A 0x03 LDrn, ( @GET )
+    DE COM_DRV_ADDR LDddnn,
+    0x28 RSTn, JRNZ, L2 FWR ( maybeerror )
+    A ORr,
+    CZ RETcc, ( Sending a straight NULL ends the comm. ) ;
+: @PUT, ( @PUT that char back )
+        C A LDrr,
+        A 0x04 LDrn, ( @PUT )
+        0x28 RSTn, JRNZ, L3 FWR ( error )
+        A C LDrr, ;
+H@ ORG !
+HL DEST_ADDR LDddnn,                                  ( cont. )

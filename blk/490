@@ -1,8 +1,11 @@
-TRS-80 Drivers
+TRS-80 Recipe
 
-Drivers for the TRS-80 keyboard, video and floppy. At the
-moment, they are thin layer over the drivers provided by
-TRSDOS' SVC.
+Support code for the TRS-80 recipe. Contains drivers for the
+keyboard, video and floppy. At the moment, they are thin layer
+over the drivers provided by TRSDOS' SVC.
 
 Load the Z80 words with "492 LOAD" and the high level part
 with "498 LOAD".
+
+There is also the RECV program at B502 and the XCOMP unit at
+B504

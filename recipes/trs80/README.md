@@ -103,11 +103,26 @@ As stated in the overview, we need a program on the TRS-80 that:
 3. Adjusts `ttysafe` escapes
 4. Stores received bytes in memory
 
-That program has already been written, it's in `recv.asm` in this folder. You
-can get the binary with `zasm < recv.asm | xxd`.
+You're in luck: that program has already been written. It's in B502 and B503.
+You can compile it with:
 
-It's designed to run from offset `0x5000` and write received data in `0x3000`
-and onwards.
+    212 LOAD ( z80 assembler )
+    0x0238 CONSTANT COM_DRV_ADDR
+    0x3000 CONSTANT DEST_ADDR
+    502 LOAD
+    503 LOAD
+
+Then, you can use `DUMP` to visualize the data you'll need to punch in:
+
+    H@ ORG @ - ORG @ DUMP
+
+It can run from any offset (all jumps in it are relative), but writes to
+`DEST_ADDR`. Make sure you don't place it in a way to be overwritten by its
+received data.
+
+Wondering what is that `COM_DRV_ADDR` constant? That's the DCB handle of your
+`*cl` device. You will need to get that address before you continue. Go read
+the following section and come back here.
 
 How will you punch that in? The `debug` program! This very useful piece of
 software is supplied in TRSDOS. To invoke it, first run `debug (on)` and then
@@ -123,17 +138,12 @@ begin punching in with `h5000<space>`. This will bring up a visual indicator of
 the address being edited. Punch in the stuff with a space in between each byte
 and end the edit session with `x`.
 
-But wait, it's not that easy! You see those `0xffff` addresses? They're
-placeholders. You need to replace those values with your DCB handle for `*cl`.
-See below.
-
 ## Getting your DCB address
 
-In the previous step, you need to replace the `0xffff` placeholders in
-`recv.asm` with your "DCB" address for `*cl`. That address is your driver
-"handle". To get it, first get the address where the driver is loaded in
-memory.  You can get this by running `device (b=y)`. That address you see next
-to `*cl`?  that's it. But that's not our DCB. 
+In the previous step, you need to set `COM_DRV_ADDR` to your "DCB" address for
+`*cl`. That address is your driver "handle". To get it, first get the address
+where the driver is loaded in memory.  You can get this by running `device
+(b=y)`. That address you see next to `*cl`?  that's it. But that's not our DCB. 
 
 To get your DBC, go explore that memory area. Right after the part where there's
 the `*cl` string, there's the DCB address (little endian). On my setup, the
