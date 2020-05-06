@@ -11,4 +11,5 @@
 0xf6 OP2n ORn,
 0xd6 OP2n SUBn,
 0xee OP2n XORn,
+0xfe OP2n CPn,
 

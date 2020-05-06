@@ -8,7 +8,7 @@ LD [rr, rn, ddnn, (nn)HL, HL(nn), dd(nn), (nn)dd, rIXY, IXYr,
     (DE)A, A(DE)]
 ADD [r, n, HLss, IXss, IXIX, IYss, IYIY]
 ADC [r, HLss]
-CP  [r]
+CP  [r, n]
 SBC [r, HLss]
 SUB [r, n]
 PUSH [qq]  POP [qq]
