@@ -276,31 +276,47 @@ you're already supposed to know that one). Then, run `BYE` to return to TRSDOS
 just halting). Then, you can dump memory to floppy as you already did for
 `RECV`.
 
-## Configuration
+## Sending blkfs to floppy
 
-In addition to the generic basic shell, this build of Collapse OS has support
-for floppy drive `:1` as a block device (mapped to device `0`). Block device
-commands work as expected.
+As it is, your system fully supports reading and writing to floppy drive 1. It
+also had `*CL<` to read a char from `*cl` and `*CL>` to emit a char to `*cl`.
 
-In addition to this, there is a `flush` command to ensure that dirty buffers are
-synced to disk. Make sure you run this after a write operation or before
-swapping disks.
+That's all you need to have a full Collapse OS with access to disk blocks.
 
-On top of that, there's CFS support builtin. To enable a FS, type `fson` while
-the active block device is properly placed (you can initialize a new FS by
-writing `CFS\0\0\0\0` to the disk). If it doesn't error out, commands like
-`fls` and `fnew` will work. Don't forget to flush when you're finished :)
+First, make sure your floppies are formatted. Collapse OS is currently
+hardcoded to single side and single density, which means there's a limit of 100
+blocks per disk.
 
-There is also a custom `recv` command that does the same "ping pong" as in
-`recv.asm`, but once. It puts the result in `A`. This can be useful to send down
-a raw CFS: you just need a while loop that repeatedly call `recv:putb a`.
+You'll need to send those blocks through RS-232. Begin by taking over the
+prompt:
 
-## Assembling programs
+    ' *CL> 0x53 RAM+ !
+    ' *CL< 0x55 RAM+ !
 
-Running `make` will yield a `floppy.cfs` file that you can dump on a disk. This
-CFS contains a properly configured `zasm` as well as a test `hello.asm` file.
+See B80 for details about those RAM offsets. Your serial link now has the
+prompt. Now, you can use `/tools/blkup` to send a disk's contents. First, 
+extract the first 100 blocks from blkfs:
 
-By mounting this CFS (running `fson` with the active device properly placed),
-you can assemble and run a binary from `hello.asm` in the same way that you
-would in any CFS-enabled shell. You'll then see those sweet "Assembled from a
-TRS-80" words!
+    dd if=emul/blkfs bs=1024 count=100 > d1
+
+Now, insert your formatted disk in drive 1 and push your blocks:
+
+    tools/blkup /dev/ttyUSB0 0 d1
+
+It takes a while, but you will end up having your first 100 blocks on floppy!
+Go ahead, `LIST` around. Then, repeat for other disks.
+
+## Floppy organisation
+
+Making blkfs span multiple disk is a bit problematic with regards to absolute
+block references in the code. You'll need to work a bit to design your very
+own Collapse OS floppy set. See Usage guide (B3) for details.
+
+## Self-hosting
+
+As it is, your installment of Collapse OS is self-hosting using instructions
+very similar to `recipes/rc2014/selhost`. The difference is that instead of
+writing the binary you have in memory to EEPROM, you'll quit to TRSDOS with
+`BYE` and use TRSDOS' `DUMP` utility to save to disk like you already did
+before.
+
