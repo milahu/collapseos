@@ -15,7 +15,6 @@ RAMSTART 0x70 + CONSTANT ACIA_MEM
 
 CURRENT @ XCURRENT !
 
-H@ 256 /MOD 2 PC! 2 PC!
 282 LOAD  ( boot.z80 )
 352 LOAD  ( acia.z80 )
 372 LOAD  ( sdc.z80 )
@@ -28,4 +27,5 @@ PC ORG @ 8 + !
 438 452 XPACKR ( print fmt readln )
 123 132 XPACKR ( linker )
 ," : _ ACIA$ RDLN$ (ok) ; _ "
+ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

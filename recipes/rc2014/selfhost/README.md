@@ -17,7 +17,7 @@ it from the makefile. If you take the time to look at the base recipe
 `xcomp.fs` in a text editor and take a look at it.
 
 To assemble stage 1 from RC2014, all you need to do is to type those commands
-in the same order, and replace the `H@ 256 /MOD 2 PC! 2 PC!` lines with `H@ .X`.
+in the same order, and replace the `/MOD 2 PC! 2 PC!` words with `.X`.
 Those commands will inform you of the begin/end offsets of the assembled binary.
 
 I'm not going to explain in detail what each command do, but only give you an
@@ -33,9 +33,8 @@ we'll of course need for the task ahead.
 
 Then come xcomp overrides, which are needed for xcomp to be effective.
 
-At this point, we're about to begin spitting binary content, so we want to know
-where we're at. That's why you'll need to type `H@ .X` and write down the
-result. That's the starting offset.
+At this point, we're about to begin spitting binary content, this will be our
+starting offset. `ORG` will soon be set to your current `H@`.
 
 Then, we assemble the boot binary, drivers' native words, then inner core,
 close the binary with a hook word. We're finished with cross-compiling.
