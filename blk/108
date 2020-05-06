@@ -11,5 +11,6 @@
         LOOP
     ELSE DROP ( ilen becomes nbc )
     THEN
-    SWAP DROP IBUF EDPOS @ _cpos ROT MOVE
+    SWAP DROP DUP IBUF EDPOS @ _cpos ROT MOVE ( ilen )
+    EDPOS +! EDPOS @ 64 / _pln
 ;
