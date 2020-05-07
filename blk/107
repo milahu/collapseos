@@ -7,6 +7,6 @@
         OVER BLK) = OR ( a1 a2 f1|f2 )
     UNTIL
     DUP BLK) < IF BLK( - FBUF + -^ EDPOS ! THEN
-    EDPOS @ 64 / _pln
+    EDPOS @ 64 / _pln DROP
 ;
 
