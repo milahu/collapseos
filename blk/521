@@ -1,0 +1,6 @@
+( Converts "dot-X" fonts to binary "glyph rows". One byte for
+  each row. In a 5x7 font, each glyph thus use 7 bytes.
+  Resulting bytes are aligned to the left of the byte.
+  Therefore, for a 5-bit wide char, "X.X.X" translates to
+  0b10101000. Left-aligned bytes are easier to work with when
+  compositing glyphs. )
