@@ -1,2 +1,7 @@
+FILL     a n b --        Fill n bytes at addr a with val b.
+HERE     -- a            Push HERE's address
+H@       -- a            HERE @
 MOVE     a1 a2 u --      Copy u bytes from a1 to a2, starting
                          with a1, going up.
+MOVE-    a1 a2 u --      Copy u bytes from a1 to a2, starting
+                         with a1+u, going down.
