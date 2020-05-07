@@ -12,5 +12,5 @@
         ENDCASE
     AGAIN
 ;
-
-
+( I masks DO..LOOP's I. Do it as late as possible. )
+: I _I ;
