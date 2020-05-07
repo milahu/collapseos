@@ -1,0 +1,16 @@
+# 6/8 bit columns and smaller fonts
+
+If your glyphs, including padding, are 6 or 8 pixels wide,
+you're in luck because pushing them to the LCD can be done in a
+very efficient manner.  Unfortunately, this makes the LCD
+unsuitable for a Collapse OS shell: 6 pixels per glyph gives us
+only 16 characters per line, which is hardly usable.
+
+This is why we have this buffering system. How it works is that
+we're always in 8-bit mode and we hold the whole area (8 pixels
+wide by FNT_HEIGHT high) in memory. When we want to put a glyph
+to screen, we first read the contents of that area, then add
+our new glyph, offsetted and masked, to that buffer, then push
+the buffer back to the LCD. If the glyph is split, move to the
+next area and finish the job.
+                                                        (cont.)

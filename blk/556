@@ -1,0 +1,11 @@
+: _wait ( Wait until the lcd is ready to receive a command )
+	( When 7th bit is cleared, we can send a new command )
+    BEGIN LCD_PORT_CMD PC@ 0x80 AND NOT UNTIL ;
+: _cmd LCD_PORT_CMD PC! _wait ;
+: _data! LCD_PORT_DATA PC! _wait ;
+: _data@ LCD_PORT_DATA PC@ _wait ;
+: LCDOFF 0x02 ( CMD_DISABLE ) _cmd ;
+: _col! ( col -- )
+    0x20 ( CMD_COL ) + _cmd ;
+: _row! ( row -- )
+    0x80 ( CMD_ROW ) + _cmd ;

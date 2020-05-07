@@ -1,0 +1,3 @@
+( Load a "glyph line" from buffer, left part being in MSB and
+  right part being in LSB. )
+: _gl@
