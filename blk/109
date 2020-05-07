@@ -1,0 +1,9 @@
+: E
+    FBUF _blen EDPOS @ _cpos 2DUP + ( l a1 a1+l )
+    SWAP _rbufsz MOVE ( l )
+    ( get to next line - l )
+    DUP EDPOS @ 0xffc0 AND 0x40 + -^ _cpos ( l a )
+    SWAP 0 FILL
+    EDPOS @ 64 / _pln
+;
+

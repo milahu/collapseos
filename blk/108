@@ -1,9 +1,9 @@
-: _ilen ( length of str in IBUF )
-    IBUF BEGIN C@+ EOL? UNTIL IBUF - 1- ;
+: _blen ( buf -- length of str in buf )
+    DUP BEGIN C@+ EOL? UNTIL -^ 1- ;
+: _rbufsz ( size of linebuf to the right of curpos )
+    EDPOS @ 64 MOD 63 -^ ;
 : _I
-    IBUF _type EDPOS @ 64 MOD ( cno )
-    63 -^ _ilen ( rbuffsize ilen )
-    2DUP > IF
+    IBUF _type _rbufsz IBUF _blen 2DUP > IF
         SWAP OVER - ( ilen chars-to-move )
         SWAP EDPOS @ _cpos 2DUP + ( ctm ilen a a+ilen )
         3 PICK MOVE- ( ctm ilen )
