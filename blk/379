@@ -9,8 +9,8 @@
 : SDCMDR7
     _sdcSel
     _cmd                 ( r )
-    _idle 256 * _idle +  ( r arg1 )
-    _idle 256 * _idle +  ( r arg1 arg2 )
+    _idle 8 LSHIFT _idle +  ( r arg1 )
+    _idle 8 LSHIFT _idle +  ( r arg1 arg2 )
     _sdcDesel
 ;
 

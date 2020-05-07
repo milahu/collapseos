@@ -1,0 +1,13 @@
+CODE LSHIFT ( n u -- n )
+    BC POPqq, ( u )
+    HL POPqq, ( n )
+    chkPS,
+    B C LDrr,
+    B INCr, B DECr, IFNZ,
+        BEGIN,
+            L SLAr, H RLr,
+        DJNZ, AGAIN,
+    THEN,
+    HL PUSHqq,
+;CODE
+

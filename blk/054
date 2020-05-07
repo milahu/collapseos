@@ -10,7 +10,7 @@ MOD         a b -- c        a % b -> c
 AND         a b -- c        a & b -> c
 OR          a b -- c        a | b -> c
 XOR         a b -- c        a ^ b -> c
+LSHIFT      a u -- c        a << u -> c
+RSHIFT      a u -- c        a >> u -> c
 
 Shortcuts: 1+ 2+ 1- 2-
-
-

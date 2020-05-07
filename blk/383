@@ -10,6 +10,6 @@
         SWAP 1+          ( crc a+1 )
     LOOP
     DROP                 ( crc1 )
-    _idle 256 * _idle +  ( crc2 )
+    _idle 8 LSHIFT _idle +  ( crc2 )
     _wait DROP _sdcDesel
     = NOT IF _err THEN ;

@@ -6,7 +6,7 @@
 ( A, spits an assembled byte, A,, spits an assembled word
   Both increase PC. To debug, change C, to .X )
 : A, C, ; : A,, SPLITB A, A, ;
-: <<3 8 * ;    : <<4 16 * ;
+: <<3 3 LSHIFT ;    : <<4 4 LSHIFT ;
 ( As a general rule, IX and IY are equivalent to spitting an
   extra 0xdd / 0xfd and then spit the equivalent of HL )
 : IX 0xdd A, HL ; : IY 0xfd A, HL ;
