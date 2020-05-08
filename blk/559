@@ -1,0 +1,16 @@
+: _glyph> ( a -- )
+    LCD_CURY C@ _row! LCD_CURX C@ 8 /MOD _col! ( a coff )
+    _xinc _data@ DROP SWAP
+    FNTH 0 DO ( coff a )
+        C@+ 2 PICK 8 -^ LSHIFT
+        _data@ 8 LSHIFT OR
+        LCD_BUF I + 2DUP FNTH + C!
+        SWAP 8 RSHIFT SWAP C!
+    LOOP 2DROP
+    LCD_CURY C@ _row!
+    FNTH 0 DO LCD_BUF I + C@ _data! LOOP
+    LCD_CURY C@ _row! LCD_CURX C@ 8 / 1+ _col!
+    FNTH 0 DO LCD_BUF FNTH + I + C@ _data! LOOP
+    LCD_CURX C@ FNTW + 1+ DUP LCD_CURX C! ( x )
+    [ 96 FNTW - LITN ] > IF _lf THEN ;
+

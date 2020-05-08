@@ -1,16 +1,13 @@
-: _glyph> ( a -- )
-    LCD_CURY C@ _row! LCD_CURX C@ 8 /MOD _col! ( a coff )
-    0x05 ( XINC ) _cmd _data@ DROP SWAP
-    FNTH 0 DO ( coff a )
-        C@+ 2 PICK 8 -^ LSHIFT
-        _data@ 8 LSHIFT OR
-        LCD_BUF I + 2DUP FNTH + C!
-        SWAP 8 RSHIFT SWAP C!
-    LOOP 2DROP
-    LCD_CURY C@ _row!
-    FNTH 0 DO LCD_BUF I + C@ _data! LOOP
-    LCD_CURY C@ _row! LCD_CURX C@ 8 / 1+ _col!
-    FNTH 0 DO LCD_BUF FNTH + I + C@ _data! LOOP
-    LCD_CURX C@ FNTW + 1+
-    DUP [ 96 FNTW - LITN ] > IF DROP 0 THEN
-    LCD_CURX C! ;
+: _clrrows ( n u -- Clears u rows starting at n )
+    SWAP _row!
+    ( u ) 0 DO
+        _yinc 0 _col!
+        11 0 DO 0 _data! LOOP
+        _xinc 0 _data!
+    LOOP ;
+: _clrln ( n ) FNTH 1+ _clrrows ;
+: LCDCLR 0 64 _clrrows ;
+( Changes the current line and go back to leftmost column )
+: _lf
+    LCD_CURY C@ FNTH 1+ + DUP 63 > IF DROP 0 THEN
+    DUP _clrln LCD_CURY C! 0 LCD_CURX C! ;

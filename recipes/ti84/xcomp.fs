@@ -19,7 +19,8 @@ CURRENT @ XCURRENT !
 ( Update LATEST )
 PC ORG @ 8 + !
 422 437 XPACKR ( core )
-556 558 XPACKR ( ti )
-," 42 42 PC! LCD$ ' ~FNT 5 + _glyph> 43 43 PC! BYE "
+556 560 XPACKR ( ti )
+438 446 XPACKR ( print fmt )
+," : _ LCD$ LIT< Hello (print) LIT< World! (print) BYE ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

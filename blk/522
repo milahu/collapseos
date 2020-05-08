@@ -10,7 +10,7 @@
     LOOP ;
 : CPFNT3x5
     0 , 0 , 0 C, ( space char )
-    530 BLK@ BLK( 21 _l 192 + 21 _l 192 + 21 _l ( 63 )
-    531 BLK@ BLK( 21 _l 192 + 10 _l ( 94! )
+    530 BLK@ BLK( 21 _l 320 + 21 _l 320 + 21 _l ( 63 )
+    531 BLK@ BLK( 21 _l 320 + 10 _l ( 94! )
 ;
 
