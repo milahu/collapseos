@@ -11,10 +11,13 @@ RAMSTART 0x70 + CONSTANT TI_MEM
 CURRENT @ XCURRENT !
 
 282 LOAD  ( boot.z80 )
+555 LOAD  ( ti.z80 )
 393 LOAD  ( icore )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," 42 42 PC! BYE "
+422 437 XPACKR ( core )
+556 558 XPACKR ( ti )
+," 42 42 PC! LCD$ 43 43 PC! BYE "
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

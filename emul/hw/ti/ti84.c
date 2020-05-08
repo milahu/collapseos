@@ -225,11 +225,8 @@ void draw_pixels()
 void event_loop()
 {
     while (1) {
-        emul_step();
+        emul_steps(100);
         if (lcd_changed) {
-            // To avoid overdrawing, we'll let the CPU run a bit to finish its
-            // drawing operation.
-            emul_steps(100);
             draw_pixels();
         }
         // A low tech way of checking when the window was closed. The proper way
