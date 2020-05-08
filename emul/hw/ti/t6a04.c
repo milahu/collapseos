@@ -10,6 +10,7 @@ void t6a04_init(T6A04 *lcd)
     lcd->currow = 0;
     lcd->curcol = 0;
     lcd->just_moved = true;
+    lcd->has8bitmode = false;
 }
 
 uint8_t t6a04_cmd_rd(T6A04 *lcd)

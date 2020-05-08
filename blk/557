@@ -2,7 +2,12 @@
 : _data! LCD_PORT_DATA PC! LCDWAIT ;
 : _data@ LCD_PORT_DATA PC@ LCDWAIT ;
 : LCDOFF 0x02 ( CMD_DISABLE ) _cmd ;
+: LCDON 0x03 ( CMD_ENABLE ) _cmd ;
 : _col! ( col -- )
     0x20 ( CMD_COL ) + _cmd ;
 : _row! ( row -- )
     0x80 ( CMD_ROW ) + _cmd ;
+: LCD$
+    H@ TI_MEM ! FNTH 2 * 2+ ALLOT
+    LCDON 0x01 ( 8-bit mode ) _cmd
+;

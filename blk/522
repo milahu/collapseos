@@ -4,13 +4,13 @@
         2 *
         OVER J 64 * I + + C@ 'X' = IF 1+ THEN
     LOOP 32 * C, LOOP DROP ;
-: _l ( spit a line of u glyphs )
+: _l ( a u -- a, spit a line of u glyphs )
     ( u ) 0 DO ( a )
         DUP I 3 * + _g
-    LOOP DROP ;
+    LOOP ;
 : CPFNT3x5
     0 , 0 , 0 C, ( space char )
-    530 LOAD BLK( 21 _l 192 + 21 _l 192 + 21 _l ( 63 )
-    531 LOAD BLK( 21 _l 192 + 10 _l ( 94! )
+    530 BLK@ BLK( 21 _l 192 + 21 _l 192 + 21 _l ( 63 )
+    531 BLK@ BLK( 21 _l 192 + 10 _l ( 94! )
 ;
 

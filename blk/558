@@ -5,7 +5,7 @@
         C@+ 2 PICK 8 -^ LSHIFT
         _data@ 8 LSHIFT OR
         LCD_BUF I + 2DUP FNTH + C!
-        SWAP 8 RSHIFT DUP 42 PC! SWAP C!
+        SWAP 8 RSHIFT SWAP C!
     LOOP 2DROP
     LCD_CURY C@ _row!
     FNTH 0 DO LCD_BUF I + C@ _data! LOOP
