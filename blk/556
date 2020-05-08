@@ -1,11 +1,14 @@
-: _wait ( Wait until the lcd is ready to receive a command )
-	( When 7th bit is cleared, we can send a new command )
-    BEGIN LCD_PORT_CMD PC@ 0x80 AND NOT UNTIL ;
-: _cmd LCD_PORT_CMD PC! _wait ;
-: _data! LCD_PORT_DATA PC! _wait ;
-: _data@ LCD_PORT_DATA PC@ _wait ;
-: LCDOFF 0x02 ( CMD_DISABLE ) _cmd ;
-: _col! ( col -- )
-    0x20 ( CMD_COL ) + _cmd ;
-: _row! ( row -- )
-    0x80 ( CMD_ROW ) + _cmd ;
+( Required config: TI_MEM )
+: TI_MEM+ [ TI_MEM LITN ] @ + ;
+: LCD_PORT_CMD 0x10 ;
+: LCD_PORT_DATA 0x11 ;
+: FNTW 3 ;
+: FNTH 5 ;
+( Current Y position on the LCD, that is, where we're going to
+  spit our next glyph. )
+: LCD_CURY 0 TI_MEM+ ;
+: LCD_CURX 1 TI_MEM+ ;
+( two pixel buffers that are 8 pixels wide (1b) by FNT_HEIGHT
+  pixels high. This is where we compose our resulting pixels
+  blocks when spitting a glyph. )
+: LCD_BUF 2 TI_MEM+ ;

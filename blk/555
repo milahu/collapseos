@@ -1,16 +1,1 @@
-( Required config: TI_MEM )
-: TI_MEM+ [ TI_MEM LITN ] + ;
-: LCD_PORT_CMD 0x10 ;
-: LCD_PORT_DATA 0x11 ;
-: FNT_WIDTH 3 ;
-: FNT_HEIGHT 5 ;
-( Current Y position on the LCD, that is, where we're going to
-  spit our next glyph. )
-: LCD_CURY 0 TI_MEM+ ;
-: LCD_CURX 1 TI_MEM+ ;
-( two pixel buffers that are 8 pixels wide (1b) by FNT_HEIGHT
-  pixels high. This is where we compose our resulting pixels
-  blocks when spitting a glyph. )
-: LCD_BUF 2 TI_MEM+ ;
-
-1 2 LOADR+
+1 3 LOADR+

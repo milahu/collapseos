@@ -1,15 +1,15 @@
-TARGET = os.bin
+TARGET = stage1.bin
 BASEDIR = ../..
-ZASM = $(BASEDIR)/emul/zasm/zasm
-KERNEL = $(BASEDIR)/kernel
-APPS = $(BASEDIR)/apps
+FDIR = $(BASEDIR)/forth
+EDIR = $(BASEDIR)/emul
+STAGE2 = $(EDIR)/stage2
 EMUL = $(BASEDIR)/emul/hw/ti/ti84
 MKTIUPGRADE = mktiupgrade
 
 .PHONY: all
-all: $(TARGET)
-$(TARGET): glue.asm
-	$(ZASM) $(KERNEL) $(APPS) < glue.asm > $@
+all: $(TARGET) 
+$(TARGET): xcomp.fs $(STAGE2)
+	cat xcomp.fs | $(STAGE2) > $@
 
 $(EMUL):
 	$(MAKE) -C ${@:%/ti84=%}
