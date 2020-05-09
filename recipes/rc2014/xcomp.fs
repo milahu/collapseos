@@ -18,7 +18,8 @@ CURRENT @ XCURRENT !
 282 LOAD  ( boot.z80 )
 352 LOAD  ( acia.z80 )
 372 LOAD  ( sdc.z80 )
-393 LOAD  ( icore )
+393 LOAD  ( icore low )
+415 LOAD  ( icore high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

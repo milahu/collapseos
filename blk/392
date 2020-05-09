@@ -4,4 +4,12 @@ and other defining words. So, in other words, when compiling
 icore, ":" doesn't means what you think it means, go look in
 B260.
 
-To load, run "393 LOAD".
+This is loaded in two "low" and "high" parts. The low part is
+the biggest chunk and has the most definitions. The high part
+is the "sensitive" chunk and contains "LITN", ":" and ";"
+definitions which, once defined, kind of make any more defs
+impossible.
+
+The gap between these 2 parts is the ideal place to put device
+driver code. Load the low part with "393 LOAD", the high part
+with "415 LOAD"

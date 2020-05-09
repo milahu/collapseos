@@ -10,12 +10,14 @@
 CURRENT @ XCURRENT !
 
 282 LOAD  ( boot.z80 )
-393 LOAD  ( icore )
+393 LOAD  ( icore low )
+: (emit) 0 PC! ;
+: (key) 0 PC@ ;
+415 LOAD  ( icore high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
-," : (emit) 0 PC! ; : (key) 0 PC@ ; "
 422 459 XPACKR
 ," ' (key) 12 RAM+ ! "
 ORG @ 256 /MOD 2 PC! 2 PC!

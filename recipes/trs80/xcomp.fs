@@ -12,7 +12,8 @@ CURRENT @ XCURRENT !
 0x3000 BIN( !
 282 LOAD  ( boot.z80 )
 492 LOAD  ( trs80.z80 )
-393 LOAD  ( icore )
+393 LOAD  ( icore low )
+415 LOAD  ( icore high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

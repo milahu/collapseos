@@ -13,7 +13,8 @@ CURRENT @ XCURRENT !
 
 282 LOAD  ( boot.z80 )
 555 LOAD  ( ti.z80 )
-393 LOAD  ( icore )
+393 LOAD  ( icore low )
+415 LOAD  ( icore high )
 (entry) ~FNT CPFNT3x5
 (entry) _
 ( Update LATEST )
