@@ -21,7 +21,7 @@
 #define INTERRUPT_PORT 0x03
 #define LCD_CMD_PORT 0x10
 #define LCD_DATA_PORT 0x11
-#define MAX_ROMSIZE 0x2000
+#define MAX_ROMSIZE 0x4000
 
 static xcb_connection_t    *conn;
 static xcb_screen_t        *screen;

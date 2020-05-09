@@ -7,7 +7,7 @@
     DUP 0xff = NOT UNTIL
     ( gid dmask )
     0xff XOR ( dpos ) 0 ( dindex )
-    BEGIN 2DUP RSHIFT IF 1+ 1 ELSE 0 THEN UNTIL
+    BEGIN 1+ 2DUP RSHIFT NOT UNTIL 1-
     ( gid dpos dindex ) SWAP DROP
-    ( gid dindex ) SWAP 8 * + _dtbl + C@
+    ( gid dindex ) SWAP 8 * + _dtbl + C@ _wait
 ;

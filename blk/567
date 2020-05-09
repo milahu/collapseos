@@ -2,8 +2,8 @@
   require 64 subsequent polls to indicate all depressed keys.
   all keys are considered depressed when the 0 group returns
   0xff. )
-: _wait 64 0 DO 0 _get 0xff = UNTIL ;
-
+: _wait 64 BEGIN 0 _get 0xff = NOT IF DROP 64 THEN
+    1- DUP NOT UNTIL DROP ;
 ( digits table. seach row represents a group. 0 means
   unsupported. no group 7 because it has no key. )
 CREATE _dtbl
