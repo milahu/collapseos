@@ -1,0 +1,13 @@
+: (key)
+    0 ( gid ) 0 ( dummy )
+    BEGIN ( loop until a digit is pressed )
+        DROP
+        1+ DUP 7 = IF DROP 0 THEN ( inc gid )
+        1 OVER LSHIFT 0xff -^ ( group dmask ) _get
+    DUP 0xff = NOT UNTIL
+    ( gid dmask )
+    0xff XOR ( dpos ) 0 ( dindex )
+    BEGIN 2DUP RSHIFT IF 1+ 1 ELSE 0 THEN UNTIL
+    ( gid dpos dindex ) SWAP DROP
+    ( gid dindex ) SWAP 8 * + _dtbl + C@
+;

@@ -1,0 +1,14 @@
+( Requires KBD_MEM, KBD_PORT )
+( gm -- pm, get pressed keys mask for group mask gm )
+CODE _get
+    HL POPqq,
+    chkPS,
+    DI,
+        A 0xff LDrn,
+        KBD_PORT OUTnA,
+        A L LDrr,
+        KBD_PORT OUTnA,
+        KBD_PORT INAn,
+    EI,
+    L A LDrr, HL PUSHqq,
+;CODE

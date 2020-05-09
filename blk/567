@@ -1,0 +1,16 @@
+( wait until all keys are de-pressed. To avoid repeat keys, we
+  require 64 subsequent polls to indicate all depressed keys.
+  all keys are considered depressed when the 0 group returns
+  0xff. )
+: _wait 64 0 DO 0 _get 0xff = UNTIL ;
+
+( digits table. seach row represents a group. 0 means
+  unsupported. no group 7 because it has no key. )
+CREATE _dtbl
+    0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,
+    0xd C, '+' C, '-' C, '*' C, '/' C, '^' C, 0 C, 0 C,
+    0 C, '3' C, '6' C, '9' C, ')' C, 0 C, 0 C, 0 C,
+    '.' C, '2' C, '5' C, '8' C, '(' C, 0 C, 0 C, 0 C,
+    '0' C, '1' C, '4' C, '7' C, ',' C, 0 C, 0 C, 0 C,
+    0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0x80 ( alpha ) C,
+    0 C, 0 C, 0 C, 0 C, 0 C, 0x81 ( 2nd ) C, 0 C, 0x7f C,

@@ -4,6 +4,7 @@ VARIABLE XCURRENT
 : XCOFF 0x02 RAM+ CURRENT* ! ;
 
 : (xentry) XCON (entry) XCOFF ;
+: XCREATE (xentry) 11 C, ;
 
 : XCODE XCON CODE XCOFF ;
 

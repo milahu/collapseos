@@ -5,4 +5,11 @@ CODE 2DROP
     chkPS,
 ;CODE
 
+( a b -- a b a b )
+CODE 2DUP
+    HL POPqq, ( b ) DE POPqq, ( a )
+    chkPS,
+    DE PUSHqq, HL PUSHqq,
+    DE PUSHqq, HL PUSHqq,
+;CODE
 
