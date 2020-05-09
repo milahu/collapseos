@@ -24,7 +24,7 @@ CURRENT @ XCURRENT !
 PC ORG @ 8 + !
 422 437 XPACKR ( core )
 558 560 XPACKR ( LCD high )
-438 459 XPACKR ( print fmt readln )
+438 451 XPACKR ( print fmt readln )
 ," : _ LCD$ (ok) RDLN$ ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

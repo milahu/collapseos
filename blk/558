@@ -10,5 +10,5 @@
 ( Changes the current line and go back to leftmost column )
 : _lf
     LCD_CURY C@ FNTH 1+ + DUP 63 > IF DROP 0 THEN
-    DUP _clrln DUP FNTH 1+ _zoff!
+    DUP _clrln DUP FNTH 1+ + _zoff!
     LCD_CURY C! 0 LCD_CURX C! ;
