@@ -1,15 +1,13 @@
-( Required config: TI_MEM )
-: TI_MEM+ [ TI_MEM LITN ] @ + ;
-TI_MEM : TI_MEM [ LITN ] ;
-: LCD_PORT_CMD 0x10 ; : LCD_PORT_DATA 0x11 ;
+( Required config: LCD_MEM )
+: _mem+ [ LCD_MEM LITN ] @ + ;
 : FNTW 3 ; : FNTH 5 ;
 ( Wait until the lcd is ready to receive a command. It's a bit
   weird to implement a waiting routine in asm, but the forth
   version is a bit heavy and we don't want to wait longer than
   we have to. )
-CODE LCDWAIT
+CODE _wait
     BEGIN,
-        0x10 INAn,
+        0x10 ( CMD ) INAn,
         RLA, ( When 7th bit is clr, we can send a new cmd )
     JRC, AGAIN,
 ;CODE
