@@ -1,8 +1,3 @@
-: H@ HERE @ ;
-: IMMEDIATE
-    CURRENT @ 1-
-    DUP C@ 128 OR SWAP C!
-;
 : [ INTERPRET ; IMMEDIATE
 : ] R> DROP ;
 : LITS 34 , SCPY ;
