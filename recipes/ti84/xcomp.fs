@@ -18,8 +18,8 @@ RAMSTART 0x72 + CONSTANT KBD_MEM
   offset the binary by 0x100, which is our minimum possible
   increment and fill the TI stuff with the code below. )
 
-0x100 JPnn, 0x15 ZFILL, ( 0x18 )
-0x100 JPnn, ( reboot ) 0x1d ZFILL, ( 0x38 )
+0x5a JPnn, 0x15 ZFILL, ( 0x18 )
+0x5a JPnn, ( reboot ) 0x1d ZFILL, ( 0x38 )
 ( handleInterrupt )
 DI,
 AF PUSHqq,
@@ -40,8 +40,23 @@ EI,
 RETI,
 
 0x03 ZFILL, ( 0x53 )
-0x100 JPnn, ( 0x56 ) 0xff A, 0xa5 A, 0xff A,
-0xa7 ZFILL, ( 0x100 )
+0x5a JPnn, ( 0x56 ) 0xff A, 0xa5 A, 0xff A, ( 0x5a )
+( boot )
+DI,
+    (im1)
+    ( enable the ON key interrupt )
+    0x03 ( PORT_INT_MASK ) INAn,
+    0x00 ( INT_MASK_ON ) A SETbr,
+    0x03 ( PORT_INT_MASK ) OUTnA,
+    A 0x80 LDrn,
+    0x07 ( PORT_BANKB ) OUTnA,
+EI,
+( LCD off )
+A 0x02 ( LCD_CMD_DISABLE ) LDrn,
+0x10 ( LCD_PORT_CMD ) OUTnA,
+HALT,
+
+0x95 ZFILL, ( 0x100 )
 ( All set, carry on! )
 
 CURRENT @ XCURRENT !
