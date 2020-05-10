@@ -8,11 +8,24 @@ screen. With a tiny font, the best we can get is a 24x10 console.
 
 There is, however, a built-in USB controller that might prove very handy.
 
-[Further reading](../../doc/ti8x.md)
+I haven't opened one up yet, but apparently, they have limited scavenging value
+because its z80 CPU is packaged in a TI-specific chip. Due to its sturdy design,
+and its ample RAM and flash, we could imagine it becoming a valuable piece of
+equipment if found intact.
+
+The best pre-collapse ressource about it is
+[WikiTI](http://wikiti.brandonw.net/index.php).
+
+As it is now, with its tiny screen and cumbersome keyboard, Collapse OS is
+not really usable on the TI-84+. One could imagine a scenario where one has a
+terminal and uses the TI-84+ through the link for its large amount of flash and
+RAM. But using it standalone? Nah, not even post-collapse.
+
+Therefore, this recipe is more of a "look, I run!" demo.
 
 ## Recipe
 
-This recipe gets the Collapse OS BASIC shell to run on the TI-84+, using its LCD
+This recipe gets the Collapse OS interpreter to run on the TI-84+, using its LCD
 screen as output and its builtin keyboard as input.
 
 ## Gathering parts
@@ -25,7 +38,7 @@ screen as output and its builtin keyboard as input.
 
 ## Build the ROM
 
-Running `make` will result in `os.rom` being created.
+Running `make` will result in `stage1.rom` being created.
 
 ## Emulate
 
@@ -37,6 +50,30 @@ key yet. This key is mapped to tilde (~) in the emulator. Once you press it, the
 Collapse OS prompt will appear. See `emul/hw/ti/README.md` for details.
 
 ## Upload to the calculator
+
+### Background notes
+
+Getting software to run on it is a bit tricky because it needs to be signed
+with TI-issued private keys. Those keys have long been found and are included
+in `keys/`. With the help of the
+[mktiupgrade](https://github.com/KnightOS/mktiupgrade), an upgrade file can be
+prepared and then sent through the USB port with the help of
+[tilp](http://lpg.ticalc.org/prj_tilp/).
+
+That, however, requires a modern computing environment. As of now, there is no
+way of installing Collapse OS on a TI-8X+ calculator from another Collapse OS
+system.
+
+Because it is not on the roadmap to implement complex cryptography in Collapse
+OS, the plan is to build a series of pre-signed bootloader images. The
+bootloader would then receive data through either the Link jack or the USB port
+and write that to flash (I haven't verified that yet, but I hope that data
+written to flash this way isn't verified cryptographically by the calculator).
+
+As modern computing fades away, those pre-signed binaries would become opaque,
+but at least, would allow bootstrapping from post-modern computers.
+
+### Instructions
 
 **WARNING: the instructions below will wipe all the contents of your calculator,
 including TI-OS.**
