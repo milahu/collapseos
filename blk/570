@@ -1,6 +1,12 @@
+: _tbl^ ( swap input tbl )
+    _atbl = IF _dtbl ELSE _atbl THEN ;
 : (key)
-    _dtbl 0 ( dummy ) BEGIN ( tbl 0 )
-        DROP DUP ( tbl ) _gti + C@
-        DUP 0x80 = IF ( alpha ) 2DROP _atbl 0 THEN
-    DUP UNTIL ( tbl c -- loop if null ) SWAP DROP
+    0 _2nd! 0 ( lastchr ) BEGIN
+        _alock@ IF _atbl ELSE _dtbl THEN
+        OVER 0x80 ( alpha ) =
+            IF _tbl^ _2nd@ IF _alock^ THEN THEN
+        SWAP 0x81 = _2nd!
+        _gti + C@
+    DUP 0 0x80 >< UNTIL ( loop if not in range )
     _wait ;
+: KBD$ 0 [ KBD_MEM LITN ] C! ;

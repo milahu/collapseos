@@ -1,6 +1,7 @@
 0x8000 CONSTANT RAMSTART
 0xb000 CONSTANT RS_ADDR
 RAMSTART 0x70 + CONSTANT LCD_MEM
+RAMSTART 0x72 + CONSTANT KBD_MEM
 0x01 CONSTANT KBD_PORT
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
@@ -25,6 +26,6 @@ PC ORG @ 8 + !
 422 437 XPACKR ( core )
 558 560 XPACKR ( LCD high )
 438 451 XPACKR ( print fmt readln )
-," : _ LCD$ (ok) RDLN$ ; _ "
+," : _ LCD$ KBD$ (ok) RDLN$ ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!
