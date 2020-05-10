@@ -4,6 +4,8 @@ Memory
 !        n a --          Store n in address a
 ?        a --            Print value of addr a
 +!       n a --          Increase value of addr a by n
+BIT@     b a -- f        Get bit b from addr a.
+BIT!     f b a --        Set bit b to f in addr a.
 C@       a -- c          Set c to byte at address a
 C@+      a -- a+1 c      Fetch c from a and inc a.
 C@-      a -- a-1 c      Fetch c from a and dec a.
@@ -11,6 +13,4 @@ C!       c a --          Store byte c in address a
 C!+      c a -- a+1      Store byte c in a and inc a.
 C!-      c a -- a-1      Store byte c in a and dec a.
 CURRENT  -- a            Set a to wordref of last added entry.
-CURRENT* -- a            A pointer to active CURRENT*. Useful
-                         when we have multiple active dicts.
                                                         (cont.)
