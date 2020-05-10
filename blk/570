@@ -7,6 +7,5 @@
             IF _tbl^ _2nd@ IF _alock^ THEN THEN
         SWAP 0x81 = _2nd!
         _gti + C@
-    DUP 0 0x80 >< UNTIL ( loop if not in range )
-    _wait ;
+    DUP 0 0x80 >< UNTIL ( loop if not in range ) ;
 : KBD$ 0 [ KBD_MEM LITN ] C! ;

@@ -4,7 +4,7 @@
         DROP
         1+ DUP 7 = IF DROP 0 THEN ( inc gid )
         1 OVER LSHIFT 0xff -^ ( group dmask ) _get
-    DUP 0xff = NOT UNTIL
+    DUP 0xff = NOT UNTIL _wait
     ( gid dmask )
     0xff XOR ( dpos ) 0 ( dindex )
     BEGIN 1+ 2DUP RSHIFT NOT UNTIL 1-
