@@ -1,4 +1,4 @@
-: _
+: _gti ( -- tindex, that it, index in _dtbl or _atbl )
     0 ( gid ) 0 ( dummy )
     BEGIN ( loop until a digit is pressed )
         DROP
@@ -9,5 +9,4 @@
     0xff XOR ( dpos ) 0 ( dindex )
     BEGIN 1+ 2DUP RSHIFT NOT UNTIL 1-
     ( gid dpos dindex ) SWAP DROP
-    ( gid dindex ) SWAP 8 * + _dtbl + C@ _wait ;
-: (key) 0 ( dummy ) BEGIN DROP _ DUP UNTIL ;
+    ( gid dindex ) SWAP 8 * + ;

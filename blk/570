@@ -1,0 +1,6 @@
+: (key)
+    _dtbl 0 ( dummy ) BEGIN ( tbl 0 )
+        DROP DUP ( tbl ) _gti + C@
+        DUP 0x80 = IF ( alpha ) 2DROP _atbl 0 THEN
+    DUP UNTIL ( tbl c -- loop if null ) SWAP DROP
+    _wait ;

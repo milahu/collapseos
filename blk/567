@@ -4,7 +4,7 @@
   0xff. )
 : _wait 64 BEGIN 0 _get 0xff = NOT IF DROP 64 THEN
     1- DUP NOT UNTIL DROP ;
-( digits table. seach row represents a group. 0 means
+( digits table. each row represents a group. 0 means
   unsupported. no group 7 because it has no key. )
 CREATE _dtbl
     0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,

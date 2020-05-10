@@ -16,7 +16,7 @@ CURRENT @ XCURRENT !
 282 LOAD  ( boot.z80 )
 393 LOAD  ( icore low )
 555 557 LOADR ( LCD low )
-566 569 LOADR ( KBD low )
+566 570 LOADR ( KBD low )
 415 LOAD  ( icore high )
 (entry) ~FNT CPFNT3x5
 (entry) _
