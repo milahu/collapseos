@@ -1,0 +1,15 @@
+: _g ( given a top-left of dot-X in BLK(, spit 7 bin lines )
+    7 0 DO
+    0 7 0 DO ( a r )
+        1 LSHIFT
+        OVER J 64 * I + + C@ 'X' = IF 1+ THEN
+    LOOP 1 LSHIFT C, LOOP DROP ;
+: _l ( a u -- a, spit a line of u glyphs )
+    ( u ) 0 DO ( a )
+        DUP I 7 * + _g
+    LOOP ;
+: CPFNT7x7
+    0 , 0 , 0 , 0 C, ( space char )
+    541 536 DO I BLK@ BLK( 9 _l 448 + 9 _l LOOP ( 90 )
+    542 BLK@ BLK( 4 _l ( 94! )
+;
