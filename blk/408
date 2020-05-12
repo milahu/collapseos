@@ -1,14 +1,10 @@
 : [entry]
-    HERE @       ( w h )
-    SWAP SCPY    ( h )
-    ( Adjust HERE -1 because SCPY copies the null )
-    HERE @ 1-    ( h h' )
-    DUP HERE !   ( h h' )
-    SWAP -       ( sz )
+    HERE @        ( w h )
+    SWAP SCPY     ( h )
+    HERE @ SWAP - ( sz )
     ( write prev value )
     HERE @ CURRENT @ - ,
-    ( write size )
-    C,
+    C, ( write size )
     HERE @ CURRENT !
 ;
 

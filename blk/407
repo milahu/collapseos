@@ -1,8 +1,6 @@
 : SCPY
-    BEGIN         ( a )
-        C@+       ( a+1 c )
-        DUP C,    ( a c )
-        NOT IF DROP EXIT THEN
+    BEGIN     ( a )
+        C@+   ( a+1 c )
+        DUP NOT IF 2DROP EXIT THEN
+        C,    ( a c )
     AGAIN ;
-
-

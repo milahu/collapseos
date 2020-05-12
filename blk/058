@@ -4,10 +4,9 @@ LIT    --         Write a LIT entry. You're expected to write
                   actual string to HERE right afterwards.
 LIT< x --         Read following word and write to HERE as a
                   string literal.
-LITS   a --       Write word at addr a as a atring literal.
 S=     a1 a2 -- f Returns whether string a1 == a2.
-SCPY   a --       Copy string at addr a into HERE.
-
+SCPY   a --       Copy string at addr a into HERE, without
+                  NULL termination.
 
 
 

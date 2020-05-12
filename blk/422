@@ -1,7 +1,6 @@
 : [ INTERPRET ; IMMEDIATE
 : ] R> DROP ;
-: LITS 34 , SCPY ;
-: LIT< WORD LITS ; IMMEDIATE
+: LIT< WORD 34 , SCPY 0 C, ; IMMEDIATE
 : LITA 36 , , ;
 : '? WORD (find) ;
 : '

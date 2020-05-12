@@ -8,7 +8,7 @@
             DUP LIT< ( S= IF
                 DROP [COMPILE] (
             ELSE
-                SCPY 0x20 H@ 1- C!
+                SCPY 0x20 C,
             THEN 0 ( loop again )
         ELSE 1 ( stop looping ) THEN
     UNTIL
