@@ -12,21 +12,20 @@ RAMSTART 0x70 + CONSTANT ACIA_MEM
 : CODE XCODE ;
 : IMMEDIATE XIMM ;
 : (entry) (xentry) ;
+: CREATE XCREATE ;
 : : [ ' X: , ] ;
 
 CURRENT @ XCURRENT !
 
 282 LOAD  ( boot.z80 )
-352 LOAD  ( acia.z80 )
-372 LOAD  ( sdc.z80 )
 393 LOAD  ( icore low )
+352 LOAD  ( acia )
+372 LOAD  ( sdc.z80 )
 415 LOAD  ( icore high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-422 437 XPACKR ( core )
-358 360 XPACKR ( acia.fs )
-438 452 XPACKR ( print fmt readln )
+422 452 XPACKR ( core print fmt readln )
 123 132 XPACKR ( linker )
 ," : _ ACIA$ RDLN$ (ok) ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!

@@ -1,4 +1,4 @@
-(entry) ~ACIA
+CREATE ~ACIA
     AF PUSHqq,
     HL PUSHqq,
     DE PUSHqq,

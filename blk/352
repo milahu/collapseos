@@ -1,15 +1,8 @@
-( Save ACIA conf )
-ACIA_CTL
-: ACIA_CTL [ LITN ] ;
-ACIA_IO
-: ACIA_IO [ LITN ] ;
-ACIA_MEM
-: ACIA_MEM [ LITN ] ;
 ( Memory layout
   +0 ACIAR>
   +2 ACIAW>
   +4 ACIA(
   +6 ACIA) )
 
-1 3 LOADR+
+1 6 LOADR+
 
