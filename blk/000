@@ -1,16 +1,16 @@
-Collapse OS file system
+Collapse OS
 
-This is a Forth-style filesystems which is very simple. It is a
-list of 1024 bytes block, organised in 16 lines of 64 columns
-each. You refer to blocks by numbers. You show them with LIST.
-You interpret them with LOAD. For a convenient way to browse
-blocks, see Block editor at B100.
+This is the first block of Collapse OS' filesystem which cons-
+ists of contiguous blocks of 1024 bytes organized in 16 lines
+of 64 characters. You can display a block's content with the
+"LIST" command. For example, "123 LIST" shows the contents of
+the block 123. If a block contains source code, you can inter-
+pret it with "LOAD".
 
 Conventions: When you see "(cont.)" at the bottom right of a
 block, it means that the next block continues the same kind of
-contents. This of course only work for informational text.
+contents. Block numbers are abbreviated with prefix "B". "BX"
+means "block X".
 
-Block numbers are abbreviated with prefix "B". "BX" means
-"block X".
-
-The master index of this filesystem is at B1.
+The master index of this filesystem is at B1. The Block editor
+at B100 is a convenient way to navigate blocks.
