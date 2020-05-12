@@ -1,5 +1,5 @@
 CODE S0
-    RAMSTART LDHL(nn), ( RAM+00 == INITIAL_SP )
+    HL PS_ADDR LDddnn,
     HL PUSHqq,
 ;CODE
 

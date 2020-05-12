@@ -1,14 +1,10 @@
 PC ORG @ 0x1e + ! ( chkPS )
     HL PUSHqq,
-    RAMSTART LDHL(nn), ( RAM+00 == INITIAL_SP )
 ( We have the return address for this very call on the stack
-  and protected registers. Let's compensate )
-    HL DECss,
-    HL DECss,
-    HL DECss,
-    HL DECss,
+  and protected registers. 4 - is to compensate that. )
+    HL PS_ADDR 4 - LDddnn,
     SP SUBHLss,
     HL POPqq,
-    CNC RETcc,      ( INITIAL_SP >= SP? good )
+    CNC RETcc,      ( PS_ADDR >= SP? good )
     JR, L2 BWR      ( abortUnderflow-B298 )
 

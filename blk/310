@@ -9,7 +9,7 @@ CODE PICK
     B (HL) LDrr,
     ( check PS range before returning )
     EXDEHL,
-    RAMSTART LDHL(nn), ( RAM+00 == INITIAL_SP )
+    HL PS_ADDR LDddnn,
     DE SUBHLss,
     CC L2 @ JPccnn,    ( abortUnderflow-B298 )
     BC PUSHqq,

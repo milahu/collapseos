@@ -3,8 +3,7 @@ CODE BYE
 ;CODE
 
 CODE (resSP)
-    ( INITIAL_SP == RAM+0 )
-    SP RAMSTART LDdd(nn),
+    SP PS_ADDR LDddnn,
 ;CODE
 
 CODE (resRS)

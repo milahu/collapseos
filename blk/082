@@ -1,6 +1,3 @@
-INITIAL_SP holds the initial Stack Pointer value so
-that we know where to reset it on ABORT
-
 CURRENT points to the last dict entry.
 
 HERE points to current write offset.
@@ -11,6 +8,9 @@ PARSEPTR holds routine address called on (parse)
 
 C<* holds routine address called on C<. If the C<* override
 at 0x08 is nonzero, this routine is called instead.
+
+
+
 
 
                                                         (cont.)

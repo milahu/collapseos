@@ -3,8 +3,7 @@ L1 BSET 'B' A, 'O' A, 'O' A, 'T' A, 0 A,
 
 PC ORG @ 1 + ! ( main )
 ( STACK OVERFLOW PROTECTION: See B76 )
-    SP 0xfffa LDddnn,
-    RAMSTART SP LD(nn)dd, ( RAM+00 == INITIAL_SP )
+    SP PS_ADDR LDddnn,
     IX RS_ADDR LDddnn,
 ( HERE begins at RAMEND )
     HL RAMSTART 0x80 + LDddnn,

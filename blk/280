@@ -1,16 +1,16 @@
 Z80 boot code
 
 This assembles the boot binary. It requires the Z80 assembler
-(B200) and cross compilation setup (B260).
+(B200) and cross compilation setup (B260). It also requires
+these constants to be set:
 
-On top of that, it requires RAMSTART to be defined as the
-beginning address of RAM. This is where system variables are
-placed. HERE is then placed at RAM+80 (ref B80).
+RAMSTART: beginning address of RAM. This is where system
+variables are placed. HERE is then placed at RAM+80 (ref B80).
 
-We also need RS_ADDR to be set to the bottom address of the
-Return Stack.
+RS_ADDR: to be set to the bottom address of the Return Stack.
 
-RESERVED REGISTERS: At all times, IX points to RSP TOS and IY
-is IP. SP points to PSP TOS, but you can still use the stack\
-in native code. you just have to make sure you've restored it
-before "next".                                          (cont.)
+PS_ADDR: top address of the Parameter stack (PS grows down-
+wards). Allow space for stack underflow protection (B76).
+
+
+                                                        (cont.)
