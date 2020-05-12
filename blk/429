@@ -1,7 +1,0 @@
-: CREATE
-    (entry)            ( empty header with name )
-    11                 ( 11 == cellWord )
-    C,                 ( write it )
-;
-
-

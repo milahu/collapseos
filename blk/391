@@ -9,8 +9,8 @@ unusable directly. For the same reason, any reference to a word
 in the host system will obviously be wrong in the target
 system. More details in B260.
 
-This unit is loaded in two "low" and "high" parts. The low part
-is the biggest chunk and has the most definitions. The high
-part is the "sensitive" chunk and contains "LITN", ":" and ";"
-definitions which, once defined, kind of make any more defs
-impossible.                                             (cont.)
+These rules result in some practicals do's and dont's:
+
+1. IF, UNTIL, AGAIN are fine, but *not* LOOP.
+
+                                                        (cont.)
