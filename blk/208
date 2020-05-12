@@ -8,9 +8,9 @@ LD [rr, rn, ddnn, (nn)HL, HL(nn), dd(nn), (nn)dd, rIXY, IXYr,
     (DE)A, A(DE)]
 ADD [r, n, HLss, IXss, IXIX, IYss, IYIY]
 ADC [r, HLss]
-CP  [r, n]
+CP  [r, n, (IXY+)]
 SBC [r, HLss]
 SUB [r, n]
 PUSH [qq]  POP [qq]
-INC [r, ss]            DEC [r, ss]
+INC [r, ss, (IXY+)]    DEC [r, ss, (IXY+)]
 AND [r, n] OR [r, n]   XOR [r, n]                       (cont.)

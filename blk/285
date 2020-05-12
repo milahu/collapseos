@@ -1,6 +1,15 @@
-CODE (br)            ( 0x53 )
-L2 BSET ( used in CBR )
-    E 0 IY+ LDrIXY,
-    D 1 IY+ LDrIXY,
-    DE ADDIYss,
+CODE (?br)           ( 0x67 )
+    HL POPqq, chkPS,
+    HLZ,
+    JRZ, L2 BWR ( BR + 2. False, branch )
+    L1 BSET ( loop will jump here )
+    ( True, skip next 2 bytes and don't branch )
+    IY INCss, IY INCss,
     JPNEXT,
+CODE (loop) ( 0x77 )
+    0 IX+ INC(IXY+), IFZ, 1 IX+ INC(IXY+), THEN, ( I++ )
+    ( Jump if I <> I' )
+    A 0 IX+ LDrIXY, 2 IX- CP(IXY+), JRNZ, L2 BWR ( branch )
+    A 1 IX+ LDrIXY, 1 IX- CP(IXY+), JRNZ, L2 BWR ( branch )
+    ( don't branch )
+    IX DECss, IX DECss, IX DECss, IX DECss, JR, L1 BWR

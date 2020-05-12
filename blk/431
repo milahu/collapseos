@@ -4,5 +4,5 @@
 ( In addition to pushing H@ this compiles 2>R so that loop
   variables are sent to PS at runtime )
 : DO COMPILE 2>R H@ ; IMMEDIATE
-
-
+: LOOP COMPILE (loop) H@ - , ; IMMEDIATE
+: LEAVE R> R> DROP I 1- >R >R ;

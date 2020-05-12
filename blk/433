@@ -1,5 +1,3 @@
-: LEAVE R> R> DROP I 1- >R >R ;
-
 : ROLL
     DUP NOT IF EXIT THEN
     1+ DUP PICK          ( n val )

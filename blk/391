@@ -11,6 +11,6 @@ system. More details in B260.
 
 These rules result in some practicals do's and dont's:
 
-1. IF, UNTIL, AGAIN are fine, but *not* LOOP.
+1. No LEAVE in DO..LOOP
 
                                                         (cont.)

@@ -1,12 +1,16 @@
-CODE (?br)           ( 0x67 )
-    HL POPqq,
-    chkPS,
-    HLZ,
-    JRZ, L2 BWR ( BR + 2. False, branch )
-    ( True, skip next 2 bytes and don't branch )
-    IY INCss,
-    IY INCss,
-    JPNEXT,
-
-( END OF STABLE ABI )
-
+CODE >R ( 0xa8 )
+    HL POPqq, chkPS,
+    17 BCALL, ( 17 == pushRS )
+;CODE
+CODE 2>R ( 0xb9 )
+    DE POPqq, HL POPqq, chkPS,
+    17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
+;CODE
+CODE R> ( 0xce )
+    20 BCALL, ( 20 == popRS )
+    HL PUSHqq,
+;CODE
+CODE 2R> ( 0xdc )
+    20 BCALL, ( 20 == popRS ) EXDEHL, 20 BCALL,
+    HL PUSHqq, DE PUSHqq,
+;CODE ( END OF STABLE ABI )
