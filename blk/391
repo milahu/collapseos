@@ -1,16 +1,16 @@
-2. If it references a word from this unit or from native
-   definitions, these need to be properly offsetted because
-   their offset at compile time are not the same as their
-   runtime offsets.
-3. Anything they refer to in the boot binary has to be properly
-   stabilized.
-4. Make sure that the words you compile are not overridden by
-   the full interpreter.
-5. When using words as immediates, make sure that they're not
-   defined in icore or, if they are, make sure that they are
-   *not* offsetted
+2. Immediate words that have been cross compiled *cannot* be
+   used. Only immediates from the host system can be used.
+3. If an immediate word compiles words, it can only be words
+   that are part of the stable ABI.
 
+All of this is because when cross compiling, all atom ref-
+erences are offsetted to the target system and are thus
+unusable directly. For the same reason, any reference to a word
+in the host system will obviously be wrong in the target
+system. More details in B260.
 
-
-
-                                                        (cont.)
+This unit is loaded in two "low" and "high" parts. The low part
+is the biggest chunk and has the most definitions. The high
+part is the "sensitive" chunk and contains "LITN", ":" and ";"
+definitions which, once defined, kind of make any more defs
+impossible.                                             (cont.)

@@ -1,16 +1,14 @@
-Inner core
+Cross-compiled core
 
-This unit represents core definitions that happen right after
-native definitions. Before core.fs.
+This units contains core Collapse OS that are cross-compiled.
+During building, these come right after the boot binary (B280).
 
-Unlike core.fs and its followers, this unit isn't self-
-sustained. Like native defs it uses the machinery of a full
-Forth interpreter, notably for flow structures.
+Because this unit is designed to be cross-compiled, things are
+a little weird. It is compiling in the context of a full
+Forth interpreter with all bells and whistles (and z80
+assembler), but it has to obey strict rules:
 
-Because of that, it has to obey specific rules:
-
-1. It cannot compile a word from higher layers. Using
-   immediates is fine though.
-
+1. It cannot compile a word from higher layers. Immediates are
+   fine.
 
                                                         (cont.)
