@@ -1,6 +1,6 @@
 Keyboard driver
 
-Low layer range: 566-570
+Load range: 566-570
 
 Implement a (key) word that interpret keystrokes from the
 builtin keyboard. The word waits for a digit to be pressed and

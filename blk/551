@@ -1,7 +1,7 @@
 TI-84+ LCD driver
 
-Implement (emit) on TI-84+ (for now)'s LCD screen. The low
-level part are blocks 555-557 and high level ones are 558-560.
+Implement (emit) on TI-84+ (for now)'s LCD screen.
+Load range: 555-560
 
 The screen is 96x64 pixels. The 64 rows are addressed directly
 with CMD_ROW but columns are addressed in chunks of 6 or 8 bits

@@ -65,16 +65,14 @@ CURRENT @ XCURRENT !
 0x100 BIN( !
 282 LOAD  ( boot.z80 )
 393 LOAD  ( icore low )
-555 557 LOADR ( LCD low )
+CREATE ~FNT CPFNT3x5
+555 560 LOADR ( LCD low )
 566 570 LOADR ( KBD low )
 415 LOAD  ( icore high )
-(entry) ~FNT CPFNT3x5
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-422 437 XPACKR ( core )
-558 560 XPACKR ( LCD high )
-438 451 XPACKR ( print fmt readln )
+422 451 XPACKR ( core print fmt readln )
 ," : _ LCD$ KBD$ (ok) RDLN$ ; _ "
 ORG @ 0x100 - 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

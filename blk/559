@@ -12,5 +12,5 @@
     LCD_CURY C@ _row! LCD_CURX C@ 8 / 1+ _col!
     FNTH 0 DO LCD_BUF FNTH + I + C@ _data! LOOP
     LCD_CURX C@ FNTW + 1+ DUP LCD_CURX C! ( x )
-    [ 96 FNTW - LITN ] > IF _lf THEN ;
+    96 FNTW - > IF _lf THEN ;
 
