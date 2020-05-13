@@ -1,14 +1,14 @@
-( LITN has to be defined after the last immediate usage of
-  it to avoid bootstrapping issues )
-: LITN 32 , , ( 32 == NUMBER ) ;
+: EMIT
+    ( 0x53==(emit) override )
+    0x53 RAM+ @ DUP IF EXECUTE ELSE DROP (emit) THEN ;
 
-: IMMED? 1- C@ 0x80 AND ;
+: (print)
+    BEGIN
+        C@+      ( a+1 c )
+        ( exit if null or 0xd )
+        DUP 0xd = OVER NOT OR IF 2DROP EXIT THEN
+        EMIT     ( a )
+    AGAIN
+;
 
-( ';' can't have its name right away because, when created, it
-  is not an IMMEDIATE yet and will not be treated properly by
-  xcomp. )
-: _
-    ['] EXIT ,
-    R> DROP     ( exit : )
-; IMMEDIATE
 

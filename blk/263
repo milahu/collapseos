@@ -5,7 +5,11 @@ VARIABLE XCURRENT
 
 : (xentry) XCON (entry) XCOFF ;
 : XCREATE (xentry) 11 C, ;
-
 : XCODE XCON CODE XCOFF ;
-
 : XIMM XCON IMMEDIATE XCOFF ;
+: _xapply ( a -- a-off )
+    DUP ORG @ > IF ORG @ - BIN( @ + THEN ;
+: XCOMPILE
+    XCON ' _xapply LITA
+    LIT< , (find) DROP _xapply , XCOFF ;
+: X[COMPILE] XCON ' _xapply , XCOFF ;

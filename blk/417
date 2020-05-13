@@ -1,16 +1,13 @@
-XCURRENT @ ( to PSP )
-: :
-    (entry)
-    ( We cannot use LITN as IMMEDIATE because of bootstrapping
-      issues. Same thing for ",".
-      32 == NUMBER 14 == compiledWord )
-    [ 32 H@ ! 2 ALLOT 14 H@ ! 2 ALLOT ] C,
+: ,"
     BEGIN
-        WORD
-        (find)
-        ( is word )
-        IF DUP IMMED? IF EXECUTE ELSE , THEN
-        ( maybe number )
-        ELSE (parse) LITN THEN
+        C<
+        ( 34 is ASCII for " )
+        DUP 34 = IF DROP EXIT THEN C,
     AGAIN ;
-( from PSP ) ';' SWAP 4 - C!
+
+: ."
+    34 , ( 34 == litWord ) ," 0 C,
+    COMPILE (print)
+; IMMEDIATE
+
+: ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE

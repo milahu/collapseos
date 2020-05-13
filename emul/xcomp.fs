@@ -4,6 +4,8 @@
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
 : CODE XCODE ;
+: COMPILE XCOMPILE ; IMMEDIATE
+: [COMPILE] X[COMPILE] ; IMMEDIATE
 : IMMEDIATE XIMM ;
 : (entry) (xentry) ;
 : : [ ' X: , ] ;

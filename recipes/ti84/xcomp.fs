@@ -9,6 +9,8 @@ RAMSTART 0x72 + CONSTANT KBD_MEM
 262 LOAD  ( xcomp )
 522 LOAD  ( font compiler )
 : CODE XCODE ;
+: COMPILE XCOMPILE ; IMMEDIATE
+: [COMPILE] X[COMPILE] ; IMMEDIATE
 : IMMEDIATE XIMM ;
 : (entry) (xentry) ;
 : CREATE XCREATE ; ( for KBD tbls )
