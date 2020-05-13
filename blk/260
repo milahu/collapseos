@@ -2,7 +2,7 @@ Cross compilation program
 
 This programs allows cross compilation of boot binary and
 icore. Run "262 LOAD" right before your cross compilation and
-then set XCURRENT to CURRENT.
+then "270 LOAD" to apply xcomp overrides.
 
 This unit depends on a properly initialized z80a with ORG and
 BIN( set. That is how we determine compilation offsets.

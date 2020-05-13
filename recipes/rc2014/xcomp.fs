@@ -9,16 +9,7 @@
 RAMSTART 0x70 + CONSTANT ACIA_MEM
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
-: CODE XCODE ;
-: ['] X['] ; IMMEDIATE
-: COMPILE XCOMPILE ; IMMEDIATE
-: [COMPILE] X[COMPILE] ; IMMEDIATE
-: IMMEDIATE XIMM ;
-: (entry) (xentry) ;
-: CREATE XCREATE ;
-: : [ ' X: , ] ;
-
-CURRENT @ XCURRENT !
+270 LOAD  ( xcomp overrides )
 
 282 LOAD  ( boot.z80 )
 393 LOAD  ( xcomp core low )

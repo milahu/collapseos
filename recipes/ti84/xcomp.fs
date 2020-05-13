@@ -8,14 +8,7 @@ RAMSTART 0x72 + CONSTANT KBD_MEM
 : ZFILL, ( u ) 0 DO 0 A, LOOP ;
 262 LOAD  ( xcomp )
 522 LOAD  ( font compiler )
-: CODE XCODE ;
-: ['] X['] ; IMMEDIATE
-: COMPILE XCOMPILE ; IMMEDIATE
-: [COMPILE] X[COMPILE] ; IMMEDIATE
-: IMMEDIATE XIMM ;
-: (entry) (xentry) ;
-: CREATE XCREATE ; ( for KBD tbls )
-: : [ ' X: , ] ;
+270 LOAD  ( xcomp overrides )
 
 ( TI-84+ requires specific code at specific offsets which
   come in conflict with Collapse OS' stable ABI. We thus

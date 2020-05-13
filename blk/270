@@ -1,0 +1,11 @@
+: CODE XCODE ;
+: ['] X['] ; IMMEDIATE
+: COMPILE XCOMPILE ; IMMEDIATE
+: [COMPILE] X[COMPILE] ; IMMEDIATE
+: IMMEDIATE XIMM ;
+: (entry) (xentry) ;
+: CREATE XCREATE ;
+: : [ ' X: , ] ;
+
+CURRENT @ XCURRENT !
+

@@ -3,15 +3,7 @@
 RS_ADDR 0x80 - CONSTANT RAMSTART
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
-: CODE XCODE ;
-: ['] X['] ; IMMEDIATE
-: COMPILE XCOMPILE ; IMMEDIATE
-: [COMPILE] X[COMPILE] ; IMMEDIATE
-: IMMEDIATE XIMM ;
-: (entry) (xentry) ;
-: : [ ' X: , ] ;
-
-CURRENT @ XCURRENT !
+270 LOAD  ( xcomp overrides )
 
 0x3000 BIN( !
 282 LOAD  ( boot.z80 )
