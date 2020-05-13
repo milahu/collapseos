@@ -9,8 +9,8 @@ unusable directly. For the same reason, any reference to a word
 in the host system will obviously be wrong in the target
 system. More details in B260.
 
-These rules result in some practicals do's and dont's:
 
-1. No LEAVE in DO..LOOP
+
+
 
                                                         (cont.)

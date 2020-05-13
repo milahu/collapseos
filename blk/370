@@ -1,4 +1,3 @@
 SD Card driver
 
-Load the z80 part with "372 LOAD", the Forth part with
-"374 LOAD".
+Load range: 372-381

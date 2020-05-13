@@ -5,4 +5,4 @@
   variables are sent to PS at runtime )
 : DO COMPILE 2>R H@ ; IMMEDIATE
 : LOOP COMPILE (loop) H@ - , ; IMMEDIATE
-: LEAVE R> R> DROP I 1- >R >R ;
+( LEAVE is implemented in xcomp )

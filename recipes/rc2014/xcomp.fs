@@ -22,7 +22,7 @@ CURRENT @ XCURRENT !
 282 LOAD  ( boot.z80 )
 393 LOAD  ( icore low )
 352 LOAD  ( acia )
-372 LOAD  ( sdc.z80 )
+372 381 LOADR  ( sdc )
 415 LOAD  ( icore high )
 (entry) _
 ( Update LATEST )

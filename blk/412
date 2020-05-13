@@ -13,3 +13,4 @@
 
 : ALLOT HERE +! ;
 : CREATE (entry) 11 ( 11 == cellWord ) C, ;
+: LEAVE R> R> DROP I 1- >R >R ;

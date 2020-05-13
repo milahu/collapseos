@@ -72,10 +72,9 @@ instead.
 ## Building your stage 3
 
 Using the same technique as you used in the `eeprom` recipe, you can append
-required words to your boot binary. Required units `blk` (B464) and the SD Card
-driver (B370). You only need the Forth part. You of course actually need
-Z80 SDC words but to save you the troubles of rebuilding from stage 1 for this
-recipe, we took the liberty of already having included it in the base recipe.
+required words to your boot binary. There's only one required unit: `blk` from
+core words (B453). The SD card driver was already included in the base recipe
+to save you the troubles of rebuilding from stage 1 for this recipe.
 
 ## Testing in the emulator
 
