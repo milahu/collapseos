@@ -1,11 +1,13 @@
+: '? WORD (find) ;
+: '
+    '? (?br) [ 4 , ] EXIT
+    LIT< (wnf) (find) DROP EXECUTE
+;
 : ROLL
     DUP NOT IF EXIT THEN
     1+ DUP PICK          ( n val )
     SWAP 2 * (roll)      ( val )
     SWAP DROP
 ;
-
 : 2OVER 3 PICK 3 PICK ;
 : 2SWAP 3 ROLL 3 ROLL ;
-
-
