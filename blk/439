@@ -1,12 +1,14 @@
-Core words
+XPACKed core
 
-These words follow cross-compiled words, but unlike them, these
-are self-bootstrapping and don't depend on the Cross Compiler.
-They will typically be included in source form right after a
-stage1 binary which will interpret it on boot and bootstrap
-itself to a full intepreter, which can then be relinked with
-the Relinker. There is no loader for these libraries because
-you will typically XPACK (B267) them.
+Most of Collapse OS' core words are cross compiled (B390).
+However, some of them are too dynamically referenced to be
+cross-compiled without great pain, so we XPACK (B267) them,
+that is, we put them in source form in the target's
+initialization section (see B89).
 
-440 core                       447 readln                   
-453 blk
+These words will be compiled into RAM at initialization, which
+is a bit wasteful both in RAM and in boot time, so we will
+typically relink (B120) that newly compiled binary and append
+it to our existing binary for optimal resource usage.
+
+Load range: 440-446
