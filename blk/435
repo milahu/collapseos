@@ -1,13 +1,8 @@
-: WORD(
-    DUP 1- C@   ( name len field )
-    127 AND     ( 0x7f. remove IMMEDIATE flag )
-    3 +         ( fixed header len )
-    -
-;
-: FORGET
-    ' DUP               ( w w )
-    ( HERE must be at the end of prev's word, that is, at the
-      beginning of w. )
-    WORD( HERE !  ( w )
-    PREV CURRENT !
-;
+: VARIABLE CREATE 2 ALLOT ;
+: CONSTANT CREATE , DOES> @ ;
+
+( In addition to pushing H@ this compiles 2>R so that loop
+  variables are sent to PS at runtime )
+: DO COMPILE 2>R H@ ; IMMEDIATE
+: LOOP COMPILE (loop) H@ - , ; IMMEDIATE
+: LEAVE R> R> DROP I 1- >R >R ;

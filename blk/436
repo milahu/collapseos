@@ -1,10 +1,11 @@
-( Drop RSP until I-2 == INTERPRET. )
-: EXIT!
-    ['] INTERPRET       ( I )
-    BEGIN               ( I )
-    DUP                 ( I I )
-    R> DROP I 2- @     ( I I a )
-    = UNTIL
-    DROP
+: ROLL
+    DUP NOT IF EXIT THEN
+    1+ DUP PICK          ( n val )
+    SWAP 2 * (roll)      ( val )
+    SWAP DROP
 ;
+
+: 2OVER 3 PICK 3 PICK ;
+: 2SWAP 3 ROLL 3 ROLL ;
+
 

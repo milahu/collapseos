@@ -8,6 +8,5 @@ itself to a full intepreter, which can then be relinked with
 the Relinker. There is no loader for these libraries because
 you will typically XPACK (B267) them.
 
-422 core                       440 print
-442 fmt                        447 readln
-453 blk
+430 core                       442 fmt
+447 readln                     453 blk

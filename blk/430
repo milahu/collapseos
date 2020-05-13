@@ -1,14 +1,15 @@
-: DOES>
-    ( Overwrite cellWord in CURRENT )
-    ( 43 == doesWord )
-    43 CURRENT @ C!
-    ( When we have a DOES>, we forcefully place HERE to 4
-      bytes after CURRENT. This allows a DOES word to use ","
-      and "C," without messing everything up. )
-    CURRENT @ 3 + HERE !
-    ( HERE points to where we should write R> )
-    R> ,
-    ( We're done. Because we've popped RS, we'll exit parent
-      definition )
+: [ INTERPRET ; IMMEDIATE
+: ] R> DROP ;
+: LIT< WORD 34 , SCPY 0 C, ; IMMEDIATE
+: LITA 36 , , ;
+: '? WORD (find) ;
+: '
+    '? (?br) [ 4 , ] EXIT
+    LIT< (wnf) (find) DROP EXECUTE
 ;
-
+: ['] ' LITA ; IMMEDIATE
+: COMPILE ' LITA ['] , , ; IMMEDIATE
+: [COMPILE] ' , ; IMMEDIATE
+: BEGIN H@ ; IMMEDIATE
+: AGAIN COMPILE (br) H@ - , ; IMMEDIATE
+: UNTIL COMPILE (?br) H@ - , ; IMMEDIATE

@@ -1,11 +1,12 @@
-: ROLL
-    DUP NOT IF EXIT THEN
-    1+ DUP PICK          ( n val )
-    SWAP 2 * (roll)      ( val )
-    SWAP DROP
-;
+: ELSE              ( a1 -- a2 | a1: IF cell a2: ELSE cell )
+    COMPILE (br)
+    2 ALLOT
+    DUP H@ -^ SWAP  ( a-H a )
+    !
+    H@ 2-          ( push a. -2 for allot offset )
+; IMMEDIATE
 
-: 2OVER 3 PICK 3 PICK ;
-: 2SWAP 3 ROLL 3 ROLL ;
-
-
+: [IF]
+    IF EXIT THEN
+    LIT< [THEN] BEGIN DUP WORD S= UNTIL DROP ;
+: [THEN] ;

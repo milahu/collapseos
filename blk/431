@@ -1,8 +1,13 @@
-: VARIABLE CREATE 2 ALLOT ;
-: CONSTANT CREATE , DOES> @ ;
+: _ BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
+40 CURRENT @ 4 - C!
+( Hello, hello, krkrkrkr... do you hear me?
+  Ah, voice at last! Some lines above need comments
+  BTW: Forth lines limited to 64 cols because of default
+  input buffer size in Collapse OS
 
-( In addition to pushing H@ this compiles 2>R so that loop
-  variables are sent to PS at runtime )
-: DO COMPILE 2>R H@ ; IMMEDIATE
-: LOOP COMPILE (loop) H@ - , ; IMMEDIATE
-: LEAVE R> R> DROP I 1- >R >R ;
+  40 is ASCII for '('. We do this to simplify XPACK's task of
+  not mistakenly consider '(' definition as a comment.
+  LIT<: 34 == litWord
+  LITA: 36 == addrWord
+  COMPILE: Tough one. Get addr of caller word (example above
+  (br)) and then call LITA on it. )
