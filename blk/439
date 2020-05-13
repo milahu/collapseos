@@ -1,12 +1,12 @@
-( Drop RSP until I-2 == INTERPRET. )
-: EXIT!
-    ['] INTERPRET       ( I )
-    BEGIN               ( I )
-    DUP                 ( I I )
-    R> DROP I 2- @     ( I I a )
-    = UNTIL
-    DROP
-;
-: (ok) SPC ." ok" NL ;
-: (uflw) ABORT" stack underflow" ;
-: (wnf) (print) SPC ABORT" word not found" ;
+Core words
+
+These words follow cross-compiled words, but unlike them, these
+are self-bootstrapping and don't depend on the Cross Compiler.
+They will typically be included in source form right after a
+stage1 binary which will interpret it on boot and bootstrap
+itself to a full intepreter, which can then be relinked with
+the Relinker. There is no loader for these libraries because
+you will typically XPACK (B267) them.
+
+440 core                       447 readln                   
+453 blk

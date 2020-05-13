@@ -27,7 +27,7 @@ CURRENT @ XCURRENT !
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-430 452 XPACKR ( core fmt readln )
+440 452 XPACKR ( core )
 123 132 XPACKR ( linker )
 ," : _ ACIA$ RDLN$ (ok) ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!
