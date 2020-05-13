@@ -46,7 +46,7 @@ Addressed devices are at B140. To know what you have to paste, open the loader
 block (B142) and see what blocks it loads. For each of the blocks, copy/paste
 the code in your interpreter.
 
-Do the same thing with the AT28 driver (B480)
+Do the same thing with the AT28 driver (B590)
 
 If you're doing the real thing and not using the emulator, pasting so much code
 at once might freeze up the RC2014, so it is recommended that you use

@@ -1,0 +1,7 @@
+RC2014 Recipe
+
+Support code for the RC2014 recipe. Contains drivers for the
+ACIA, SD card and AT28 EEPROM.
+
+581 ACIA                       590 AT28 EEPROM
+600 SD card

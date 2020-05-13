@@ -13,4 +13,4 @@ ACIA_MEM: Address in memory that can be used variables shared
           with ACIA's native words. 8 bytes used.
 
 The whole driver is cross-compilable and is loaded with
-"352 LOAD"
+"582 LOAD"

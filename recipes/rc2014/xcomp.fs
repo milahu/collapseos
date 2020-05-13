@@ -13,7 +13,7 @@ RAMSTART 0x70 + CONSTANT ACIA_MEM
 
 282 LOAD  ( boot.z80 )
 393 LOAD  ( xcomp core low )
-352 LOAD  ( acia )
+582 LOAD  ( acia )
 420 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )

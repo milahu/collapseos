@@ -72,13 +72,13 @@ instead.
 
 Your Collapse OS binary needs the SDC drivers which need to be inserted during
 Cross Compilation, which needs you need to recompile it from stage 1. First,
-look at B370. You'll see that it indicates a block range for the driver. That
+look at B600. You'll see that it indicates a block range for the driver. That
 needs to be loaded.
 
 Open xcomp.fs from base recipe and locate acia loading. You'll insert a line
 right after that that will look like:
 
-    372 387 LOADR  ( sdc )
+    602 616 LOADR  ( sdc )
 
 Normally, that's all you need to do. However, you have a little problem: You're
 busting the 8K ROM limit. But it's ok, you can remove the linker's XPACKing
