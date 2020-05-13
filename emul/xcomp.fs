@@ -13,10 +13,10 @@
 CURRENT @ XCURRENT !
 
 282 LOAD  ( boot.z80 )
-393 LOAD  ( icore low )
+393 LOAD  ( xcomp core low )
 : (emit) 0 PC! ;
 : (key) 0 PC@ ;
-415 LOAD  ( icore high )
+420 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

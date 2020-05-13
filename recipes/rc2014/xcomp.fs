@@ -20,10 +20,10 @@ RAMSTART 0x70 + CONSTANT ACIA_MEM
 CURRENT @ XCURRENT !
 
 282 LOAD  ( boot.z80 )
-393 LOAD  ( icore low )
+393 LOAD  ( xcomp core low )
 352 LOAD  ( acia )
 372 381 LOADR  ( sdc )
-415 LOAD  ( icore high )
+420 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
