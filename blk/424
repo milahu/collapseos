@@ -1,16 +1,16 @@
-XCURRENT @ ( to PSP )
-: :
-    (entry)
-    ( We cannot use LITN as IMMEDIATE because of bootstrapping
-      issues. Same thing for ",".
-      32 == NUMBER 14 == compiledWord )
-    [ 32 H@ ! 2 ALLOT 14 H@ ! 2 ALLOT ] C,
-    BEGIN
-        WORD
-        (find)
-        ( is word )
-        IF DUP IMMED? IF EXECUTE ELSE , THEN
-        ( maybe number )
-        ELSE (parse) LITN THEN
-    AGAIN ;
-( from PSP ) ';' SWAP 4 - C!
+: ? @ . ;
+: _
+    DUP 9 > IF 10 - 'a' +
+    ELSE '0' + THEN
+;
+( For hex display, there are no negatives )
+: .x
+    256 MOD     ( ensure < 0x100 )
+    16 /MOD     ( l h )
+    _ EMIT      ( l )
+    _ EMIT
+;
+: .X
+    256 /MOD    ( l h )
+    .x .x
+;

@@ -1,14 +1,16 @@
-( LITN has to be defined after the last immediate usage of
-  it to avoid bootstrapping issues )
-: LITN 32 , , ( 32 == NUMBER ) ;
-
-: IMMED? 1- C@ 0x80 AND ;
-
-( ';' can't have its name right away because, when created, it
-  is not an IMMEDIATE yet and will not be treated properly by
-  xcomp. )
 : _
-    ['] EXIT ,
-    R> DROP     ( exit : )
-; IMMEDIATE
-
+    999 SWAP        ( stop indicator )
+    DUP 0 = IF '0' EXIT THEN    ( 0 is a special case )
+    BEGIN
+        DUP 0 = IF DROP EXIT THEN
+        10 /MOD         ( r q )
+        SWAP '0' + SWAP ( d q )
+    AGAIN ;
+: . ( n -- )
+    ( handle negative )
+    DUP 0< IF '-' EMIT -1 * THEN
+    _
+    BEGIN
+        DUP '9' > IF DROP EXIT THEN  ( stop indicator )
+        EMIT
+    AGAIN ;
