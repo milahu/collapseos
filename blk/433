@@ -1,11 +1,11 @@
 : LOAD
     BLK> @ >R ( save restorable variables to RSP )
-    0x08 RAM+ @ >R
+    0x08 RAM+ @ >R  ( 08 == C<* override )
     0x06 RAM+ @ >R  ( C<? )
     0x2e RAM+ @ >R  ( boot ptr )
     BLK@
     BLK( 0x2e RAM+ ! ( Point to beginning of BLK )
-    ['] _ 0x08 RAM+ ! ( 08 == C<* override )
+    [ LITN ( from PSP, B432 ) ]  0x08 RAM+ ! 
     1 0x06 RAM+ !  ( 06 == C<? )
     INTERPRET
     R> 0x2e RAM+ ! R> 0x06 RAM+ !

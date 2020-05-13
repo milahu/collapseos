@@ -19,7 +19,6 @@ design.
 ## Gathering parts
 
 * A RC2014 Classic
-* `stage2.bin` from the base recipe
 * A MicroSD breakout board. I use Adafruit's.
 * A proto board + header pins with 39 positions so we can make a RC2014 card.
 * Diodes, resistors and stuff
@@ -69,12 +68,30 @@ matter. However, it *does* matter for the `SELECT` line, so I don't follow my
 own schematic with regards to the `M1` and `A2` lines and use two inverters
 instead.
 
-## Building your stage 3
+## Building your binary
 
-Using the same technique as you used in the `eeprom` recipe, you can append
-required words to your boot binary. There's only one required unit: `blk` from
-core words (B453). The SD card driver was already included in the base recipe
-to save you the troubles of rebuilding from stage 1 for this recipe.
+Your Collapse OS binary needs the SDC drivers which need to be inserted during
+Cross Compilation, which needs you need to recompile it from stage 1. First,
+look at B370. You'll see that it indicates a block range for the driver. That
+needs to be loaded.
+
+Open xcomp.fs from base recipe and locate acia loading. You'll insert a line
+right after that that will look like:
+
+    372 387 LOADR  ( sdc )
+
+Normally, that's all you need to do. However, you have a little problem: You're
+busting the 8K ROM limit. But it's ok, you can remove the linker's XPACKing
+line: because you'll have access to the blkfs from SD card, you can load it
+from there!
+
+Removing the linker from XPACKing will free enough space for your binary to fit
+in 8K. You also have to add `BLK$` to initialization routine.
+
+Build it and write it to EEPROM.
+
+If you want, once you're all set with the SD card, you can relink core words
+like you did in the base recipe for optimal resource usage.
 
 ## Testing in the emulator
 

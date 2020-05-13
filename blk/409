@@ -4,6 +4,13 @@
     (find)
     NOT IF (parse) ELSE EXECUTE THEN
     C<? NOT IF LIT< (ok) (find) IF EXECUTE THEN THEN
-    AGAIN
-;
-
+    AGAIN ;
+XCURRENT @ _xapply ( to PSP )
+( Drop RSP until I-2 == INTERPRET. )
+: EXIT!
+    [ LITN ]            ( I, from PSP )
+    BEGIN               ( I )
+    DUP                 ( I I )
+    R> DROP I 2- @      ( I I a )
+    = UNTIL
+    DROP ;

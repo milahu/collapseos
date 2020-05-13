@@ -1,16 +1,16 @@
-XCURRENT @ ( to PSP )
-: :
-    (entry)
-    ( We cannot use LITN as IMMEDIATE because of bootstrapping
-      issues. Same thing for ",".
-      32 == NUMBER 14 == compiledWord )
-    [ 32 H@ ! 2 ALLOT 14 H@ ! 2 ALLOT ] C,
-    BEGIN
-        WORD
-        (find)
-        ( is word )
-        IF DUP IMMED? IF EXECUTE ELSE , THEN
-        ( maybe number )
-        ELSE (parse) LITN THEN
-    AGAIN ;
-( from PSP ) ';' SWAP 4 - C!
+: _
+    (boot<)
+    DUP 4 = IF
+        ( We drop our char, but also "a" from WORD: it won't
+          have the opportunity to balance PSP because we're
+          EXIT!ing. )
+        2DROP
+        ( We're finished interpreting )
+        EXIT!
+    THEN
+;
+XCURRENT @ _xapply ( to PSP, for LOAD )
+( pre-comment for tight LOAD: The 0x08==I check after INTERPRET
+  is to check whether we're restoring to "_", the word above.
+  if yes, then we're in a nested load. Also, the 1 in 0x06 is
+  to avoid tons of "ok" displays. )

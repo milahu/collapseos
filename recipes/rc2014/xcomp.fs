@@ -22,12 +22,11 @@ CURRENT @ XCURRENT !
 282 LOAD  ( boot.z80 )
 393 LOAD  ( xcomp core low )
 352 LOAD  ( acia )
-372 381 LOADR  ( sdc )
 420 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-440 452 XPACKR ( core )
+440 446 XPACKR ( core )
 123 132 XPACKR ( linker )
 ," : _ ACIA$ RDLN$ (ok) ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!
