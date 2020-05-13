@@ -20,9 +20,9 @@
     RDLN$
     LIT< _sys [entry]
     ." Collapse OS" NL
-    INTERPRET
 ;
 
 (entry) _
-H@ 256 /MOD 2 PC! 2 PC!
 H@ 0x08 BIN+ ! ( update LATEST )
+ ," INIT "
+H@ 256 /MOD 2 PC! 2 PC!

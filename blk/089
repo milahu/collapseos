@@ -1,16 +1,16 @@
 Initialization sequence
 
-On boot, we jump to the "main" routine in boot.fs which does
+On boot, we jump to the "main" routine in B289 which does
 very few things.
 
-1. Set SP to 0x10000-6
+1. Set SP to PS_ADDR and IX to RS_ADDR
 2. Sets HERE to RAMEND (RAMSTART+0x80).
 3. Sets CURRENT to value of LATEST field in stable ABI.
 4. Look for the word "BOOT" and calls it.
 
-In a normal system, BOOT is in icore and does a few things:
+In a normal system, BOOT is in xcomp core (B411) and does a
+few things:
 
-1. Find "(c<)" a set CINPTR to it (what C< calls).
-2. Initialize all overrides to 0.
-3. Write LATEST in BOOT C< PTR ( see below )
-4. Find "INIT". If found, execute. Otherwise, "INTERPRET"(cont)
+1. Initialize all overrides to 0.
+2. Write LATEST in BOOT C< PTR ( see below )
+3. Set "C<*", the word that C< calls to (boot<).        (cont.)

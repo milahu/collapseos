@@ -1,16 +1,15 @@
-On a bare system (only boot+icore), this sequence will result
-in (c<) reading characters from memory starting from CURRENT
-(this is why we put CURRENT in BOOT C< PTR, it tracks current
-pos ).
+4. Call INTERPRET
 
-This means that you can put initialization code in source form
-right into your binary, right after your last compiled dict
-entry and it's going to be executed as such until you set a new
-(c<).
+In other words, BOOT interprets bytes directly following
+CURRENT as Forth source code. This code will typically
+initialize all subsystems and then call RDLN$. As soon as
+this is called, INTERPRET will begin reading from RDLN< which
+reads from KEY.
 
-Note that there is no EMIT in a bare system. You have to take
-care of supplying one before your load core.fs and its higher
-levels.
-
-
-                                                        (cont.)
+In the "/emul" binaries, "HERE" is readjusted to "CURRENT @" so
+that we don't have to relocate compiled dicts. Note that in
+this context, the initialization code is fighting for space
+with HERE: New entries to the dict will overwrite that code!
+Also, because we're barebone, we can't have comments. This can
+lead to peculiar code in this area where we try to "waste"
+space in initialization code.

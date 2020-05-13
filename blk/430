@@ -6,7 +6,7 @@
       the last typed 0x0a and one for the following NULL. )
     IN) IN> - 2+ ALLOT
     (infl)
-    LIT< RDLN< (find) DROP 0x0c RAM+ !
+    ['] RDLN< 0x0c RAM+ !
     1 0x06 RAM+ !  ( 06 == C<? )
 ;
 
