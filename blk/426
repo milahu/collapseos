@@ -1,14 +1,12 @@
-( LITN has to be defined after the last immediate usage of
-  it to avoid bootstrapping issues )
-: LITN 32 , , ( 32 == NUMBER ) ;
+: RDLNMEM+ 0x57 RAM+ @ + ;
+( current position in INBUF )
+: IN> 0 RDLNMEM+ ;
+( points to INBUF )
+: IN( 2 RDLNMEM+ ;
+( points to INBUF's end )
+: IN) 0x40 ( buffer size ) 2+ RDLNMEM+ ;
 
-: IMMED? 1- C@ 0x80 AND ;
-
-( ';' can't have its name right away because, when created, it
-  is not an IMMEDIATE yet and will not be treated properly by
-  xcomp. )
-: _
-    ['] EXIT ,
-    R> DROP     ( exit : )
-; IMMEDIATE
+( flush input buffer )
+( set IN> to IN( and set IN> @ to null )
+: (infl) 0 IN( DUP IN> ! ! ;
 
