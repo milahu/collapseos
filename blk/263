@@ -9,6 +9,7 @@ VARIABLE XCURRENT
 : XIMM XCON IMMEDIATE XCOFF ;
 : _xapply ( a -- a-off )
     DUP ORG @ > IF ORG @ - BIN( @ + THEN ;
+: X['] XCON ' _xapply LITA XCOFF ;
 : XCOMPILE
     XCON ' _xapply LITA
     LIT< , (find) DROP _xapply , XCOFF ;

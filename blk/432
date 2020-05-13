@@ -9,7 +9,6 @@
         EXIT!
     THEN
 ;
-XCURRENT @ _xapply ( to PSP, for LOAD )
 ( pre-comment for tight LOAD: The 0x08==I check after INTERPRET
   is to check whether we're restoring to "_", the word above.
   if yes, then we're in a nested load. Also, the 1 in 0x06 is

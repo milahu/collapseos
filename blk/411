@@ -6,7 +6,7 @@
     0 0x55 RAM+ !  ( 55 == (key) override )
     0 0x0a RAM+ !  ( NLPTR )
     ( 0c == C<* )
-    LIT< (boot<) (find) DROP 0x0c RAM+ !
+    ['] (boot<) 0x0c RAM+ !
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ !
     LIT< INIT (find)
