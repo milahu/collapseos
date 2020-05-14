@@ -14,6 +14,8 @@ typedef struct {
     ushort ramstart;
     // The minimum value reached by SP at any point during execution.
     ushort minsp;
+    // same principle for IX
+    ushort maxix;
     // Array of 0x100 function pointers to IO read and write routines. Leave to
     // NULL when IO port is unhandled.
     IORD iord[0x100];

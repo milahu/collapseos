@@ -20,11 +20,6 @@ trouble of compiling defs to binary.
 
 */
 
-// When DEBUG is set, stage1 is a core-less forth that works interactively.
-// Useful for... debugging!
-// By the way: there's a double-echo in stagedbg. It's normal. Don't panic.
-
-//#define DEBUG
 #define RAMSTART 0
 #define STDIO_PORT 0x00
 // To know which part of RAM to dump, we listen to port 2, which at the end of
@@ -56,10 +51,6 @@ static uint8_t iord_stdio()
 static void iowr_stdio(uint8_t val)
 {
     // we don't output stdout in stage0
-#ifdef DEBUG
-    // ... unless we're in DEBUG mode!
-    putchar(val);
-#endif
 }
 
 static void iowr_here(uint8_t val)
@@ -101,12 +92,11 @@ int main(int argc, char *argv[])
 
     while (running && emul_step());
 
-#ifndef DEBUG
     // We're done, now let's spit dict data
     for (int i=start_here; i<end_here; i++) {
         putchar(m->mem[i]);
     }
-#endif
+    emul_printdebug();
     return 0;
 }
 

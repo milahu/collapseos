@@ -53,6 +53,7 @@ Machine* emul_init()
     memset(m.mem, 0, 0x10000);
     m.ramstart = 0;
     m.minsp = 0xffff;
+    m.maxix = 0;
     for (int i=0; i<0x100; i++) {
         m.iord[i] = NULL;
         m.iowr[i] = NULL;
@@ -73,6 +74,9 @@ bool emul_step()
         ushort newsp = m.cpu.R1.wr.SP;
         if (newsp != 0 && newsp < m.minsp) {
             m.minsp = newsp;
+        }
+        if (m.cpu.R1.wr.IX > m.maxix) {
+            m.maxix = m.cpu.R1.wr.IX;
         }
         return true;
     } else {
@@ -116,4 +120,5 @@ void emul_memdump()
 void emul_printdebug()
 {
     fprintf(stderr, "Min SP: %04x\n", m.minsp);
+    fprintf(stderr, "Max IX: %04x\n", m.maxix);
 }
