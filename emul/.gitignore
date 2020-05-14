@@ -1,7 +1,4 @@
-/stage1
-/stage1dbg
-/stage2
+/stage
 /forth
 /*-bin.h
-/stage0.bin
 /blkfs

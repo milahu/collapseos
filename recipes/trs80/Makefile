@@ -1,8 +1,8 @@
 TARGET = stage1.bin
 EDIR = ../../emul
-STAGE2 = $(EDIR)/stage2
+STAGE = $(EDIR)/stage
 
 .PHONY: all
 all: $(TARGET) 
-$(TARGET): xcomp.fs $(STAGE2)
-	cat xcomp.fs | $(STAGE2) > $@
+$(TARGET): xcomp.fs $(STAGE)
+	cat xcomp.fs | $(STAGE) > $@

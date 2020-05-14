@@ -1,4 +1,4 @@
-TARGETS = forth stage2
+TARGETS = forth stage
 OBJS = emul.o libz80/libz80.o
 BIN2C = ../tools/bin2c
 BLKPACK = ../tools/blkpack
@@ -18,7 +18,7 @@ $(BLKUNPACK): $(BLKPACK)
 forth-bin.h: $(BIN2C)
 	$(BIN2C) KERNEL < forth.bin > $@
 
-stage2: stage.c $(OBJS) forth-bin.h blkfs-bin.h
+stage: stage.c $(OBJS) forth-bin.h blkfs-bin.h
 	$(CC) stage.c $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
@@ -39,8 +39,8 @@ emul.o: emul.c
 
 
 .PHONY: updatebootstrap
-updatebootstrap: stage2 xcomp.fs
-	./stage2 < xcomp.fs > forth.bin
+updatebootstrap: stage xcomp.fs
+	./stage < xcomp.fs > forth.bin
 
 .PHONY: pack
 pack:
