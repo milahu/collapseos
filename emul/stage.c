@@ -2,12 +2,8 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "emul.h"
-#ifdef STAGE2
 #include "forth-bin.h"
 #include "blkfs-bin.h"
-#else
-#include "stage0-bin.h"
-#endif
 
 /* Staging binaries
 
@@ -74,7 +70,6 @@ static void iowr_here(uint8_t val)
     end_here |= val;
 }
 
-#ifdef STAGE2
 static void iowr_blk(uint8_t val)
 {
     blkid <<= 8;
@@ -86,7 +81,6 @@ static uint8_t iord_blkdata()
 {
     return BLKFS[blkpos++];
 }
-#endif
 
 int main(int argc, char *argv[])
 {
@@ -95,10 +89,8 @@ int main(int argc, char *argv[])
     m->iord[STDIO_PORT] = iord_stdio;
     m->iowr[STDIO_PORT] = iowr_stdio;
     m->iowr[HERE_PORT] = iowr_here;
-#ifdef STAGE2
     m->iowr[BLK_PORT] = iowr_blk;
     m->iord[BLKDATA_PORT] = iord_blkdata;
-#endif
     // initialize memory
     for (int i=0; i<sizeof(KERNEL); i++) {
         m->mem[i] = KERNEL[i];
