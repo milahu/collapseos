@@ -5,7 +5,7 @@ RAMSTART  FUTURE USES          +3c       BLK(*
 +08       C<* override         +53       (emit) override
 +0a       NLPTR                +55       (key) override
 +0c       C<*                  +57       FUTURE USES
-+0e       WORDBUF              +5b       z80a's variables
++0e       WORDBUF              
 +2e       BOOT C< PTR          +5d       adev's variables
 +30       IN>                  +5f       FUTURE USES
 +32       IN(*                 +70       DRIVERS
