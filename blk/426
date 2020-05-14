@@ -1,10 +1,9 @@
-: RDLNMEM+ 0x57 RAM+ @ + ;
 ( current position in INBUF )
-: IN> 0 RDLNMEM+ ;
+: IN> 0x30 RAM+ ;
 ( points to INBUF )
-: IN( 2 RDLNMEM+ ;
+: IN( 0x32 RAM+ @ ;
 ( points to INBUF's end )
-: IN) 0x40 ( buffer size ) 2+ RDLNMEM+ ;
+: IN) 0x40 ( buffer size ) IN( + ;
 
 ( flush input buffer )
 ( set IN> to IN( and set IN> @ to null )
