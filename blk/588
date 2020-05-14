@@ -9,8 +9,5 @@
   CR4:2 (101) - 8 bits + 1 stop bit
   CR1:0 (10) - Counter divide: 64 )
     0b10010110 [ ACIA_CTL LITN ] PC!
-( setup interrupt )
-    0xc3 0x4e RAM+ C!  ( c3==JP, 4e==INTJUMP )
-    ~ACIA 0x4f RAM+ !
     (im1) ;
 

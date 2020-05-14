@@ -1,4 +1,4 @@
-CREATE ~ACIA
+(entry) ~ACIA ( Set RST 38 jump ) PC ORG @ 0x39 + !
     AF PUSHqq,
     HL PUSHqq,
     DE PUSHqq,
