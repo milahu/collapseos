@@ -7,3 +7,4 @@
 ; IMMEDIATE
 ';' XCURRENT @ 4 - C!
 ':' X' _ 4 - C! ( give : its name )
+'(' X' _ 4 - C!

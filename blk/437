@@ -3,7 +3,9 @@
 : LOOP COMPILE (loop) H@ - , ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
 : LITN 32 , , ( 32 == NUMBER ) ;
-: _ ( : will get its name at the very end )
+( gets its name at the very end. can't comment afterwards )
+: _ BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
+: _ ( : will get its name almost at the very end )
     (entry)
     [ 14 ( == compiledWord ) LITN ] C,
     BEGIN
