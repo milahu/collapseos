@@ -1,13 +1,15 @@
-: '? WORD (find) ;
-: '
-    '? (?br) [ 4 , ] EXIT
-    LIT< (wnf) (find) DROP EXECUTE
+: DOES>
+    ( Overwrite cellWord in CURRENT )
+    ( 43 == doesWord )
+    43 CURRENT @ C!
+    ( When we have a DOES>, we forcefully place HERE to 4
+      bytes after CURRENT. This allows a DOES word to use ","
+      and "C," without messing everything up. )
+    CURRENT @ 3 + HERE !
+    ( HERE points to where we should write R> )
+    R> ,
+    ( We're done. Because we've popped RS, we'll exit parent
+      definition )
 ;
-: ROLL
-    DUP NOT IF EXIT THEN
-    1+ DUP PICK          ( n val )
-    SWAP 2 * (roll)      ( val )
-    SWAP DROP
-;
-: 2OVER 3 PICK 3 PICK ;
-: 2SWAP 3 ROLL 3 ROLL ;
+: CONSTANT CREATE , DOES> @ ;
+
