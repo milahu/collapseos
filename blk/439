@@ -1,0 +1,10 @@
+( ';' can't have its name right away because, when created, it
+  is not an IMMEDIATE yet and will not be treated properly by
+  xcomp. )
+: _
+    ['] EXIT ,
+    R> DROP     ( exit : )
+; IMMEDIATE
+';' XCURRENT @ 4 - C!
+':' X' _ 4 - C! ( give : its name )
+'(' X' _ 4 - C!

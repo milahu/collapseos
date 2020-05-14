@@ -1,10 +1,14 @@
-( ';' can't have its name right away because, when created, it
-  is not an IMMEDIATE yet and will not be treated properly by
-  xcomp. )
-: _
-    ['] EXIT ,
-    R> DROP     ( exit : )
+: IF                ( -- a | a: br cell addr )
+    COMPILE (?br) H@ 2 ALLOT ( br cell allot )
 ; IMMEDIATE
-';' XCURRENT @ 4 - C!
-':' X' _ 4 - C! ( give : its name )
-'(' X' _ 4 - C!
+: THEN              ( a -- | a: br cell addr )
+    DUP H@ -^ SWAP ( a-H a ) !
+; IMMEDIATE
+: ELSE              ( a1 -- a2 | a1: IF cell a2: ELSE cell )
+    COMPILE (br)
+    2 ALLOT
+    DUP H@ -^ SWAP  ( a-H a )
+    !
+    H@ 2-          ( push a. -2 for allot offset )
+; IMMEDIATE
+
