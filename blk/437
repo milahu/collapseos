@@ -1,3 +1,7 @@
+( Now we have "as late as possible" stuff )
+: DO COMPILE 2>R H@ ; IMMEDIATE
+: LOOP COMPILE (loop) H@ - , ; IMMEDIATE
+( LEAVE is implemented in low xcomp )
 : LITN 32 , , ( 32 == NUMBER ) ;
 
 ( ';' can't have its name right away because, when created, it
@@ -7,4 +11,3 @@
     ['] EXIT ,
     R> DROP     ( exit : )
 ; IMMEDIATE
-
