@@ -38,7 +38,7 @@ screen as output and its builtin keyboard as input.
 
 ## Build the ROM
 
-Running `make` will result in `stage1.rom` being created.
+Running `make` will result in `os.rom` being created.
 
 ## Emulate
 
