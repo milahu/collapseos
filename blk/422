@@ -1,15 +1,7 @@
 : ,"
     BEGIN
-        C<
-        ( 34 is ASCII for " )
-        DUP 34 = IF DROP EXIT THEN C,
+        C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
     AGAIN ;
-
-: ."
-    34 , ( 34 == litWord ) ," 0 C,
-    COMPILE (print)
-; IMMEDIATE
+: LIT" 34 , ( litWord ) ," 0 C, ; IMMEDIATE
+: ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
 : ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
-: BS 8 EMIT ; : LF 10 EMIT ; : CR 13 EMIT ;
-: CRLF CR LF ; : SPC 32 EMIT ;
-: NL 0x0a RAM+ @ ( NLPTR ) DUP IF EXECUTE ELSE DROP CRLF THEN ;

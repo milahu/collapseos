@@ -1,3 +1,0 @@
-: (ok) SPC ." ok" NL ;
-: (uflw) ABORT" stack underflow" ;
-: (wnf) (print) SPC ABORT" word not found" ;

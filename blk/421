@@ -1,14 +1,16 @@
 : EMIT
     ( 0x53==(emit) override )
     0x53 RAM+ @ DUP IF EXECUTE ELSE DROP (emit) THEN ;
-
 : (print)
     BEGIN
         C@+      ( a+1 c )
         ( exit if null or 0xd )
         DUP 0xd = OVER NOT OR IF 2DROP EXIT THEN
         EMIT     ( a )
-    AGAIN
-;
-
-
+    AGAIN ;
+: BS 8 EMIT ; : LF 10 EMIT ; : CR 13 EMIT ;
+: CRLF CR LF ; : SPC 32 EMIT ;
+: NL 0x0a RAM+ @ ( NLPTR ) DUP IF EXECUTE ELSE DROP CRLF THEN ;
+: (ok) SPC LIT" ok" (print) NL ;
+: (uflw) LIT" stack underflow" (print) ABORT ;
+: (wnf) (print) SPC LIT" word not found" (print) ABORT ;
