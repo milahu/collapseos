@@ -2,3 +2,7 @@
 ( b1 b2 -- )
 : LOADR 1+ SWAP DO I DUP . NL LOAD LOOP ;
 : LOADR+ BLK> @ + SWAP BLK> @ + SWAP LOADR ;
+( Now we have "as late as possible" stuff )
+: DO COMPILE 2>R H@ ; IMMEDIATE
+: LOOP COMPILE (loop) H@ - , ; IMMEDIATE
+( LEAVE is implemented in low xcomp )

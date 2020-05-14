@@ -1,8 +1,0 @@
-: VARIABLE CREATE 2 ALLOT ;
-: CONSTANT CREATE , DOES> @ ;
-
-( In addition to pushing H@ this compiles 2>R so that loop
-  variables are sent to PS at runtime )
-: DO COMPILE 2>R H@ ; IMMEDIATE
-: LOOP COMPILE (loop) H@ - , ; IMMEDIATE
-( LEAVE is implemented in xcomp )

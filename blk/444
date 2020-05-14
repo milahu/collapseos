@@ -11,4 +11,5 @@
     ( We're done. Because we've popped RS, we'll exit parent
       definition )
 ;
+: CONSTANT CREATE , DOES> @ ;
 

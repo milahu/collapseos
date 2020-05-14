@@ -4,13 +4,13 @@
 : H@ HERE @ ;
 : IMMEDIATE
     CURRENT @ 1-
-    DUP C@ 128 OR SWAP C!
-;
+    DUP C@ 128 OR SWAP C! ;
+: IMMED? 1- C@ 0x80 AND ;
 : +! SWAP OVER @ + SWAP ! ;
 : -^ SWAP - ;
 : / /MOD SWAP DROP ;
 : MOD /MOD DROP ;
-
 : ALLOT HERE +! ;
 : CREATE (entry) 11 ( 11 == cellWord ) C, ;
+: VARIABLE CREATE 2 ALLOT ;
 : LEAVE R> R> DROP I 1- >R >R ;

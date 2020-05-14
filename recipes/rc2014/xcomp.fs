@@ -18,7 +18,7 @@ RAMSTART 0x70 + CONSTANT ACIA_MEM
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-440 445 XPACKR ( core )
+440 444 XPACKR ( core )
 123 132 XPACKR ( linker )
 ," : _ ACIA$ RDLN$ (ok) ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!
