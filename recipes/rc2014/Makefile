@@ -1,4 +1,4 @@
-TARGET = stage1.bin
+TARGET = os.bin
 BASEDIR = ../..
 FDIR = $(BASEDIR)/forth
 EDIR = $(BASEDIR)/emul

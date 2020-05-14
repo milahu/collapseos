@@ -70,35 +70,23 @@ instead.
 
 ## Building your binary
 
-Your Collapse OS binary needs the SDC drivers which need to be inserted during
-Cross Compilation, which needs you need to recompile it from stage 1. First,
-look at B600. You'll see that it indicates a block range for the driver. That
-needs to be loaded.
-
-Open xcomp.fs from base recipe and locate acia loading. You'll insert a line
-right after that that will look like:
+The binary built in the base recipe doesn't have SDC drivers. Using the same
+instructions as in the `eeprom` recipe, you'll need to insert those drivers.
+The SDC driver is at B600. It gives you a load range. This means that what
+you need to insert in `xcomp` will look like:
 
     602 616 LOADR  ( sdc )
 
-Normally, that's all you need to do. However, you have a little problem: You're
-busting the 8K ROM limit. But it's ok, you can remove the linker's XPACKing
-line: because you'll have access to the blkfs from SD card, you can load it
-from there!
-
-Removing the linker from XPACKing will free enough space for your binary to fit
-in 8K. You also have to add `BLK$` to initialization routine.
+You also need to add `BLK$` to the init sequence.
 
 Build it and write it to EEPROM.
-
-If you want, once you're all set with the SD card, you can relink core words
-like you did in the base recipe for optimal resource usage.
 
 ## Testing in the emulator
 
 The RC2014 emulator includes SDC emulation. You can attach a SD card image to
 it by invoking it with a second argument:
 
-    ../../../emul/hw/rc2014/classic stage3.bin ../../../emul/blkfs
+    ../../../emul/hw/rc2014/classic os.bin ../../../emul/blkfs
 
 You will then run with a SD card having the contents from `/blk`.
 

@@ -40,7 +40,7 @@ device I use in this recipe.
 ### Gathering parts
 
 * A "classic" RC2014 with Serial I/O
-* [Forth's stage 2 binary][stage2]
+* [Forth's stage binary][stage]
 * [romwrite][romwrite] and its specified dependencies
 * [GNU screen][screen]
 * A FTDI-to-TTL cable to connect to the Serial I/O module
@@ -50,24 +50,10 @@ device I use in this recipe.
 Modules used in this build are configured through the `conf.fs` file in this
 folder. There isn't much to configure, but it's there.
 
-### Build stage 1
+### Build the binary
 
-Self-bootstrapping is in Forth's DNA, which is really nice, but it makes
-cross-compiling a bit tricky. It's usually much easier to bootstrap a Forth
-from itself than trying to compile it from a foreign host.
-
-This makes us adopt a 2 stages strategy. A tiny core is built from a foreign
-host, and then we run that tiny core on the target machine and let it bootstrap
-itself, then write our full interpreter binary.
-
-We could have this recipe automate that 2 stage build process all automatically,
-but that would rob you of all your fun, right? Instead, we'll run that 2nd
-stage on the RC2014 itself!
-
-To build your stage 1, run `make` in this folder, this will yield `stage1.bin`.
-This will contain that tiny core and, appended to it, the Forth source code it
-needs to run to bootstrap itself. When it's finished bootstrapping, you will
-get a prompt to a full Forth interpreter.
+Building the binary is as simple as running `make`. This will yield `os.bin`
+which can then be written to EEPROM.
 
 ### Emulate
 
@@ -100,131 +86,9 @@ identify the tty bound to it (in my case, `/dev/ttyUSB0`). Then:
 
     screen /dev/ttyUSB0 115200
 
-Press the reset button on the RC2014 to have Forth begin its bootstrap process.
-Note that it has to build more than half of itself from source. It takes about
-30 seconds to complete.
-
-Once bootstrapping is done you should see the Collapse OS prompt. That's a full
-Forth interpreter. You can have fun right now.
-
-However, that long boot time is kinda annoying. Moreover, that bootstrap code
-being in source form takes precious space from our 8K ROM. That brings us to
-building stage 2.
-
-### Building stage 2
-
-You're about to learn a lot about this platform and its self-bootstrapping
-nature, but its a bumpy ride. Grab something. Why not a beer?
-
-Our stage 1 prompt is the result of Forth's inner core interpreting the source
-code of the Full Forth, which was appended to the binary inner core in ROM.
-This results in a compiled dictionary, in RAM, at address 0x8000+system RAM.
-
-Wouldn't it be great if we could save that compiled binary in ROM and save the
-system the trouble of recompiling itself on boot?
-
-Unfortunately, this compiled dictionary isn't usable as-is. Offsets compiled in
-there are compiled based on a 0x8000-or-so base offset. What we need is a
-0xa00-or-so base offset, that is, something suitable to be appended to the boot
-binary, in ROM, in binary form.
-
-Fortunately, inside the compiled source is the contents of the Linker (B120)
-which will allow us to relink our compiled dictionary so that in can be
-relocated in ROM, next to our boot binary. I won't go into relinking details.
-Look at the source.  For now, let's just use it:
-
-    RLCORE
-
-That command will take the dict from `' H@` up to `CURRENT`, copy it in free
-memory and then relocate it. It will print 3 addresses during its processing.
-
-The first address is the top copied address. The process didn't touch memory
-above this point. The second address is the wordref of the last copied entry.
-The 3rd is the bottom address of the copied dict. When that last address is
-printed, the processing is over (because we don't have a `>` prompt, we don't
-have any other indicator that the process is over).
-
-### Assembling the stage 2 binary
-
-At that point, we have a fully relocated binary in memory. Depending on our
-situations, the next steps differ.
-
-* If we're on a RC2014 that has writing capabilities to permanent storage,
-  we'll want to assemble that binary directly on the RC2014 and write it to
-  permanent storage.
-* If we're on a RC2014 that doesn't have those capabilities, we'll want to dump
-  memory on our modern environment using `/tools/memdump` and then assemble that
-  binary there.
-* If we're in the emulator, we'll want to dump our memory using `CTRL+E` and
-  then assemble our stage 2 binary from that dump.
-
-In these instructions, we assume an emulated environment. I'll use actual
-offsets of an actual assembling session, but these of course are only examples.
-It is very likely that these will not be the same offsets for you.
-
-So you've pressed `CTRL+E` and you have a `memdump` file. Open it with a hex
-editor (I like `hexedit`) to have a look around and to decide what we'll extract
-from that memdump. `RLCORE` already gave you important offsets (in my case,
-`9a3c`, `99f6` and `8d60`), but although the beginning of will always be the
-same (`8d60`), the end offset depends on the situation.
-
-If you look at data between `99f6` and `9a3c`, you'll see that this data is not
-100% dictionary entry material. Some of it is buffer data allocated at
-initialization. To locate the end of a word, look for `0042`, the address for
-`EXIT`. In my case, it's at `9a1a` and it's the end of the `INIT` word.
-
-Moreover, the `INIT` routine that is in there is not quite what we want,
-because it doesn't contain the `HERE` adjustment that we find in `pre.fs`.
-We'll want to exclude it from our binary, so let's go a bit further, at `99cf`,
-ending at `99de`.
-
-So, the end of our compiled dict is actually `99de`. Alright, let's extract it:
-
-    dd if=memdump bs=1 skip=36192 count=3198 > dict.bin
-
-`36192` is `8d60` and `3198` is `99de-8d60`. This needs to be prepended by the
-boot binary. We already have `stage1.bin`, but this binary contains bootstrap
-source code we don't need any more. To strip it, we'll need to `dd` it out to
-`LATEST`, in my case `098b`:
-
-    dd if=stage1.bin bs=1 count=2443 > s1pre.bin
-
-Now we can combine our binaries:
-
-    cat s1pre.bin dict.bin > stage2.bin
-
-Is it ready to run yet? no. There are 3 adjustments we need to manually make
-using our hex editor.
-
-1. We need to link `H@` to the hook word of the boot binary. In my case, it's
-   a matter of writing `02` at `08ec` and `00` at `08ed`, `H@`'s prev field.
-2. We need to end our binary with a hook word. It can have a zero-length name
-   and the prev field needs to properly point to the previous wordref. In my
-   case, that was `RLCORE` at offset `1559` for a `stage2.bin` size of `1568`,
-   which means that I appended `0F 00 00` at the end of the file.
-3. Finally, we need to adjust `LATEST` which is at offset `08`. This needs to
-   point to the last wordref of the file, which is equal to the length of
-   `stage2.bin` because we've just added a hook word. This means that we write
-   `6B` at offset `08` and `15` at offset `09`.
-
-Now are we ready yet? ALMOST! There's one last thing we need to do: add runtime
-source. In our case, because we have a compiled dict, the only source we need
-to include is initialization code. We've stripped it from our stage1 earlier,
-we need to re-add it.
-
-Look at `xcomp.fs`. You see that `," bla bla bla"` line? That's initialization
-code. Copy it to a file like `run.fs` (without the `,"`) and build your final
-binary:
-
-    cat stage2.bin run.fs > stage2r.bin
-
-That's it! our binary is ready to run!
-
-    ../../emul/hw/rc2014/classic stage2r.bin
-
-And there you have it, a stage2 binary that you've assembled yourself.
+Press the reset button on the RC2014 and the "ok" prompt should appear.
 
 [rc2014]: https://rc2014.co.uk
 [romwrite]: https://github.com/hsoft/romwrite
-[stage2]: ../../emul
+[stage]: ../../emul
 [screen]: https://www.gnu.org/software/screen/
