@@ -3,11 +3,11 @@
 : LOOP COMPILE (loop) H@ - , ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
 : LITN 32 , , ( 32 == NUMBER ) ;
-
-( ';' can't have its name right away because, when created, it
-  is not an IMMEDIATE yet and will not be treated properly by
-  xcomp. )
-: _
-    ['] EXIT ,
-    R> DROP     ( exit : )
-; IMMEDIATE
+: _ ( : will get its name at the very end )
+    (entry)
+    [ 14 ( == compiledWord ) LITN ] C,
+    BEGIN
+        WORD (find)
+        IF ( is word ) DUP IMMED? IF EXECUTE ELSE , THEN
+        ELSE ( maybe number ) (parse) LITN THEN
+    AGAIN ;
