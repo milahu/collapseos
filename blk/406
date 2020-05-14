@@ -1,5 +1,5 @@
 ( Read word from C<, copy to WORDBUF, null-terminate, and
-  return, make HL point to WORDBUF. )
+  return WORDBUF. )
 : WORD
     0x0e RAM+  ( 0e == WORDBUF )
     TOWORD     ( a c )
@@ -8,7 +8,7 @@
           always zero to pre-write our null-termination )
         OVER ! 1+            ( a+1 )
         C<                   ( a c )
-        DUP WS?
+        OVER 0x2d ( 2e-1 for NULL ) RAM+ = OVER WS? OR
     UNTIL
     ( a this point, PS is: a WS )
     ( null-termination is already written )
