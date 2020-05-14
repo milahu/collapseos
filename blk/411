@@ -9,6 +9,5 @@
     ['] (boot<) 0x0c RAM+ !
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ !
-    INTERPRET
-;
+    INTERPRET BYE ;
 

@@ -1,5 +1,7 @@
 WORD    -- a   Read one word from buffered input and push its
-               addr.
+               addr. Always null terminated. If ASCII EOT is
+               encountered, a will point to it (it is cons-
+               idered a word).
 There are also ascii const emitters:
 BS CR LF SPC CRLF
 NL is an indirect word (see B80) that aliases to CRLF by

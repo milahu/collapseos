@@ -17,7 +17,6 @@
 #define BLK_PORT 0x03
 #define BLKDATA_PORT 0x04
 
-static int running;
 static FILE *fp;
 static FILE *blkfp;
 static int retcode = 0;
@@ -27,18 +26,14 @@ static uint8_t iord_stdio()
 {
     int c = getc(fp);
     if (c == EOF) {
-        running = 0;
+        c = 4; // ASCII EOT
     }
     return (uint8_t)c;
 }
 
 static void iowr_stdio(uint8_t val)
 {
-    if (val == 0x04) { // CTRL+D
-        running = 0;
-    } else {
-        putchar(val);
-    }
+    putchar(val);
 }
 
 static void iowr_ret(uint8_t val)
@@ -123,9 +118,7 @@ int main(int argc, char *argv[])
     }
 
     // Run!
-    running = 1;
-
-    while (running && emul_step());
+    while (emul_step());
 
     if (tty) {
         printf("\nDone!\n");

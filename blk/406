@@ -1,16 +1,13 @@
 ( Read word from C<, copy to WORDBUF, null-terminate, and
   return WORDBUF. )
 : WORD
-    0x0e RAM+  ( 0e == WORDBUF )
-    TOWORD     ( a c )
+    0x0e RAM+ TOWORD ( a c )
+    DUP EOT? IF OVER ! EXIT THEN
     BEGIN
         ( We take advantage of the fact that char MSB is
           always zero to pre-write our null-termination )
-        OVER ! 1+            ( a+1 )
-        C<                   ( a c )
+        OVER ! 1+ C< ( a c )
         OVER 0x2d ( 2e-1 for NULL ) RAM+ = OVER WS? OR
-    UNTIL
-    ( a this point, PS is: a WS )
-    ( null-termination is already written )
-    2DROP
-    0x0e RAM+ ;
+    UNTIL ( a c )
+    SWAP DROP 0x0e RAM+ ( ws a )
+    SWAP EOT? IF 4 OVER ! THEN ;

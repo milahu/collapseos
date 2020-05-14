@@ -1,6 +1,6 @@
 : INTERPRET
     BEGIN
-    WORD
+    WORD DUP C@ EOT? IF DROP EXIT THEN
     (find)
     NOT IF (parse) ELSE EXECUTE THEN
     C<? NOT IF LIT< (ok) (find) IF EXECUTE THEN THEN

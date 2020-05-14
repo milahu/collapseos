@@ -1,8 +1,8 @@
 ( Read one line in input buffer and make IN> point to it )
 : (rdln)
-    (infl) BEGIN (rdlnc) NOT UNTIL
+    ( EOT or less triggers line flush )
+    (infl) BEGIN (rdlnc) 5 < UNTIL
     LF IN( IN> ! ;
-
 ( And finally, implement C<* )
 : RDLN<
     IN> @ C@

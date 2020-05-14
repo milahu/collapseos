@@ -1,3 +1,7 @@
 : WS? 33 < ;
+: EOT? 4 = ; ( 4 == ASCII EOT, CTRL+D )
 
-: TOWORD 0 ( dummy ) BEGIN DROP C< DUP WS? NOT UNTIL ;
+: TOWORD
+    0 ( dummy ) BEGIN
+        DROP C< DUP WS? NOT OVER EOT? OR
+    UNTIL ;
