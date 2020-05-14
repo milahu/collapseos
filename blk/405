@@ -1,9 +1,3 @@
 : WS? 33 < ;
 
-: TOWORD
-    BEGIN
-        C< DUP WS? NOT IF EXIT THEN DROP
-    AGAIN
-;
-
-
+: TOWORD 0 ( dummy ) BEGIN DROP C< DUP WS? NOT UNTIL ;
