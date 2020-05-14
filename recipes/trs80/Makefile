@@ -1,4 +1,4 @@
-TARGET = stage1.bin
+TARGET = os.bin
 EDIR = ../../emul
 STAGE = $(EDIR)/stage
 

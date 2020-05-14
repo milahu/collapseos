@@ -1,4 +1,4 @@
-: _err ABORT" FDerr" ;
+: _err LIT" FDerr" ERR ;
 : _cylsec ( sec -- cs, return sector/cylinder for given secid )
     ( 4 256b sectors per block, 10 sec per cyl, 40 cyl max )
     10 /MOD ( sec cyl )

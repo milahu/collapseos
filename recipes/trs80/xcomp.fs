@@ -7,14 +7,13 @@ RS_ADDR 0x80 - CONSTANT RAMSTART
 
 0x3000 BIN( !
 282 LOAD  ( boot.z80 )
-492 LOAD  ( trs80.z80 )
 393 LOAD  ( xcomp core low )
+492 LOAD  ( trs80 )
 420 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
-499 500 XPACKR ( trs80.fs )
 ( 0x0a == NLPTR. TRS-80 wants CR-only newlines )
 ," : _ ['] CR 0x0a RAM+ ! BLK$ FD$ (ok) RDLN$ ; _ "
 ORG @ 256 /MOD 2 PC! 2 PC!

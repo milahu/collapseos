@@ -67,10 +67,10 @@ kind of reception! You're gonna feel real badass about it too...
 
 * `_` is `CLEAR+ENTER`.
 
-## Building the stage 1
+## Building the binary
 
-You can start the process by building the stage 1 binary. Running `make` in
-this folder will yield a `stage1.bin` file. You'll need it later.
+You can build the binary to send to the TRS-80 with `make`, which will yield
+`os.bin`. You'll need it later.
 
 ## Testing serial communication
 
