@@ -1,13 +1,12 @@
-: BLKMEM+ 0x59 RAM+ @ + ;
 ( n -- Fetches block n and write it to BLK( )
-: BLK@* 0 BLKMEM+ ;
+: BLK@* 0x34 RAM+ ;
 ( n -- Write back BLK( to storage at block n )
-: BLK!* 2 BLKMEM+ ;
+: BLK!* 0x36 RAM+ ;
 ( Current blk pointer in ( )
-: BLK> 4 BLKMEM+ ;
+: BLK> 0x38 RAM+ ;
 ( Whether buffer is dirty )
-: BLKDTY 6 BLKMEM+ ;
-: BLK( 8 BLKMEM+ ;
+: BLKDTY 0x3a RAM+ ;
+: BLK( 0x3c RAM+ @ ;
 : BLK) BLK( 1024 + ;
 
 

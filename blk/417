@@ -1,7 +1,6 @@
 : BLK$
-    H@ 0x59 RAM+ !
-    ( 1024 for the block, 8 for variables )
-    1032 ALLOT
+    H@ 0x3c ( BLK(* ) RAM+ !
+    1024 ALLOT
     ( LOAD detects end of block with ASCII EOT. This is why
       we write it there. EOT == 0x04 )
     4 C,

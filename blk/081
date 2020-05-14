@@ -1,16 +1,16 @@
-RAMSTART  FUTURE USES          +55       (key) override
-+02       CURRENT              +57       FUTURE USES
-+04       HERE                 +59       blk's variables
-+06       C<?                  +5b       z80a's variables
-+08       C<* override         +5d       adev's variables
-+0a       NLPTR                +5f       FUTURE USES
-+0c       C<*                  +70       DRIVERS
-+0e       WORDBUF              +80       RAMEND
-+2e       BOOT C< PTR
-+30       IN>
-+32       IN(*
-+34       FUTURE USES
-+4e       INTJUMP
-+51       CURRENTPTR
-+53       (emit) override
+RAMSTART  FUTURE USES          +3c       BLK(*
++02       CURRENT              +3e       FUTURE USES
++04       HERE                 +4e       INTJUMP
++06       C<?                  +51       CURRENTPTR
++08       C<* override         +53       (emit) override
++0a       NLPTR                +55       (key) override
++0c       C<*                  +57       FUTURE USES
++0e       WORDBUF              +5b       z80a's variables
++2e       BOOT C< PTR          +5d       adev's variables
++30       IN>                  +5f       FUTURE USES
++32       IN(*                 +70       DRIVERS
++34       BLK@*                +80       RAMEND
++36       BLK!*
++38       BLK>
++3a       BLKDTY
                                                         (cont.)

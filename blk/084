@@ -7,10 +7,9 @@ for example), it can point elsewhere.
 NLPTR points to an alternative routine for NL (by default,
 CRLF).
 
+BLK* see B416.
+
 FUTURE USES section is unused for now.          
 
-DRIVERS section is reserved for recipe-specific
-drivers. Here is a list of known usages:
-
-* 0x70-0x78: ACIA buffer pointers in RC2014 recipes.
+DRIVERS section is reserved for recipe-specific drivers.
 
