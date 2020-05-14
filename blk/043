@@ -12,4 +12,5 @@ have to consume it to avoid PSP leak.
 ]         --   End interpretative mode.
 ABORT     --   Resets PS and RS and returns to interpreter.
 ABORT" x" --   *I* Compiles a ." followed by a ABORT.
-EXECUTE   a -- Execute wordref at addr a
+ERR       a -- Prints a and ABORT. Defined early and used by
+               drivers.                                 (cont.)

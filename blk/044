@@ -1,3 +1,4 @@
+EXECUTE   a -- Execute wordref at addr a
 INTERPRET --   Get a line from stdin, compile it in tmp memory,
                then execute the compiled contents.
 LEAVE     --   In a DO..LOOP, exit at the next LOOP call.
