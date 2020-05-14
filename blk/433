@@ -5,7 +5,7 @@
     0x2e RAM+ @ >R  ( boot ptr )
     BLK@
     BLK( 0x2e RAM+ ! ( Point to beginning of BLK )
-    ['] _ 0x08 RAM+ ! 
+    ['] (boot<) 0x08 RAM+ !
     1 0x06 RAM+ !  ( 06 == C<? )
     INTERPRET
     R> 0x2e RAM+ ! R> 0x06 RAM+ !
