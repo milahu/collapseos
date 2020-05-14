@@ -1,10 +1,11 @@
-: [ INTERPRET ; IMMEDIATE
-: ] R> DROP ;
-: LIT< WORD 34 , SCPY 0 C, ; IMMEDIATE
-: LITA 36 , , ;
+( ';' can't have its name right away because, when created, it
+  is not an IMMEDIATE yet and will not be treated properly by
+  xcomp. )
+: _
+    ['] EXIT ,
+    R> DROP     ( exit : )
+; IMMEDIATE
 : ['] ' LITA ; IMMEDIATE
-: COMPILE ' LITA ['] , , ; IMMEDIATE
-: [COMPILE] ' , ; IMMEDIATE
-: BEGIN H@ ; IMMEDIATE
-: AGAIN COMPILE (br) H@ - , ; IMMEDIATE
-: UNTIL COMPILE (?br) H@ - , ; IMMEDIATE
+';' X' _ 4 - C! ( give ; its name )
+':' X' _ 4 - C! ( give : its name )
+'(' X' _ 4 - C!

@@ -14,7 +14,6 @@ RS_ADDR 0x80 - CONSTANT RAMSTART
 ( Update LATEST )
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
-440 444 XPACKR ( core )
 499 500 XPACKR ( trs80.fs )
 ( 0x0a == NLPTR. TRS-80 wants CR-only newlines )
 ," : _ ['] CR 0x0a RAM+ ! BLK$ FD$ (ok) RDLN$ ; _ "
