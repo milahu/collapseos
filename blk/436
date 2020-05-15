@@ -1,3 +1,4 @@
+: (main) INTERPRET BYE ;
 : BOOT
     0x02 RAM+ CURRENT* !
     CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR )
@@ -8,6 +9,4 @@
     ( 0c == C<* )
     ['] (boot<) 0x0c RAM+ !
     ( boot< always has a char waiting. 06 == C<?* )
-    1 0x06 RAM+ !
-    INTERPRET BYE ;
-
+    1 0x06 RAM+ ! (main) ;
