@@ -15,6 +15,6 @@ RS_ADDR 0x80 - CONSTANT RAMSTART
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
 ( 0x0a == NLPTR. TRS-80 wants CR-only newlines )
-," : _ ['] CR 0x0a RAM+ ! BLK$ FD$ (ok) RDLN$ ; _ "
+," ' CR 0x0a RAM+ ! BLK$ FD$ " EOT,
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

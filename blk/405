@@ -1,5 +1,6 @@
 : WS? 33 < ;
 : EOT? 4 = ; ( 4 == ASCII EOT, CTRL+D )
+: EOT, 4 C, ;
 
 : TOWORD
     0 ( dummy ) BEGIN

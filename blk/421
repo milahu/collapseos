@@ -11,6 +11,5 @@
 : BS 8 EMIT ; : LF 10 EMIT ; : CR 13 EMIT ;
 : CRLF CR LF ; : SPC 32 EMIT ;
 : NL 0x0a RAM+ @ ( NLPTR ) DUP IF EXECUTE ELSE DROP CRLF THEN ;
-: (ok) SPC LIT" ok" (print) NL ;
 : (uflw) LIT" stack underflow" ERR ;
 : (wnf) (print) SPC LIT" word not found" ERR ;

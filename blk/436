@@ -9,4 +9,6 @@
     ( 0c == C<* )
     ['] (boot<) 0x0c RAM+ !
     ( boot< always has a char waiting. 06 == C<?* )
-    1 0x06 RAM+ ! (main) ;
+    1 0x06 RAM+ ! INTERPRET
+    RDLN$ LIT< _sys [entry]
+    LIT< CollapseOS (print) NL (main) ;

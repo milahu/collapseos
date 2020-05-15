@@ -1,15 +1,10 @@
-4. Call INTERPRET
+4. Call INTERPRET which interprets boot source code until
+   ASCII EOT (4) is met. This usually init drivers.
+5. Initialize rdln buffer, _sys entry (for EMPTY), prints
+   "CollapseOS" and then calls (main).
+6. (main) interprets from rdln input (usually from KEY) until
+   EOT is met, then calls BYE.
 
-In other words, BOOT interprets bytes directly following
-CURRENT as Forth source code. This code will typically
-initialize all subsystems and then call RDLN$. As soon as
-this is called, INTERPRET will begin reading from RDLN< which
-reads from KEY.
-
-In the "/emul" binaries, "HERE" is readjusted to "CURRENT @" so
-that we don't have to relocate compiled dicts. Note that in
-this context, the initialization code is fighting for space
-with HERE: New entries to the dict will overwrite that code!
-Also, because we're barebone, we can't have comments. This can
-lead to peculiar code in this area where we try to "waste"
-space in initialization code.
+In RAM-only environment, we will typically have a
+"CURRENT @ HERE !" line during init to have HERE begin at the
+end of the binary instead of RAMEND.

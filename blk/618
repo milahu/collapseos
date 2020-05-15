@@ -12,4 +12,4 @@ RAMSTART 0x70 + CONSTANT ACIA_MEM
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," : _ ACIA$ RDLN$ (ok) ; _ "
+," ACIA$ " EOT,

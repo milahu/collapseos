@@ -68,6 +68,6 @@ CREATE ~FNT CPFNT3x5
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," : _ LCD$ KBD$ (ok) RDLN$ ; _ "
+," LCD$ KBD$ " EOT,
 ORG @ 0x100 - 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

@@ -28,13 +28,9 @@
 ( Update LATEST )
 PC ORG @ 8 + !
 ," CURRENT @ HERE ! "
-," : INIT "
 ," BLK$ "
-," ['] EFS@ BLK@* ! "
-," ['] EFS! BLK!* ! "
-," RDLN$ "
-," LIT< _sys [entry] "
-," LIT< CollapseOS (print) NL "
-," ; INIT "
+," ' EFS@ BLK@* ! "
+," ' EFS! BLK!* ! "
+EOT,
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!
