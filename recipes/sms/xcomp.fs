@@ -21,12 +21,12 @@ CURRENT @ XCURRENT !
 282 LOAD  ( boot.z80 )
 393 LOAD  ( xcomp core low )
 CREATE ~FNT CPFNT7x7
-623 627 LOADR ( VDP )
-: (key) 0 ; : (emit) DROP ;
+623 628 LOADR ( VDP )
+: (key) 4 ;
 420 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," VDP$ BYE "
+," VDP$ " EOT,
 ORG @ 0x100 - 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

@@ -3,6 +3,7 @@
 : HERE 0x04 RAM+ ;
 : CURRENT* 0x51 RAM+ ;
 : CURRENT CURRENT* @ ;
+: XYPOS 0x40 RAM+ ;
 
 ( w -- a f )
 : (find) CURRENT @ SWAP _find ;

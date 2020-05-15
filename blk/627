@@ -1,14 +1,6 @@
-: _set ( row col tilenum -- )
-    ROT 5 LSHIFT ROT OR 0x7800 OR _ctl
-    _data 1 _zero
+: (emit)
+    XYPOS @ 2 * 0x7800 OR _ctl
+    0x20 - 0x5e MIN ( tilenum ) _data 1 _zero
+    XYPOS @ 1+ DUP [ VDP_COLS VDP_ROWS * LITN ]
+    = IF DROP 0 THEN XYPOS !
 ;
-: VDP$
-    9 0 DO _idat I 2 * + @ _ctl LOOP _blank
-    ( palettes )
-    0xc000 _ctl
-    ( BG ) 1 _zero 0x3f _data 14 _zero
-    ( sprite, inverted colors ) 0x3f _data 15 _zero
-    0x4000 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont LOOP
-    0 0 1 _set
-;
-
