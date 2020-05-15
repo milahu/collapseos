@@ -19,8 +19,7 @@ emul: $(EMUL) $(TARGET)
 	$(EMUL) $(TARGET)
 	
 os.rom: $(TARGET)
-	cp $(TARGET) $@
-	truncate -s 1M $@
+	dd if=$(TARGET) bs=1M of=$@ conv=sync
 
 os.8xu: os.rom
 	$(MKTIUPGRADE) -p -k keys/0A.key -d TI-84+ os.rom $@ 00
