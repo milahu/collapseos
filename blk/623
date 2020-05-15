@@ -1,0 +1,9 @@
+CODE _ctl ( a -- sends LSB then MSB )
+    HL POPqq, chkPS,
+    A L LDrr, VDP_CTLPORT OUTnA,
+    A H LDrr, VDP_CTLPORT OUTnA,
+;CODE
+CODE _data
+    HL POPqq, chkPS,
+    A L LDrr, VDP_DATAPORT OUTnA,
+;CODE

@@ -1,0 +1,12 @@
+: _zero ( x -- send 0 _data x times )
+    ( x ) 0 DO 0 _data LOOP ;
+
+( Each row in ~FNT is a row of the glyph and there is 7 of
+them.  We insert a blank one at the end of those 7. For each
+row we set, we need to send 3 zero-bytes because each pixel in
+the tile is actually 4 bits because it can select among 16
+palettes. We use only 2 of them, which is why those bytes
+always stay zero. )
+: _sfont ( a -- Send font to VDP )
+    7 0 DO C@+ _data 3 _zero LOOP DROP
+    ( blank row ) 4 _zero ;

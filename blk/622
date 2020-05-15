@@ -1,0 +1,16 @@
+VDP Driver
+
+Implement (emit) on the console. Characters start at the top
+left. Every (emit) call converts the ASCII char received to its
+internal font, then put that char on screen, advancing the
+cursor by one. When reaching the end of the line (33rd char),
+wrap to the next.
+
+In the future, there's going to be a scrolling mechanism when
+we reach the bottom of the screen, but for now, when the end of
+the screen is reached, we wrap up to the top.
+
+When reaching a new line, we clear that line and the next to
+help readability.
+
+Load range: 623-623

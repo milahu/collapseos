@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <unistd.h>
 
 #include <xcb/xcb.h>
 
@@ -155,7 +156,11 @@ void draw_pixels()
 void event_loop()
 {
     while (1) {
-        emul_step();
+        if (!emul_step()) {
+            fprintf(stderr, "CPU halted, quitting\n");
+            usleep(1000 * 1000);
+            break;
+        }
         if (vdp_changed) {
             // To avoid overdrawing, we'll let the CPU run a bit to finish its
             // drawing operation.
