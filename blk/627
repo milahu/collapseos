@@ -1,6 +1,14 @@
+: _cell! ( tilenum pos )
+    2 * 0x7800 OR _ctl ( tilenum ) _data 1 _zero ;
+: _lf
+    XYPOS @ 0 ( blank ) OVER _cell!
+    [ VDP_COLS LITN ] / 1+ [ VDP_ROWS LITN ] MOD
+    [ VDP_COLS LITN ] * XYPOS !
+;
 : (emit)
-    XYPOS @ 2 * 0x7800 OR _ctl
-    0x20 - 0x5e MIN ( tilenum ) _data 1 _zero
+    DUP 0x0d = IF DROP _lf EXIT THEN
+    0x20 - DUP 0< IF DROP EXIT THEN
+    0x5e MIN ( tilenum ) XYPOS @ _cell!
     XYPOS @ 1+ DUP [ VDP_COLS VDP_ROWS * LITN ]
     = IF DROP 0 THEN XYPOS !
 ;
