@@ -1,3 +1,4 @@
+: XYPOS [ VDP_MEM LITN ] ;
 CODE _ctl ( a -- sends LSB then MSB )
     HL POPqq, chkPS,
     A L LDrr, VDP_CTLPORT OUTnA,

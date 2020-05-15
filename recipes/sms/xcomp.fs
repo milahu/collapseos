@@ -3,6 +3,7 @@
 0xdd00 CONSTANT RS_ADDR
 ( Memory register at the end of RAM. Must not overwrite )
 0xddca CONSTANT PS_ADDR
+RAMSTART 0x70 + CONSTANT VDP_MEM
 0xbf   CONSTANT VDP_CTLPORT
 0xbe   CONSTANT VDP_DATAPORT
 32     CONSTANT VDP_COLS

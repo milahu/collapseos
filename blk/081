@@ -1,6 +1,6 @@
 RAMSTART  FUTURE USES          +3c       BLK(*
-+02       CURRENT              +3e       XYPOS
-+04       HERE                 +40       FUTURE USES
++02       CURRENT              +3e       FUTURE USES
++04       HERE                 
 +06       C<?                  +51       CURRENTPTR
 +08       C<* override         +53       (emit) override
 +0a       NLPTR                +55       (key) override

@@ -7,8 +7,8 @@ WORDBUF is the buffer used by WORD
 BOOT C< PTR is used when Forth boots from in-memory
 source. See "Initialization sequence" below.
 
-XYPOS Current position of the cursor on screen. The meaning of
-the pos in terms of row and cols is driver-dependent.
+
+
 
 
 
