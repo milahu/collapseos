@@ -1,0 +1,6 @@
+This module is currently hard-wired to VDP driver, that is, it
+calls vdp's routines during (key) to update character
+selection.
+
+Load range: 632-637
+

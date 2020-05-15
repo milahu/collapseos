@@ -13,4 +13,4 @@ the screen is reached, we wrap up to the top.
 When reaching a new line, we clear that line and the next to
 help readability.
 
-Load range: 623-623
+Load range: 623-628

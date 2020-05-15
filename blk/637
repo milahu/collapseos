@@ -1,0 +1,2 @@
+: PAD$
+    0xff _prevstat C! 'a' _sel C! 0 _next C! ;

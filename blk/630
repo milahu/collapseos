@@ -1,0 +1,16 @@
+Pad driver - read input from MD controller
+
+Conveniently expose an API to read the status of a MD pad A.
+Moreover, implement a mechanism to input arbitrary characters
+from it. It goes as follow:
+
+* Direction pad select characters. Up/Down move by one,
+  Left/Right move by 5
+* Start acts like Return
+* A acts like Backspace
+* B changes "character class": lowercase, uppercase, numbers,
+  special chars. The space character is the first among special
+  chars.
+* C confirms letter selection
+
+                                                        (cont.)

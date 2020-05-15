@@ -1,0 +1,5 @@
+: _chk ( c --, check _sel range )
+    _sel C@ DUP 0x7f > IF 0x20 _sel C! THEN
+    0x20 < IF 0x7f _sel C! THEN ;
+: _nxtcls
+;

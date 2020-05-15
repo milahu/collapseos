@@ -1,0 +1,8 @@
+: (key)
+    BEGIN _updsel UNTIL
+    _prevstat C@
+    0x20 ( BUTC ) OVER AND NOT IF THEN
+    0x40 ( BUTA ) AND NOT IF THEN
+    ( If not BUTC or BUTA, it has to be START )
+    _sel C@
+;
