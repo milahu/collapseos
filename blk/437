@@ -9,7 +9,7 @@
     (entry)
     [ 14 ( == compiledWord ) LITN ] C,
     BEGIN
-        WORD (find)
+        WORD FIND
         IF ( is word ) DUP IMMED? IF EXECUTE ELSE , THEN
         ELSE ( maybe number ) (parse) LITN THEN
     AGAIN ;

@@ -10,7 +10,7 @@ Entry management
 ,        n --     Write n in HERE and advance it.
 ALLOT    n --     Move HERE by n bytes
 C,       b --     Write byte b in HERE and advance it.
+FIND     w -- a f Like '?, but for w.
 EMPTY  --         Rewind HERE and CURRENT where they were at
                   system initialization.            
-
                                                         (cont.)

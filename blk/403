@@ -4,5 +4,5 @@
     (parseb) IF EXIT THEN
     (parsed) IF EXIT THEN
     ( nothing works )
-    LIT< (wnf) (find) IF EXECUTE ELSE ABORT THEN
+    LIT< (wnf) FIND IF EXECUTE ELSE ABORT THEN
 ;

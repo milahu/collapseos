@@ -1,7 +1,7 @@
-: '? WORD (find) ;
+: '? WORD FIND ;
 : '
     '? (?br) [ 4 , ] EXIT
-    LIT< (wnf) (find) DROP EXECUTE
+    LIT< (wnf) FIND DROP EXECUTE
 ;
 : ROLL
     DUP NOT IF EXIT THEN

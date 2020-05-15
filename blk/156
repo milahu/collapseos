@@ -1,4 +1,4 @@
 : EMPTY
-    LIT< _sys (find) NOT IF ABORT THEN
+    LIT< _sys FIND NOT IF ABORT THEN
     DUP HERE ! CURRENT ! ;
 
