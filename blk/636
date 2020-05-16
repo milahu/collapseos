@@ -3,7 +3,7 @@
     BEGIN _updsel UNTIL
     _prevstat C@
     0x20 ( BUTC ) OVER AND NOT IF DROP _sel C@ EXIT THEN
-    0x40 ( BUTA ) AND NOT IF EXIT THEN
+    0x40 ( BUTA ) AND NOT IF 0x8 ( BS ) EXIT THEN
     ( If not BUTC or BUTA, it has to be START )
     0xd _next C! _sel C@
 ;
