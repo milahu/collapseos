@@ -7,9 +7,9 @@ RS_ADDR 0x80 - CONSTANT RAMSTART
 
 0x3000 BIN( !
 282 LOAD  ( boot.z80 )
-393 LOAD  ( xcomp core low )
+353 LOAD  ( xcomp core low )
 492 LOAD  ( trs80 )
-420 LOAD  ( xcomp core high )
+380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

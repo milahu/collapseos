@@ -1,0 +1,12 @@
+: ABORT (resSP) QUIT ;
+: ERR LIT< (print) FIND IF EXECUTE THEN ABORT ;
+: = CMP NOT ; : < CMP -1 = ; : > CMP 1 = ;
+: 0< 32767 > ; : >= < NOT ; : <= > NOT ; : 0>= 0< NOT ;
+: >< ( n l h -- f ) 2 PICK > ( n l f ) ROT ROT > AND ;
+: =><= 2 PICK >= ( n l f ) ROT ROT >= AND ;
+: MIN ( n n - n ) 2DUP > IF SWAP THEN DROP ;
+: MAX ( n n - n ) 2DUP < IF SWAP THEN DROP ;
+: C@+ ( a -- a+1 c ) DUP C@ SWAP 1+ SWAP ;
+: C!+ ( c a -- a+1 ) SWAP OVER C! 1+ ;
+: C@- ( a -- a-1 c ) DUP C@ SWAP 1- SWAP ;
+: C!- ( c a -- a-1 ) SWAP OVER C! 1- ;

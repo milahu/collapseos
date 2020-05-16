@@ -1,0 +1,16 @@
+2. Immediate words that have been cross compiled *cannot* be
+   used. Only immediates from the host system can be used.
+3. If an immediate word compiles words, it can only be words
+   that are part of the stable ABI.
+
+All of this is because when cross compiling, all atom ref-
+erences are offsetted to the target system and are thus
+unusable directly. For the same reason, any reference to a word
+in the host system will obviously be wrong in the target
+system. More details in B260.
+
+
+
+
+
+                                                        (cont.)

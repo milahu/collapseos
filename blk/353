@@ -1,0 +1,15 @@
+: RAM+ [ RAMSTART LITN ] + ;
+: BIN+ [ BIN( @ LITN ] + ;
+: HERE 0x04 RAM+ ;
+: CURRENT* 0x51 RAM+ ;
+: CURRENT CURRENT* @ ;
+
+( w -- a f )
+: FIND CURRENT @ SWAP _find ;
+
+: QUIT
+    (resRS)
+    0 0x08 RAM+ !  ( 08 == C<* override )
+    LIT< (main) FIND DROP EXECUTE
+;
+1 25 LOADR+ ( xcomp core low )

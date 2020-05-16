@@ -60,11 +60,11 @@ CURRENT @ XCURRENT !
 
 0x100 BIN( !
 282 LOAD  ( boot.z80 )
-393 LOAD  ( xcomp core low )
+353 LOAD  ( xcomp core low )
 CREATE ~FNT CPFNT3x5
 555 560 LOADR ( LCD low )
 566 570 LOADR ( KBD low )
-420 LOAD  ( xcomp core high )
+380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

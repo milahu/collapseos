@@ -1,9 +1,15 @@
-This unit is loaded in two "low" and "high" parts. The low part
-is the biggest chunk and has the most definitions. The high
-part is the "sensitive" chunk and contains "LITN", ":" and ";"
-definitions which, once defined, kind of make any more defs
-impossible.
-
-The gap between these 2 parts is the ideal place to put device
-driver code. Load the low part with "393 LOAD", the high part
-with "415 LOAD"
+: INTERPRET
+    BEGIN
+    WORD DUP C@ EOT? IF DROP EXIT THEN
+    FIND NOT IF (parse) ELSE EXECUTE THEN
+    C<? NOT IF SPC LIT< ok (print) NL THEN
+    AGAIN ;
+( Read from BOOT C< PTR and inc it. )
+: (boot<)
+    ( 2e == BOOT C< PTR )
+    0x2e ( BOOT C< PTR ) RAM+ @ DUP C@ ( a c )
+    SWAP 1 + 0x2e RAM+ ! ( c ) ;
+( pre-comment for tight LOAD: The 0x08==I check after INTERPRET
+  is to check whether we're restoring to "_", the word above.
+  if yes, then we're in a nested load. Also, the 1 in 0x06 is
+  to avoid tons of "ok" displays. )

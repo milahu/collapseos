@@ -1,0 +1,9 @@
+This unit is loaded in two "low" and "high" parts. The low part
+is the biggest chunk and has the most definitions. The high
+part is the "sensitive" chunk and contains "LITN", ":" and ";"
+definitions which, once defined, kind of make any more defs
+impossible.
+
+The gap between these 2 parts is the ideal place to put device
+driver code. Load the low part with "353 LOAD", the high part
+with "380 LOAD"

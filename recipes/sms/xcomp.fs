@@ -23,11 +23,11 @@ RETN, 0x98 ZFILL, ( 0x100 )
 CURRENT @ XCURRENT !
 0x100 BIN( !
 282 LOAD  ( boot.z80 )
-393 LOAD  ( xcomp core low )
+353 LOAD  ( xcomp core low )
 CREATE ~FNT CPFNT7x7
 623 628 LOADR ( VDP )
 632 637 LOADR ( PAD )
-420 LOAD  ( xcomp core high )
+380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

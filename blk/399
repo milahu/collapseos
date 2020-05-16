@@ -1,8 +1,9 @@
-( returns negative value on error )
-: _            ( c -- n )
-    DUP '0' '9' =><= IF '0' - EXIT THEN
-    DUP 'a' 'f' =><= IF 0x57 ( 'a' - 10 ) - EXIT THEN
-    DROP -1 ( bad )
-;
-
-
+: BEGIN H@ ; IMMEDIATE
+: AGAIN COMPILE (br) H@ - , ; IMMEDIATE
+: UNTIL COMPILE (?br) H@ - , ; IMMEDIATE
+: [ INTERPRET ; IMMEDIATE
+: ] R> DROP ;
+: LIT< WORD 34 , SCPY 0 C, ; IMMEDIATE
+: LITA 36 , , ;
+: COMPILE ' LITA ['] , , ; IMMEDIATE
+: [COMPILE] ' , ; IMMEDIATE

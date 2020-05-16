@@ -1,14 +1,11 @@
-Cross-compiled core
+( Initializes the readln subsystem )
+: RDLN$
+    H@ 0x32 ( IN(* ) RAM+ !
+    ( plus 2 for extra bytes after buffer: 1 for
+      the last typed 0x0a and one for the following NULL. )
+    IN) IN( - ALLOT
+    (infl)
+    ['] RDLN< 0x0c RAM+ !
+    1 0x06 RAM+ !  ( 06 == C<? )
+;
 
-This units contains core Collapse OS that are cross-compiled.
-During building, these come right after the boot binary (B280).
-
-Because this unit is designed to be cross-compiled, things are
-a little weird. It is compiling in the context of a full
-Forth interpreter with all bells and whistles (and z80
-assembler), but it has to obey strict rules:
-
-1. It cannot compile a word from higher layers. Immediates are
-   fine.
-
-                                                        (cont.)
