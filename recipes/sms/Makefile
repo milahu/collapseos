@@ -7,6 +7,9 @@ all: $(TARGET)
 $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
 
+os.sms: $(TARGET)
+	dd if=$(TARGET) bs=32752 conv=sync | cat - sega.bin > $@
+
 $(EMUL):
 	$(MAKE) -C ${@:%/sms=%}
 

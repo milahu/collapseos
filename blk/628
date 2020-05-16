@@ -6,4 +6,5 @@
     ( sprite, inverted colors ) 0x3f _data 15 _zero
     0x4000 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont LOOP
     0 XYPOS !
+    ( bit 6, enable display, bit 7, ?? ) 0x81c0 _ctl
 ;
