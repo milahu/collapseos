@@ -1,10 +1,10 @@
 ( handle backspace: go back one char in IN>, if possible, then
-  emit SPC + BS )
+  emit BS + SPC + BS )
 : (inbs)
     ( already at IN( ? )
     IN> @ IN( = IF EXIT THEN
     IN> @ 1- IN> !
-    SPC BS
+    BS SPC BS
 ;
 
 : KEY
