@@ -1,16 +1,16 @@
-        JRNZ, L2 FWR ( loopend )
-        ( match, let's compare the string then )
-        DE DECss, ( Skip prev field. One less because we )
-        DE DECss, ( pre-decrement )
-        B C LDrr, ( loop C times )
-        BEGIN, ( loop )
-            ( pre-decrement for easier Z matching )
-            DE DECss,
-            HL DECss,
-            LDA(DE),
-            (HL) CPr,
-            JRNZ, L3 FWR ( loopend )
-        DJNZ, AGAIN, ( loop )
-        L2 FSET L3 FSET ( loopend )
-
+        IFZ,
+            ( match, let's compare the string then )
+            DE DECss, ( Skip prev field. One less because we )
+            DE DECss, ( pre-decrement )
+            B C LDrr, ( loop C times )
+            BEGIN,
+                ( pre-decrement for easier Z matching )
+                DE DECss,
+                HL DECss,
+                LDA(DE),
+                (HL) CPr,
+                JRNZ, L2 FWR ( loopend )
+            DJNZ, AGAIN,
+            L2 FSET ( loopend )
+        THEN,
                                                       ( cont. )
