@@ -1,11 +1,10 @@
-: [entry]
-    HERE @        ( w h )
-    SWAP SCPY     ( h )
-    HERE @ SWAP - ( sz )
+: [entry] ( w -- )
+    H@ SWAP SCPY  ( h )
+    H@ SWAP - ( sz )
     ( write prev value )
-    HERE @ CURRENT @ - ,
+    H@ CURRENT @ - ,
     C, ( write size )
-    HERE @ CURRENT !
+    H@ CURRENT !
 ;
 
 : (entry) WORD [entry] ;

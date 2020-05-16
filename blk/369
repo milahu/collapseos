@@ -1,7 +1,6 @@
 ( Words here until the end of the low part, unlike words
   preceeding them, aren't immediately needed for boot. But its
   better to have as many words as possible in the xcomp part. )
-: H@ HERE @ ;
 : IMMEDIATE
     CURRENT @ 1-
     DUP C@ 128 OR SWAP C! ;
