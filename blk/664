@@ -1,0 +1,7 @@
+( 0000 KKKK dddd KKKK )
+: OPRdK CREATE C, DOES> C@ ( rd K op )
+    OVER 0xf0 AND 4 RSHIFT OR ( rd K op' )
+    ROT 5 LSHIFT ROT 0x0f AND OR ( op' rdK ) A, A, ;
+0x70 OPRdK ANDI,   0x30 OPRdK CPI,     0x0e OPRdK LDI,
+0x60 OPRdK ORI,    0x40 OPRdK SBCI,    0x60 OPRdK SBR,
+0x50 OPRdK SUBI,

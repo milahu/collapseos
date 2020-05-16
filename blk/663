@@ -1,0 +1,10 @@
+( 0000 00rd dddd rrrr )
+: OPRdRr CREATE C, DOES> C@ ( rd rr op )
+    OVER 0x10 AND 3 RSHIFT OR ( rd rr op' )
+    2 PICK 0x10 AND 4 RSHIFT OR ( rd rr op' )
+    8 LSHIFT OR 0xff0f AND ( rd op' )
+    SWAP 0xf AND 4 LSHIFT OR A,, ;
+0x1c OPRdRr ADC,   0x0c OPRdRr ADD,    0x20 OPRdRr AND,
+0x14 OPRdRr CP,    0x04 OPRdRr CPC,    0x10 OPRdRr CPSE,
+0x24 OPRdRr EOR,   0x2c OPRdRr MOV,    0x9c OPRdRr MUL,
+0x28 OPRdRr OR,    0x08 OPRdRr SBC,    0x18 OPRdRr SUB,
