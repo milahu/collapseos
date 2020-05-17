@@ -9,8 +9,7 @@
                 HL DECss,
                 LDA(DE),
                 (HL) CPr,
-                JRNZ, L2 FWR ( loopend )
+                JRNZ, BREAK,
             DJNZ, AGAIN,
-            L2 FSET ( loopend )
         THEN,
                                                       ( cont. )

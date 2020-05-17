@@ -13,4 +13,4 @@ PC ORG @ 4 + ! ( find )
     NEG,
     A DECr,
 	( special case. zero len? we never find anything. )
-    JRZ, L1 FWR ( fail-B296 )                         ( cont. )
+    IFNZ, ( fail-B296 )                               ( cont. )

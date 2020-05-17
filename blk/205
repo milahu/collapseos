@@ -1,0 +1,16 @@
+Structured flow
+
+z80a also has words that behave similarly to IF..THEN and
+BEGIN..UNTIL.
+
+On the IF side, we have IFZ, IFNZ, IFC, IFNC, and THEN,. When
+the opposite condition is met, a relative jump is made to
+THEN,'s PC. For example, if you have IFZ, a jump is made when
+Z is unset.
+
+On the BEGIN,..AGAIN, side, it's a bit different. You start
+with your BEGIN, instruction, and then later you issue a
+JRxx, instr followed by AGAIN,. Exactly like you would do
+with a label.
+
+                                                        (cont.)

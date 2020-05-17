@@ -1,9 +1,8 @@
-: THEN,
-    DUP PC          ( l l pc )
-    -^ 1-           ( l off )
-    ( warning: l is a PC offset, not a mem addr! )
-    SWAP ORG @ + BIN( @ - ( off addr )
-    C!
-;
 : FWR BSET 0 A, ;
 : FSET @ THEN, ;
+: BREAK, FJR, 0x8000 OR ;
+: BREAK?, DUP 0x8000 AND IF
+        0x7fff AND 1 ALLOT THEN, -1 ALLOT
+    THEN ;
+: AGAIN, BREAK?, PC - 1- A, ;
+: BWR @ AGAIN, ;
