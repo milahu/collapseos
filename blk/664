@@ -1,13 +1,9 @@
-( 0000 KKKK dddd KKKK )
-: OPRdK CREATE C, DOES> C@ ( rd K op )
-    OVER 0xf0 AND 4 RSHIFT OR ( rd K op' )
-    ROT 5 LSHIFT ROT 0x0f AND OR ( op' rdK ) A, A, ;
-0x70 OPRdK ANDI,   0x30 OPRdK CPI,     0x0e OPRdK LDI,
-0x60 OPRdK ORI,    0x40 OPRdK SBCI,    0x60 OPRdK SBR,
-0x50 OPRdK SUBI,
-
-( 0000 0000 AAAA Abbb )
-: OPAb CREATE C, DOES> C@ ( A b op )
-    ROT 3 LSHIFT ROT OR A, A, ;
-0x98 OPAb CBI,     0x9a OPAb SBI,      0x99 OPAb SBIC,
-0x9b OPAb SBIS,
+( 0000 00rd dddd rrrr )
+: OPRdRr CREATE C, DOES> C@ ( rd rr op )
+    OVER _r32c 0x10 AND 3 RSHIFT OR ( rd rr op' )
+    8 LSHIFT OR 0xff0f AND ( rd op' )
+    SWAP _r32c _Rdp A,, ;
+0x1c OPRdRr ADC,   0x0c OPRdRr ADD,    0x20 OPRdRr AND,
+0x14 OPRdRr CP,    0x04 OPRdRr CPC,    0x10 OPRdRr CPSE,
+0x24 OPRdRr EOR,   0x2c OPRdRr MOV,    0x9c OPRdRr MUL,
+0x28 OPRdRr OR,    0x08 OPRdRr SBC,    0x18 OPRdRr SUB,
