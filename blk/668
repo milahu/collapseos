@@ -2,7 +2,7 @@
 : _r7ffc DUP 0x7ff > IF _oor THEN ;
 : _raddr12
     PC - DUP 0< IF 0x800 + _r7ffc 0x800 OR ELSE _r7ffc THEN ;
-: RJMP ( a -- op ) _raddr12 0xc000 OR ;
-: RCALL ( a -- op ) _raddr12 0xd000 OR ;
-: RJMP, RJMP A,, ;
-: RCALL, RCALL A,, ;
+0xc0 CONSTANT RJMPOP
+0xd0 CONSTANT RCALLOP
+: RJMP, _raddr12 RJMPOP 8 LSHIFT OR A,, ;
+: RCALL, _raddr12 RCALLOP 8 LSHIFT OR A,, ;
