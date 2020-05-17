@@ -1,13 +1,9 @@
 PROGNAME = ps2ctl
 AVRDUDEMCU ?= t45
 AVRDUDEARGS ?= -c usbtiny -P usb 
-TARGETS = $(PROGNAME).bin os.sms
+TARGETS = $(PROGNAME).bin
 BASEDIR = ../../..
-ZASM = $(BASEDIR)/emul/zasm/zasm
-KERNEL = $(BASEDIR)/kernel
-APPS = $(BASEDIR)/apps
-AVRA = $(BASEDIR)/emul/zasm/avra
-AVRINC = $(BASEDIR)/avr
+EDIR = $(BASEDIR)/emul
 
 # Rules
 
@@ -19,11 +15,8 @@ all: $(TARGETS)
 send: $(PROGNAME).bin
 	avrdude $(AVRDUDEARGS) -p $(AVRDUDEMCU) -U flash:w:$(PROGNAME).bin
 
-$(PROGNAME).bin: $(PROGNAME).asm
-	$(AVRA) $(AVRINC) < $(PROGNAME).asm > $@
-
-os.sms: glue.asm
-	$(ZASM) $(KERNEL) $(APPS) < glue.asm > $@
+$(PROGNAME).bin: $(PROGNAME).fs
+	cd $(EDIR) && ./avra.sh < ../recipes/sms/kbd/$(PROGNAME).fs > ../recipes/sms/kbd/$@
 
 clean:
 	rm -f $(TARGETS)
