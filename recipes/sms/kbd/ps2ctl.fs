@@ -32,10 +32,23 @@ Y: pointer to the memory location where the next scan code from
    ps/2 will be written.
 Z: pointer to the next scan code to push to the 595 )
 
+0x0060 CONSTANT SRAM_START
 0x015f CONSTANT RAMEND
+0x3d CONSTANT SPL
+0x3e CONSTANT SPH
 0x11 CONSTANT GPIOR0
+0x35 CONSTANT MCUCR
+0x33 CONSTANT TCCR0B
+0x3b CONSTANT GIMSK
 0x16 CONSTANT PINB
+0x17 CONSTANT DDRB
+0x18 CONSTANT PORTB
+2 CONSTANT CLK
 1 CONSTANT DATA
+3 CONSTANT CP
+0 CONSTANT LQ
+4 CONSTANT LR
+0x100-100 CONSTANT TIMER_INITVAL
 
 H@ ORG !
 L1 FLBL, ( main )
@@ -51,3 +64,35 @@ RETI,
 
 RJMPOP L1 FLBL! ( main )
 16 RAMEND 0xff AND LDI,
+SPL 16 OUT,
+16 RAMEND 8 RSHIFT LDI,
+SPH 16 OUT,
+( init variables )
+18 CLR,
+GPIOR0 18 OUT,
+( Setup int0
+  INT0, falling edge )
+16 0x02 ( ISC01 ) LDI,
+MCUCR 16 OUT,
+( Enable INT0 )
+16 0x40 ( INT0 ) LDI,
+GIMSK 16 OUT,
+( Setup buffer )
+29 ( YH ) CLR,
+28 ( YL ) SRAM_START 0xff AND LDI,
+31 ( ZH ) CLR,
+30 ( ZL ) SRAM_START 0xff AND LDI,
+( Setup timer. We use the timer to clear up "processbit"
+registers after 100us without a clock. This allows us to start
+the next frame in a fresh state. at 1MHZ, no prescaling is
+necessary. Each TCNT0 tick is already 1us long. )
+16 0x01 ( CS00 ) LDI, ( no prescaler )
+TCCR0B 16 OUT,
+( init DDRB )
+DDRB CP SBI,
+PORTB LR CBI,
+DDRB LR SBI,
+SEI,
+
+L1 LBL! ( loop )
+

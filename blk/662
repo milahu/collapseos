@@ -2,6 +2,7 @@
 : _r8c DUP 7 > IF _oor THEN ;
 : _r32c DUP 31 > IF _oor THEN ;
 : _r16+c _r32c DUP 16 < IF _oor THEN ;
+: _r64c DUP 63 > IF _oor THEN ;
 : _r256c DUP 255 > IF _oor THEN ;
 : _Rdp ( op rd -- op', place Rd ) 4 LSHIFT OR ;
 
