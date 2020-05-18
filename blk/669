@@ -1,10 +1,12 @@
-( ex: L1 LBL! .. L1 @ RJMP, )
+( L1 LBL! .. L1 @ RJMP, )
 : LBL! ( l -- ) PC SWAP ! ;
-( ex: L1 FLBL, .. RJMPOP L1 FLBL! )
+( L1 FLBL, .. RJMPOP L1 FLBL! )
 : FLBL, ( l -- ) LBL! 0 A,, ;
-: FLBL! ( op l -- )
-    @ DUP PC -^ 1-  ( op l off )
-    ROT 8 LSHIFT OR ( l op' )
+: FLBL! ( l opw -- )
     ( warning: l is a PC offset, not a mem addr! )
-    SWAP 2 * ORG @ + ( op' addr ) ! ;
+    SWAP @ 2 * ORG @ + PC 1- H@ ( opw addr tgt hbkp )
+    ROT HERE ! ( opw tgt hbkp ) SWAP ROT EXECUTE H@ ! ( hbkp )
+    HERE ! ;
+: FRJMP! ( l -- ) ['] RJMP FLBL! ;
+: FRCALL! ( l -- ) ['] RCALL FLBL! ;
 

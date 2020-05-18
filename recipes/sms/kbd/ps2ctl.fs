@@ -56,13 +56,13 @@ L2 FLBL, ( hdlINT0 )
 
 ( Read DATA and set GPIOR0/0 if high. Then, set flag T.
   no SREG fiddling because no SREG-modifying instruction )
-RJMPOP L2 FLBL! ( hdlINT0 )
+L2 FRJMP! ( hdlINT0 )
 PINB DATA SBIC,
 GPIOR0 0 SBI,
 SET,
 RETI,
 
-RJMPOP L1 FLBL! ( main )
+L1 FRJMP! ( main )
 16 RAMEND 0xff AND LDI,
 SPL 16 OUT,
 16 RAMEND 8 RSHIFT LDI,
