@@ -50,6 +50,8 @@ Z: pointer to the next scan code to push to the 595 )
 0 CONSTANT LQ
 4 CONSTANT LR
 0x100-100 CONSTANT TIMER_INITVAL
+( We need a lot of labels in this program... )
+VARIABLE L5 VARIABLE L6 VARIABLE L7 VARIABLE L8
 
 H@ ORG !
 L1 FLBL, ( main )
@@ -114,3 +116,20 @@ L2 ' BRTS FLBL! ( processbit )
 19 0x1 ANDI, ( only keep the first flag )
 GPIOR0 0 CBI,
 CLT, ( ready to receive another bit )
+
+( We've received a bit. reset timer )
+L2 FLBL, ( RCALL resetTimer )
+
+( Which step are we at? )
+18 TST,
+L5 FLBL, ( BREQ processbits0 )
+18 1 CPI,
+L6 FLBL, ( BREQ processbits1 )
+18 2 CPI,
+L7 FLBL, ( BREQ processbits2 )
+( step 3: stop bit )
+18 CLR, ( happens in all cases )
+( DATA has to be set )
+19 TST, ( was DATA set? )
+L1 ' BREQ FLBL! ( loop, not set? error, don't push to buf )
+( push r17 to the buffer )
