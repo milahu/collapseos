@@ -201,16 +201,16 @@ DDRB DATA SBI,
 L3 FLBL, ( RCALL checkBoundsZ )
 16 8 LDI,
 
-L7 LBL! ( sendToPS2Loop )
-PORTB DATA CBI,
-20 7 SBRC, ( if leftmost bit isn't cleared, set DATA high )
-PORTB DATA SBI,
-( toggle CP )
-PORTB CP CBI,
-20 LSL,
-PORTB CP SBI,
-16 DEC,
-L7 ' BRNE LBL, ( sendToPS2Loop, not zero yet? loop )
+BEGIN,
+    PORTB DATA CBI,
+    20 7 SBRC, ( if leftmost bit isn't cleared, set DATA high )
+    PORTB DATA SBI,
+    ( toggle CP )
+    PORTB CP CBI,
+    20 LSL,
+    PORTB CP SBI,
+    16 DEC,
+' BRNE AGAIN, ( not zero yet? loop )
 ( release PS/2 )
 DDRB DATA CBI,
 SEI,
@@ -234,3 +234,66 @@ CLI,
 PORTB CLK CBI,
 DDRB CLK SBI,
 L2 ' RCALL LBL, ( resetTimer )
+
+( Wait until the timer overflows )
+BEGIN,
+    16 TIFR IN,
+    16 1 ( TOV0 ) SBRS,
+' RJMP AGAIN,
+( Good, 100us passed. )
+( Pull Data low, that's our start bit. )
+PORTB DATA CBI,
+DDRB DATA SBI,
+
+( Now, let's release the clock. At the next raising edge, we'll
+  be expected to have set up our first bit (LSB). We set up
+  when CLK is low. )
+DDRB CLK CBI, ( Should be starting high now. )
+
+( We will do the next loop 8 times )
+16 8 LDI,
+( Let's remember initial r19 for parity )
+1 19 MOV,
+
+BEGIN,
+    ( Wait for CLK to go low )
+    BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+    ( set up DATA )
+    PORTB DATA CBI,
+    19 0 SBRC, ( skip if LSB is clear )
+    PORTB DATA SBI,
+    19 LSR,
+	( Wait for CLK to go high )
+    BEGIN, PINB CLK SBIS, ' RJMP AGAIN,
+    16 DEC,
+' BRNE AGAIN, ( not zero? loop )
+
+( Data was sent, CLK is high. Let's send parity )
+19 1 MOV, ( recall saved value )
+L6 FLBL, ( RCALL checkParity )
+( Wait for CLK to go low )
+BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+( set parity bit )
+PORTB DATA CBI,
+16 0 SBRC, ( parity bit in r16 )
+PORTB DATA SBI,
+( Wait for CLK to go high )
+BEGIN, PINB CLK SBIS, ' RJMP AGAIN,
+( Wait for CLK to go low )
+BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+( We can now release the DATA line )
+DDRB DATA CBI,
+( Wait for DATA to go low, that's our ACK )
+BEGIN, PINB DATA SBIC, ' RJMP AGAIN,
+( Wait for CLK to go low )
+BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+( We're finished! Enable INT0, reset timer, everything back to
+  normal! )
+L2 ' RCALL LBL, ( resetTimer )
+CLT, ( also, make sure T isn't mistakely set. )
+SEI,
+RET,
+
+L8 ' RCALL FLBL! ( checkBoundsY )
+( Check that Y is within bounds, reset to SRAM_START if not. )
+28 ( YL ) TST,

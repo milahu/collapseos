@@ -8,4 +8,6 @@
     SWAP @ 2 * ORG @ + PC 1- H@ ( opw addr tgt hbkp )
     ROT HERE ! ( opw tgt hbkp ) SWAP ROT EXECUTE H@ ! ( hbkp )
     HERE ! ;
+: BEGIN, PC ;
+: AGAIN, ( op ) SWAP 1- SWAP EXECUTE A,, ;
 
