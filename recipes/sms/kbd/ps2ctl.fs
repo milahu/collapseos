@@ -40,6 +40,7 @@ Z: pointer to the next scan code to push to the 595 )
 0x35 CONSTANT MCUCR
 0x33 CONSTANT TCCR0B
 0x3b CONSTANT GIMSK
+0x38 CONSTANT TIFR
 0x16 CONSTANT PINB
 0x17 CONSTANT DDRB
 0x18 CONSTANT PORTB
@@ -56,13 +57,13 @@ L2 FLBL, ( hdlINT0 )
 
 ( Read DATA and set GPIOR0/0 if high. Then, set flag T.
   no SREG fiddling because no SREG-modifying instruction )
-L2 FRJMP! ( hdlINT0 )
+L2 ' RJMP FLBL! ( hdlINT0 )
 PINB DATA SBIC,
 GPIOR0 0 SBI,
 SET,
 RETI,
 
-L1 FRJMP! ( main )
+L1 ' RJMP FLBL! ( main )
 16 RAMEND 0xff AND LDI,
 SPL 16 OUT,
 16 RAMEND 8 RSHIFT LDI,
@@ -95,4 +96,21 @@ DDRB LR SBI,
 SEI,
 
 L1 LBL! ( loop )
+L2 FLBL, ( BRTS processbit. flag T set? we have a bit to
+           process )
+28 ( YL ) 30 ( ZL ) CP, ( if YL == ZL, buf is empty )
+L3 FLBL, ( BRNE sendTo164. YL != ZL? buf has data )
+( nothing to do. Before looping, let's check if our
+  communication timer overflowed. )
+16 TIFR IN,
+16 1 ( TOV0 ) SBRC,
+L4 FLBL, ( RJMP processbitReset, timer0 overflow? reset )
+( Nothing to do for real. )
+L1 ' RJMP LBL, ( loop )
 
+( Process the data bit received in INT0 handler. )
+L2 ' BRTS FLBL! ( processbit )
+19 GPIOR0 IN, ( backup GPIOR0 before we reset T )
+19 0x1 ANDI, ( only keep the first flag )
+GPIOR0 0 CBI,
+CLT, ( ready to receive another bit )
