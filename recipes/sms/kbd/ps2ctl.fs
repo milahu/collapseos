@@ -210,7 +210,7 @@ BEGIN,
     20 LSL,
     PORTB CP SBI,
     16 DEC,
-' BRNE AGAIN, ( not zero yet? loop )
+' BRNE AGAIN?, ( not zero yet? loop )
 ( release PS/2 )
 DDRB DATA CBI,
 SEI,
@@ -239,7 +239,7 @@ L2 ' RCALL LBL, ( resetTimer )
 BEGIN,
     16 TIFR IN,
     16 1 ( TOV0 ) SBRS,
-' RJMP AGAIN,
+AGAIN,
 ( Good, 100us passed. )
 ( Pull Data low, that's our start bit. )
 PORTB DATA CBI,
@@ -257,36 +257,36 @@ DDRB CLK CBI, ( Should be starting high now. )
 
 BEGIN,
     ( Wait for CLK to go low )
-    BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+    BEGIN, PINB CLK SBIC, AGAIN,
     ( set up DATA )
     PORTB DATA CBI,
     19 0 SBRC, ( skip if LSB is clear )
     PORTB DATA SBI,
     19 LSR,
 	( Wait for CLK to go high )
-    BEGIN, PINB CLK SBIS, ' RJMP AGAIN,
+    BEGIN, PINB CLK SBIS, AGAIN,
     16 DEC,
-' BRNE AGAIN, ( not zero? loop )
+' BRNE AGAIN?, ( not zero? loop )
 
 ( Data was sent, CLK is high. Let's send parity )
 19 1 MOV, ( recall saved value )
 L6 FLBL, ( RCALL checkParity )
 ( Wait for CLK to go low )
-BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+BEGIN, PINB CLK SBIC, AGAIN,
 ( set parity bit )
 PORTB DATA CBI,
 16 0 SBRC, ( parity bit in r16 )
 PORTB DATA SBI,
 ( Wait for CLK to go high )
-BEGIN, PINB CLK SBIS, ' RJMP AGAIN,
+BEGIN, PINB CLK SBIS, AGAIN,
 ( Wait for CLK to go low )
-BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+BEGIN, PINB CLK SBIC, AGAIN,
 ( We can now release the DATA line )
 DDRB DATA CBI,
 ( Wait for DATA to go low, that's our ACK )
-BEGIN, PINB DATA SBIC, ' RJMP AGAIN,
+BEGIN, PINB DATA SBIC, AGAIN,
 ( Wait for CLK to go low )
-BEGIN, PINB CLK SBIC, ' RJMP AGAIN,
+BEGIN, PINB CLK SBIC, AGAIN,
 ( We're finished! Enable INT0, reset timer, everything back to
   normal! )
 L2 ' RCALL LBL, ( resetTimer )
@@ -320,6 +320,6 @@ BEGIN,
     19 LSR,
     ' BRCC SKIP, 16 INC, ( carry set? we had a 1 ) TO,
     19 TST, ( is r19 zero yet? )
-' BRNE AGAIN, ( no? loop )
+' BRNE AGAIN?, ( no? loop )
 16 0x1 ANDI,
 RET,

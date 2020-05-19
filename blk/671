@@ -10,6 +10,6 @@
 ( L1 FLBL, .. L1 ' RJMP FLBL! )
 : FLBL, ( l -- ) LBL! 0 A,, ;
 : FLBL! ( l opw -- ) SWAP @ TO, ;
-: BEGIN, PC ;
-: AGAIN, ( op ) SWAP 1- SWAP EXECUTE A,, ;
+: BEGIN, PC ; : AGAIN?, ( op ) SWAP 1- SWAP EXECUTE A,, ;
+: AGAIN, ['] RJMP AGAIN?, ;
 : IF, ['] BREQ SKIP, ; : THEN, TO, ;
