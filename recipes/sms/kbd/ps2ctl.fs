@@ -67,31 +67,31 @@ SET,
 RETI,
 
 L1 ' RJMP FLBL! ( main )
-16 RAMEND 0xff AND LDI,
-SPL 16 OUT,
-16 RAMEND 8 RSHIFT LDI,
-SPH 16 OUT,
+R16 RAMEND 0xff AND LDI,
+SPL R16 OUT,
+R16 RAMEND 8 RSHIFT LDI,
+SPH R16 OUT,
 ( init variables )
-18 CLR,
-GPIOR0 18 OUT,
+R18 CLR,
+GPIOR0 R18 OUT,
 ( Setup int0
   INT0, falling edge )
-16 0x02 ( ISC01 ) LDI,
-MCUCR 16 OUT,
+R16 0x02 ( ISC01 ) LDI,
+MCUCR R16 OUT,
 ( Enable INT0 )
-16 0x40 ( INT0 ) LDI,
-GIMSK 16 OUT,
+R16 0x40 ( INT0 ) LDI,
+GIMSK R16 OUT,
 ( Setup buffer )
-29 ( YH ) CLR,
-28 ( YL ) SRAM_START 0xff AND LDI,
-31 ( ZH ) CLR,
-30 ( ZL ) SRAM_START 0xff AND LDI,
+YH CLR,
+YL SRAM_START 0xff AND LDI,
+ZH CLR,
+ZL SRAM_START 0xff AND LDI,
 ( Setup timer. We use the timer to clear up "processbit"
 registers after 100us without a clock. This allows us to start
 the next frame in a fresh state. at 1MHZ, no prescaling is
 necessary. Each TCNT0 tick is already 1us long. )
-16 0x01 ( CS00 ) LDI, ( no prescaler )
-TCCR0B 16 OUT,
+R16 0x01 ( CS00 ) LDI, ( no prescaler )
+TCCR0B R16 OUT,
 ( init DDRB )
 DDRB CP SBI,
 PORTB LR CBI,
@@ -101,20 +101,20 @@ SEI,
 L1 LBL! ( loop )
 L2 FLBL, ( BRTS processbit. flag T set? we have a bit to
            process )
-28 ( YL ) 30 ( ZL ) CP, ( if YL == ZL, buf is empty )
+YL ZL CP, ( if YL == ZL, buf is empty )
 L3 FLBL, ( BRNE sendTo164. YL != ZL? buf has data )
 ( nothing to do. Before looping, let's check if our
   communication timer overflowed. )
-16 TIFR IN,
-16 1 ( TOV0 ) SBRC,
+R16 TIFR IN,
+R16 1 ( TOV0 ) SBRC,
 L4 FLBL, ( RJMP processbitReset, timer0 overflow? reset )
 ( Nothing to do for real. )
 L1 ' RJMP LBL, ( loop )
 
 ( Process the data bit received in INT0 handler. )
 L2 ' BRTS FLBL! ( processbit )
-19 GPIOR0 IN, ( backup GPIOR0 before we reset T )
-19 0x1 ANDI, ( only keep the first flag )
+R19 GPIOR0 IN, ( backup GPIOR0 before we reset T )
+R19 0x1 ANDI, ( only keep the first flag )
 GPIOR0 0 CBI,
 CLT, ( ready to receive another bit )
 
@@ -122,31 +122,31 @@ CLT, ( ready to receive another bit )
 L2 FLBL, ( RCALL resetTimer )
 
 ( Which step are we at? )
-18 TST,
+R18 TST,
 L5 FLBL, ( BREQ processbits0 )
-18 1 CPI,
+R18 1 CPI,
 L6 FLBL, ( BREQ processbits1 )
-18 2 CPI,
+R18 2 CPI,
 L7 FLBL, ( BREQ processbits2 )
 ( step 3: stop bit )
-18 CLR, ( happens in all cases )
+R18 CLR, ( happens in all cases )
 ( DATA has to be set )
-19 TST, ( was DATA set? )
+R19 TST, ( was DATA set? )
 L1 ' BREQ LBL, ( loop, not set? error, don't push to buf )
 ( push r17 to the buffer )
-Y+ 17 ST,
+Y+ R17 ST,
 L8 FLBL, ( RCALL checkBoundsY )
 L1 ' RJMP LBL,
 
 L5 ' BREQ FLBL! ( processbits0 )
 ( step 0 - start bit )
 ( DATA has to be cleared )
-19 TST, ( was DATA set? )
+R19 TST, ( was DATA set? )
 L1 ' BRNE LBL, ( loop. set? error. no need to do anything. keep
                  r18 as-is. )
 ( DATA is cleared. prepare r17 and r18 for step 1 )
-18 INC,
-17 0x80 LDI,
+R18 INC,
+R17 0x80 LDI,
 L1 ' RJMP LBL, ( loop )
 
 L6 ' BREQ FLBL! ( processbits1 )
@@ -154,35 +154,35 @@ L6 ' BREQ FLBL! ( processbits1 )
   We're about to rotate the carry flag into r17. Let's set it
   first depending on whether DATA is set. )
 CLC,
-19 0 SBRC, ( skip if DATA is cleared )
+R19 0 SBRC, ( skip if DATA is cleared )
 SEC,
 ( Carry flag is set )
-17 ROR,
+R17 ROR,
 ( Good. now, are we finished rotating? If carry flag is set,
   it means that we've rotated in 8 bits. )
 L1 ' BRCC LBL, ( loop )
 ( We're finished, go to step 2 )
-18 INC,
+R18 INC,
 L1 ' RJMP LBL, ( loop )
 
 L7 ' BREQ FLBL! ( processbits2 )
 ( step 2 - parity bit )
-1 19 MOV,
-19 17 MOV,
+R1 R19 MOV,
+R19 R17 MOV,
 L5 FLBL, ( RCALL checkParity )
-1 16 CP,
+R1 R16 CP,
 L6 FLBL, ( BRNE processBitError, r1 != r16? wrong parity )
-18 INC,
+R18 INC,
 L1 ' RJMP LBL, ( loop )
 
 L6 ' BRNE FLBL! ( processBitError )
-18 CLR,
-19 0xfe LDI,
+R18 CLR,
+R19 0xfe LDI,
 L6 FLBL, ( RCALL sendToPS2 )
 L1 ' RJMP LBL, ( loop )
 
 L4 ' RJMP FLBL! ( processbitReset )
-18 CLR,
+R18 CLR,
 L4 FLBL, ( RCALL resetTimer )
 L1 ' RJMP LBL, ( loop )
 
@@ -197,19 +197,19 @@ L1 ' RJMP LBL, ( loop, even if we have something in the
   and processing it might mess things up. )
 CLI,
 DDRB DATA SBI,
-20 Z+ LD,
+R20 Z+ LD,
 L3 FLBL, ( RCALL checkBoundsZ )
-16 8 LDI,
+R16 R8 LDI,
 
 BEGIN,
     PORTB DATA CBI,
-    20 7 SBRC, ( if leftmost bit isn't cleared, set DATA high )
+    R20 7 SBRC, ( if leftmost bit isn't cleared, set DATA high )
     PORTB DATA SBI,
     ( toggle CP )
     PORTB CP CBI,
-    20 LSL,
+    R20 LSL,
     PORTB CP SBI,
-    16 DEC,
+    R16 DEC,
 ' BRNE AGAIN?, ( not zero yet? loop )
 ( release PS/2 )
 DDRB DATA CBI,
@@ -220,10 +220,10 @@ PORTB LR CBI,
 L1 ' RJMP LBL, ( loop )
 
 L2 ' RCALL FLBL! L4 ' RCALL FLBL! L2 LBL! ( resetTimer )
-16 TIMER_INITVAL LDI,
-TCNT0 16 OUT,
-16 0x02 ( TOV0 ) LDI,
-TIFR 16 OUT,
+R16 TIMER_INITVAL LDI,
+TCNT0 R16 OUT,
+R16 0x02 ( TOV0 ) LDI,
+TIFR R16 OUT,
 RET,
 
 L6 ' RCALL FLBL! ( sendToPS2 )
@@ -237,8 +237,8 @@ L2 ' RCALL LBL, ( resetTimer )
 
 ( Wait until the timer overflows )
 BEGIN,
-    16 TIFR IN,
-    16 1 ( TOV0 ) SBRS,
+    R16 TIFR IN,
+    R16 1 ( TOV0 ) SBRS,
 AGAIN,
 ( Good, 100us passed. )
 ( Pull Data low, that's our start bit. )
@@ -251,31 +251,31 @@ DDRB DATA SBI,
 DDRB CLK CBI, ( Should be starting high now. )
 
 ( We will do the next loop 8 times )
-16 8 LDI,
+R16 8 LDI,
 ( Let's remember initial r19 for parity )
-1 19 MOV,
+R1 R19 MOV,
 
 BEGIN,
     ( Wait for CLK to go low )
     BEGIN, PINB CLK SBIC, AGAIN,
     ( set up DATA )
     PORTB DATA CBI,
-    19 0 SBRC, ( skip if LSB is clear )
+    R19 0 SBRC, ( skip if LSB is clear )
     PORTB DATA SBI,
-    19 LSR,
+    R19 LSR,
 	( Wait for CLK to go high )
     BEGIN, PINB CLK SBIS, AGAIN,
     16 DEC,
 ' BRNE AGAIN?, ( not zero? loop )
 
 ( Data was sent, CLK is high. Let's send parity )
-19 1 MOV, ( recall saved value )
+R19 R1 MOV, ( recall saved value )
 L6 FLBL, ( RCALL checkParity )
 ( Wait for CLK to go low )
 BEGIN, PINB CLK SBIC, AGAIN,
 ( set parity bit )
 PORTB DATA CBI,
-16 0 SBRC, ( parity bit in r16 )
+R16 0 SBRC, ( parity bit in r16 )
 PORTB DATA SBI,
 ( Wait for CLK to go high )
 BEGIN, PINB CLK SBIS, AGAIN,
@@ -296,30 +296,30 @@ RET,
 
 L8 ' RCALL FLBL! ( checkBoundsY )
 ( Check that Y is within bounds, reset to SRAM_START if not. )
-28 ( YL ) TST,
+YL TST,
 IF, RET, ( not zero, nothing to do ) THEN,
 ( YL is zero. Reset Z )
-29 ( YH ) CLR,
-28 ( YL ) SRAM_START 0xff AND LDI,
+YH CLR,
+YL SRAM_START 0xff AND LDI,
 RET,
 
 L3 ' RCALL FLBL! ( checkBoundsZ )
 ( Check that Z is within bounds, reset to SRAM_START if not. )
-30 ( ZL ) TST,
+ZL TST,
 IF, RET, ( not zero, nothing to do ) THEN,
 ( ZL is zero. Reset Z )
-31 ( ZH ) CLR,
-30 ( ZL ) SRAM_START 0xff AND LDI,
+ZH CLR,
+ZL SRAM_START 0xff AND LDI,
 RET,
 
 L5 ' RCALL FLBL! L6 ' RCALL FLBL! ( checkParity )
 ( Counts the number of 1s in r19 and set r16 to 1 if there's an
   even number of 1s, 0 if they're odd. )
-16 1 LDI,
+R16 1 LDI,
 BEGIN,
-    19 LSR,
-    ' BRCC SKIP, 16 INC, ( carry set? we had a 1 ) TO,
-    19 TST, ( is r19 zero yet? )
+    R19 LSR,
+    ' BRCC SKIP, R16 INC, ( carry set? we had a 1 ) TO,
+    R19 TST, ( is r19 zero yet? )
 ' BRNE AGAIN?, ( no? loop )
-16 0x1 ANDI,
+R16 0x1 ANDI,
 RET,
