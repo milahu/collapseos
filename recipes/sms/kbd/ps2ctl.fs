@@ -41,6 +41,7 @@ Z: pointer to the next scan code to push to the 595 )
 0x33 CONSTANT TCCR0B
 0x3b CONSTANT GIMSK
 0x38 CONSTANT TIFR
+0x32 CONSTANT TCNT0
 0x16 CONSTANT PINB
 0x17 CONSTANT DDRB
 0x18 CONSTANT PORTB
@@ -49,7 +50,7 @@ Z: pointer to the next scan code to push to the 595 )
 3 CONSTANT CP
 0 CONSTANT LQ
 4 CONSTANT LR
-0x100-100 CONSTANT TIMER_INITVAL
+0x100 100 - CONSTANT TIMER_INITVAL
 ( We need a lot of labels in this program... )
 VARIABLE L5 VARIABLE L6 VARIABLE L7 VARIABLE L8
 
@@ -131,5 +132,105 @@ L7 FLBL, ( BREQ processbits2 )
 18 CLR, ( happens in all cases )
 ( DATA has to be set )
 19 TST, ( was DATA set? )
-L1 ' BREQ FLBL! ( loop, not set? error, don't push to buf )
+L1 ' BREQ LBL, ( loop, not set? error, don't push to buf )
 ( push r17 to the buffer )
+Y+ 17 ST,
+L8 FLBL, ( RCALL checkBoundsY )
+L1 ' RJMP LBL,
+
+L5 ' BREQ FLBL! ( processbits0 )
+( step 0 - start bit )
+( DATA has to be cleared )
+19 TST, ( was DATA set? )
+L1 ' BRNE LBL, ( loop. set? error. no need to do anything. keep
+                 r18 as-is. )
+( DATA is cleared. prepare r17 and r18 for step 1 )
+18 INC,
+17 0x80 LDI,
+L1 ' RJMP LBL, ( loop )
+
+L6 ' BREQ FLBL! ( processbits1 )
+( step 1 - receive bit
+  We're about to rotate the carry flag into r17. Let's set it
+  first depending on whether DATA is set. )
+CLC,
+19 0 SBRC, ( skip if DATA is cleared )
+SEC,
+( Carry flag is set )
+17 ROR,
+( Good. now, are we finished rotating? If carry flag is set,
+  it means that we've rotated in 8 bits. )
+L1 ' BRCC LBL, ( loop )
+( We're finished, go to step 2 )
+18 INC,
+L1 ' RJMP LBL, ( loop )
+
+L7 ' BREQ FLBL! ( processbits2 )
+( step 2 - parity bit )
+1 19 MOV,
+19 17 MOV,
+L5 FLBL, ( RCALL checkParity )
+1 16 CP,
+L6 FLBL, ( BRNE processBitError, r1 != r16? wrong parity )
+18 INC,
+L1 ' RJMP LBL, ( loop )
+
+L6 ' BRNE FLBL! ( processBitError )
+18 CLR,
+19 0xfe LDI,
+L6 FLBL, ( RCALL sendToPS2 )
+L1 ' RJMP LBL, ( loop )
+
+L4 ' RJMP FLBL! ( processbitReset )
+18 CLR,
+L4 FLBL, ( RCALL resetTimer )
+L1 ' RJMP LBL, ( loop )
+
+L3 ' BRNE FLBL! ( sendTo164 )
+( Send the value of r20 to the '164 )
+PINB LQ SBIS, ( LQ is set? we can send the next byte )
+L1 ' RJMP LBL, ( loop, even if we have something in the
+                 buffer, we can't: the SMS hasn't read our
+                 previous buffer yet. )
+( We disable any interrupt handling during this routine.
+  Whatever it is, it has no meaning to us at this point in time
+  and processing it might mess things up. )
+CLI,
+DDRB DATA SBI,
+20 Z+ LD,
+L3 FLBL, ( RCALL checkBoundsZ )
+16 8 LDI,
+
+L7 LBL! ( sendToPS2Loop )
+PORTB DATA CBI,
+20 7 SBRC, ( if leftmost bit isn't cleared, set DATA high )
+PORTB DATA SBI,
+( toggle CP )
+PORTB CP CBI,
+20 LSL,
+PORTB CP SBI,
+16 DEC,
+L7 ' BRNE LBL, ( sendToPS2Loop, not zero yet? loop )
+( release PS/2 )
+DDRB DATA CBI,
+SEI,
+( Reset the latch to indicate that the next number is ready )
+PORTB LR SBI,
+PORTB LR CBI,
+L1 ' RJMP LBL, ( loop )
+
+L2 ' RCALL FLBL! L4 ' RCALL FLBL! L2 LBL! ( resetTimer )
+16 TIMER_INITVAL LDI,
+TCNT0 16 OUT,
+16 0x02 ( TOV0 ) LDI,
+TIFR 16 OUT,
+RET,
+
+L6 ' RCALL FLBL! ( sendToPS2 )
+( Send the value of r19 to the PS/2 keyboard )
+CLI,
+( First, indicate our request to send by holding both Clock low
+  for 100us, then pull Data low lines low for 100us. )
+PORTB CLK CBI,
+DDRB CLK SBI,
+L2 ' RCALL LBL, ( resetTimer )

@@ -1,11 +1,6 @@
-( L1 LBL! .. L1 ' RJMP LBL, )
-: LBL! ( l -- ) PC SWAP ! ;
-: LBL, ( l op -- ) SWAP @ 1- SWAP EXECUTE A,, ;
-( L1 FLBL, .. L1 ' RJMP FLBL! )
-: FLBL, ( l -- ) LBL! 0 A,, ;
-: FLBL! ( l opw -- )
-    ( warning: l is a PC offset, not a mem addr! )
-    SWAP @ 2 * ORG @ + PC 1- H@ ( opw addr tgt hbkp )
-    ROT HERE ! ( opw tgt hbkp ) SWAP ROT EXECUTE H@ ! ( hbkp )
-    HERE ! ;
-
+0b11100 CONSTANT X 0b01000 CONSTANT Y 0b00000 CONSTANT Z
+0b11101 CONSTANT X+ 0b11001 CONSTANT Y+ 0b10001 CONSTANT Z+
+0b11110 CONSTANT -X 0b11010 CONSTANT -Y 0b10010 CONSTANT -Z
+: _ldst ( Rd XYZ op ) SWAP DUP 0x10 AND 8 LSHIFT SWAP 0xf AND
+    OR OR ( Rd op' ) SWAP _Rdp A,, ;
+: LD, 0x8000 _ldst ; : ST, SWAP 0x8200 _ldst ;
