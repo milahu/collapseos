@@ -2,13 +2,14 @@
 : LBL! ( l -- ) PC SWAP ! ;
 : LBL, ( l op -- ) SWAP @ 1- SWAP EXECUTE A,, ;
 : SKIP, PC 0 A,, ;
-: AT, ( opw pc )
+: TO, ( opw pc )
     ( warning: pc is a PC offset, not a mem addr! )
     2 * ORG @ + PC 1- H@ ( opw addr tgt hbkp )
     ROT HERE ! ( opw tgt hbkp ) SWAP ROT EXECUTE H@ ! ( hbkp )
     HERE ! ;
 ( L1 FLBL, .. L1 ' RJMP FLBL! )
 : FLBL, ( l -- ) LBL! 0 A,, ;
-: FLBL! ( l opw -- ) SWAP @ AT, ;
+: FLBL! ( l opw -- ) SWAP @ TO, ;
 : BEGIN, PC ;
 : AGAIN, ( op ) SWAP 1- SWAP EXECUTE A,, ;
+: IF, ['] BREQ SKIP, ; : THEN, TO, ;

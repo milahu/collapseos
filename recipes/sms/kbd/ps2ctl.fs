@@ -297,7 +297,7 @@ RET,
 L8 ' RCALL FLBL! ( checkBoundsY )
 ( Check that Y is within bounds, reset to SRAM_START if not. )
 28 ( YL ) TST,
-' BREQ SKIP, RET, ( not zero, nothing to do ) AT,
+IF, RET, ( not zero, nothing to do ) THEN,
 ( YL is zero. Reset Z )
 29 ( YH ) CLR,
 28 ( YL ) SRAM_START 0xff AND LDI,
@@ -306,7 +306,7 @@ RET,
 L3 ' RCALL FLBL! ( checkBoundsZ )
 ( Check that Z is within bounds, reset to SRAM_START if not. )
 30 ( ZL ) TST,
-' BREQ SKIP, RET, ( not zero, nothing to do ) AT,
+IF, RET, ( not zero, nothing to do ) THEN,
 ( ZL is zero. Reset Z )
 31 ( ZH ) CLR,
 30 ( ZL ) SRAM_START 0xff AND LDI,
@@ -318,7 +318,7 @@ L5 ' RCALL FLBL! L6 ' RCALL FLBL! ( checkParity )
 16 1 LDI,
 BEGIN,
     19 LSR,
-    ' BRCC SKIP, 16 INC, ( carry set? we had a 1 ) AT,
+    ' BRCC SKIP, 16 INC, ( carry set? we had a 1 ) TO,
     19 TST, ( is r19 zero yet? )
 ' BRNE AGAIN, ( no? loop )
 16 0x1 ANDI,
