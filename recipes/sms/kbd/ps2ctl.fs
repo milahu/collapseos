@@ -297,3 +297,29 @@ RET,
 L8 ' RCALL FLBL! ( checkBoundsY )
 ( Check that Y is within bounds, reset to SRAM_START if not. )
 28 ( YL ) TST,
+' BREQ SKIP, RET, ( not zero, nothing to do ) AT,
+( YL is zero. Reset Z )
+29 ( YH ) CLR,
+28 ( YL ) SRAM_START 0xff AND LDI,
+RET,
+
+L3 ' RCALL FLBL! ( checkBoundsZ )
+( Check that Z is within bounds, reset to SRAM_START if not. )
+30 ( ZL ) TST,
+' BREQ SKIP, RET, ( not zero, nothing to do ) AT,
+( ZL is zero. Reset Z )
+31 ( ZH ) CLR,
+30 ( ZL ) SRAM_START 0xff AND LDI,
+RET,
+
+L5 ' RCALL FLBL! L6 ' RCALL FLBL! ( checkParity )
+( Counts the number of 1s in r19 and set r16 to 1 if there's an
+  even number of 1s, 0 if they're odd. )
+16 1 LDI,
+BEGIN,
+    19 LSR,
+    ' BRCC SKIP, 16 INC, ( carry set? we had a 1 ) AT,
+    19 TST, ( is r19 zero yet? )
+' BRNE AGAIN, ( no? loop )
+16 0x1 ANDI,
+RET,
