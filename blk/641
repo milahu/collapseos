@@ -1,0 +1,11 @@
+: (ps2kcB) ( for port B )
+	( Port B TL is bit 2 )
+    0xdd PC@ 0x04 AND IF 0 EXIT ( nothing ) THEN
+    0x3f PC@ DROP 0b01110111 ( Port B TH output, low ) 0x3f PC!
+    0xdc PC@ ( bit 7:6 go in 1:0 ) 6 RSHIFT ( n )
+    0xdd PC@ ( bit 1:0 go in 3:2 ) 0x03 AND 2 LSHIFT OR ( n )
+    0b11110111 ( Port B TH output, high ) 0x3f PC!
+    0xdc PC@ ( bit 7:6 go in 5:4 ) 0xc0 AND 2 RSHIFT OR ( n )
+    0xdd PC@ ( bit 1:0 go in 7:6 ) 0x03 AND 6 LSHIFT OR ( n )
+	( Port A/B reset ) 0xff 0x3f PC!
+;
