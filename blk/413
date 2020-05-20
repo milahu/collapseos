@@ -1,0 +1,12 @@
+: (key) 0 ( dummy ) BEGIN DROP (ps2kc) DUP UNTIL ( kc )
+    DUP 0xe0 ( extended ) = IF ( ignore ) DROP (key) EXIT THEN
+    DUP 0xf0 ( break ) = IF DROP ( )
+        ( get next key and see if it's a shift )
+        (key) _shift? IF ( drop shift ) 0 PS2_SHIFT ! THEN
+        ( whether we had a shift or not, we return the next )
+        (key) EXIT THEN
+    DUP 0x7f > IF DROP (key) EXIT THEN
+    DUP _shift? IF DROP 1 PS2_SHIFT ! (key) EXIT THEN
+    ( ah, finally, we have a gentle run-of-the-mill KC )
+    PS2_CODES + C@ DUP NOT IF DROP (key) EXIT THEN ;
+
