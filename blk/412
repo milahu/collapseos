@@ -8,4 +8,9 @@
 ( 68 ) 0 C, '1' C, 0 C, '4' C, '7' C, 0 C, 0 C, 0 C,
 ( 70 ) '0' C, '.' C, '2' C, '5' C, '6' C, '8' C, 27 C, 0 C,
 ( 78 ) 0 C, 0 C, '3' C, 0 C, 0 C, '9' C, 0 C, 0 C,
-: _shift? ( kc -- f ) DUP 0x12 = SWAP 0x59 = OR ;
+( Same values, but shifted )
+( 00 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,
+( 08 ) 0 C, 0 C, 0 C, 0 C, 0 C, 9 C, '~' C, 0 C,
+( 10 ) 0 C, 0 C, 0 C, 0 C, 0 C, 'Q' C, '!' C, 0 C,
+( 18 ) 0 C, 0 C, 'Z' C, 'S' C, 'A' C, 'W' C, '@' C, 0 C,
+( 20 ) 0 C, 'C' C, 'X' C, 'D' C, 'E' C, '$' C, '#' C, 0 C,

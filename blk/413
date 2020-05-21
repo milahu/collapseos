@@ -1,12 +1,12 @@
-: (key) 0 ( dummy ) BEGIN DROP (ps2kc) DUP UNTIL ( kc )
-    DUP 0xe0 ( extended ) = IF ( ignore ) DROP (key) EXIT THEN
-    DUP 0xf0 ( break ) = IF DROP ( )
-        ( get next key and see if it's a shift )
-        (key) _shift? IF ( drop shift ) 0 PS2_SHIFT ! THEN
-        ( whether we had a shift or not, we return the next )
-        (key) EXIT THEN
-    DUP 0x7f > IF DROP (key) EXIT THEN
-    DUP _shift? IF DROP 1 PS2_SHIFT ! (key) EXIT THEN
-    ( ah, finally, we have a gentle run-of-the-mill KC )
-    PS2_CODES + C@ DUP NOT IF DROP (key) EXIT THEN ;
+( 28 ) 0 C, 32 C, 'V' C, 'F' C, 'T' C, 'R' C, '%' C, 0 C,
+( 30 ) 0 C, 'N' C, 'B' C, 'H' C, 'G' C, 'Y' C, '^' C, 0 C,
+( 38 ) 0 C, 0 C, 'M' C, 'J' C, 'U' C, '&' C, '*' C, 0 C,
+( 40 ) 0 C, '<' C, 'K' C, 'I' C, 'O' C, ')' C, '(' C, 0 C,
+( 48 ) 0 C, '>' C, '?' C, 'L' C, ':' C, 'P' C, '_' C, 0 C,
+( 50 ) 0 C, 0 C, '"' C, 0 C, '{' C, '+' C, 0 C, 0 C,
+( 58 ) 0 C, 0 C, 13 C, '}' C, 0 C, '|' C, 0 C, 0 C,
+( 60 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 8 C, 0 C,
+( 68 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,
+( 70 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 27 C, 0 C,
+( 78 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,
 
