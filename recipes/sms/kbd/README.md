@@ -100,16 +100,16 @@ The code expects a SR-latch that works like a 4043, that is, S and R are
 triggered high, S makes Q high, R makes Q low. R is hooked to PB4. S is hooked
 to TH (and also the A/B on the '157). Q is hooked to PB0 and TL.
 
-## Usage
+## Building the binary
 
-The code in this recipe is set up to listen to the keyboard on port B, leaving
-port A to drive, for example, an Everdrive with a D-pad. Unlike the generic
-SMS recipe, this kernel has no character selection mechanism. It acts like a
-regular shell, taking input from the keyboard.
+We start with the base recipe and add a few things:
 
-`kernel/sms/kbd.asm` also has a FetchKC implementation for port A if you prefer.
-Just hook it on. I've tried it, it works.
+1. at the top: `RAMSTART 0x72 + CONSTANT PS2_MEM`
+2. After VDP load: `641 LOAD : (ps2kc) (ps2kcB) ;` (that binds us to port B)
+3. Right after: `411 414 LOADR` (that gives us `(key)`)
+4. After `VDP$`: `PS2$`.
 
-Did you get there? Feels pretty cool huh?
+Rebuild, send to SMS, then run with your keyboard interface plugged to PortB.
+It should mostly work. There are still a few glitches to iron out...
 
 [rc2014-ps2]: ../../rc2014/ps2
