@@ -1,0 +1,16 @@
+See B260 for details.
+
+Drivers
+
+Up until now, we haven't implemented EMIT or KEY yet: those
+words are defined in the "high" part of core words because we
+generally need machine-specific drivers to implement (emit) and
+(key).
+
+Well, now is their time to shine. We split core in two
+precisely to fit drivers in there. This way. they have access
+to a pretty good vocabulary and they're also give the oppor-
+tunity to provide (emit) and (key).
+
+
+                                                        (cont.)

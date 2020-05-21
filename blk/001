@@ -6,7 +6,7 @@ MASTER INDEX
 150 Extra words
 200 Z80 assembler             260 Cross compilation
 280 Z80 boot code             350 Core words
-410 PS/2 keyboard subsystem
+410 PS/2 keyboard subsystem   420 Bootstrap guide
 490 TRS-80 Recipe             520 Fonts
 550 TI-84+ Recipe             580 RC2014 Recipe
 620 Sega Master System Recipe

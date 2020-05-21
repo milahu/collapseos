@@ -1,0 +1,16 @@
+Core words (high) (B350)
+
+Then come EMIT, KEY and everything that depend on it, until
+we have a full Forth interpreter. At the very end, we define
+tricky IMMEDIATEs that, if defined earlier, would break cross
+compilation.
+
+We end that with a hook words which is also where CURRENT will
+be on boot.
+
+So that's the anatomy of a Collapse OS binary. How do you build
+one? If your machine is already covered by a recipe, you're in
+luck: follow instructions.
+
+If you're deploying to a new machine, you'll have to write a
+new xcomp (cross compilation) unit. Let's look at its   (cont.)

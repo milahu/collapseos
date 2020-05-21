@@ -1,0 +1,15 @@
+After we've loaded the high part of the core words, we're at
+the "wrapping up" part. We add what we call a "hook word" (an
+empty word with a single letter name) which doesn't cost us
+much and can be very useful if we need to augment the binary
+with more words, and at that point we have our future boot
+CURRENT, which PC yields. That is why we write it to the
+LATEST field of the stable ABI: This value will be used at
+boot.
+
+After the last word of the dictionary comes the "source init"
+part. The boot sequence is designed to interpret whatever comes
+after LATEST as Forth source, and this, until it reads ASCII
+EOT character (4). This is generally used for driver init.
+
+Good luck!
