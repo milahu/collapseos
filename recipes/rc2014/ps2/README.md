@@ -61,10 +61,23 @@ probably have gone the flip-flop way. Seems more solid.
 
 ## Using the PS/2 interface
 
-After having built and flashed the `glue.asm` supplied with this recipe, you end
-up with a shell driven by the PS/2 keyboard (but it still outputs to ACIA).
+To use this interface, you have to build a new Collapse OS binary. We'll use
+the xcomp unit from the base recipe and modify it.
 
-There are still a few glitches, especially at initialization or at connect and
-disconnect, but it otherwise works rather well!
+First, we need a `(ps2kc)` routine. In this case, it's easy, it's
+`: (ps2kc) 8 PC@ ;`. Add this after ACIA loading. Then, we can load PS/2
+subsystem. You add `411 414 LOADR`. Then, at initialization, you add `PS2$`
+after `ACIA$`. You also need to define `PS2_MEM` at the top. You can probably
+use `RAMSTART + 0x7a`.
+
+Rebuild, reflash, should work. For debugging purposes, you might not want to
+go straight to plugging PS/2 `(key)` into the system. What I did myself was
+to load the PS/2 subsystem *before* ACIA (which overrides with its own `(key)`)
+and added a dummy word in between to access PS/2's key.
+
+Also (and this is a TODO: investigate), I had a problem where the break key I
+got from `(ps2kc)` was 0x70 instead of 0xf0 which had the effect of duplicating
+all my keystrokes. I added a 0x70 -> 0xf0 replacement in my version of
+`(ps2kc)`. Does the trick (at the cost of a non-functional numpad 0).
 
 [avra]: https://github.com/hsoft/avra
