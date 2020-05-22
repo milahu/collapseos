@@ -10,6 +10,6 @@
     LOOP ;
 : CPFNT7x7
     0 , 0 , 0 , 0 C, ( space char )
-    541 536 DO I BLK@ BLK( 9 _l 448 + 9 _l LOOP ( 90 )
-    542 BLK@ BLK( 4 _l ( 94! )
+    541 536 DO I BLK@ BLK( 9 _l 448 + 9 _l DROP LOOP ( 90 )
+    542 BLK@ BLK( 4 _l DROP ( 94! )
 ;
