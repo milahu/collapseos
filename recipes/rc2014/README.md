@@ -45,15 +45,14 @@ device I use in this recipe.
 * [GNU screen][screen]
 * A FTDI-to-TTL cable to connect to the Serial I/O module
 
-### Configure your build
-
-Modules used in this build are configured through the `conf.fs` file in this
-folder. There isn't much to configure, but it's there.
-
 ### Build the binary
 
 Building the binary is as simple as running `make`. This will yield `os.bin`
 which can then be written to EEPROM.
+
+This build is controlled by the `xcomp.fs` unit, which loads `blk/618`. That's
+what you need to modify if you want to customize your build (if you do, you'll
+need to rebuild `/emul/stage` because the blkfs is embedded in it).
 
 ### Emulate
 
