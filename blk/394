@@ -2,3 +2,13 @@
 ( b1 b2 -- )
 : LOADR 1+ SWAP DO I DUP . NL LOAD LOOP ;
 : LOADR+ BLK> @ + SWAP BLK> @ + SWAP LOADR ;
+( Now, adev stuff )
+: A@* 0x3e RAM+ ; : A@ A@* @ EXECUTE ;
+: A!* 0x40 RAM+ ; : A! A!* @ EXECUTE ;
+( src dst u -- )
+: AMOVE
+    ( u ) 0 DO
+        SWAP DUP I + A@   ( dst src x )
+        ROT TUCK I +      ( src dst x dst )
+        A!                ( src dst )
+    LOOP 2DROP ;

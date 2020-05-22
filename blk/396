@@ -8,6 +8,7 @@
     0 0x0a RAM+ !  ( NLPTR )
     ( 0c == C<* )
     ['] (boot<) 0x0c RAM+ !
+    ['] C@ A@* ! ['] C! A!* !
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
     RDLN$ LIT< _sys [entry]
