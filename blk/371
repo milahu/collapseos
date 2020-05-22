@@ -4,7 +4,7 @@
         ROT C!+ ( a1+1 a2+1 )
     LOOP 2DROP ;
 : MOVE- ( a1 a2 u -- )
-    SWAP OVER + 1- ( a1 u a2+u-1 )
+    TUCK + 1- ( a1 u a2+u-1 )
     ROT 2 PICK + 1- ( u a2+u-1 a1+u-1 )
     ROT ( u ) 0 DO ( a2 a1 )
         C@- ( a2 a1-1 x )

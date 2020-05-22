@@ -3,7 +3,7 @@
 : AMOVE
     ( u ) 0 DO
         SWAP DUP I + A@   ( dst src x )
-        ROT SWAP OVER I + ( src dst x dst )
+        ROT TUCK I +      ( src dst x dst )
         A!                ( src dst )
     LOOP
     2DROP

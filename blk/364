@@ -12,4 +12,3 @@
     IF OVER C@ OR
     ELSE 0xff XOR OVER C@ AND THEN ( addr flg )
     SWAP C! ;
-: NIP SWAP DROP ;

@@ -5,7 +5,7 @@
     CURRENT @ 1-
     DUP C@ 128 OR SWAP C! ;
 : IMMED? 1- C@ 0x80 AND ;
-: +! SWAP OVER @ + SWAP ! ;
+: +! TUCK @ + SWAP ! ;
 : -^ SWAP - ;
 : / /MOD NIP ;
 : MOD /MOD DROP ;

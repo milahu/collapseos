@@ -6,7 +6,8 @@
 : =><= 2 PICK >= ( n l f ) ROT ROT >= AND ;
 : MIN ( n n - n ) 2DUP > IF SWAP THEN DROP ;
 : MAX ( n n - n ) 2DUP < IF SWAP THEN DROP ;
+: NIP SWAP DROP ; : TUCK SWAP OVER ;
 : C@+ ( a -- a+1 c ) DUP C@ SWAP 1+ SWAP ;
-: C!+ ( c a -- a+1 ) SWAP OVER C! 1+ ;
+: C!+ ( c a -- a+1 ) TUCK C! 1+ ;
 : C@- ( a -- a-1 c ) DUP C@ SWAP 1- SWAP ;
-: C!- ( c a -- a-1 ) SWAP OVER C! 1- ;
+: C!- ( c a -- a-1 ) TUCK C! 1- ;

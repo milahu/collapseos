@@ -9,7 +9,7 @@
     < IF  ( under limit, do nothing )
         NIP          ( a )
     ELSE ( o a )
-        SWAP OVER @  ( a o n )
+        TUCK @       ( a o n )
         -^           ( a n-o )
         OVER !       ( a )
     THEN
