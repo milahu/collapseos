@@ -9,7 +9,7 @@
 
 : KEY
     85 RAM+ @ ( (key) override )
-    DUP IF EXECUTE ELSE DROP (key) THEN ;
+    ?DUP IF EXECUTE ELSE (key) THEN ;
 
 
 ( cont.: read one char into input buffer and returns whether we

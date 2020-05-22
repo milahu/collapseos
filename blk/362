@@ -6,7 +6,7 @@
     0  ( a r )
     BEGIN
     SWAP C@+                               ( r a+1 c )
-    DUP NOT IF 2DROP 1 EXIT THEN           ( r 1 )
+    ?DUP NOT IF DROP 1 EXIT THEN           ( r 1 )
     _                                      ( r a n )
     DUP 0< IF ROT 2DROP 0 EXIT THEN        ( a 0 )
     ROT 2 * +                              ( a r*2+n )

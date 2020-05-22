@@ -3,7 +3,7 @@
   hit 0. )
 : ENDCASE
     BEGIN
-        DUP NOT IF DROP EXIT THEN
+        ?DUP NOT IF EXIT THEN
         [COMPILE] THEN
     AGAIN
 ; IMMEDIATE

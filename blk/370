@@ -4,7 +4,7 @@
     LIT< (wnf) FIND DROP EXECUTE
 ;
 : ROLL
-    DUP NOT IF EXIT THEN
+    ?DUP NOT IF EXIT THEN
     1+ DUP PICK          ( n val )
     SWAP 2 * (roll)      ( val )
     SWAP DROP

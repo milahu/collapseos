@@ -5,12 +5,12 @@
         - SWAP EXIT                    ( 0-n f )
     THEN
     0 SWAP _pdacc                 ( a r f )
-    DUP IF 2DROP 0 EXIT THEN
-    BEGIN                         ( a r 0 )
-        DROP SWAP 1+              ( r a+1 )
+    ?DUP IF 2DROP 0 EXIT THEN
+    BEGIN                         ( a r )
+        SWAP 1+                   ( r a+1 )
         DUP C@                    ( r a c )
         ROT SWAP                  ( a r c )
         _pdacc                    ( a r f )
-    DUP UNTIL
+    ?DUP UNTIL
     1 =         ( a r f )
     ROT DROP    ( r f ) ;

@@ -11,5 +11,5 @@
     DUP _shift? IF DROP 1 PS2_SHIFT C! (key) EXIT THEN
     ( ah, finally, we have a gentle run-of-the-mill KC )
     PS2_CODES PS2_SHIFT C@ IF 0x80 + THEN + C@
-    DUP NOT IF DROP (key) THEN ;
+    ?DUP NOT IF (key) THEN ;
 
