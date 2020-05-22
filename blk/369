@@ -7,7 +7,7 @@
 : IMMED? 1- C@ 0x80 AND ;
 : +! SWAP OVER @ + SWAP ! ;
 : -^ SWAP - ;
-: / /MOD SWAP DROP ;
+: / /MOD NIP ;
 : MOD /MOD DROP ;
 : ALLOT HERE +! ;
 : CREATE (entry) 11 ( 11 == cellWord ) C, ;

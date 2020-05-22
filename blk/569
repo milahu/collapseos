@@ -8,5 +8,5 @@
     ( gid dmask )
     0xff XOR ( dpos ) 0 ( dindex )
     BEGIN 1+ 2DUP RSHIFT NOT UNTIL 1-
-    ( gid dpos dindex ) SWAP DROP
+    ( gid dpos dindex ) NIP
     ( gid dindex ) SWAP 8 * + ;

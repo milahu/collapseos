@@ -3,6 +3,7 @@ Parameter Stack
 DROP        a --
 DUP         a -- a a
 ?DUP        DUP if a is nonzero
+NIP         a b -- b
 OVER        a b -- a b a
 ROT         a b c -- b c a
 SWAP        a b -- b a
@@ -12,5 +13,4 @@ SWAP        a b -- b a
 2SWAP       a b c d -- c d a b
 'S          Returns current stack pointer, not counting the
             push it's making right now.
-S0          Returns address of PSP TOS. When PSP is empty,
-            'S == S0                                    (cont.)
+                                                        (cont.)

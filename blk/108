@@ -7,7 +7,7 @@
         SWAP OVER - ( ilen chars-to-move )
         SWAP EDPOS @ _cpos 2DUP + ( ctm ilen a a+ilen )
         3 PICK MOVE- ( ctm ilen )
-        SWAP DROP ( ilen )
+        NIP ( ilen )
     ELSE DROP ( ilen becomes rbuffsize )
     THEN
     DUP IBUF EDPOS @ _cpos ROT MOVE ( ilen )

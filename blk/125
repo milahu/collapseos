@@ -7,7 +7,7 @@
     THEN
     ROT             ( o a n ol )
     < IF  ( under limit, do nothing )
-        SWAP DROP    ( a )
+        NIP          ( a )
     ELSE ( o a )
         SWAP OVER @  ( a o n )
         -^           ( a n-o )

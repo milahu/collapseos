@@ -1,4 +1,5 @@
-(cont.)
+S0          Returns address of PSP TOS. When PSP is empty,
+            'S == S0                                 
 PICK        Pick nth item from stack. "0 PICK" = DUP,
             "1 PICK" = OVER.
 ROLL        Rotate PSP over n items. "1 ROLL" = SWAP,

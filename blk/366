@@ -9,5 +9,5 @@
         OVER ! 1+ C< ( a c )
         OVER 0x2d ( 2e-1 for NULL ) RAM+ = OVER WS? OR
     UNTIL ( a c )
-    SWAP DROP 0x0e RAM+ ( ws a )
+    NIP 0x0e RAM+ ( ws a )
     SWAP EOT? IF 4 OVER ! THEN ;
