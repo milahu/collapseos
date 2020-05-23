@@ -1,7 +1,6 @@
 CODE PC!
     BC POPqq,
     HL POPqq,
-    chkPS,
     L OUT(C)r,
 ;CODE
 

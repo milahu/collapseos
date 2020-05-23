@@ -2,7 +2,6 @@
 CODE 2DROP
     HL POPqq,
     HL POPqq,
-    chkPS,
 ;CODE
 
 ( a b -- a b a b )

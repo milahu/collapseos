@@ -1,6 +1,5 @@
 CODE PICK
     HL POPqq,
-    chkPS,
     ( x2 )
     L SLAr, H RLr,
     SP ADDHLss,

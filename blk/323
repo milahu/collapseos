@@ -1,7 +1,6 @@
 CODE C!
     HL POPqq,
     DE POPqq,
-    chkPS,
     (HL) E LDrr,
 ;CODE
 

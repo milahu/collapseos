@@ -1,11 +1,11 @@
 CODE >R ( 0xa8 )
-    HL POPqq, chkPS,
+    HL POPqq,
     17 BCALL, ( 17 == pushRS )
-;CODE
+;CODE NOP, NOP, NOP,
 CODE 2>R ( 0xb9 )
-    DE POPqq, HL POPqq, chkPS,
+    DE POPqq, HL POPqq,
     17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
-;CODE
+;CODE NOP, NOP, NOP,
 CODE R> ( 0xce )
     20 BCALL, ( 20 == popRS )
     HL PUSHqq,
