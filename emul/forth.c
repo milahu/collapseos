@@ -5,7 +5,6 @@
 #include <termios.h>
 #include "emul.h"
 #include "forth-bin.h"
-#include "blkfs-bin.h"
 
 // in sync with glue.asm
 #define RAMSTART 0x900
@@ -83,13 +82,15 @@ static void iowr_blkdata(uint8_t val)
 
 int run()
 {
-    blkfp = fopen("blkfs", "r+");
-    if (blkfp) {
-        fprintf(stderr, "Using blkfs file\n");
-    } else {
-        blkfp = fmemopen((char*)BLKFS, sizeof(BLKFS), "r");
-        fprintf(stderr, "Using in-memory read-only blkfs\n");
+#ifdef BLKFS_PATH
+    fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
+    blkfp = fopen(BLKFS_PATH, "r+");
+    if (!blkfp) {
+        fprintf(stderr, "Can't open\n");
     }
+#else
+    blkfp = NULL;
+#endif
     Machine *m = emul_init();
     m->ramstart = RAMSTART;
     m->iord[STDIO_PORT] = iord_stdio;

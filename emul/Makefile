@@ -1,4 +1,4 @@
-TARGETS = forth stage
+TARGETS = forth stage blkfs
 OBJS = emul.o libz80/libz80.o
 BIN2C = ../tools/bin2c
 BLKPACK = ../tools/blkpack
@@ -18,17 +18,14 @@ $(BLKUNPACK): $(BLKPACK)
 forth-bin.h: $(BIN2C)
 	$(BIN2C) KERNEL < forth.bin > $@
 
-stage: stage.c $(OBJS) forth-bin.h blkfs-bin.h
-	$(CC) stage.c $(OBJS) -o $@
+stage: stage.c $(OBJS) forth-bin.h
+	$(CC) stage.c -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
-blkfs-bin.h: blkfs $(BIN2C)
-	$(BIN2C) BLKFS < blkfs > $@
-
-forth: forth.c $(OBJS) forth-bin.h blkfs-bin.h
-	$(CC) forth.c $(OBJS) -lncurses -o $@
+forth: forth.c $(OBJS) forth-bin.h
+	$(CC) forth.c -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -lncurses -o $@
 
 libz80/libz80.o: libz80/z80.c
 	$(MAKE) -C libz80/codegen opcodes
@@ -39,7 +36,7 @@ emul.o: emul.c
 
 
 .PHONY: updatebootstrap
-updatebootstrap: stage xcomp.fs
+updatebootstrap: stage xcomp.fs pack
 	./stage < xcomp.fs > forth.bin
 
 .PHONY: pack
@@ -52,5 +49,4 @@ unpack:
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) emul.o *-bin.h stage{1,2}.bin blkfs
-	$(MAKE) -C ../tools clean
+	rm -f $(TARGETS) emul.o *-bin.h blkfs

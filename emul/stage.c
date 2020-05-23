@@ -3,7 +3,10 @@
 #include <unistd.h>
 #include "emul.h"
 #include "forth-bin.h"
-#include "blkfs-bin.h"
+
+#ifndef BLKFS_PATH
+#error BLKFS_PATH needed
+#endif
 
 /* Staging binaries
 
@@ -37,7 +40,7 @@ static int running;
 static uint16_t start_here = 0;
 static uint16_t end_here = 0;
 static uint16_t blkid = 0;
-static unsigned int blkpos = 0;
+static FILE *blkfp;
 
 static uint8_t iord_stdio()
 {
@@ -65,16 +68,22 @@ static void iowr_blk(uint8_t val)
 {
     blkid <<= 8;
     blkid |= val;
-    blkpos = blkid * 1024;
+    fseek(blkfp, blkid*1024, SEEK_SET);
 }
 
 static uint8_t iord_blkdata()
 {
-    return BLKFS[blkpos++];
+    return getc(blkfp);
 }
 
 int main(int argc, char *argv[])
 {
+    fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
+    blkfp = fopen(BLKFS_PATH, "r+");
+    if (!blkfp) {
+        fprintf(stderr, "Can't open\n");
+        return 1;
+    }
     Machine *m = emul_init();
     m->ramstart = RAMSTART;
     m->iord[STDIO_PORT] = iord_stdio;
