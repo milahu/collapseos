@@ -10,8 +10,7 @@ the dictionary (B30) for a word reference.
 
 Contents
 
- 4 Number literals              6 Compilation vs meta-comp.
+ 5 Number literals              6 Compilation vs meta-comp.
  8 Interpreter I/O             11 Signed-ness
 14 Addressed devices           17 DOES>
-18 Disk blocks                 21 How blocks are organized
-22 Addressed devices
+18 Disk blocks                                          (cont.)

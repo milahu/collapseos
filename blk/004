@@ -1,11 +1,1 @@
-Number literals
-
-Traditional Forth often use HEX/DEC switches to go from decimal
-to hexadecimal parsing. Collapse OS parses literals in a way
-that is closer to C.
-
-Straight numbers are decimals, numbers starting with "0x"
-are hexadecimals (example "0x12ef"), "0b" prefixes indicate
-binary (example "0b1010"), char literals are single characters
-surrounded by ' (example 'X'). Char literals can't be used for
-whitespaces.
+21 How blocks are organized    22 Addressed devices
