@@ -52,6 +52,9 @@ static void iowr_stdio(uint8_t val)
     } else {
         if (val >= 0x20 || val == '\n') {
             wechochar(w, val);
+        } else if (val == 0x08) {
+            int y, x; getyx(w, y, x);
+            wmove(w, y, x-1);
         }
     }
 }
