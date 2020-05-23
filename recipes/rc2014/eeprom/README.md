@@ -34,19 +34,13 @@ I don't think you need a schematic. It's really simple.
 
 ### Building the binary
 
-You build the binary by modifying the base recipe's `xcomp` unit. This binary
-is missing 2 things: Addressed devices and the AT28 Driver.
+The binary from the base recipe has almost all it needs to write to EEPROM. The
+only thing it needs is the AT28 driver from B590. You could add it to the
+`xcomp` unit and rebuild, but the driver is so tiny, you're probably better off
+loading it at runtime.
 
-Addressed devices are at B140. If you read that block, you'll see that it tells
-you to load block 142. Open the `xcomp` unit and locate the ACIA driver loading
-line. Insert your new load line after that one.
-
-Do the same thing with the AT28 driver (B590)
-
-You also have to modify the initialization sequence at the end of the `xcomp`
-unit to include `ADEV$`.
-
-Build again, write `os.com` to EEPROM.
+If your system has mass storage, it's as easy as a LOAD. If it doesn't, you
+can use `/tools/exec` to send `blk/591` to the RC2014.
 
 ## Writing contents to the AT28
 
@@ -58,7 +52,7 @@ run this from your modern computer:
     ./upload <tty device> a000 <filename>
 
 Then, activate `AT28!` with `' AT28! A!* !` and then run
-`0xa000 0x2000 <size-of-bin> AMOVE`. `AT28!` checks every myte for integrity,
+`0xa000 0x2000 <size-of-bin> AMOVE`. `AT28!` checks every byte for integrity,
 so it there's no error, you should be fine. Your content is now on the EEPROM!
 
 Why not upload content directly to `0x2000` after having activated `AT28!`?
