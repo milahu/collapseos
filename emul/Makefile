@@ -28,7 +28,7 @@ blkfs-bin.h: blkfs $(BIN2C)
 	$(BIN2C) BLKFS < blkfs > $@
 
 forth: forth.c $(OBJS) forth-bin.h blkfs-bin.h
-	$(CC) forth.c $(OBJS) -o $@
+	$(CC) forth.c $(OBJS) -lncurses -o $@
 
 libz80/libz80.o: libz80/z80.c
 	$(MAKE) -C libz80/codegen opcodes

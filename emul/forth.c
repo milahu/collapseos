@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <curses.h>
 #include <termios.h>
 #include "emul.h"
 #include "forth-bin.h"
@@ -24,7 +25,12 @@ static uint16_t blkid = 0;
 
 static uint8_t iord_stdio()
 {
-    int c = getc(fp);
+    int c;
+    if (fp != NULL) {
+        c = getc(fp);
+    } else {
+        c = getch();
+    }
     if (c == EOF) {
         c = 4; // ASCII EOT
     }
@@ -33,7 +39,13 @@ static uint8_t iord_stdio()
 
 static void iowr_stdio(uint8_t val)
 {
-    putchar(val);
+    if (fp != NULL) {
+        putchar(val);
+    } else {
+        if (val >= 0x20 || val == '\n') {
+            echochar(val);
+        }
+    }
 }
 
 static void iowr_ret(uint8_t val)
@@ -69,34 +81,8 @@ static void iowr_blkdata(uint8_t val)
     }
 }
 
-
-int main(int argc, char *argv[])
+int run()
 {
-    bool tty = false;
-    struct termios termInfo;
-    if (argc == 2) {
-        fp = fopen(argv[1], "r");
-        if (fp == NULL) {
-            fprintf(stderr, "Can't open %s\n", argv[1]);
-            return 1;
-        }
-    } else if (argc == 1) {
-        fp = stdin;
-        tty = isatty(fileno(stdin));
-        if (tty) {
-            // Turn echo off: the shell takes care of its own echoing.
-            if (tcgetattr(0, &termInfo) == -1) {
-                printf("Can't setup terminal.\n");
-                return 1;
-            }
-            termInfo.c_lflag &= ~ECHO;
-            termInfo.c_lflag &= ~ICANON;
-            tcsetattr(0, TCSAFLUSH, &termInfo);
-        }
-    } else {
-        fprintf(stderr, "Usage: ./forth [filename]\n");
-        return 1;
-    }
     blkfp = fopen("blkfs", "r+");
     if (blkfp) {
         fprintf(stderr, "Using blkfs file\n");
@@ -120,16 +106,34 @@ int main(int argc, char *argv[])
     // Run!
     while (emul_step());
 
-    if (tty) {
-        printf("\nDone!\n");
-        termInfo.c_lflag |= ECHO;
-        termInfo.c_lflag |= ICANON;
-        tcsetattr(0, TCSAFLUSH, &termInfo);
-        emul_printdebug();
-    }
     if (blkfp != NULL) {
         fclose(blkfp);
     }
-    fclose(fp);
     return retcode;
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc == 2) {
+        fp = fopen(argv[1], "r");
+        if (fp == NULL) {
+            fprintf(stderr, "Can't open %s\n", argv[1]);
+            return 1;
+        }
+        int ret = run();
+        fclose(fp);
+        return ret;
+    } else if (argc == 1) {
+        fp = NULL;
+        initscr(); cbreak(); noecho(); nl(); clear();
+        scrollok(stdscr, 1);
+        int ret = run();
+        nocbreak(); echo(); endwin();
+        printf("\nDone!\n");
+        emul_printdebug();
+        return ret;
+    } else {
+        fprintf(stderr, "Usage: ./forth [filename]\n");
+        return 1;
+    }
 }

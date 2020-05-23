@@ -3,6 +3,11 @@
 This folder contains a couple of tools running under the [libz80][libz80]
 emulator.
 
+## Requirements
+
+You need `ncurses` to build the `forth` executable. In debian-based distros,
+it's `libncurses5-dev`.
+
 ## Not real hardware
 
 In the few emulated apps described below, we don't try to emulate real hardware
@@ -20,7 +25,7 @@ First, make sure that the `libz80` git submodule is checked out. If not, run
 
 After that, you can run `make` and it builds the `forth` interpreter.
 
-Run `./forth` to get the COllapse OS prompt. Type `0 LIST` for help.
+Run `./forth` to get the Collapse OS prompt. Type `0 LIST` for help.
 
 ## Problems?
 
