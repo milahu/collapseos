@@ -4,7 +4,12 @@
 #include <curses.h>
 #include <termios.h>
 #include "emul.h"
-#include "forth-bin.h"
+#ifndef FBIN_PATH
+#error FBIN_PATH needed
+#endif
+#ifndef BLKFS_PATH
+#error BLKFS_PATH needed
+#endif
 
 // in sync with glue.asm
 #define RAMSTART 0x900
@@ -56,41 +61,32 @@ static void iowr_blk(uint8_t val)
 {
     blkid <<= 8;
     blkid |= val;
-    if (blkfp != NULL) {
-        fseek(blkfp, blkid*1024, SEEK_SET);
-    }
+    fseek(blkfp, blkid*1024, SEEK_SET);
 }
 
 static uint8_t iord_blkdata()
 {
     uint8_t res = 0;
-    if (blkfp != NULL) {
-        int c = getc(blkfp);
-        if (c != EOF) {
-            res = c;
-        }
+    int c = getc(blkfp);
+    if (c != EOF) {
+        res = c;
     }
     return res;
 }
 
 static void iowr_blkdata(uint8_t val)
 {
-    if (blkfp != NULL) {
-        putc(val, blkfp);
-    }
+    putc(val, blkfp);
 }
 
 int run()
 {
-#ifdef BLKFS_PATH
     fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
     blkfp = fopen(BLKFS_PATH, "r+");
     if (!blkfp) {
         fprintf(stderr, "Can't open\n");
+        return 1;
     }
-#else
-    blkfp = NULL;
-#endif
     Machine *m = emul_init();
     m->ramstart = RAMSTART;
     m->iord[STDIO_PORT] = iord_stdio;
@@ -100,10 +96,18 @@ int run()
     m->iord[BLKDATA_PORT] = iord_blkdata;
     m->iowr[BLKDATA_PORT] = iowr_blkdata;
     // initialize memory
-    for (int i=0; i<sizeof(KERNEL); i++) {
-        m->mem[i] = KERNEL[i];
+    FILE *bfp = fopen(FBIN_PATH, "r");
+    if (!bfp) {
+        fprintf(stderr, "Can't open forth.bin\n");
+        return 1;
     }
-
+    int i = 0;
+    int c = getc(bfp);
+    while (c != EOF) {
+        m->mem[i++] = c;
+        c = getc(bfp);
+    }
+    fclose(bfp);
     // Run!
     while (emul_step());
 

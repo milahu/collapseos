@@ -1,6 +1,5 @@
 TARGETS = forth stage blkfs
 OBJS = emul.o libz80/libz80.o
-BIN2C = ../tools/bin2c
 BLKPACK = ../tools/blkpack
 BLKUNPACK = ../tools/blkunpack
 
@@ -10,22 +9,17 @@ all: $(TARGETS)
 $(BLKPACK):
 	$(MAKE) -C ../tools
 
-.PHONY: $(BIN2C) $(BLKUNPACK)
-$(BIN2C): $(BLKPACK)
+.PHONY: $(BLKUNPACK)
 $(BLKUNPACK): $(BLKPACK)
 
-# not dependent on forth.bin to avoid circular deps.
-forth-bin.h: $(BIN2C)
-	$(BIN2C) KERNEL < forth.bin > $@
-
-stage: stage.c $(OBJS) forth-bin.h
-	$(CC) stage.c -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -o $@
+stage: stage.c $(OBJS)
+	$(CC) stage.c -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
-forth: forth.c $(OBJS) forth-bin.h
-	$(CC) forth.c -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -lncurses -o $@
+forth: forth.c $(OBJS)
+	$(CC) forth.c -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -lncurses -o $@
 
 libz80/libz80.o: libz80/z80.c
 	$(MAKE) -C libz80/codegen opcodes
@@ -37,7 +31,7 @@ emul.o: emul.c
 
 .PHONY: updatebootstrap
 updatebootstrap: stage xcomp.fs pack
-	./stage < xcomp.fs > forth.bin
+	./stage < xcomp.fs | tee forth.bin > /dev/null
 
 .PHONY: pack
 pack:

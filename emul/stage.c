@@ -2,8 +2,9 @@
 #include <stdio.h>
 #include <unistd.h>
 #include "emul.h"
-#include "forth-bin.h"
-
+#ifndef FBIN_PATH
+#error FBIN_PATH needed
+#endif
 #ifndef BLKFS_PATH
 #error BLKFS_PATH needed
 #endif
@@ -92,10 +93,18 @@ int main(int argc, char *argv[])
     m->iowr[BLK_PORT] = iowr_blk;
     m->iord[BLKDATA_PORT] = iord_blkdata;
     // initialize memory
-    for (int i=0; i<sizeof(KERNEL); i++) {
-        m->mem[i] = KERNEL[i];
+    FILE *bfp = fopen(FBIN_PATH, "r");
+    if (!bfp) {
+        fprintf(stderr, "Can't open forth.bin\n");
+        return 1;
     }
-
+    int i = 0;
+    int c = getc(bfp);
+    while (c != EOF) {
+        m->mem[i++] = c;
+        c = getc(bfp);
+    }
+    fclose(bfp);
     // Run!
     running = 1;
 
