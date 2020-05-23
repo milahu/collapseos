@@ -13,20 +13,20 @@ $(BLKPACK):
 $(BLKUNPACK): $(BLKPACK)
 
 stage: stage.c $(OBJS)
-	$(CC) stage.c -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -o $@
+	$(CC) stage.c $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
 forth: forth.c $(OBJS)
-	$(CC) forth.c -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" $(OBJS) -lncurses -o $@
+	$(CC) forth.c $(OBJS) -lncurses -o $@
 
 libz80/libz80.o: libz80/z80.c
 	$(MAKE) -C libz80/codegen opcodes
 	$(CC) -Wall -ansi -g -c -o libz80/libz80.o libz80/z80.c
 
 emul.o: emul.c
-	$(CC) -c -o emul.o emul.c
+	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" -c -o emul.o emul.c
 
 
 .PHONY: updatebootstrap

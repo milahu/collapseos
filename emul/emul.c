@@ -1,13 +1,26 @@
-/* Common code between shell, zasm and runbin.
+/* Common code between forth and stage binaries.
 
 They all run on the same kind of virtual machine: A z80 CPU, 64K of RAM/ROM.
 */
 
 #include <string.h>
 #include "emul.h"
+// Port for block reads. Write 2 bytes, MSB first, on that port and then
+// read 1024 bytes from the DATA port.
+#define BLK_PORT 0x03
+#define BLKDATA_PORT 0x04
+
+#ifndef BLKFS_PATH
+#error BLKFS_PATH needed
+#endif
+#ifndef FBIN_PATH
+#error FBIN_PATH needed
+#endif
 
 static Machine m;
 static ushort traceval = 0;
+static uint16_t blkid = 0;
+static FILE *blkfp;
 
 static uint8_t io_read(int unused, uint16_t addr)
 {
@@ -32,6 +45,23 @@ static void io_write(int unused, uint16_t addr, uint8_t val)
     }
 }
 
+static void iowr_blk(uint8_t val)
+{
+    blkid <<= 8;
+    blkid |= val;
+    fseek(blkfp, blkid*1024, SEEK_SET);
+}
+
+static uint8_t iord_blkdata()
+{
+    return getc(blkfp);
+}
+
+static void iowr_blkdata(uint8_t val)
+{
+    putc(val, blkfp);
+}
+
 static uint8_t mem_read(int unused, uint16_t addr)
 {
     return m.mem[addr];
@@ -50,7 +80,26 @@ static void mem_write(int unused, uint16_t addr, uint8_t val)
 
 Machine* emul_init()
 {
+    fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
+    blkfp = fopen(BLKFS_PATH, "r+");
+    if (!blkfp) {
+        fprintf(stderr, "Can't open\n");
+        return NULL;
+    }
+    // initialize memory
     memset(m.mem, 0, 0x10000);
+    FILE *bfp = fopen(FBIN_PATH, "r");
+    if (!bfp) {
+        fprintf(stderr, "Can't open forth.bin\n");
+        return NULL;
+    }
+    int i = 0;
+    int c = getc(bfp);
+    while (c != EOF) {
+        m.mem[i++] = c;
+        c = getc(bfp);
+    }
+    fclose(bfp);
     m.ramstart = 0;
     m.minsp = 0xffff;
     m.maxix = 0;
@@ -63,9 +112,16 @@ Machine* emul_init()
     m.cpu.memWrite = mem_write;
     m.cpu.ioRead = io_read;
     m.cpu.ioWrite = io_write;
+    m.iowr[BLK_PORT] = iowr_blk;
+    m.iord[BLKDATA_PORT] = iord_blkdata;
+    m.iowr[BLKDATA_PORT] = iowr_blkdata;
     return &m;
 }
 
+void emul_deinit()
+{
+    fclose(blkfp);
+}
 
 bool emul_step()
 {
