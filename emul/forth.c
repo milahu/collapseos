@@ -5,6 +5,8 @@
 #include <termios.h>
 #include "emul.h"
 
+#define WCOLS 80
+#define WLINES 32
 // in sync with glue.asm
 #define RAMSTART 0x900
 #define STDIO_PORT 0x00
@@ -18,6 +20,7 @@
 
 static FILE *fp;
 static int retcode = 0;
+WINDOW *bw, *w;
 
 static uint8_t iord_stdio()
 {
@@ -25,7 +28,7 @@ static uint8_t iord_stdio()
     if (fp != NULL) {
         c = getc(fp);
     } else {
-        c = getch();
+        c = wgetch(w);
     }
     if (c == EOF) {
         c = 4; // ASCII EOT
@@ -39,7 +42,7 @@ static void iowr_stdio(uint8_t val)
         putchar(val);
     } else {
         if (val >= 0x20 || val == '\n') {
-            echochar(val);
+            wechochar(w, val);
         }
     }
 }
@@ -49,7 +52,7 @@ static void iowr_ret(uint8_t val)
     retcode = val;
 }
 
-int run()
+int main(int argc, char *argv[])
 {
     Machine *m = emul_init();
     if (m == NULL) {
@@ -59,35 +62,31 @@ int run()
     m->iord[STDIO_PORT] = iord_stdio;
     m->iowr[STDIO_PORT] = iowr_stdio;
     m->iowr[RET_PORT] = iowr_ret;
-    // Run!
-    while (emul_step());
-
-    emul_deinit();
-    return retcode;
-}
-
-int main(int argc, char *argv[])
-{
+    w = NULL;
     if (argc == 2) {
         fp = fopen(argv[1], "r");
         if (fp == NULL) {
             fprintf(stderr, "Can't open %s\n", argv[1]);
             return 1;
         }
-        int ret = run();
+        while (emul_step());
         fclose(fp);
-        return ret;
     } else if (argc == 1) {
         fp = NULL;
         initscr(); cbreak(); noecho(); nl(); clear();
-        scrollok(stdscr, 1);
-        int ret = run();
-        nocbreak(); echo(); endwin();
+        bw = newwin(WLINES+2, WCOLS+2, 0, 0);
+        wborder(bw, 0, 0, 0, 0, 0, 0, 0, 0);
+        wrefresh(bw);
+        w = newwin(WLINES, WCOLS, 1, 1);
+        scrollok(w, 1);
+        while (emul_step());
+        nocbreak(); echo(); delwin(w); delwin(bw); endwin();
         printf("\nDone!\n");
         emul_printdebug();
-        return ret;
     } else {
         fprintf(stderr, "Usage: ./forth [filename]\n");
-        return 1;
+        retcode = 1;
     }
+    emul_deinit();
+    return retcode;
 }
