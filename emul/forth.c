@@ -20,7 +20,15 @@
 
 static FILE *fp;
 static int retcode = 0;
-WINDOW *bw, *w;
+WINDOW *bw, *dw, *w;
+
+void debug_panel()
+{
+    char buf[30];
+    emul_debugstr(buf);
+    mvwaddnstr(dw, 0, 0, buf, 30);
+    wrefresh(dw);
+}
 
 static uint8_t iord_stdio()
 {
@@ -28,6 +36,7 @@ static uint8_t iord_stdio()
     if (fp != NULL) {
         c = getc(fp);
     } else {
+        debug_panel();
         c = wgetch(w);
     }
     if (c == EOF) {
@@ -74,13 +83,18 @@ int main(int argc, char *argv[])
     } else if (argc == 1) {
         fp = NULL;
         initscr(); cbreak(); noecho(); nl(); clear();
+        // border window
         bw = newwin(WLINES+2, WCOLS+2, 0, 0);
         wborder(bw, 0, 0, 0, 0, 0, 0, 0, 0);
         wrefresh(bw);
+        // debug panel
+        dw = newwin(1, 30, LINES-1, COLS-30);
         w = newwin(WLINES, WCOLS, 1, 1);
         scrollok(w, 1);
-        while (emul_step());
-        nocbreak(); echo(); delwin(w); delwin(bw); endwin();
+        while (emul_steps(1000)) {
+            debug_panel();
+        }
+        nocbreak(); echo(); delwin(w); delwin(bw); delwin(dw); endwin();
         printf("\nDone!\n");
         emul_printdebug();
     } else {

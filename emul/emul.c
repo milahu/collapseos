@@ -173,6 +173,12 @@ void emul_memdump()
     fclose(fp);
 }
 
+void emul_debugstr(char *s)
+{
+    sprintf(s, "SP %04x (%04x) IX %04x (%04x)",
+        m.cpu.R1.wr.SP, m.minsp, m.cpu.R1.wr.IX, m.maxix);
+}
+
 void emul_printdebug()
 {
     fprintf(stderr, "Min SP: %04x\n", m.minsp);
