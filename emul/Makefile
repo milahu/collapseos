@@ -31,7 +31,8 @@ emul.o: emul.c
 
 .PHONY: updatebootstrap
 updatebootstrap: stage xcomp.fs pack
-	./stage < xcomp.fs | tee forth.bin > /dev/null
+	./stage < xcomp.fs > new.bin
+	mv new.bin forth.bin
 
 .PHONY: pack
 pack:
