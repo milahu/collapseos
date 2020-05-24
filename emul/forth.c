@@ -17,6 +17,8 @@
 // read 1024 bytes from the DATA port.
 #define BLK_PORT 0x03
 #define BLKDATA_PORT 0x04
+#define SETX_PORT 0x05
+#define SETY_PORT 0x06
 
 static FILE *fp;
 static int retcode = 0;
@@ -64,6 +66,18 @@ static void iowr_ret(uint8_t val)
     retcode = val;
 }
 
+static void iowr_setx(uint8_t val)
+{
+    int y, x; getyx(w, y, x);
+    wmove(w, y, val);
+}
+
+static void iowr_sety(uint8_t val)
+{
+    int y, x; getyx(w, y, x);
+    wmove(w, val, x);
+}
+
 int main(int argc, char *argv[])
 {
     Machine *m = emul_init();
@@ -74,6 +88,8 @@ int main(int argc, char *argv[])
     m->iord[STDIO_PORT] = iord_stdio;
     m->iowr[STDIO_PORT] = iowr_stdio;
     m->iowr[RET_PORT] = iowr_ret;
+    m->iowr[SETX_PORT] = iowr_setx;
+    m->iowr[SETY_PORT] = iowr_sety;
     w = NULL;
     if (argc == 2) {
         fp = fopen(argv[1], "r");

@@ -22,6 +22,8 @@
         BLK( I + C@ 4 PC!
     LOOP
 ;
+: COLS 80 ; : LINES 32 ;
+: AT-XY 6 PC! ( y ) 5 PC! ( x ) ;
 
 380 LOAD  ( xcomp core high )
 (entry) _
