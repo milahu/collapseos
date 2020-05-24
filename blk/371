@@ -10,4 +10,5 @@
         C@- ( a2 a1-1 x )
         ROT C!- ( a1-1 a2-1 ) SWAP ( a2 a1 )
     LOOP 2DROP ;
+: MOVE, ( a u -- ) H@ OVER ALLOT SWAP MOVE ;
 : PREV 3 - DUP @ - ;
