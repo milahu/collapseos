@@ -1,3 +1,0 @@
-( b1 b2 -- )
-: XPACKR 1+ SWAP DO I DUP . NL XPACK LOOP ;
-
