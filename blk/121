@@ -1,8 +1,0 @@
-Cells: It's not possible to know for sure whether a cellWord
-contains an address or a number. They are therefore not
-automatically relinked. You have to manually relink each of
-them with RLCELL. In the case of a DOES> word, PFA+2, which
-is always an offset, is automatically relinked, but not
-PFA+0.
-
-Load with "122 LOAD"
