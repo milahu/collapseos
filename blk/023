@@ -1,0 +1,11 @@
+Branching
+
+Branching in Collapse OS is limited to 8-bit. This represents
+64 word references forward or backward. While this might seem
+a bit tight at first, having this limit saves us a non-
+negligible amount of resource usage.
+
+The reasoning behind this intentional limit is that huge
+branches are generally a indicator that a logic ought to be
+simplified. So here's one more constraint for you to help you
+towards simplicity.

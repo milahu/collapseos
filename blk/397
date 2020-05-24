@@ -1,6 +1,7 @@
 ( Now we have "as late as possible" stuff )
+: _bchk DUP 0x7f + 0xff > IF LIT< br-ovfl (print) ABORT THEN ;
 : DO COMPILE 2>R H@ ; IMMEDIATE
-: LOOP COMPILE (loop) H@ - , ; IMMEDIATE
+: LOOP COMPILE (loop) H@ - _bchk , ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
 : LITN 32 , , ( 32 == NUMBER ) ;
 ( gets its name at the very end. can't comment afterwards )
