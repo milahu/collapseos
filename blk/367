@@ -1,6 +1,0 @@
-: SCPY
-    BEGIN     ( a )
-        C@+   ( a+1 c )
-        ?DUP NOT IF DROP EXIT THEN
-        C,    ( a c )
-    AGAIN ;

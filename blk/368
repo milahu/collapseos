@@ -1,5 +1,7 @@
+: +! TUCK @ + SWAP ! ;
 : [entry] ( w -- )
-    H@ SWAP SCPY  ( h )
+    H@ SWAP
+    BEGIN C@+ ( w+1 c ) ?DUP IF C, 0 ELSE 1 THEN UNTIL DROP
     H@ SWAP - ( sz )
     ( write prev value )
     H@ CURRENT @ - ,
