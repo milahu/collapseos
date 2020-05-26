@@ -1,11 +1,8 @@
-: _ ( a+1 len -- n f )
-    OVER C@ ( a len c )
-    '-' = IF
-        1- SWAP 1+ SWAP ( a+1 len-1 ) _ 0 ROT ( f 0 n )
-        - SWAP EXIT                    ( 0-n f )
-    THEN ( a len )
-    0 SWAP ( len ) 0 DO ( a r )
+: (parsed) ( a -- n f )
+    C@+ OVER C@ 0 ( a len firstchar startat )
+    SWAP '-' = IF 1+ THEN ( a len startat )
+    0 ROT ROT ( len ) ( startat ) DO ( a r )
         OVER I + C@ ( a r c ) _pdacc ( a r f )
         IF DROP 1- 0 UNLOOP EXIT THEN LOOP ( a r )
-    NIP 1 ;
-: (parsed) ( a -- n f ) C@+ ( a+1 l ) _ ;
+    ( negate if needed )
+    SWAP C@ '-' = IF 0 -^ THEN 1 ( r 1 ) ;
