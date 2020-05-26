@@ -1,16 +1,11 @@
-: (parsed)      ( a -- n f )
-    DUP C@                        ( a c )
-    DUP '-' = IF
-        DROP 1+ ( a+1 ) (parsed) 0 ROT ( f 0 n )
+: _ ( a+1 len -- n f )
+    OVER C@ ( a len c )
+    '-' = IF
+        1- SWAP 1+ SWAP ( a+1 len-1 ) _ 0 ROT ( f 0 n )
         - SWAP EXIT                    ( 0-n f )
-    THEN
-    0 SWAP _pdacc                 ( a r f )
-    ?DUP IF 2DROP 0 EXIT THEN
-    BEGIN                         ( a r )
-        SWAP 1+                   ( r a+1 )
-        DUP C@                    ( r a c )
-        ROT SWAP                  ( a r c )
-        _pdacc                    ( a r f )
-    ?DUP UNTIL
-    1 =         ( a r f )
-    ROT DROP    ( r f ) ;
+    THEN ( a len )
+    0 SWAP ( len ) 0 DO ( a r )
+        OVER I + C@ ( a r c ) _pdacc ( a r f )
+        IF DROP 1- 0 UNLOOP EXIT THEN LOOP ( a r )
+    NIP 1 ;
+: (parsed) ( a -- n f ) C@+ ( a+1 l ) _ ;

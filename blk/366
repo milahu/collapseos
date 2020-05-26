@@ -1,13 +1,13 @@
 ( Read word from C<, copy to WORDBUF, null-terminate, and
   return WORDBUF. )
+: _wb 0x0e RAM+ ;
+: _eot 0x0401 _wb ! _wb ;
 : WORD
-    0x0e RAM+ TOWORD ( a c )
-    DUP EOT? IF OVER ! EXIT THEN
+    _wb 1+ TOWORD ( a c )
+    DUP EOT? IF 2DROP _eot EXIT THEN
     BEGIN
-        ( We take advantage of the fact that char MSB is
-          always zero to pre-write our null-termination )
-        OVER ! 1+ C< ( a c )
-        OVER 0x2d ( 2e-1 for NULL ) RAM+ = OVER WS? OR
+        OVER C! 1+ C< ( a c )
+        OVER 0x2e RAM+ = OVER WS? OR
     UNTIL ( a c )
-    NIP 0x0e RAM+ ( ws a )
-    SWAP EOT? IF 4 OVER ! THEN ;
+    SWAP _wb - 1- ( ws len ) _wb C!
+    EOT? IF _eot ELSE _wb THEN ;

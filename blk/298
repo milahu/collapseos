@@ -1,4 +1,4 @@
-'(' A, 'u' A, 'f' A, 'l' A, 'w' A, ')' A, 0 A,
+6 A, '(' A, 'u' A, 'f' A, 'l' A, 'w' A, ')' A,
 L2 BSET ( abortUnderflow )
     HL PC 7 - LDddnn,
     DE RAMSTART 0x02 + LDdd(nn),   ( RAM+02 == CURRENT )

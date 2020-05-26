@@ -1,12 +1,14 @@
-: '? WORD FIND ;
-: '
-    '? (?br) [ 4 , ] EXIT
-    LIT< (wnf) FIND DROP EXECUTE
-;
-: ROLL
-    ?DUP NOT IF EXIT THEN
-    1+ DUP PICK          ( n val )
-    SWAP 2 * (roll)      ( val )
-    NIP ;
-: 2OVER 3 PICK 3 PICK ;
-: 2SWAP 3 ROLL 3 ROLL ;
+: MOVE ( a1 a2 u -- )
+    ( u ) 0 DO ( a1 a2 )
+        SWAP C@+ ( a2 a1+1 x )
+        ROT C!+ ( a1+1 a2+1 )
+    LOOP 2DROP ;
+: MOVE- ( a1 a2 u -- )
+    TUCK + 1- ( a1 u a2+u-1 )
+    ROT 2 PICK + 1- ( u a2+u-1 a1+u-1 )
+    ROT ( u ) 0 DO ( a2 a1 )
+        C@- ( a2 a1-1 x )
+        ROT C!- ( a1-1 a2-1 ) SWAP ( a2 a1 )
+    LOOP 2DROP ;
+: MOVE, ( a u -- ) H@ OVER ALLOT SWAP MOVE ;
+: PREV 3 - DUP @ - ;

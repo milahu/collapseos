@@ -1,5 +1,5 @@
 ( Name of BOOT word )
-L1 BSET 'B' A, 'O' A, 'O' A, 'T' A, 0 A,
+L1 BSET 4 A, 'B' A, 'O' A, 'O' A, 'T' A,
 
 PC ORG @ 1 + ! ( main )
 ( STACK OVERFLOW PROTECTION: See B76 )

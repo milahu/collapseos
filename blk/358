@@ -3,9 +3,9 @@
 
 : (parsec)          ( a -- n f )
     ( apostrophe is ASCII 39 )
-    DUP C@ 39 = OVER 2+ C@ 39 = AND     ( a f )
+    DUP 1+ C@ 39 = OVER 3 + C@ 39 = AND  ( a f )
     NOT IF 0 EXIT THEN   ( a 0 )
     ( surrounded by apos, good, return )
-    1+ C@ 1                             ( n 1 )
+    2+ C@ 1                             ( n 1 )
 ;
 

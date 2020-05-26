@@ -42,7 +42,8 @@ static uint8_t iord_stdio()
 
 static void iowr_stdio(uint8_t val)
 {
-    // we don't output stdout in stage0
+    // uncomment when you need to debug staging
+    // putc(val, stderr);
 }
 
 static void iowr_here(uint8_t val)

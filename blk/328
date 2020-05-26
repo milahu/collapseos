@@ -1,14 +1,15 @@
 CODE S=
-    DE  POPqq,
-    HL  POPqq,
-    chkPS,
-    BEGIN,
-        LDA(DE),
-        (HL) CPr,
-        JRNZ, BREAK, ( not equal? break early. NZ is set. )
-        A ORr,   ( if our char is null, stop )
-        HL INCss,
-        DE INCss,
-    JRNZ, AGAIN,
+    DE POPqq, HL POPqq, chkPS,
+    LDA(DE),
+    (HL) CPr,
+    IFZ, ( same size? )
+        B A LDrr, ( loop A times )
+        BEGIN,
+            HL INCss, DE INCss,
+            LDA(DE),
+            (HL) CPr,
+            JRNZ, BREAK, ( not equal? break early. NZ is set. )
+        DJNZ, AGAIN,
+    THEN,
     PUSHZ,
 ;CODE
