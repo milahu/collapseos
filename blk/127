@@ -1,7 +1,15 @@
+: setpos POS @ 64 /MOD 1+ ( status line ) AT-XY ;
+: pos+ POS @ + 1024 MOD POS ! ;
+: cmv ( n -- , char movement ) acc@ * pos+ ;
+: $; 0acc ;
+: $G ACC @ selblk 0acc ;
+: $[ BLK> @ acc@ - selblk ;
+: $] BLK> @ acc@ + selblk ;
+: $H -1 cmv ; : $L 1 cmv ; : $K -64 cmv ; : $J 64 cmv ;
 : handle ( c -- f )
     UPPER DUP '0' '9' =><= IF num 0 EXIT THEN
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
     'Q' = ;
-: VE clrscr 0acc contents
-    BEGIN status KEY handle UNTIL 18 aty ;
+: VE clrscr 0acc 0 POS ! contents
+    BEGIN status setpos KEY handle UNTIL 18 aty ;
 

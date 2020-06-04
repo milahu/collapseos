@@ -10,4 +10,7 @@ saved beforehand.
 
 '[' and ']' advance the selected block by modifier.
 
-'Return' resets the modifier
+';' resets the modifier
+
+H and L move the cursor by "modifier" characters. J and K, by
+lines.
