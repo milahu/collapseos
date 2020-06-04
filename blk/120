@@ -1,0 +1,16 @@
+Visual Editor
+
+This editor, unlike the Block Editor (B100), is grid-based
+instead of being command-based. It requires the AT-XY, COLS
+and LINES words to be implemented.
+
+It is loaded with "125 LOAD" and invoked with "VE".
+
+This editor uses 17 lines. The top line is the status line and
+the 16 others are contents lines. The content shown is that
+of the currently selected block.
+
+All keystrokes are directly interpreted by VE and have the
+effect described below.
+
+                                                        (cont.)

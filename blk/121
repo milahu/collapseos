@@ -1,0 +1,13 @@
+Pressing a 0-9 digit accumulates that digit into what is named
+the "modifier". That modifier affects the behavior of many
+keystokes described below. The modifier starts at zero, but
+most commands interpret a zero as a 1 so that they can have an
+effect.
+
+'G' selects the block specified by the modifier as the current
+block. Any change madde to the previously selected block is
+saved beforehand.
+
+'[' and ']' advance the selected block by modifier.
+
+'Return' resets the modifier

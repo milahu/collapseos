@@ -14,4 +14,3 @@ CODE @GET ( a -- c f )
     0x28 RSTn,
     PUSHA, PUSHZ,
 ;CODE
-

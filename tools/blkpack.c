@@ -54,6 +54,10 @@ int main(int argc, char *argv[])
             }
             strncpy(buf+(blkid*1024)+(i*64), line, cnt-1);
         }
+        ssize_t cnt = getline(&line, &n, fp);
+        if (cnt > 0) {
+            fprintf(stderr, "blk %s has more than 16 lines\n", ep->d_name);
+        }
         free(line);
     }
     fwrite(buf, 1024, blkcnt, stdout);

@@ -1,0 +1,14 @@
+CREATE CMD 2 C, '$' C, 0 C,
+VARIABLE ACC
+: 0acc 0 ACC ! ;
+: num ACC @ SWAP _pdacc IF DROP ELSE ACC ! THEN ;
+: nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
+: aty 0 SWAP AT-XY ;
+: clrln DUP aty COLS nspcs aty ;
+: clrscr LINES 0 DO I clrln LOOP ;
+: status 0 clrln ." BLK" SPC BLK> ? SPC ACC ? ;
+: contents 1 aty BLK> @ LIST ;
+: selblk BLK@ 0acc contents ;
+: $G ACC @ selblk ;
+: $[ BLK> @ ACC @ 1 MAX - selblk ;
+: $] BLK> @ ACC @ 1 MAX + selblk ;
