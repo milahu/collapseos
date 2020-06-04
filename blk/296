@@ -3,5 +3,4 @@
     A INCr,
     L2 FSET ( end )
     HL POPqq,
-    BC POPqq,
     RET,

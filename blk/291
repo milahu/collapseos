@@ -2,7 +2,6 @@ PC ORG @ 4 + ! ( find )
 ( Find the entry corresponding to word name where (HL) points
   to in dictionary having its tip at DE and sets DE to point
   to that entry. Z if found, NZ if not. )
-    BC PUSHqq,
     HL PUSHqq,
 	( First, figure out string len )
     A (HL) LDrr, A ORr,
