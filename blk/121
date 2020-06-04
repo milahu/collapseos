@@ -4,13 +4,13 @@ keystokes described below. The modifier starts at zero, but
 most commands interpret a zero as a 1 so that they can have an
 effect.
 
-'G' selects the block specified by the modifier as the current
+'g' selects the block specified by the modifier as the current
 block. Any change madde to the previously selected block is
 saved beforehand.
 
 '[' and ']' advance the selected block by modifier.
 
-';' resets the modifier
+';' resets the modifier. 'q' quits.
 
-H and L move the cursor by "modifier" characters. J and K, by
-lines.                                                  (cont.)
+'h' and 'l' move the cursor by "modifier" characters. 'j' and
+'k', by lines.                                          (cont.)
