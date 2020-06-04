@@ -7,9 +7,5 @@
 : $[ BLK> @ acc@ - selblk ;
 : $] BLK> @ acc@ + selblk ;
 : $h -1 cmv ; : $l 1 cmv ; : $k -64 cmv ; : $j 64 cmv ;
-: $w POS @ BLK( + acc@ 0 DO
-    BEGIN C@+ WS? UNTIL BEGIN C@+ WS? NOT UNTIL LOOP
-    1- BLK( - 1023 MIN POS ! ;
-: $W POS @ BLK( + acc@ 0 DO
-    BEGIN C@- WS? UNTIL BEGIN C@- WS? NOT UNTIL LOOP
-    1+ BLK( - DUP 0< IF DROP 0 THEN POS ! ;
+: $H 0acc POS @ 0x3c0 AND POS ! ;
+: $L 0acc POS @ 0x3f OR POS ! ;
