@@ -5,7 +5,7 @@ F xxx: find typed string in block.
 I xxx: insert typed string at cursor.
 E: Delete previously found string.
 
-
+Note that "I" shadows core word. Use "i" to access core word.
 
 
 

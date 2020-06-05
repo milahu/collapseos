@@ -1,5 +1,5 @@
 '? CASE NOT [IF] 51 52 LOADR+ [THEN] DROP ( B152-153 )
-'? FILL NOT [IF] 53 LOAD+ [THEN] DROP ( B154 )
+'? FILL NOT [IF] 53 LOAD+ [THEN] DROP ( B155 )
 1 7 LOADR+
 : BROWSE
     0 ACC ! L
@@ -12,5 +12,3 @@
         ENDCASE
     AGAIN
 ;
-( I masks DO..LOOP's I. Do it as late as possible. )
-: I _I ;

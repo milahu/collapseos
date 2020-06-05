@@ -1,2 +1,3 @@
 '? UPPER NOT [IF] 33 LOAD+ [THEN] DROP ( B158 )
+-23 LOAD+ ( B102, block editor )
 1 4 LOADR+

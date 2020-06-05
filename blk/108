@@ -2,7 +2,8 @@
     DUP BEGIN C@+ EOL? UNTIL -^ 1- ;
 : _rbufsz ( size of linebuf to the right of curpos )
     EDPOS @ 64 MOD 63 -^ ;
-: _I
+: i I ; ( save overshoadowed )
+: I
     IBUF _type _rbufsz IBUF _blen 2DUP > IF
         TUCK - ( ilen chars-to-move )
         SWAP EDPOS @ _cpos 2DUP + ( ctm ilen a a+ilen )
