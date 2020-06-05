@@ -2,7 +2,7 @@
     DUP BEGIN C@+ EOL? UNTIL -^ 1- ;
 : _rbufsz ( size of linebuf to the right of curpos )
     EDPOS @ 64 MOD 63 -^ ;
-: i I ; ( save overshoadowed )
+: i COMPILE I ; IMMEDIATE ( save overshadowed )
 : I
     IBUF _type _rbufsz IBUF _blen 2DUP > IF
         TUCK - ( ilen chars-to-move )
@@ -12,5 +12,5 @@
     ELSE DROP ( ilen becomes rbuffsize )
     THEN
     DUP IBUF EDPOS @ _cpos ROT MOVE ( ilen )
-    EDPOS +! EDPOS @ 64 / _pln
+    BLK!! EDPOS +! EDPOS @ 64 / _pln
 ;

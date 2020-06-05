@@ -1,11 +1,12 @@
 : setpos EDPOS @ 64 /MOD
-    1+ ( status line ) SWAP 3 + ( gutter ) SWAP AT-XY ;
+    3 + ( header ) SWAP 3 + ( gutter ) SWAP AT-XY ;
 : pos+ EDPOS @ + 1024 MOD EDPOS ! ;
 : cmv ( n -- , char movement ) acc@ * pos+ ;
 : $; 0acc ;
 : $g ACC @ selblk 0acc ;
 : $[ BLK> @ acc@ - selblk ;
 : $] BLK> @ acc@ + selblk ;
+: $I 3 1 AT-XY I contents ;
 : $h -1 cmv ; : $l 1 cmv ; : $k -64 cmv ; : $j 64 cmv ;
 : $H 0acc EDPOS @ 0x3c0 AND EDPOS ! ;
 : $L 0acc EDPOS @ 0x3f OR EDPOS ! ;

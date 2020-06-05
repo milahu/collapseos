@@ -1,3 +1,6 @@
 'H' goes to the beginning of the line, 'L' to the end.
 
 'w' moves forward by a word. 'W' moves backward by a word.
+
+'I' inserts text by calling the "I" command from the Block
+editor.

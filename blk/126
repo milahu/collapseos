@@ -9,5 +9,5 @@ VARIABLE MODE VARIABLE MODEC
 : clrscr LINES 0 DO i clrln LOOP ;
 : status 0 clrln ." BLK" SPC BLK> ? SPC ACC ?
     SPC EDPOS @ 64 /MOD . ',' EMIT . SPC MODEC C@ EMIT ;
-: contents 1 aty BLK> @ LIST ;
+: contents 3 aty BLK> @ LIST ;
 : selblk BLK@ contents ;
