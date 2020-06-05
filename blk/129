@@ -1,0 +1,3 @@
+: VE clrscr 0acc 0 POS ! modeM contents
+    BEGIN status setpos KEY MODE @ EXECUTE UNTIL 18 aty ;
+
