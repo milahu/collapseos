@@ -4,3 +4,7 @@
 
 'I' inserts text by calling the "I" command from the Block
 editor.
+
+'R' goes into replace mode at current cursor position.
+Following keystrokes replace current character and advance
+cursor. Press return to return to normal mode.
