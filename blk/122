@@ -2,8 +2,8 @@
 
 'w' moves forward by a word. 'W' moves backward by a word.
 
-'I' inserts text by calling the "I" command from the Block
-editor.
+'I', 'F' and 'E' invoke the corresponding command from the
+Block Editor (B100). Refer to documentation there.
 
 'R' goes into replace mode at current cursor position.
 Following keystrokes replace current character and advance

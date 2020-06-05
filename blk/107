@@ -1,4 +1,4 @@
-: F
+: _F ( F without _pln. used in VE )
     FBUF _type FBUF EDPOS @ _cpos ( a1 a2 )
     BEGIN
         C@+ ROT ( a2+1 c2 a1 ) C@+ ROT ( a2+1 a1+1 c1 c2 )
@@ -6,7 +6,5 @@
         TUCK C@ 0xd = ( a1 a2 f1 )
         OVER BLK) = OR ( a1 a2 f1|f2 )
     UNTIL
-    DUP BLK) < IF BLK( - FBUF + -^ EDPOS ! THEN
-    EDPOS @ 64 / _pln DROP
-;
-
+    DUP BLK) < IF BLK( - FBUF + -^ EDPOS ! THEN DROP ;
+: F _F EDPOS @ 64 / _pln ;
