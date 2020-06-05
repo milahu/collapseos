@@ -9,6 +9,7 @@
 : $I mode! 'I' EMIT 3 1 AT-XY _I contents mode! SPC ;
 : $F mode! 'F' EMIT 3 2 AT-XY _F setpos mode! SPC ;
 : $E E contents ;
+: $X acc@ X contents ;
 : $h -1 cmv ; : $l 1 cmv ; : $k -64 cmv ; : $j 64 cmv ;
 : $H 0acc EDPOS @ 0x3c0 AND EDPOS ! ;
 : $L 0acc EDPOS @ 0x3f OR EDPOS ! ;
