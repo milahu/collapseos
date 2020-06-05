@@ -8,4 +8,4 @@
     DUP '0' '9' =><= IF num 0 EXIT THEN
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
     UPPER 'Q' = ;
-: modeM ['] handleM MODE ! 'M' MODEC C! ;
+: modeM ['] handleM MODE ! mode! SPC ;

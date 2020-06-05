@@ -1,13 +1,13 @@
 CREATE CMD 2 C, '$' C, 0 C,
-VARIABLE MODE VARIABLE MODEC
+VARIABLE MODE
 : 0acc 0 ACC ! ;
 : acc@ ACC @ 1 MAX 0acc ;
 : num ACC @ SWAP _pdacc IF DROP ELSE ACC ! THEN ;
 : nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
 : aty 0 SWAP AT-XY ;
-: clrln DUP aty COLS nspcs aty ;
-: clrscr LINES 0 DO i clrln LOOP ;
-: status 0 clrln ." BLK" SPC BLK> ? SPC ACC ?
-    SPC EDPOS @ 64 /MOD . ',' EMIT . SPC MODEC C@ EMIT ;
+: clrscr LINES 0 DO i aty COLS nspcs LOOP ;
+: status 0 aty ." BLK" SPC BLK> ? SPC ACC ?
+    SPC EDPOS @ 64 /MOD . ',' EMIT . 10 nspcs ;
 : contents 3 aty BLK> @ LIST ;
 : selblk BLK@ contents ;
+: mode! ( c -- ) 63 0 AT-XY ;
