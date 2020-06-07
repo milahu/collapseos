@@ -6,7 +6,9 @@
 ( user-facing lines are 1-based )
 : T 1- DUP 64 * EDPOS ! _pln ;
 : P IBUF _type IBUF EDPOS @ _cpos 64 MOVE BLK!! ;
-: _mvln+ ( ln -- move ln 1 line further )
+: _mvln+ ( ln -- move ln 1 line down )
     DUP 14 > IF DROP EXIT THEN
-    _lpos DUP 64 + 64 MOVE
-;
+    _lpos DUP 64 + 64 MOVE ;
+: _mvln- ( ln -- move ln 1 line up )
+    DUP 14 > IF DROP 15 _lpos _zbuf
+    ELSE 1+ _lpos DUP 64 - 64 MOVE THEN ;

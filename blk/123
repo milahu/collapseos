@@ -1,3 +1,10 @@
+'f' puts the contents of your previous cursor movement into the
+find buffer. If that movement was a forward movement, it brings
+the cursor back where it was. This allows for an efficient
+combination of movements and 'E'. For example, if you want to
+delete the next word, you type 'w', then 'f', then check your
+"F" buffer to be sure, then press 'E'.
+
 'X' deletes "modifier" characters following cursor.
 
 'R' goes into replace mode at current cursor position.
