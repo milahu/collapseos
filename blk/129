@@ -1,6 +1,6 @@
 : $f EDPOS @ PREVPOS @ 2DUP = IF 2DROP EXIT THEN
     2DUP > IF DUP pos! SWAP THEN
-    ( p1 p2, p1 < p2 ) OVER - ( pos len ) FBUF _zbuf
+    ( p1 p2, p1 < p2 ) OVER - 64 MIN ( pos len ) FBUF _zbuf
     SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
 : $R ( replace mode )
     mode! 'R' EMIT
