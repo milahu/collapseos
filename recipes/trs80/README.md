@@ -212,69 +212,12 @@ session on the other, type a few characters, and try `pingpong` again.
 
 ## Saving to disk
 
-If everything went well, you could run Collapse OS with `g3000<return>`. You
-would get a usable Collapse OS prompt. But don't do that just yet. That
-executable bootstraps itself from code and it takes a while to do that every
-time you launch it. You don't want that right? Let's save a compiled version of
-it to disk.
+If everything went well, you could run Collapse OS with `g3000<return>`.
+But instead of doing that, why not save it to disk?
 
-Turn off the debugger (which can mess up some things) and save your sent
-content as-is by following the instructions you had for the `RECV` program.
-This way, if you mess up a step below, you can quickly start over. Now you can
-launch Collapse OS. Then, we need to:
+    dump cos/cmd:1 (start=x'5000',end=x'7000',tra='5000')
 
-* Reclaim wasted memory
-* Create hook entry
-* Update LATEST
-* Write down initialization code
-* Write memory to floppy
-
-### Reclaim wasted memory
-
-During initialization, `RDLN$` allocated memory in `HERE` for its input buffer.
-If you don't reclaim that space, that will be dead space in your binary.
-
-You can reclaim that space with `FORGET _` which will rewind to before we
-defined our initialization routine (see xcomp.fs).
-
-However, that is not enough. If you only do that, there will be a conflict
-between the rdln input buffer and your `HERE` space! So we need to go put that
-input buffer somewhere else first. Therefore, your commands will be:
-
-    500 ALLOT RDLN$ FORGET _
-
-### Create hook entry
-
-That one is easy:
-
-    (entry) _
-
-### Update LATEST
-
-At this point, both `HERE` and `CURRENT` point to your future `LATEST`.
-
-    H@ 0x08 BIN+ !
-
-Done.
-
-### Write down initialization code
-
-You'll do something similar to what we do in xcomp, except you'll have to add
-"HERE rewinding" code because by default, `HERE` starts at RAMSTART+0x80. So:
-
-    ," CURRENT @ HERE ! (ok) RDLN$ "
-
-As soon as `RDLN$` is called, the `C<` pointer changes and gives control to
-keyboard, giving us our full forth interpreter.
-
-### Write memory to floppy
-
-What you currently have in memory is gold. You want that on floppy. First, run
-`H@ .X` to know your upper bound (and `0 BIN+ .X` to know your lower one, but
-you're already supposed to know that one). Then, run `BYE` to return to TRSDOS
-(the TRSDOS driver overrides `BYE` so that it calls the proper SVC instead of
-just halting). Then, you can dump memory to floppy as you already did for
-`RECV`.
+And there we go! A Collapse OS launchable from floppy!
 
 ## Sending blkfs to floppy
 
@@ -294,7 +237,12 @@ prompt:
     ' *CL< 0x55 RAM+ !
 
 See B80 for details about those RAM offsets. Your serial link now has the
-prompt. Now, you can use `/tools/blkup` to send a disk's contents. First, 
+prompt. You will also have to make your newlines CRLF. The TRS-80 wants CR
+only, but serial communications (and `blkup`) expect CRLF:
+
+    ' CRLF 0x0a RAM+ !
+
+Now, you can use `/tools/blkup` to send a disk's contents. First, 
 extract the first 100 blocks from blkfs:
 
     dd if=emul/blkfs bs=1024 count=100 > d1
@@ -311,6 +259,14 @@ Go ahead, `LIST` around. Then, repeat for other disks.
 Making blkfs span multiple disk is a bit problematic with regards to absolute
 block references in the code. You'll need to work a bit to design your very
 own Collapse OS floppy set. See Usage guide (B3) for details.
+
+## Coming back to keyboard
+
+Once you're done, you will want to go back to local control:
+
+    ' CR 0x0a RAM+ !
+    0 0x55 RAM+ !
+    0 0x53 RAM+ !
 
 ## Self-hosting
 
