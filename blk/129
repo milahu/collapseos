@@ -1,3 +1,7 @@
+: $f EDPOS @ PREVPOS @ 2DUP = IF 2DROP EXIT THEN
+    2DUP > IF DUP pos! SWAP THEN
+    ( p1 p2, p1 < p2 ) OVER - ( pos len ) FBUF _zbuf
+    SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
 : $R ( replace mode )
     mode! 'R' EMIT
     BEGIN setpos C< DUP 0xd = NOT IF

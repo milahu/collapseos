@@ -7,7 +7,7 @@
     2 aty ." F: " FBUF bufp ;
 : c<over KEY DUP EMIT DUP 0x0a = IF DROP 0x0d THEN ;
 : VE ['] c<over 0x08 ( C< override ) RAM+ !
-    clrscr 0acc 0 EDPOS ! contents
+    clrscr 0acc 0 EDPOS ! 0 PREVPOS ! contents
     BEGIN status bufs setpos KEY handle UNTIL
     0 0x08 RAM+ ! 19 aty ;
 
