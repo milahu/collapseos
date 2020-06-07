@@ -1,13 +1,12 @@
-: bufp ( buf -- )
-    DUP 64 + SWAP DO
-        i C@ DUP 0x20 < IF DROP 0x20 THEN EMIT
-    LOOP ;
-: bufs
-    1 aty ." I: " IBUF bufp
-    2 aty ." F: " FBUF bufp ;
-: c<over KEY DUP EMIT DUP 0x0a = IF DROP 0x0d THEN ;
-: VE ['] c<over 0x08 ( C< override ) RAM+ !
-    clrscr 0acc 0 EDPOS ! 0 PREVPOS ! contents
-    BEGIN status bufs setpos KEY handle UNTIL
-    0 0x08 RAM+ ! 19 aty ;
-
+: $f EDPOS @ PREVPOS @ 2DUP = IF 2DROP EXIT THEN
+    2DUP > IF DUP pos! SWAP THEN
+    ( p1 p2, p1 < p2 ) OVER - 64 MIN ( pos len ) FBUF _zbuf
+    SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
+: $R ( replace mode )
+    mode! 'R' EMIT
+    BEGIN setpos C< DUP 0xd = NOT IF
+        EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
+    THEN UNTIL mode! SPC contents ;
+: $O EDPOS @ 0x3c0 ( 15 * 64 ) >= IF EXIT THEN
+    _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf contents ;
+: $o EDPOS @ 64 < IF EXIT THEN EDPOS @ 64 + EDPOS ! $O ;

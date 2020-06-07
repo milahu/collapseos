@@ -1,14 +1,5 @@
-: setpos EDPOS @ 64 /MOD
+: pos! ( newpos -- ) EDPOS @ PREVPOS !
+    DUP 0< IF DROP 0 THEN 1023 MIN EDPOS ! ;
+: setpos ( -- ) EDPOS @ 64 /MOD
     3 + ( header ) SWAP 3 + ( gutter ) SWAP AT-XY ;
 : cmv ( n -- , char movement ) acc@ * EDPOS @ + pos! ;
-: $; 0acc ;
-: $g ACC @ selblk 0acc ;
-: $[ BLK> @ acc@ - selblk ;
-: $] BLK> @ acc@ + selblk ;
-: $I mode! 'I' EMIT 3 1 AT-XY _I contents mode! SPC ;
-: $F mode! 'F' EMIT 3 2 AT-XY _F setpos mode! SPC ;
-: $E E contents ;
-: $X acc@ X contents ;
-: $h -1 cmv ; : $l 1 cmv ; : $k -64 cmv ; : $j 64 cmv ;
-: $H 0acc EDPOS @ 0x3c0 AND pos! ;
-: $L 0acc EDPOS @ 0x3f OR pos! ;
