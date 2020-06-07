@@ -1,7 +1,7 @@
 ( Cursor position in buffer. EDPOS/64 is line number )
-VARIABLE EDPOS
-CREATE IBUF 64 ALLOT
-CREATE FBUF 64 ALLOT
+CREATE EDPOS 0 ,
+CREATE IBUF 64 ALLOT0
+CREATE FBUF 64 ALLOT0
 : _cpos BLK( + ;
 : _lpos 64 * _cpos ;
 : _pln ( lineno -- )

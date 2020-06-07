@@ -1,4 +1,4 @@
-VARIABLE ACC
+CREATE ACC 0 ,
 : _LIST ." Block " DUP . NL LIST ;
 : _NUM
     ACC @ SWAP _pdacc
