@@ -1,6 +1,7 @@
 'H' goes to the beginning of the line, 'L' to the end.
 
-'w' moves forward by a word. 'W' moves backward by a word.
+'w' moves forward by a word. 'b' moves backward by a word.
+'W' moves to end-of-word. 'B' moves backward to end-of-word.
 
 'I', 'F' and 'E' invoke the corresponding command from the
 Block Editor (B100). Refer to documentation there.
