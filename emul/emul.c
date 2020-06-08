@@ -86,6 +86,13 @@ Machine* emul_init()
         fprintf(stderr, "Can't open\n");
         return NULL;
     }
+    fseek(blkfp, 0, SEEK_END);
+    if (ftell(blkfp) < 100 * 1024) {
+        fclose(blkfp);
+        fprintf(stderr, "emul/blkfs too small, something's wrong, aborting.\n");
+        return NULL;
+    }
+    fseek(blkfp, 0, SEEK_SET);
     // initialize memory
     memset(m.mem, 0, 0x10000);
     FILE *bfp = fopen(FBIN_PATH, "r");
