@@ -29,9 +29,6 @@ int main(int argc, char *argv[])
         if ((strcmp(ep->d_name, ".") == 0) || strcmp(ep->d_name, "..") == 0) {
             continue;
         }
-        if (ep->d_type != DT_REG) {
-            continue;
-        }
         int blkid = atoi(ep->d_name);
         if (blkid >= blkcnt) {
             int newcnt = blkid+1;
