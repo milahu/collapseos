@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <dirent.h>
+#include <errno.h>
 #include <string.h>
 #include <sys/stat.h>
 
@@ -41,6 +42,10 @@ int main(int argc, char *argv[])
         strcat(fullpath, "/");
         strcat(fullpath, ep->d_name);
         FILE *fp = fopen(fullpath, "r");
+        if (fp == NULL) {
+            fprintf(stderr, "Could not open %s: %s\n", ep->d_name, strerror(errno));
+            continue;
+        }
         char *line = NULL;
         size_t n = 0;
         for (int i=0; i<16; i++) {
@@ -56,6 +61,7 @@ int main(int argc, char *argv[])
             fprintf(stderr, "blk %s has more than 16 lines\n", ep->d_name);
         }
         free(line);
+        fclose(fp);
     }
     fwrite(buf, 1024, blkcnt, stdout);
     free(buf);
