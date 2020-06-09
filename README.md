@@ -58,9 +58,7 @@ incarnation, checkout the `z80asm` branch.
 For a general discussion of Collapse OS and the ecosystem of technologies and
 ideas that may develop around it refer to [r/collapseos][discussion]
 
-A more traditional [mailing list][listserv] and IRC (#collapseos on freenode)
-channels are also maintained.
+I also stick around on IRC (#collapseos on freenode).
 
 [web]: https://collapseos.org
 [discussion]: https://www.reddit.com/r/collapseos
-[listserv]: http://lists.sonic.net/mailman/listinfo/collapseos
