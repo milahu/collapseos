@@ -1,8 +1,6 @@
 : _type ( buf -- )
-    C< DUP 0xd = IF 2DROP EXIT THEN OVER DUP _zbuf ( c a )
-    BEGIN ( c a )
-        C!+ C< SWAP
-    OVER 0x0d = UNTIL ( c a ) C! ;
+    C< DUP 0xd = IF 2DROP EXIT THEN SWAP DUP _zbuf ( c a )
+    BEGIN ( c a ) C!+ C< TUCK 0x0d = UNTIL ( c a ) C! ;
 ( user-facing lines are 1-based )
 : T 1- DUP 64 * EDPOS ! _pln ;
 : P IBUF _type IBUF EDPOS @ _cpos 64 MOVE BLK!! ;
