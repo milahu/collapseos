@@ -64,3 +64,9 @@ and make post-collapse users much happier.
 It is frequently asked by would-be contributors whether I have tips for an
 optimal ramping up of skills. [I've put together a little document to answer
 that question](https://collapseos.org/skills.html).
+
+## No typo pull requests please
+
+Please, don't open pull requests to fix typos. See [issue #3][GH-3] for details.
+
+[GH-3]: https://github.com/hsoft/collapseos/pull/3
