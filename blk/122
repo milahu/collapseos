@@ -11,6 +11,6 @@ Block Editor (B100). Refer to documentation there.
 
 'o' inserts a blank line after the cursor. 'O', before.
 
-'D' deletes "modifier" lines at the cursor.
-
+'D' deletes "modifier" lines at the cursor. The first of those
+lines is copied to IBUF.
                                                         (cont.)

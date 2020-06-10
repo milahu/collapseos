@@ -10,5 +10,6 @@
 : $O EDPOS @ 0x3c0 ( 15 * 64 ) >= IF EXIT THEN
     _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
 : $o EDPOS @ 64 < IF EXIT THEN EDPOS @ 64 + EDPOS ! $O ;
-: $D acc@ 0 DO 16 EDPOS @ 64 / DO i _mvln- LOOP LOOP
+: $D $H 64 icpy
+    acc@ 0 DO 16 EDPOS @ 64 / DO i _mvln- LOOP LOOP
     BLK!! contents ;
