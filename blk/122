@@ -6,8 +6,8 @@
 'w' moves forward by "modifier" words. 'b' moves backward.
 'W' moves to end-of-word. 'B', backwards.
 
-'I', 'F', 'X' and 'E' invoke the corresponding command from the
-Block Editor (B100). Refer to documentation there.
+'I', 'F', 'Y', 'X' and 'E' invoke the corresponding command
+from the Block Editor (B100). Refer to documentation there.
 
 'o' inserts a blank line after the cursor. 'O', before.
 

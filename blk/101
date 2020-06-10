@@ -12,5 +12,5 @@ F xxx: find typed FBUF in block, starting from current
        position+1. If not found, don't move.
 I xxx: insert typed IBUF at cursor. "I" shadows core word. Use
        "i" to access it.
-X ( n -- ): Delete X chars after cursor and place in IBUF.
-E: Run X with n = length of FBUF.
+Y: Copy n characters after cursor into IBUF, n being length of
+   FBUF.                                                (cont.)
