@@ -1,7 +1,7 @@
 : handle ( c -- f )
     DUP '0' '9' =><= IF num 0 EXIT THEN
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
-    UPPER 'Q' = ;
+    0 ACC ! UPPER 'Q' = ;
 : bufp ( buf -- )
     DUP 64 + SWAP DO i C@ 0x20 MAX EMIT LOOP ;
 : bufs
@@ -9,6 +9,6 @@
     2 aty ." F: " FBUF bufp ;
 : c<over KEY DUP EMIT DUP 0x0a = IF DROP 0x0d THEN ;
 : VE ['] c<over 0x08 ( C< override ) RAM+ !
-    clrscr 0acc 0 PREVPOS ! contents
+    clrscr 0 ACC ! 0 PREVPOS ! contents
     BEGIN status bufs setpos KEY handle UNTIL
     0 0x08 RAM+ ! 19 aty ;
