@@ -1,5 +1,5 @@
 : _F ( F without _type and _pln. used in VE )
-    FBUF EDPOS @ _cpos ( a1 a2 )
+    FBUF EDPOS @ _cpos 1+ ( a1 a2 )
     BEGIN
         C@+ ROT ( a2+1 c2 a1 ) C@+ ROT ( a2+1 a1+1 c1 c2 )
         = NOT IF DROP FBUF THEN ( a2 a1 )
