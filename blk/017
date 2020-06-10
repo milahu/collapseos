@@ -2,7 +2,7 @@ DOES>
 
 Used inside a colon definition that itself uses CREATE, DOES>
 transforms that newly created word into a "does cell", that is,
-a regular cell ( when called, puts the cell's addr on PS), but
+a regular cell (when called, puts the cell's addr on PS), but
 right after that, it executes words that appear after the
 DOES>.
 

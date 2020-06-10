@@ -8,7 +8,7 @@ During normal operations, C< is simply a buffered layer over
 KEY, which has the same behavior (but unbuffered). Before
 yielding any character, the C< routine fetches a whole line
 from KEY, puts it in a buffer, then yields the buffered line,
-one character at once.
+one character at a time.
 
 Both C< and KEY can be overridden by setting an alternate
 routine at the proper RAM offset (see B80). For example, C<

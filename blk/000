@@ -12,5 +12,5 @@ block, it means that the next block continues the same kind of
 contents. Block numbers are abbreviated with prefix "B". "BX"
 means "block X".
 
-The master index of this filesystem is at B1. The Block editor
-at B100 is a convenient way to navigate blocks.
+The master index of this filesystem is at B1. You can navi-
+gate and edit blocks with the Visual Editor at B120.

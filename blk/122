@@ -1,16 +1,16 @@
+'h' and 'l' move the cursor by "modifier" characters. 'j' and
+'k', by lines.
+
 'H' goes to the beginning of the line, 'L' to the end.
 
-'w' moves forward by a word. 'b' moves backward by a word.
-'W' moves to end-of-word. 'B' moves backward to end-of-word.
+'w' moves forward by "modifier" words. 'b' moves backward.
+'W' moves to end-of-word. 'B', backwards.
 
-'I', 'F' and 'E' invoke the corresponding command from the
+'I', 'F', 'X' and 'E' invoke the corresponding command from the
 Block Editor (B100). Refer to documentation there.
 
 'o' inserts a blank line after the cursor. 'O', before.
 
 'D' deletes "modifier" lines at the cursor.
-
-
-
 
                                                         (cont.)

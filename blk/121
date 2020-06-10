@@ -1,3 +1,6 @@
+All keystrokes are directly interpreted by VE and have the
+effect described below.
+
 Pressing a 0-9 digit accumulates that digit into what is named
 the "modifier". That modifier affects the behavior of many
 keystokes described below. The modifier starts at zero, but
@@ -5,12 +8,9 @@ most commands interpret a zero as a 1 so that they can have an
 effect.
 
 'g' selects the block specified by the modifier as the current
-block. Any change madde to the previously selected block is
+block. Any change made to the previously selected block is
 saved beforehand.
 
-'[' and ']' advance the selected block by modifier.
+'[' and ']' advances the selected block by "modifier".
 
-';' resets the modifier. 'q' quits.
-
-'h' and 'l' move the cursor by "modifier" characters. 'j' and
-'k', by lines.                                          (cont.)
+';' resets the modifier. 'q' quits.                     (cont.)

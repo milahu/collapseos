@@ -2,15 +2,15 @@ Visual Editor
 
 This editor, unlike the Block Editor (B100), is grid-based
 instead of being command-based. It requires the AT-XY, COLS
-and LINES words to be implemented.
+and LINES words to be implemented. If you don't have those,
+use the Block Editor.
 
 It is loaded with "125 LOAD" and invoked with "VE". Note that
-this also fully loads the Block Editor (B100).
+this also fully loads the Block Editor.
 
-This editor uses 17 lines. The top line is the status line and
-the 16 others are contents lines. The content shown is that
-of the currently selected block.
+This editor uses 19 lines. The top line is the status line and
+it's followed by 2 lines showing the contents of IBUF and
+FBUF (see B100). There are then 16 contents lines. The contents
+shown is that of the currently selected block.
 
-All keystrokes are directly interpreted by VE and have the
-effect described below.
                                                         (cont.)
