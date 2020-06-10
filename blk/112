@@ -1,8 +1,10 @@
-: X ( len -- , delete len chars after curpos )
-    EDPOS @ _cpos 2DUP + ( l a1 a1+l )
-    SWAP _rbufsz MOVE ( l )
-    ( get to next line - l )
-    DUP EDPOS @ 0xffc0 AND 0x40 + -^ _cpos ( l a )
+: icpy ( n -- copy n chars from cursor to IBUF )
+    IBUF _zbuf EDPOS @ _cpos IBUF ( n a buf ) ROT MOVE ;
+: X ( n -- )
+    DUP icpy EDPOS @ _cpos 2DUP + ( n a1 a1+n )
+    SWAP _rbufsz MOVE ( n )
+    ( get to next line - n )
+    DUP EDPOS @ 0xffc0 AND 0x40 + -^ _cpos ( n a )
     SWAP 0 FILL
     EDPOS @ 64 / _pln ;
 : E FBUF _blen X ;
