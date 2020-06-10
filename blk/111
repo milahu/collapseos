@@ -1,0 +1,15 @@
+: _blen ( buf -- length of str in buf )
+    DUP BEGIN C@+ EOL? UNTIL -^ 1- ;
+: _rbufsz ( size of linebuf to the right of curpos )
+    EDPOS @ 64 MOD 63 -^ ;
+: i COMPILE I ; IMMEDIATE ( save overshadowed )
+: _I ( I without _pln and _type. used in VE )
+    _rbufsz IBUF _blen 2DUP > IF
+        TUCK - ( ilen chars-to-move )
+        SWAP EDPOS @ _cpos 2DUP + ( ctm ilen a a+ilen )
+        3 PICK MOVE- ( ctm ilen )
+        NIP ( ilen )
+    ELSE DROP ( ilen becomes rbuffsize )
+    THEN
+    DUP IBUF EDPOS @ _cpos ROT MOVE ( ilen ) EDPOS +! BLK!! ;
+: I IBUF _type _I EDPOS @ 64 / _pln ;

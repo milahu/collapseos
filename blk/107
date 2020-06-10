@@ -1,10 +1,13 @@
-: _F ( F without _type and _pln. used in VE )
-    FBUF EDPOS @ _cpos 1+ ( a1 a2 )
-    BEGIN
-        C@+ ROT ( a2+1 c2 a1 ) C@+ ROT ( a2+1 a1+1 c1 c2 )
-        = NOT IF DROP FBUF THEN ( a2 a1 )
-        TUCK C@ 0xd = ( a1 a2 f1 )
-        OVER BLK) = OR ( a1 a2 f1|f2 )
-    UNTIL ( a1 a2 )
-    DUP BLK) < IF BLK( - FBUF + -^ EDPOS ! ELSE DROP THEN ;
-: F FBUF _type _F EDPOS @ 64 / _pln ;
+( Cursor position in buffer. EDPOS/64 is line number )
+CREATE EDPOS 0 ,
+CREATE IBUF 64 ALLOT0
+CREATE FBUF 64 ALLOT0
+: _cpos BLK( + ;
+: _lpos 64 * _cpos ;
+: _pln ( lineno -- )
+    DUP _lpos DUP 64 + SWAP DO ( lno )
+        I EDPOS @ _cpos = IF '^' EMIT THEN
+        I C@ DUP 0x20 < IF DROP 0x20 THEN
+        EMIT
+    LOOP ( lno ) 1+ . ;
+: _zbuf 64 0 FILL ; ( buf -- )

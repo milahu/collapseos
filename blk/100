@@ -1,7 +1,7 @@
 Block editor
 
 This is an application to conveniently browse the contents of
-the disk blocks and edit them. You can load it with "102 LOAD".
+the disk blocks and edit them. You can load it with "105 LOAD".
 
 Browse mode: If you execute BROWSE, the Forth interpreter is
 replaced by browser's loop. Typing "Q" quits the browser.

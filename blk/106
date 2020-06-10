@@ -1,5 +1,16 @@
-: _U ( U without P, used in VE )
-    15 EDPOS @ 64 / - 0 DO
-        14 I - _mvln+
-    LOOP ;
-: U _U P ;
+CREATE ACC 0 ,
+: _LIST ." Block " DUP . NL LIST ;
+: _NUM
+    ACC @ SWAP _pdacc
+    IF _LIST 0 THEN
+    ACC !
+;
+: L BLK> @ _LIST ;
+: B BLK> @ 1- BLK@ L ;
+: N BLK> @ 1+ BLK@ L ;
+
+
+
+
+
+

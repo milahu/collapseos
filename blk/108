@@ -1,15 +1,12 @@
-: _blen ( buf -- length of str in buf )
-    DUP BEGIN C@+ EOL? UNTIL -^ 1- ;
-: _rbufsz ( size of linebuf to the right of curpos )
-    EDPOS @ 64 MOD 63 -^ ;
-: i COMPILE I ; IMMEDIATE ( save overshadowed )
-: _I ( I without _pln and _type. used in VE )
-    _rbufsz IBUF _blen 2DUP > IF
-        TUCK - ( ilen chars-to-move )
-        SWAP EDPOS @ _cpos 2DUP + ( ctm ilen a a+ilen )
-        3 PICK MOVE- ( ctm ilen )
-        NIP ( ilen )
-    ELSE DROP ( ilen becomes rbuffsize )
-    THEN
-    DUP IBUF EDPOS @ _cpos ROT MOVE ( ilen ) EDPOS +! BLK!! ;
-: I IBUF _type _I EDPOS @ 64 / _pln ;
+: _type ( buf -- )
+    C< DUP 0xd = IF 2DROP EXIT THEN SWAP DUP _zbuf ( c a )
+    BEGIN ( c a ) C!+ C< TUCK 0x0d = UNTIL ( c a ) C! ;
+( user-facing lines are 1-based )
+: T 1- DUP 64 * EDPOS ! _pln ;
+: P IBUF _type IBUF EDPOS @ _cpos 64 MOVE BLK!! ;
+: _mvln+ ( ln -- move ln 1 line down )
+    DUP 14 > IF DROP EXIT THEN
+    _lpos DUP 64 + 64 MOVE ;
+: _mvln- ( ln -- move ln 1 line up )
+    DUP 14 > IF DROP 15 _lpos _zbuf
+    ELSE 1+ _lpos DUP 64 - 64 MOVE THEN ;
