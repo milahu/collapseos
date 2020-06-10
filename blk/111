@@ -1,5 +1,5 @@
 : _blen ( buf -- length of str in buf )
-    DUP BEGIN C@+ EOL? UNTIL -^ 1- ;
+    DUP BEGIN C@+ 0x20 < UNTIL -^ 1- ;
 : _rbufsz ( size of linebuf to the right of curpos )
     EDPOS @ 64 MOD 63 -^ ;
 : i COMPILE I ; IMMEDIATE ( save overshadowed )
