@@ -2,3 +2,15 @@
 ( n c -- c )
 : _s+crc SWAP DUP _sdcSR DROP _crc7 ;
 
+
+
+
+
+
+
+
+
+
+
+
+

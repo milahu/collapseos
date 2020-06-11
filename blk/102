@@ -1,2 +1,16 @@
 X ( n -- ): Delete X chars after cursor and place in IBUF.
 E: Run X with n = length of FBUF.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

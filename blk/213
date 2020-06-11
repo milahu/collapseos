@@ -6,3 +6,11 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : BC 0 ; : DE 1 ; : HL 2 ; : AF 3 ; : SP AF ;
 : CNZ 0 ; : CZ 1 ; : CNC 2 ; : CC 3 ;
 : CPO 4 ; : CPE 5 ; : CP 6 ; : CM 7 ;
+
+
+
+
+
+
+
+

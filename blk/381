@@ -7,3 +7,10 @@
 : NL 0x0a RAM+ @ ( NLPTR ) ?DUP IF EXECUTE ELSE CRLF THEN ;
 : (uflw) LIT" stack underflow" ERR ;
 : (wnf) (print) SPC LIT" word not found" ERR ;
+
+
+
+
+
+
+

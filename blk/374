@@ -3,3 +3,14 @@
     LIT< [THEN] BEGIN DUP WORD S= UNTIL DROP ;
 : [THEN] ;
 
+
+
+
+
+
+
+
+
+
+
+

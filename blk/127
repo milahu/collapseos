@@ -8,3 +8,9 @@
     ( buf ln c ) 63 nspcs SWAP 4 SWAP AT-XY ( buf c )
     SWAP DUP _zbuf C!+ DUP 63 + SWAP DO
         C< DUP 0x0d = IF LEAVE THEN i C! LOOP ;
+
+
+
+
+
+

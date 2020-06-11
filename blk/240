@@ -9,3 +9,8 @@
 0xc3 OP3nn JPnn,
 0x22 OP3nn LD(nn)HL,
 0x2a OP3nn LDHL(nn),
+
+
+
+
+

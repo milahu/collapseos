@@ -3,3 +3,14 @@
 ( src dst -- )
 : COPY SWAP BLK@ BLK> ! BLK! ;
 
+
+
+
+
+
+
+
+
+
+
+

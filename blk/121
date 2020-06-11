@@ -11,6 +11,6 @@ effect.
 block. Any change made to the previously selected block is
 saved beforehand.
 
-'[' and ']' advances the selected block by "modifier".
-
+'[' and ']' advances the selected block by "modifier". 't' opens
+the previously opened block. 
                                                         (cont.)

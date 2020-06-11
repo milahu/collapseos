@@ -28,8 +28,26 @@ int main(int argc, char *argv[])
             // not an empty block
             FILE *fp = fopen(fullpath, "w");
             for (int i=0; i<16; i++) {
-                int len = strlen(&buf[i*64]);
-                fwrite(&buf[i*64], len, 1, fp);
+                char *line = &buf[i*64];
+                // line length is *not* strlen()! it's the
+                // position of the first non-null, starting
+                // from the right. Then, we normalize nulls
+                // to space.
+                int j;
+                for (j=63; j>=0; j--) {
+                    if (line[j] != '\0') {
+                        break;
+                    }
+                }
+                int len = j+1;
+                if (len) {
+                    for (; j>=0; j--) {
+                        if (line[j] == '\0') {
+                            line[j] = ' ';
+                        }
+                    }
+                    fwrite(line, len, 1, fp);
+                }
                 fputc('\n', fp);
             }
             fclose(fp);

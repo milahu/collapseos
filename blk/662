@@ -5,3 +5,12 @@
 : _r64c DUP 63 > IF _oor THEN ;
 : _r256c DUP 255 > IF _oor THEN ;
 : _Rdp ( op rd -- op', place Rd ) 4 LSHIFT OR ;
+
+
+
+
+
+
+
+
+

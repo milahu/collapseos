@@ -6,3 +6,11 @@
         LDA(DE),
         0x7f ANDn,          ( remove IMMEDIATE flag )
         C CPr,                                        ( cont. )
+
+
+
+
+
+
+
+

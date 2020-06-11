@@ -4,3 +4,13 @@ prompt control to a RS-232 device instead of the keyboard.
 Interpreter output is unbuffered and only has EMIT. This
 word can also be overriden, mostly as a companion to the
 raison d'etre of your KEY override.
+
+
+
+
+
+
+
+
+
+

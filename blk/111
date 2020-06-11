@@ -11,3 +11,6 @@
     ELSE DROP 1+ ( ilen becomes rbuffsize+1 ) THEN
     DUP IBUF EDPOS @ _cpos ROT MOVE ( ilen ) EDPOS +! BLK!! ;
 : I IBUF _type _I EDPOS @ 64 / _pln ;
+
+
+

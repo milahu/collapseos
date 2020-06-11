@@ -13,3 +13,4 @@
 : BEGIN, PC ; : AGAIN?, ( op ) SWAP 1- SWAP EXECUTE A,, ;
 : AGAIN, ['] RJMP AGAIN?, ;
 : IF, ['] BREQ SKIP, ; : THEN, TO, ;
+

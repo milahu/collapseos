@@ -13,3 +13,4 @@
     _idle 8 LSHIFT _idle +  ( crc2 )
     _wait DROP _sdcDesel
     = NOT IF _err THEN ;
+

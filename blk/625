@@ -8,3 +8,9 @@ CREATE _idat
 0b00000000 C, 0x88 C, ( BG X scroll )
 0b00000000 C, 0x89 C, ( BG Y scroll )
 0b11111111 C, 0x8a C, ( Line counter (why have this?) )
+
+
+
+
+
+

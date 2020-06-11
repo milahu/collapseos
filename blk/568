@@ -11,3 +11,6 @@ CREATE _atbl
 : _2nd! 0 [ KBD_MEM LITN ] BIT! ;
 : _alock@ 1 [ KBD_MEM LITN ] BIT@ ;
 : _alock^ _alock@ NOT 1 [ KBD_MEM LITN ] BIT! ;
+
+
+

@@ -12,3 +12,5 @@ CREATE PS2_CODES
 ( 18 ) 0 C, 0 C, 'z' C, 's' C, 'a' C, 'w' C, '2' C, 0 C,
 ( 20 ) 0 C, 'c' C, 'x' C, 'd' C, 'e' C, '4' C, '3' C, 0 C,
 ( 28 ) 0 C, 32 C, 'v' C, 'f' C, 't' C, 'r' C, '5' C, 0 C,
+
+

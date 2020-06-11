@@ -8,3 +8,9 @@
     UNTIL ( a1 a2 )
     DUP BLK) < IF BLK( - FBUF + -^ EDPOS ! ELSE DROP THEN ;
 : F FBUF _type _F EDPOS @ 64 / _pln ;
+
+
+
+
+
+

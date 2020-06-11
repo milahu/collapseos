@@ -6,3 +6,11 @@
         IF DROP 1- 0 UNLOOP EXIT THEN LOOP ( a r )
     ( negate if needed )
     SWAP C@ '-' = IF 0 -^ THEN 1 ( r 1 ) ;
+
+
+
+
+
+
+
+

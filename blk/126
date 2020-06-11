@@ -1,5 +1,5 @@
 CREATE CMD 2 C, '$' C, 0 C,
-VARIABLE PREVPOS
+CREATE PREVPOS 0 , CREATE PREVBLK 0 ,
 : acc@ ACC @ 1 MAX ;
 : num ACC @ SWAP _pdacc IF DROP ELSE ACC ! THEN ;
 : nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
@@ -9,5 +9,8 @@ VARIABLE PREVPOS
 : status 0 aty ." BLK" SPC BLK> ? SPC ACC ?
     SPC EDPOS @ 64 /MOD . ',' EMIT . 10 nspcs ;
 : contents 3 aty BLK> @ LIST 3 16 gutter ;
-: selblk BLK@ contents ;
+: selblk BLK> @ PREVBLK ! BLK@ contents ;
 : mode! ( c -- ) 63 0 AT-XY ;
+
+
+

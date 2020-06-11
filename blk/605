@@ -8,3 +8,9 @@
   do this right after a write, so I prefer to stay cautious
   for now. )
 : _ready BEGIN _idle 0xff = UNTIL ;
+
+
+
+
+
+

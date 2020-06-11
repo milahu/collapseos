@@ -8,3 +8,9 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 ( A, spits an assembled byte, A,, spits an assembled word
   Both increase PC. To debug, change C, to .X )
 : A, C, ; : A,, SPLITB A, A, ;
+
+
+
+
+
+

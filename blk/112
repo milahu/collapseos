@@ -9,3 +9,8 @@
     EDPOS @ 64 / _pln ;
 : E FBUF _blen X ;
 : Y FBUF _blen icpy ;
+
+
+
+
+

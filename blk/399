@@ -7,3 +7,10 @@
 : LITA 36 , , ;
 : COMPILE ' LITA ['] , , ; IMMEDIATE
 : [COMPILE] ' , ; IMMEDIATE
+
+
+
+
+
+
+

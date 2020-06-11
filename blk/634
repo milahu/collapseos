@@ -6,3 +6,11 @@ CREATE _ '0' C, ':' C, 'A' C, '[' C, 'a' C, 0xff C,
     _sel @ _ BEGIN ( c a ) C@+ 2 PICK > UNTIL ( c a )
     1- C@ NIP _sel !
 ;
+
+
+
+
+
+
+
+

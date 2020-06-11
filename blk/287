@@ -12,3 +12,5 @@ PC ORG @ 0x24 + ! ( addrWord )
     IY INCss,
     DE PUSHqq,
     JPNEXT,
+
+

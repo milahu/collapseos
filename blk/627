@@ -13,3 +13,4 @@
     0x5e MIN ( tilenum ) XYPOS @ _cell!
     XYPOS @ 1+ DUP [ VDP_COLS VDP_ROWS * LITN ]
     = IF DROP 0 THEN XYPOS ! ;
+

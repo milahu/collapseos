@@ -4,3 +4,13 @@ prohibitive in terms of costs), PS_ADDR should be set to
 at least 6 bytes before its actual limit. 6 bytes because we
 seldom have words requiring more than 3 items from the stack.
 Then, at each "exit" call we check for stack underflow.
+
+
+
+
+
+
+
+
+
+

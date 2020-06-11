@@ -13,3 +13,4 @@
     1 0x06 RAM+ ! INTERPRET
     RDLN$ LIT< _sys [entry]
     LIT< CollapseOS (print) NL (main) ;
+
