@@ -6,5 +6,5 @@
 : buftype ( buf ln -- )
     3 OVER AT-XY C< DUP 0xd = IF 2DROP DROP EXIT THEN
     ( buf ln c ) 63 nspcs SWAP 4 SWAP AT-XY ( buf c )
-    SWAP DUP _zbuf BEGIN ( c a )
-        C!+ C< TUCK 0x0d = UNTIL ( c a ) C! ;
+    SWAP DUP _zbuf C!+ DUP 63 + SWAP DO
+        C< DUP 0x0d = IF LEAVE THEN i C! LOOP ;
