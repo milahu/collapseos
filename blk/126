@@ -5,8 +5,9 @@ VARIABLE PREVPOS
 : nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
 : aty 0 SWAP AT-XY ;
 : clrscr LINES 0 DO i aty COLS nspcs LOOP ;
+: gutter ( ln n ) OVER + SWAP DO 67 i AT-XY '|' EMIT LOOP ;
 : status 0 aty ." BLK" SPC BLK> ? SPC ACC ?
     SPC EDPOS @ 64 /MOD . ',' EMIT . 10 nspcs ;
-: contents 3 aty BLK> @ LIST ;
+: contents 3 aty BLK> @ LIST 3 16 gutter ;
 : selblk BLK@ contents ;
 : mode! ( c -- ) 63 0 AT-XY ;

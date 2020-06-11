@@ -6,7 +6,7 @@
     DUP 64 + SWAP DO i C@ 0x20 MAX EMIT LOOP ;
 : bufs
     1 aty ." I: " IBUF bufp
-    2 aty ." F: " FBUF bufp ;
+    2 aty ." F: " FBUF bufp 0 3 gutter ;
 : c<over KEY DUP EMIT DUP 0x0a = IF DROP 0x0d THEN ;
 : VE ['] c<over 0x08 ( C< override ) RAM+ !
     clrscr 0 ACC ! 0 PREVPOS ! contents
