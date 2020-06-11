@@ -3,13 +3,16 @@ BASEDIR = ../..
 FDIR = $(BASEDIR)/forth
 EDIR = $(BASEDIR)/emul
 STAGE = $(EDIR)/stage
-EMUL = $(BASEDIR)/emul/hw/ti/ti84
+EMUL = $(EDIR)/hw/ti/ti84
 MKTIUPGRADE = mktiupgrade
 
 .PHONY: all
 all: $(TARGET) 
 $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
+
+$(STAGE):
+	$(MAKE) -C $(EDIR) stage
 
 $(EMUL):
 	$(MAKE) -C ${@:%/ti84=%}

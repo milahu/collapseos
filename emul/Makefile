@@ -1,4 +1,4 @@
-TARGETS = forth stage blkfs
+TARGETS = forth stage 
 OBJS = emul.o libz80/libz80.o
 BLKPACK = ../tools/blkpack
 BLKUNPACK = ../tools/blkunpack
@@ -12,13 +12,13 @@ $(BLKPACK):
 .PHONY: $(BLKUNPACK)
 $(BLKUNPACK): $(BLKPACK)
 
-stage: stage.c $(OBJS)
+stage: stage.c $(OBJS) blkfs
 	$(CC) stage.c $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
-forth: forth.c $(OBJS)
+forth: forth.c $(OBJS) blkfs
 	$(CC) forth.c $(OBJS) -lncurses -o $@
 
 libz80/libz80.o: libz80/z80.c

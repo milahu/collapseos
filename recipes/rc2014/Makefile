@@ -10,8 +10,8 @@ all: $(TARGET)
 $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
 
-$(SLATEST):
-	$(MAKE) -C $(BASEDIR)/tools
+$(STAGE):
+	$(MAKE) -C $(EDIR) stage
 
 $(EMUL):
 	$(MAKE) -C ${@:%/classic=%}

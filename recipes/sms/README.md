@@ -57,6 +57,11 @@ Of course, that's not a fun way to enter text, but using the D-Pad is the
 easiest way to get started which doesn't require soldering. Your next step after
 that would be to [build a PS/2 keyboard adapter!](kbd/README.md)
 
+## Slow initialization in emulation
+
+When running under the emulator, video initialization is slow, it takes several
+seconds. It's the emulator's fault. On real hardware, it's not as slow.
+
 [smspower]: http://www.smspower.org
 [everdrive]: https://krikzz.com
 [zasm]: ../../tools/emul

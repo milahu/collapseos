@@ -6,3 +6,6 @@ STAGE = $(EDIR)/stage
 all: $(TARGET) 
 $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
+
+$(STAGE):
+	$(MAKE) -C $(EDIR) stage

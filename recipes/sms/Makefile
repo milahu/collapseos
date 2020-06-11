@@ -1,13 +1,17 @@
 TARGET = os.bin
-STAGE = ../../emul/stage
-EMUL = ../../emul/hw/sms/sms
+EDIR = ../../emul
+STAGE = $(EDIR)/stage
+EMUL = $(EDIR)/hw/sms/sms
 
 .PHONY: all
 all: $(TARGET) 
 $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
 
-os.sms: $(TARGET)
+$(STAGE):
+	$(MAKE) -C $(EDIR) stage
+
+os.sms: $(TARGET) $(STAGE)
 	dd if=$(TARGET) bs=32752 conv=sync | cat - sega.bin > $@
 
 $(EMUL):
