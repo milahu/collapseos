@@ -11,6 +11,4 @@
     WORD( HERE !  ( w )
     PREV CURRENT !
 ;
-
-
-
+: EMPTY LIT< _sys FIND IF DUP HERE ! CURRENT ! THEN ;
