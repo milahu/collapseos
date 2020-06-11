@@ -7,9 +7,7 @@
     _rbufsz IBUF _blen 2DUP > IF
         TUCK - ( ilen chars-to-move )
         SWAP EDPOS @ _cpos 2DUP + ( ctm ilen a a+ilen )
-        3 PICK MOVE- ( ctm ilen )
-        NIP ( ilen )
-    ELSE DROP ( ilen becomes rbuffsize )
-    THEN
+        3 PICK MOVE- ( ctm ilen ) NIP ( ilen )
+    ELSE DROP 1+ ( ilen becomes rbuffsize+1 ) THEN
     DUP IBUF EDPOS @ _cpos ROT MOVE ( ilen ) EDPOS +! BLK!! ;
 : I IBUF _type _I EDPOS @ 64 / _pln ;
