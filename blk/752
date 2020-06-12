@@ -2,7 +2,7 @@
 : SPLITB
     256 /MOD SWAP
 ;
-: PC H@ ORG @ - ;
+: PC H@ ORG @ - BIN( @ + ;
 : A, C, ;
 ( dst8 src8 -- modrm )
 : MODRMrr 0x7 AND 3 LSHIFT SWAP 0x7 AND OR 0xc0 OR ;
