@@ -4,10 +4,8 @@
 ;
 : FLUSH BLKDTY @ IF BLK! THEN ;
 : BLK@ ( n -- )
-    FLUSH
     DUP BLK> @ = IF DROP EXIT THEN
-    DUP BLK> ! BLK@* @ EXECUTE
-;
+    FLUSH DUP BLK> ! BLK@* @ EXECUTE ;
 
 : BLK!! 1 BLKDTY ! ;
 

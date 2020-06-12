@@ -1,7 +1,7 @@
 : WIPE BLK( 1024 0 FILL BLK!! ;
 
 ( src dst -- )
-: COPY SWAP BLK@ BLK> ! BLK! ;
+: COPY FLUSH SWAP BLK@ BLK> ! BLK! ;
 
 
 
