@@ -1,4 +1,5 @@
 VARIABLE ORG
+VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : AL 0 ; : CL 1 ; : DL 2 ; : BL 3 ;
 : AH 4 ; : CH 5 ; : DH 6 ; : BH 7 ;
 : AX 8 ; : CX 9 ; : DX 10 ; : BX 11 ;

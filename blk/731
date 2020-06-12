@@ -1,2 +1,9 @@
+H@ ORG !
+JMP8, L1 FWR8 ( start )
+L2 BSET ( msg )
+," Hello, World!" 0 A,
+L1 FSET ( start )
 AH 0x42 MOVri,
-8 H@ 2 - DUMP
+0x10 INT,
+SI L2 @ ( msg ) MOVrI,
+PC ORG @ DUMP
