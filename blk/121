@@ -1,16 +1,16 @@
-All keystrokes are directly interpreted by VE and have the
-effect described below.
+The status line displays the active block number, then the
+"modifier" and then the cursor position. When the block is dir-
+ty, an "*" is displayed next. At the right corner, a mode letter
+can appear. 'R' for replace, 'I' for insert, 'F' for find.
 
-Pressing a 0-9 digit accumulates that digit into what is named
-the "modifier". That modifier affects the behavior of many
-keystokes described below. The modifier starts at zero, but
-most commands interpret a zero as a 1 so that they can have an
-effect.
 
-'g' selects the block specified by the modifier as the current
-block. Any change made to the previously selected block is
-saved beforehand.
 
-'[' and ']' advances the selected block by "modifier". 't' opens
-the previously opened block. 
-                                                        (cont.)
+
+
+
+
+
+
+
+
+                                                         (cont.)

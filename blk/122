@@ -1,16 +1,16 @@
-'h' and 'l' move the cursor by "modifier" characters. 'j' and
-'k', by lines.
+All keystrokes are directly interpreted by VE and have the
+effect described below.
 
-'H' goes to the beginning of the line, 'L' to the end.
+Pressing a 0-9 digit accumulates that digit into what is named
+the "modifier". That modifier affects the behavior of many
+keystokes described below. The modifier starts at zero, but
+most commands interpret a zero as a 1 so that they can have an
+effect.
 
-'w' moves forward by "modifier" words. 'b' moves backward.
-'W' moves to end-of-word. 'B', backwards.
+'g' selects the block specified by the modifier as the current
+block. Any change made to the previously selected block is
+saved beforehand.
 
-'I', 'F', 'Y', 'X' and 'E' invoke the corresponding command
-from the Block Editor (B100). Refer to documentation there.
-
-'o' inserts a blank line after the cursor. 'O', before.
-
-'D' deletes "modifier" lines at the cursor. The first of those
-lines is copied to IBUF.
+'[' and ']' advances the selected block by "modifier". 't' opens
+the previously opened block. 
                                                         (cont.)
