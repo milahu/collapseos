@@ -5,3 +5,4 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : AH 4 ; : CH 5 ; : DH 6 ; : BH 7 ;
 : AX 8 ; : CX 9 ; : DX 10 ; : BX 11 ;
 : SP 12 ; : BP 13 ; : SI 14 ; : DI 15 ;
+: ES 0 ; : CS 1 ; : SS 2 ; : DS 3 ;
