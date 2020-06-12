@@ -3,7 +3,12 @@ JMP8, L1 FWR8 ( start )
 L2 BSET ( msg )
 ," Hello, World!" 0 A,
 L1 FSET ( start )
-AH 0x42 MOVri,
+CLI,
+AH 0 MOVri,
+AL 2 MOVri,
 0x10 INT,
 SI L2 @ ( msg ) MOVrI,
+AH 0x0e MOVri,
+LODSB,
+AL AL ORrr,
 PC ORG @ DUMP

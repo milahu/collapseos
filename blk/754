@@ -10,8 +10,7 @@
 : IFNC, JRC, FJR, ; )
 : THEN,
     DUP PC          ( l l pc )
-    -^              ( l off )
+    -^ 1-           ( l off )
     ( warning: l is a PC offset, not a mem addr! )
     SWAP ORG @ + ( BIN( @ - ) ( off addr )
     C! ;
-

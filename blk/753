@@ -1,6 +1,9 @@
 : MOVri, SWAP 0xb0 OR A, A, ;
-: MOVrI, SWAP 0xb0 OR A, 256 /MOD A, A, ;
+: MOVrI, SWAP 0xb0 OR A, SPLITB A, A, ;
 : INT, 0xcd A, A, ;
 ( no argument, flow ops are special )
 : JMP8, 0xeb A, ;
 : JMP16, 0xe9 A, ;
+: LODSB, 0xac A, ;
+: CLI, 0xfa A, ;
+: ORrr, 0x08 A, MODRMrr A, ;
