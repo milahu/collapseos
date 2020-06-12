@@ -7,10 +7,10 @@
 : bufs
     1 aty ." I: " IBUF bufp
     2 aty ." F: " FBUF bufp 0 3 gutter ;
-: c<over KEY DUP EMIT DUP 0x0a = IF DROP 0x0d THEN ;
-: VE ['] c<over 0x08 ( C< override ) RAM+ !
+: VE
     clrscr 0 ACC ! 0 PREVPOS ! contents
     BEGIN status bufs setpos KEY handle UNTIL
-    0 0x08 RAM+ ! 19 aty ;
+    19 aty ;
+
 
 

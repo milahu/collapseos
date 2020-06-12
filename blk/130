@@ -4,8 +4,8 @@
     SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
 : $R ( replace mode )
     mode! 'R' EMIT
-    BEGIN setpos C< DUP 0xd = NOT IF
-        EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
+    BEGIN setpos KEY DUP 0x20 >= IF
+        DUP EMIT EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
     THEN UNTIL mode! SPC contents ;
 : $O EDPOS @ 0x3c0 ( 15 * 64 ) >= IF EXIT THEN
     _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;

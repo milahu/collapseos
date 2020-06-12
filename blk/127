@@ -4,10 +4,11 @@
     3 + ( header ) SWAP 3 + ( gutter ) SWAP AT-XY ;
 : cmv ( n -- , char movement ) acc@ * EDPOS @ + pos! ;
 : buftype ( buf ln -- )
-    3 OVER AT-XY C< DUP 0xd = IF 2DROP DROP EXIT THEN
-    ( buf ln c ) 63 nspcs SWAP 4 SWAP AT-XY ( buf c )
-    SWAP DUP _zbuf C!+ DUP 63 + SWAP DO
-        C< DUP 0x0d = IF LEAVE THEN i C! LOOP ;
+    3 OVER AT-XY KEY DUP EMIT
+    DUP 0x20 < IF 2DROP DROP EXIT THEN
+    ( buf ln c ) 63 nspcs SWAP 4 SWAP AT-XY ( buf c ) SWAP C!+
+    IN( _zbuf (rdln) IN( SWAP 63 MOVE ;
+
 
 
 
