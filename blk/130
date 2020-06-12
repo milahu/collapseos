@@ -4,7 +4,8 @@
     SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
 : $R ( replace mode )
     mode! 'R' EMIT
-    BEGIN setpos KEY DUP 0x20 >= IF
+    BEGIN setpos KEY DUP BS? IF -1 EDPOS +! DROP 0 THEN
+        DUP 0x20 >= IF
         DUP EMIT EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
     THEN UNTIL mode! SPC contents ;
 : $O EDPOS @ 0x3c0 ( 15 * 64 ) >= IF EXIT THEN
@@ -13,4 +14,3 @@
 : $D $H 64 icpy
     acc@ 0 DO 16 EDPOS @ 64 / DO i _mvln- LOOP LOOP
     BLK!! contents ;
-

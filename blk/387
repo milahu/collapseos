@@ -1,16 +1,16 @@
 ( handle backspace: go back one char in IN>, if possible, then
   emit BS + SPC + BS )
-: (inbs)
+: _bs
     ( already at IN( ? )
     IN> @ IN( = IF EXIT THEN
     IN> @ 1- IN> !
     BS SPC BS
 ;
+( del is same as backspace )
+: BS? DUP 0x7f = SWAP 0x8 = OR ;
 
 : KEY
     85 RAM+ @ ( (key) override )
     ?DUP IF EXECUTE ELSE (key) THEN ;
-
-
 ( cont.: read one char into input buffer and returns whether we
   should continue, that is, whether CR was not met. )
