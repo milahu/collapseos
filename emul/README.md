@@ -32,6 +32,11 @@ Run `./forth` to get the Collapse OS prompt. Type `0 LIST` for help.
 The program is a curses interface with a limited, fixed size so that it can
 provide a AT-XY interface (which is yet to implement).
 
+You can get a REPL by launching the program with [`rlwrap(1)`][rlwrap] like
+this:
+
+    rlwrap -e '' -m -S '> ' ./forth /dev/stdin
+
 ## Problems?
 
 If the `forth` executable works badly (hangs, spew garbage, etc.),
@@ -52,3 +57,4 @@ is broken, but that is rather rare: the repo on Github is plugged on Travis
 and it checks that everything is smooth.
 
 [libz80]: https://github.com/ggambetta/libz80
+[rlwrap]: https://linux.die.net/man/1/rlwrap
