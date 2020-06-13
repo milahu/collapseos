@@ -1,14 +1,15 @@
 H@ ORG ! 0x7c00 BIN( ! ( BIOS loads boot bin at 0x7c00 )
 JMP8, L1 FWR8 ( start )
 ORG @ 0x25 + HERE ! ( bypass BPB )
-L2 BSET ( msg ) ," Hello, World!" 0 A,
 L1 FSET ( start )
-CLI, CLD, AX AX XORxx, DS AX MOVsx, STI,
-AH 0 MOVri, AL 2 MOVri, ( 80x25 BW video mode ) 0x10 INT,
-SI L2 @ ( msg ) MOVrI, AH 0x0e MOVri, ( print char )
+CLI, CLD, AX AX XORxx, DS AX MOVsx, ES AX MOVsx, STI,
+AH 2 MOVri, DX 0 MOVrI, CH 0 MOVri, CL 2 MOVri, AL 1 MOVri,
+BX 0x8000 MOVrI, 0x13 INT, ( read 2nd sector of boot floppy )
+SI 0x8000 MOVrI, AH 0x0e MOVri, ( print char )
 L1 BSET ( loop ) LODSB, AL AL ORrr, ( end of str? )
 JZ, L2 FWR8 ( next ) 0x10 INT, ( print char )
 JMP8, L1 ( loop ) BWR
 L2 FSET ( next ) AH 0 MOVri, 0x16 INT, ( read kbd )
 AH 0x0e MOVri, 0x10 INT, ( spit read char ) HLT, ( done )
 ORG @ 0x1fe + HERE ! 0x55 A, 0xaa A,
+," Hello from 2nd sector of boot floppy!" 0 A,
