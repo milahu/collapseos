@@ -30,7 +30,7 @@ After that, you can run `make` and it builds the `forth` interpreter.
 Run `./forth` to get the Collapse OS prompt. Type `0 LIST` for help.
 
 The program is a curses interface with a limited, fixed size so that it can
-provide a AT-XY interface (which is yet to implement).
+provide a AT-XY interface.
 
 You can get a REPL by launching the program with [`rlwrap(1)`][rlwrap] like
 this:
