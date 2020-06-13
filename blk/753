@@ -4,9 +4,9 @@
 ( no argument, jumps with abs addrs are special )
 0xeb OP1 JMPs,       0xe9 OP1 JMPn,      0x74 OP1 JZ,
 : MOVri, SWAP 0xb0 OR A, A, ;
-: MOVrI, SWAP 0xb0 OR A, SPLITB A, A, ;
-: MOVsx, 0x8e A, SWAP MODRMrr A, ;
+: MOVxi, SWAP 0xb8 OR A, SPLITB A, A, ;
+: MOVsx, 0x8e A, SWAP 3 LSHIFT OR 0xc0 OR A, ;
 : INT, 0xcd A, A, ;
 : JMPr, 0xff A, 7 AND 0xe0 OR A, ;
-: ORrr, 0x08 A, MODRMrr A, ;
-: XORxx, 0x31 A, MODRMrr A, ;
+: OPrr CREATE C, DOES> C@ A, 3 LSHIFT OR 0xc0 OR A, ;
+0x31 OPrr XORxx,     0x08 OPrr ORrr,

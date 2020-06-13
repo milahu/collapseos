@@ -2,15 +2,15 @@
 
 Work in progress. Load with "750 LOAD".
 
+Mnemonics are followed by argument types. For example, MOVri,
+moves 8-bit immediate to 8-bit register.
 
+'r' = 8-bit register           'x' = 16-bit register
+'i' = immediate, size depends on other operand.
+'s' = SREG register
 
+Mnemonics that only have one signature (for example INT,) don't
+have operands letters.
 
-
-
-
-
-
-
-
-
+For jumps, it's special. 's' is SHORT, 'n' is NEAR, 'f' is FAR.
 

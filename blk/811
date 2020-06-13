@@ -3,8 +3,8 @@ JMPs, L1 FWRs ( start )
 ORG @ 0x25 + HERE ! ( bypass BPB )
 L1 FSET ( start )
 CLI, CLD, AX AX XORxx, DS AX MOVsx, ES AX MOVsx,
-SS AX MOVsx, SP 0xffff MOVrI, STI,
-AH 2 MOVri, DX 0 MOVrI, CH 0 MOVri, CL 2 MOVri, AL 1 MOVri,
-BX 0x8000 MOVrI, 0x13 INT, ( read 2nd sector of boot floppy )
+SS AX MOVsx, SP 0xffff MOVxi, STI,
+AH 2 MOVri, DX 0 MOVxi, CH 0 MOVri, CL 2 MOVri, AL 1 MOVri,
+BX 0x8000 MOVxi, 0x13 INT, ( read 2nd sector of boot floppy )
 BX JMPr,
 ORG @ 0x1fe + HERE ! 0x55 A, 0xaa A,

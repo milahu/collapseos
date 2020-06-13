@@ -2,7 +2,7 @@ H@ ORG ! 0x8000 BIN( !
 JMPs, L1 FWRs ( start )
 L2 ( msg ) BSET ," Hello World!" 0 A,
 L1 FSET ( start )
-SI L2 @ ( msg ) MOVrI, AH 0x0e MOVri, ( print char )
+SI L2 @ ( msg ) MOVxi, AH 0x0e MOVri, ( print char )
 L1 BSET ( loop ) LODSB, AL AL ORrr, ( end of str? )
 JZ, L2 FWRs ( next ) 0x10 INT, ( print char )
 JMPs, L1 ( loop ) BWR
