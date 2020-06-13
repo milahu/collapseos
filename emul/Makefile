@@ -44,4 +44,4 @@ unpack:
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) emul.o *-bin.h blkfs
+	rm -f $(TARGETS) emul.o *-bin.h blkfs libz80/libz80.o
