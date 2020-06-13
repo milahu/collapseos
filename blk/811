@@ -1,9 +1,9 @@
-: _filler 510 H@ ORG @ - DO 0 A, LOOP 0x55 A, 0xaa A, ;
 H@ ORG ! 0x7c00 BIN( ! ( BIOS loads boot bin at 0x7c00 )
 JMP8, L1 FWR8 ( start )
+ORG @ 0x25 + HERE ! ( bypass BPB )
 L2 BSET ( msg ) ," Hello, World!" 0 A,
 L1 FSET ( start )
-CLI, CLD, AX AX XORxx, DS AX MOVsx,
+CLI, CLD, AX AX XORxx, DS AX MOVsx, STI,
 AH 0 MOVri, AL 2 MOVri, ( 80x25 BW video mode ) 0x10 INT,
 SI L2 @ ( msg ) MOVrI, AH 0x0e MOVri, ( print char )
 L1 BSET ( loop ) LODSB, AL AL ORrr, ( end of str? )
@@ -11,4 +11,4 @@ JZ, L2 FWR8 ( next ) 0x10 INT, ( print char )
 JMP8, L1 ( loop ) BWR
 L2 FSET ( next ) AH 0 MOVri, 0x16 INT, ( read kbd )
 AH 0x0e MOVri, 0x10 INT, ( spit read char ) HLT, ( done )
-_filler
+ORG @ 0x1fe + HERE ! 0x55 A, 0xaa A,
