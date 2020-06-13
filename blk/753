@@ -1,12 +1,12 @@
+: OP1 CREATE C, DOES> C@ A, ;
+0xac OP1 LODSB,      0xfa OP1 CLI,       0xfb OP1 STI,
+0xf4 OP1 HLT,        0xfc OP1 CLD,       0xfd OP1 STD,
+( no argument, jumps with abs addrs are special )
+0xeb OP1 JMPs,       0xe9 OP1 JMPn,      0x74 OP1 JZ,
 : MOVri, SWAP 0xb0 OR A, A, ;
 : MOVrI, SWAP 0xb0 OR A, SPLITB A, A, ;
 : MOVsx, 0x8e A, SWAP MODRMrr A, ;
 : INT, 0xcd A, A, ;
-( no argument, flow ops are special )
-: JMP8, 0xeb A, ; : JMP16, 0xe9 A, ; : JZ, 0x74 A, ;
 : JMPr, 0xff A, 7 AND 0xe0 OR A, ;
-: LODSB, 0xac A, ; : CLI, 0xfa A, ; : HLT, 0xf4 A, ;
-: STI, 0xfb A, ;
 : ORrr, 0x08 A, MODRMrr A, ;
 : XORxx, 0x31 A, MODRMrr A, ;
-: CLD, 0xfc A, ; : STD, 0xfd A, ;

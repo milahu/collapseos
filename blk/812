@@ -1,10 +1,10 @@
 H@ ORG ! 0x8000 BIN( !
-JMP8, L1 FWR8 ( start )
+JMPs, L1 FWRs ( start )
 L2 ( msg ) BSET ," Hello World!" 0 A,
 L1 FSET ( start )
 SI L2 @ ( msg ) MOVrI, AH 0x0e MOVri, ( print char )
 L1 BSET ( loop ) LODSB, AL AL ORrr, ( end of str? )
-JZ, L2 FWR8 ( next ) 0x10 INT, ( print char )
-JMP8, L1 ( loop ) BWR
+JZ, L2 FWRs ( next ) 0x10 INT, ( print char )
+JMPs, L1 ( loop ) BWR
 L2 FSET ( next ) AH 0 MOVri, 0x16 INT, ( read kbd )
 AH 0x0e MOVri, 0x10 INT, ( spit read char ) HLT, ( done )

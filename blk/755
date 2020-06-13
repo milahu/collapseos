@@ -1,4 +1,4 @@
-: FWR8 BSET 0 A, ;
+: FWRs BSET 0 A, ;
 : FSET @ THEN, ;
 ( : BREAK, FJR, 0x8000 OR ;
 : BREAK?, DUP 0x8000 AND IF
