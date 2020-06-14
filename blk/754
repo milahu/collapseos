@@ -1,16 +1,9 @@
-( Place BEGIN, where you want to jump back and AGAIN after
-  a relative jump operator. Just like BSET and BWR. )
-: BEGIN, PC ;
-: BSET PC SWAP ! ;
-( same as BSET, but we need to write a placeholder )
-( : FJR, PC 0 A, ;
-: IFZ, JRNZ, FJR, ;
-: IFNZ, JRZ, FJR, ;
-: IFC, JRNC, FJR, ;
-: IFNC, JRC, FJR, ; )
-: THEN,
-    DUP PC          ( l l pc )
-    -^ 1-           ( l off )
-    ( warning: l is a PC offset, not a mem addr! )
-    SWAP ORG @ + BIN( @ - ( off addr )
-    C! ;
+: MOVri, SWAP 0xb0 OR A, A, ;
+: MOVxi, SWAP 0xb8 OR A, A,, ;
+: MOVsx, 0x8e A, SWAP 3 LSHIFT OR 0xc0 OR A, ;
+: MOVxm, 0x8b A, SWAP 3 LSHIFT 0x6 OR A, A,, ;
+: MOVr[], 0x8a A, SWAP 3 LSHIFT OR A, ;
+: INCx, 0x40 OR A, ;
+: INT, 0xcd A, A, ;
+: JMPr, 0xff A, 7 AND 0xe0 OR A, ;
+: JMPf, ( seg off ) 0xea A, SPLITB A, A, A,, ;

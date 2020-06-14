@@ -6,7 +6,7 @@
 4 A,
 H@ XCURRENT !        ( set current tip of dict, 0x42 )
     0x17 A,          ( nativeWord )
-    HLT,
+;CODE
 CODE FOO
 ( Update LATEST, temporarily hackish )
 PC 1- ORG @ 8 + !

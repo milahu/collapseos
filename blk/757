@@ -1,0 +1,4 @@
+: CODE ( same as CREATE, but with native word )
+    (entry)
+    23 C, ( 23 == nativeWord ) ;
+: ;CODE ;
