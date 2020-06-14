@@ -1,4 +1,4 @@
-PC ORG @ 0x12 + ! ( pushRS )
+L4 BSET PC ORG @ 0x12 + ! ( pushRS )
     IX INCss,
     IX INCss,
     0 IX+ L LDIXYr,

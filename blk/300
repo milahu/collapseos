@@ -3,7 +3,7 @@ PC ORG @ 0x1b + ! ( next )
   we jump to current IP, but we also take care of increasing
   it by 2 before jumping. )
 	( Before we continue: are stacks within bounds? )
-    0x1d BCALL, ( chkPS )
+    L1 @ ( chkPS ) BCALL,
     ( check RS )
     IX PUSHqq, HL POPqq,
     DE RS_ADDR LDddnn,

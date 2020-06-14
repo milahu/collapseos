@@ -1,7 +1,7 @@
 : OP1 CREATE C, DOES> C@ A, ;
 0xf3 OP1 DI,                   0xfb OP1 EI,
 0xeb OP1 EXDEHL,               0xd9 OP1 EXX,
-0x08 OP1 EXAFAF',
+0x08 OP1 EXAFAF',              0xe3 OP1 EX(SP)HL,
 0x76 OP1 HALT,                 0xe9 OP1 JP(HL),
 0x12 OP1 LD(DE)A,              0x1a OP1 LDA(DE),
 0x02 OP1 LD(BC)A,              0x0a OP1 LDA(BC),
