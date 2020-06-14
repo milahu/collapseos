@@ -3,6 +3,7 @@
 0xf4 OP1 HLT,        0xfc OP1 CLD,       0xfd OP1 STD,
 ( no argument, jumps with relative addrs are special )
 0xeb OP1 JMPs,       0xe9 OP1 JMPn,      0x74 OP1 JZ,
+                     0xe8 OP1 CALLn,
 : MOVri, SWAP 0xb0 OR A, A, ;
 : MOVxi, SWAP 0xb8 OR A, SPLITB A, A, ;
 : MOVsx, 0x8e A, SWAP 3 LSHIFT OR 0xc0 OR A, ;
