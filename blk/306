@@ -1,16 +1,16 @@
+( Core words )
+( KEY and EMIT are not defined here. There're
+  expected to be defined in platform-specific code. )
+
+CODE EXECUTE
+    DE POPqq,
+    chkPS,
+    JR, L3 BWR      ( execute-B301 )
+
 ( a b c -- b c a )
 CODE ROT
-    HL POPqq,       ( C )
-    DE POPqq,       ( B )
-    BC POPqq,       ( A )
+    HL POPqq, ( C ) DE POPqq, ( B ) BC POPqq, ( A )
     chkPS,
-    DE PUSHqq,      ( B )
-    HL PUSHqq,      ( C )
-    BC PUSHqq,      ( A )
+    DE PUSHqq, ( B ) HL PUSHqq, ( C ) BC PUSHqq, ( A )
 ;CODE
-
-
-
-
-
 

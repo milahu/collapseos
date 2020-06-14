@@ -5,7 +5,7 @@
 
 : JPNEXT, 26 BJP, ; ( 26 == next )
 
-: chkPS, 29 BCALL, ; ( 29 == chkPS )
+: chkPS, L4 @ BCALL, ; ( chkPS, B305 )
 
 : CODE ( same as CREATE, but with native word )
     (entry)
