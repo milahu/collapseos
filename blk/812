@@ -1,4 +1,4 @@
-H@ ORG ! 0x8000 BIN( !
+H@ ORG !
 JMPs, L1 FWRs ( start )
 L2 ( msg ) BSET ," Hello World!" 0 A,
 L1 FSET ( start )
