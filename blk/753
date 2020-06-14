@@ -5,10 +5,11 @@
 0xeb OP1 JMPs,       0xe9 OP1 JMPn,      0x74 OP1 JZ,
                      0xe8 OP1 CALLn,
 : MOVri, SWAP 0xb0 OR A, A, ;
-: MOVxi, SWAP 0xb8 OR A, SPLITB A, A, ;
+: MOVxi, SWAP 0xb8 OR A, A,, ;
 : MOVsx, 0x8e A, SWAP 3 LSHIFT OR 0xc0 OR A, ;
+: MOVxm, 0x8b A, SWAP 3 LSHIFT 0x6 OR A, A,, ;
 : INT, 0xcd A, A, ;
 : JMPr, 0xff A, 7 AND 0xe0 OR A, ;
-: JMPf, ( seg off ) 0xea A, SPLITB A, A, SPLITB A, A, ;
+: JMPf, ( seg off ) 0xea A, SPLITB A, A, A,, ;
 : OPrr CREATE C, DOES> C@ A, 3 LSHIFT OR 0xc0 OR A, ;
 0x31 OPrr XORxx,     0x08 OPrr ORrr,

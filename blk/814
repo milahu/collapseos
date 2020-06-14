@@ -1,2 +1,3 @@
 PC 3 - ORG @ 1+ ! ( main )
-    JMPs, L1 @ RPCs,
+    AX 0x08 MOVxm, ( LATEST )
+    AX JMPr,
