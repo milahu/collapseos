@@ -5,7 +5,7 @@ JMPn, 0 A,,   ( 00, main )     JMPn, 0 A,,   ( 03, find )
 0 A,          ( 0a, unused )   JMPn, 0 A,,   ( 0b, cellWord )
 JMPn, 0 A,, ( 0e compiledWord ) JMPn, 0 A,,  ( 11, pushRS )
 JMPn, 0 A,,   ( 14, popRS )
-BX JMPr,      ( 17, nativeWord ) 0 A,
+DI JMPr,      ( 17, nativeWord ) 0 A,
 JMPn, 0 A,,   ( 1a, next )     JMPn, 0 A,,   ( 1d, unused )
 0 A, 0 A,     ( 20, numberWord ) 0 A, 0 A,   ( 22, litWord )
 0 A, 0 A,     ( 24, addrWord ) 0 A, 0 A,     ( 26, unused )

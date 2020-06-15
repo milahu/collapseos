@@ -1,5 +1,5 @@
-L1 BSET PC 3 - ORG @ 0x34 + ! ( execute -- BX -> wordref )
+L1 BSET PC 3 - ORG @ 0x34 + ! ( execute -- DI -> wordref )
     AH AH XORrr,
-    AL [BX] MOVr[],
-    BX INCx, ( PFA )
+    AL [DI] MOVr[],
+    DI INCx, ( PFA )
     AX JMPr,

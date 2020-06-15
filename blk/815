@@ -1,14 +1,16 @@
 L4 BSET PC 3 - ORG @ 4 + ! ( find )
 ( find word the same name as str in SI starting from tip in
-  BX. Returns wordref in BX. Z if found, NZ if not. )
+  DI. Returns wordref in BX. Z if found, NZ if not. )
     CH CH XORrr, CL [SI] MOVr[], ( CX -> strlen )
-    SI INCx,
-    AX AX XORxx, ( initial prev )
-    BEGIN, ( inner )
-        BX AX SUBxx, ( jump to prev wordref )
-        BX DECx, AL [BX] MOVr[], ( strlen )
-        CL AL CMPrr, IFZ, BX INCx, RETn, THEN,
-        BX DECx, BX DECx, AX [BX] MOVx[], ( prev )
-        AX AX ORxx,
-    JNZ, AGAIN,
-    BEGIN, JMPs, AGAIN,
+    SI INCx, ( first char ) AX AX XORxx, ( initial prev )
+    BEGIN, ( loop )
+        DI AX SUBxx, ( jump to prev wordref )
+        DI DECx, AL [DI] MOVr[], ( strlen )
+        CL AL CMPrr, IFZ, ( same len )
+            SI PUSHx, DI PUSHx, CX PUSHx, ( --> lvl 3 )
+            2 ADDALi, ( prev ) AH AH XORrr, DI AX SUBxx,
+            REPZ, CMPSB,
+            CX POPx, DI POPx, SI POPx, ( <-- lvl 3 )
+            IFZ, DI INCx, AL AL XORrr, ( Z ) RETn, THEN,
+        THEN,
+                                                      ( cont. )

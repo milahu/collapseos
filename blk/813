@@ -9,5 +9,5 @@ H@ XCURRENT !        ( set current tip of dict, 0x42 )
 ;CODE
 CODE FOO
     AH 0x0e MOVri, ( print char ) AL 'X' MOVri, 0x10 INT,
-    L2 BSET JMPs, L2 @ RPCs,
+    BEGIN, JMPs, AGAIN,
 ;CODE

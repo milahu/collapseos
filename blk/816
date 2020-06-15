@@ -1,6 +1,6 @@
-L3 BSET 3 A, 'F' A, 'O' A, 'O' A,
-PC 3 - ORG @ 1+ ! ( main )
-    BX 0x08 MOVxm, ( LATEST )
-    SI L3 @ MOVxi,
-    CALLn, L4 @ RPCn, ( find )
-    JMPs, L1 @ RPCs, ( execute )
+( find cont. )
+        DI DECx, DI DECx, AX [DI] MOVx[], ( prev )
+        AX AX ORxx,
+    JNZ, AGAIN, ( loop )
+    AX INCx, ( NZ ) RETn,
+
