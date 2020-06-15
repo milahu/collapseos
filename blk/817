@@ -1,7 +1,7 @@
 L3 BSET 3 A, 'F' A, 'O' A, 'O' A,
 PC 3 - ORG @ 1+ ! ( main )
     DI 0x08 MOVxm, ( LATEST )
-    SI L3 @ MOVxi,
+    SI L3 @ MOVxI,
     CALLn, L4 @ RPCn, ( find )
     IFZ, JMPs, L1 @ RPCs, ( execute ) THEN,
     AH 0x0e MOVri, ( print char ) AL '!' MOVri, 0x10 INT,

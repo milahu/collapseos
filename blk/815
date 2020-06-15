@@ -5,12 +5,12 @@ L4 BSET PC 3 - ORG @ 4 + ! ( find )
     SI INCx, ( first char ) AX AX XORxx, ( initial prev )
     BEGIN, ( loop )
         DI AX SUBxx, ( jump to prev wordref )
-        DI DECx, AL [DI] MOVr[], ( strlen )
+        AL [DI] -1 MOVr[]+, ( strlen )
         CL AL CMPrr, IFZ, ( same len )
             SI PUSHx, DI PUSHx, CX PUSHx, ( --> lvl 3 )
-            2 ADDALi, ( prev ) AH AH XORrr, DI AX SUBxx,
+            3 ADDALi, ( header ) AH AH XORrr, DI AX SUBxx,
             REPZ, CMPSB,
             CX POPx, DI POPx, SI POPx, ( <-- lvl 3 )
-            IFZ, DI INCx, AL AL XORrr, ( Z ) RETn, THEN,
+            IFZ, AL AL XORrr, ( Z ) RETn, THEN,
         THEN,
                                                       ( cont. )

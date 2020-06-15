@@ -6,7 +6,7 @@ Mnemonics are followed by argument types. For example, MOVri,
 moves 8-bit immediate to 8-bit register.
 
 'r' = 8-bit register           'x' = 16-bit register
-'i' = immediate, size depends on other operand.
+'i' = 8-bit immediate          'I' = 16-bit immediate
 's' = SREG register
 
 Mnemonics that only have one signature (for example INT,) don't

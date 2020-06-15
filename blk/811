@@ -2,9 +2,9 @@ H@ ORG ! 0x7c00 BIN( ! ( BIOS loads boot bin at 0x7c00 )
 JMPs, L1 FWRs ( start )
 ORG @ 0x25 + HERE ! ( bypass BPB )
 L1 FSET ( start )
-CLI, CLD, AX 0x800 MOVxi, DS AX MOVsx, ES AX MOVsx,
-SS AX MOVsx, SP 0xffff MOVxi, STI,
-AH 2 MOVri, DX 0 MOVxi, CH 0 MOVri, CL 2 MOVri, AL 1 MOVri,
-BX 0 MOVxi, 0x13 INT, ( read 2nd sector of boot floppy )
+CLI, CLD, AX 0x800 MOVxI, DS AX MOVsx, ES AX MOVsx,
+SS AX MOVsx, SP 0xffff MOVxI, STI,
+AH 2 MOVri, DX 0 MOVxI, CH 0 MOVri, CL 2 MOVri, AL 1 MOVri,
+BX 0 MOVxI, 0x13 INT, ( read 2nd sector of boot floppy )
 0x800 0 JMPf,
 ORG @ 0x1fe + HERE ! 0x55 A, 0xaa A,
