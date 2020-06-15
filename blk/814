@@ -3,6 +3,3 @@ L1 BSET PC 3 - ORG @ 0x34 + ! ( execute -- BX -> wordref )
     AL [BX] MOVr[],
     BX INCx, ( PFA )
     AX JMPr,
-
-PC 3 - ORG @ 1+ ! ( main )
-    BX 0x08 MOVxm, ( LATEST ) JMPs, L1 @ RPCs, ( execute )

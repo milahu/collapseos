@@ -1,9 +1,5 @@
-: MOVri, SWAP 0xb0 OR A, A, ;
-: MOVxi, SWAP 0xb8 OR A, A,, ;
-: MOVsx, 0x8e A, SWAP 3 LSHIFT OR 0xc0 OR A, ;
-: MOVxm, 0x8b A, SWAP 3 LSHIFT 0x6 OR A, A,, ;
-: MOVr[], 0x8a A, SWAP 3 LSHIFT OR A, ;
-: INCx, 0x40 OR A, ;
-: INT, 0xcd A, A, ;
-: JMPr, 0xff A, 7 AND 0xe0 OR A, ;
-: JMPf, ( seg off ) 0xea A, SPLITB A, A, A,, ;
+: OPrr CREATE C, DOES> C@ A, 3 LSHIFT OR 0xc0 OR A, ;
+0x31 OPrr XORxx,     0x30 OPrr XORrr,
+0x88 OPrr MOVrr,     0x89 OPrr MOVxx,    0x28 OPrr SUBrr,
+0x29 OPrr SUBxx,     0x08 OPrr ORrr,     0x09 OPrr ORxx,
+0x3a OPrr CMPrr,     0x3b OPrr CMPxx,
