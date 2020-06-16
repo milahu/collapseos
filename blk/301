@@ -1,14 +1,12 @@
-L3 BSET PC ORG @ 0x34 + ! ( execute )
-    EXDEHL, ( HL now points to wordref )
+L3 BSET PC ORG @ 0x34 + ! ( execute. DE -> wordref )
     ( We don't apply BIN( reliably on stable ABI stuff, we
       might need to adjust addr. Ugly, but well... )
     BIN( @ [IF]
-        A XORr, H ORr, IFZ, H BIN( @ 256 / LDrn, THEN,
+        A XORr, D ORr, IFZ, D BIN( @ 256 / LDrn, THEN,
     [THEN]
-    E (HL) LDrr,
-    D BIN( @ 256 / LDrn,
-    EXDEHL,
-    ( HL points to code pointer )
+    LDA(DE),
+    L A LDrr,
+    H BIN( @ 256 / LDrn,
     DE INCss,
     ( DE points to PFA )
     JP(HL),
