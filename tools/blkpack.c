@@ -6,7 +6,7 @@
 #include <string.h>
 #include <sys/stat.h>
 
-void usage()
+static void usage()
 {
     fprintf(stderr, "Usage: blkpack dirname\n");
 }

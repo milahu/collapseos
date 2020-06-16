@@ -16,7 +16,7 @@ void mread(int fd, char *s, int count)
     }
 }
 
-void mexpect(int fd, char ec)
+static void mexpect(int fd, char ec)
 {
     char c;
     mread(fd, &c, 1);
