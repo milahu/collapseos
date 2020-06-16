@@ -1,4 +1,3 @@
-( Registers. SP -> PSP DX -> RSP CX -> IP )
 H@ ORG !
 JMPn, 0 A,,   ( 00, main )     JMPn, 0 A,,   ( 03, find )
 0 A,,         ( 06, unused )   0 A,,         ( 08, LATEST )

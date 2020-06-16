@@ -7,7 +7,8 @@
 H@ XCURRENT !        ( set current tip of dict, 0x42 )
     0x17 A,          ( nativeWord )
 ;CODE
+CODE BYE BEGIN, JMPs, AGAIN, ;CODE
 CODE FOO
     AH 0x0e MOVri, ( print char ) AL 'X' MOVri, 0x10 INT,
-    BEGIN, JMPs, AGAIN,
 ;CODE
+: BAR FOO FOO BYE ;

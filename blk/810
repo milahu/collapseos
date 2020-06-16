@@ -2,4 +2,6 @@ PC/AT Recipe
 
 Work in progress.
 
+Register usage: SP is PSP, BP is RSP, DX is IP
+
 811 Hello World boot

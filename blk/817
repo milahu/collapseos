@@ -1,4 +1,4 @@
-L3 BSET 3 A, 'F' A, 'O' A, 'O' A,
+L3 BSET 3 A, 'B' A, 'A' A, 'R' A,
 PC 3 - ORG @ 1+ ! ( main )
     DI 0x08 MOVxm, ( LATEST )
     SI L3 @ MOVxI,
