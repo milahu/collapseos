@@ -34,7 +34,7 @@ int main(int argc, char *argv[])
         if (blkid >= blkcnt) {
             int newcnt = blkid+1;
             buf = realloc(buf, newcnt*1024);
-            bzero(buf+(blkcnt*1024), (newcnt-blkcnt)*1024);
+            memset(buf+(blkcnt*1024), 0, (newcnt-blkcnt)*1024);
             blkcnt = newcnt;
         }
         char fullpath[0x200];
