@@ -13,4 +13,4 @@ Core words (low) (B350)
 Then comes the part where we begin defining words in Forth.
 Core words are designed to be cross-compiled (B260), from a
 full Forth interpreter. This means that it has access to more
-than boot words. This somes with tricky limitations.    (cont.)
+than boot words. This comes with tricky limitations.    (cont.)

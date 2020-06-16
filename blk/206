@@ -1,5 +1,5 @@
 On top of that, you have the very nice BREAK, instruction,
-which must also be preceeded by a JRxx, and will jump to the
+which must also be preceded by a JRxx, and will jump to the
 PC following the next AGAIN,
 
 

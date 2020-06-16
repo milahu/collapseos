@@ -1,6 +1,6 @@
 (cont.)
 0x2b: doesWord. This word is created by "DOES>" and is followed
-by a 2-byte value as well as the adress where "DOES>" was
+by a 2-byte value as well as the address where "DOES>" was
 compiled. At that address is an atom list exactly like in a
 compiled word. Upon execution, after having pushed its cell
 addr to PSP, it execute its reference exactly like a

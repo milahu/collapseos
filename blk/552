@@ -6,7 +6,7 @@ to scroll more efficiently. Instead of having to copy the LCD
 ram around at each linefeed (or instead of having to maintain
 an in-memory buffer), we can use this feature.
 
-The Z-Offet goes upwards, with wrapping. For example, if we
+The Z-Offset goes upwards, with wrapping. For example, if we
 have an 8 pixels high line at row 0 and if our offset is 8,
 that line will go up 8 pixels, wrapping itself to the bottom of
 the screen.
