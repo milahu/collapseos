@@ -1,16 +1,16 @@
-CODE >R ( 0xa8 )
-    HL POPqq,
-    17 BCALL, ( 17 == pushRS )
-;CODE NOP, NOP, NOP,
-CODE 2>R ( 0xb9 )
+CODE 2>R ( 0xa9 )
     DE POPqq, HL POPqq,
     17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
-;CODE NOP, NOP, NOP,
-CODE R> ( 0xce )
+;CODE ( END OF STABLE ABI )
+CODE >R
+    HL POPqq,
+    17 BCALL, ( 17 == pushRS )
+;CODE
+CODE R>
     20 BCALL, ( 20 == popRS )
     HL PUSHqq,
 ;CODE
-CODE 2R> ( 0xdc )
+CODE 2R>
     20 BCALL, ( 20 == popRS ) EXDEHL, 20 BCALL,
     HL PUSHqq, DE PUSHqq,
-;CODE ( END OF STABLE ABI )
+;CODE
