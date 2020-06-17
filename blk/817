@@ -1,15 +1,6 @@
-CODE BYE BEGIN, JMPs, AGAIN, ;CODE
-CODE EMIT
-    AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
-;CODE
-: FOO 'X' EMIT ; : BAR FOO FOO BYE ;
-L3 BSET 3 A, 'B' A, 'A' A, 'R' A,
-PC 3 - ORG @ 1+ ! ( main )
-    SP PS_ADDR MOVxI,
-    BP RS_ADDR MOVxI,
-    DI 0x08 MOVxm, ( LATEST )
-    SI L3 @ MOVxI,
-    CALLn, L4 @ RPCn, ( find )
-    IFZ, JMPn, L1 @ RPCn, ( execute ) THEN,
-    AH 0x0e MOVri, ( print char ) AL '!' MOVri, 0x10 INT,
-    BEGIN, JMPs, AGAIN,
+( find cont. )
+        DI 3 SUBxi, AX [DI] MOVx[], ( prev )
+        AX AX ORxx,
+    JNZ, AGAIN, ( loop )
+    AX INCx, ( NZ ) RETn,
+

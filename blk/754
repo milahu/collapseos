@@ -2,4 +2,5 @@
 0x31 OPrr XORxx,     0x30 OPrr XORrr,
 0x88 OPrr MOVrr,     0x89 OPrr MOVxx,    0x28 OPrr SUBrr,
 0x29 OPrr SUBxx,     0x08 OPrr ORrr,     0x09 OPrr ORxx,
-0x3a OPrr CMPrr,     0x3b OPrr CMPxx,
+0x3a OPrr CMPrr,     0x3b OPrr CMPxx,    0x00 OPrr ADDrr,
+0x01 OPrr ADDxx,

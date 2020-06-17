@@ -1,16 +1,14 @@
-L4 BSET PC 3 - ORG @ 4 + ! ( find )
-( find word the same name as str in SI starting from tip in
-  DI. Returns wordref in DI. Z if found, NZ if not. )
-    CH CH XORrr, CL [SI] MOVr[], ( CX -> strlen )
-    SI INCx, ( first char ) AX AX XORxx, ( initial prev )
-    BEGIN, ( loop )
-        DI AX SUBxx, ( jump to prev wordref )
-        AL [DI] -1 MOVr[]+, ( strlen )
-        CL AL CMPrr, IFZ, ( same len )
-            SI PUSHx, DI PUSHx, CX PUSHx, ( --> lvl 3 )
-            3 ADDALi, ( header ) AH AH XORrr, DI AX SUBxx,
-            REPZ, CMPSB,
-            CX POPx, DI POPx, SI POPx, ( <-- lvl 3 )
-            IFZ, AL AL XORrr, ( Z ) RETn, THEN,
-        THEN,
-                                                      ( cont. )
+PC 0x1d - ORG @ 0x1b + ! ( next )
+    DI DX MOVxx, ( <-- IP ) DX INCx, DX INCx,
+    DI [DI] MOVx[], ( wordref )
+    ( continue to execute )
+L1 BSET PC 0x36 - ORG @ 0x34 + ! ( execute -- DI -> wordref )
+    AH AH XORrr, AL [DI] MOVr[],
+    DI INCx, ( PFA )
+    AX JMPr,
+
+PC 0x11 - ORG @ 0x0f + ! ( compiledWord -- DI -> PFA )
+    BP INCx, BP INCx, [BP] 0 DX MOV[]+x, ( pushRS )
+    DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
+    DI [DI] MOVx[],
+    JMPs, L1 @ RPCs,

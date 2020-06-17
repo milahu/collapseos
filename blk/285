@@ -1,7 +1,7 @@
 CODE (?br)           ( 0x67 )
     HL POPqq,
     HLZ,
-    JRZ, L2 BWR ( BR + 2. False, branch )
+    JRZ, L2 BWR ( br + 1. False, branch )
     L1 BSET ( loop will jump here )
     ( True, skip next 2 bytes and don't branch )
     IY INCss, IY INCss,
