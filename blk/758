@@ -1,4 +1,10 @@
-: CODE ( same as CREATE, but with native word )
-    (entry)
-    23 C, ( 23 == nativeWord ) ;
-: ;CODE JMPn, 0x1a ( next ) RPCn, ;
+: FWRs BSET 0 A, ;
+: FSET @ THEN, ;
+( : BREAK, FJR, 0x8000 OR ;
+: BREAK?, DUP 0x8000 AND IF
+        0x7fff AND 1 ALLOT THEN, -1 ALLOT
+    THEN ; )
+: RPCs, PC - 1- A, ; : RPCn, PC - 2- A,, ;
+: AGAIN, ( BREAK?, ) RPCs, ;
+( Use RPCx with appropriate JMP/CALL op. Example:
+  JMPs, 0x42 RPCs, or CALLn, 0x1234 RPCn, )

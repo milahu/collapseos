@@ -1,10 +1,16 @@
-: FWRs BSET 0 A, ;
-: FSET @ THEN, ;
-( : BREAK, FJR, 0x8000 OR ;
-: BREAK?, DUP 0x8000 AND IF
-        0x7fff AND 1 ALLOT THEN, -1 ALLOT
-    THEN ; )
-: RPCs, PC - 1- A, ; : RPCn, PC - 2- A,, ;
-: AGAIN, ( BREAK?, ) RPCs, ;
-( Use RPCx with appropriate JMP/CALL op. Example:
-  JMPs, 0x42 RPCs, or CALLn, 0x1234 RPCn, )
+( Place BEGIN, where you want to jump back and AGAIN after
+  a relative jump operator. Just like BSET and BWR. )
+: BEGIN, PC ;
+: BSET PC SWAP ! ;
+( same as BSET, but we need to write a placeholder )
+: FJR, PC 0 A, ;
+: IFZ, JNZ, FJR, ;
+: IFNZ, JZ, FJR, ;
+( : IFC, JRNC, FJR, ;
+: IFNC, JRC, FJR, ; )
+: THEN,
+    DUP PC          ( l l pc )
+    -^ 1-           ( l off )
+    ( warning: l is a PC offset, not a mem addr! )
+    SWAP ORG @ + BIN( @ - ( off addr )
+    C! ;

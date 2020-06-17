@@ -1,5 +1,7 @@
-L3 BSET 3 A, 'B' A, 'A' A, 'R' A,
+L3 BSET 3 A, 'B' A, 'A' A, 'Z' A,
 PC 3 - ORG @ 1+ ! ( main )
+    SP PS_ADDR MOVxI,
+    BP RS_ADDR MOVxI,
     DI 0x08 MOVxm, ( LATEST )
     SI L3 @ MOVxI,
     CALLn, L4 @ RPCn, ( find )

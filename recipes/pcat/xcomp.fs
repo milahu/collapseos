@@ -1,3 +1,5 @@
+0xff00 CONSTANT RS_ADDR
+0xfffa CONSTANT PS_ADDR
 750 LOAD  ( 8086 asm )
 262 LOAD  ( xcomp )
 270 LOAD  ( xcomp overrides )
