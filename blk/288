@@ -1,15 +1,15 @@
-PC ORG @ 0x22 + ! ( litWord, 0xf7, tight on the 0x100 limit )
-( Like numberWord, but instead of being followed by a 2 bytes
-  number, it's followed by a null-terminated string. When
-  called, puts the string's address on PS )
-    IY PUSHqq, HL POPqq, ( <-- IP )
-    E (HL) LDrr, D 0 LDrn,
-    DE INCss,
-    DE ADDIYss,
+CODE >R
+    HL POPqq,
+    17 BCALL, ( 17 == pushRS )
+;CODE
+CODE R>
+    20 BCALL, ( 20 == popRS )
     HL PUSHqq,
-    JPNEXT,
-
-
+;CODE
+CODE 2R>
+    20 BCALL, ( 20 == popRS ) EXDEHL, 20 BCALL,
+    HL PUSHqq, DE PUSHqq,
+;CODE
 
 
 

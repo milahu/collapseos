@@ -1,16 +1,14 @@
 CODE 2>R ( 0xa9 )
     DE POPqq, HL POPqq,
     17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
-;CODE ( END OF STABLE ABI )
-CODE >R
-    HL POPqq,
-    17 BCALL, ( 17 == pushRS )
-;CODE
-CODE R>
-    20 BCALL, ( 20 == popRS )
-    HL PUSHqq,
-;CODE
-CODE 2R>
-    20 BCALL, ( 20 == popRS ) EXDEHL, 20 BCALL,
-    HL PUSHqq, DE PUSHqq,
+;CODE NOP, NOP, NOP,
+CODE (n) ( 0xbf, number literal )
+  ( PF means nothing and the actual number is placed next to
+    the (n) reference in the compiled word list. What we need
+    to do to fetch that number is to play with the IP. )
+    E 0 IY+ LDrIXY,
+    D 1 IY+ LDrIXY,
+    IY INCss,
+    IY INCss,
+    DE PUSHqq,
 ;CODE

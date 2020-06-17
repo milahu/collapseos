@@ -1,15 +1,11 @@
-( See B85 for word routine impl notes )
-PC ORG @ 0x20 + ! ( numberWord )
-( This is not a word, but a number literal. This works a bit
-  differently than others: PF means nothing and the actual
-  number is placed next to the numberWord reference in the
-  compiled word list. What we need to do to fetch that number
-  is to play with the IP. )
-    E 0 IY+ LDrIXY,
-    D 1 IY+ LDrIXY,
-    IY INCss,
-    IY INCss,
-    DE PUSHqq,
-    JPNEXT,
-
-
+CODE (s) ( 0xd4, string literal )
+( Like (n) but instead of being followed by a 2 bytes
+  number, it's followed by a null-terminated string. When
+  called, puts the string's address on PS )
+    IY PUSHqq, HL POPqq, ( <-- IP )
+    E (HL) LDrr, D 0 LDrn,
+    DE INCss,
+    DE ADDIYss,
+    HL PUSHqq,
+;CODE
+( END OF STABLE ABI )
