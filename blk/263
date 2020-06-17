@@ -8,9 +8,9 @@ VARIABLE XCURRENT
 : _xapply ( a -- a-off )
     DUP ORG @ > IF ORG @ - BIN( @ + THEN ;
 : X' XCON ' XCOFF ;
-: X['] XCON ' _xapply LITA XCOFF ;
+: X['] XCON ' _xapply LITN XCOFF ;
 : XCOMPILE
-    XCON ' _xapply LITA
+    XCON ' _xapply LITN
     LIT< , FIND DROP _xapply , XCOFF ;
 : X[COMPILE] XCON ' _xapply , XCOFF ;
 

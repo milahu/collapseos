@@ -5,7 +5,7 @@
     ['] EXIT ,
     R> DROP     ( exit : )
 ; IMMEDIATE
-: ['] ' LITA ; IMMEDIATE
+: ['] ' LITN ; IMMEDIATE
 ';' X' _ 4 - C! ( give ; its name )
 ':' X' _ 4 - C! ( give : its name )
 '(' X' _ 4 - C!

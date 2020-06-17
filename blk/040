@@ -11,6 +11,5 @@ CONSTANT x  n --   Creates cell x that when called pushes its
 DOES>       --     See B17.
 IMMED?      a -- f Checks whether wordref at a is immediate.
 IMMEDIATE   --     Flag the latest defined word as immediate.
-LITA        n --   Write address n as a literal.
 LITN        n --   Write number n as a literal.
 VARIABLE c  --     Creates cell x with 2 bytes allocation.

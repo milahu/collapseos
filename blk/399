@@ -4,8 +4,7 @@
 : UNTIL COMPILE (?br) H@ - _bchk , ; IMMEDIATE
 : [ INTERPRET ; IMMEDIATE
 : ] R> DROP ;
-: LITA 36 , , ;
-: COMPILE ' LITA ['] , , ; IMMEDIATE
+: COMPILE ' LITN ['] , , ; IMMEDIATE
 : [COMPILE] ' , ; IMMEDIATE
 
 
