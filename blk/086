@@ -7,5 +7,10 @@ compiledWord.
 
 Also note that word routines references in wordrefs are 1b.
 This means that all word routine reference must live below
-0x100 in boot binary. This is why numberWord and addrWord are
-squeezed where they are.
+0x100 in boot binary.
+
+
+
+
+
+

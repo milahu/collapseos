@@ -3,9 +3,9 @@ CODE 2>R ( 0xa9 )
     17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
 ;CODE NOP, NOP, NOP,
 CODE (n) ( 0xbf, number literal )
-  ( PF means nothing and the actual number is placed next to
-    the (n) reference in the compiled word list. What we need
-    to do to fetch that number is to play with the IP. )
+  ( Literal value to push to stack is next to (n) reference
+    in the atom list. That is where IP is currently pointing.
+    Read, push, then advance IP. )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
     IY INCss,
