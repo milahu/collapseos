@@ -1,4 +1,4 @@
-PC ORG @ 0x1b + ! ( next )
+lblnext BSET PC ORG @ 0x1b + ! ( next )
 ( This routine is jumped to at the end of every word. In it,
   we jump to current IP, but we also take care of increasing
   it by 2 before jumping. )
