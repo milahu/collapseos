@@ -1,5 +1,5 @@
-PC ORG @ 0x20 + ! ( numberWord )
-PC ORG @ 0x24 + ! ( addrWord ) ( see B287 for comments )
+ORG @ 0xb9 + HERE !
+CODE (n) ( 0xbf, number literal )
     DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
     DX INCx, DX INCx,
 ;CODE

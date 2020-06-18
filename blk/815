@@ -3,11 +3,11 @@ PC 0x1d - ORG @ 0x1b + ! ( next )
     DI [DI] MOVx[], ( wordref )
     ( continue to execute )
 L1 BSET PC 0x36 - ORG @ 0x34 + ! ( execute -- DI -> wordref )
-    AH AH XORrr, AL [DI] MOVr[],
-    DI INCx, ( PFA )
-    AX JMPr,
+    AL [DI] MOVr[], DI INCx, ( PFA )
+    AL AL ORrr, IFZ, DI JMPr, THEN, ( native )
+    ( continue to compiled )
 
-PC 0x11 - ORG @ 0x0f + ! ( compiledWord -- DI -> PFA )
+PC 0x11 - ORG @ 0x0f + ! ( compiled -- DI -> PFA )
     BP INCx, BP INCx, [BP] 0 DX MOV[]+x, ( pushRS )
     DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
     DI [DI] MOVx[],

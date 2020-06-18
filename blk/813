@@ -3,7 +3,7 @@
   the "stable ABI" )
 'E' A, 'X' A, 'I' A, 'T' A, 0 A,, ( prev ) 4 A, ( len )
 H@ XCURRENT ! ( set current tip of dict, 0x42 )
-    0x17 A, ( nativeWord )
+    0 A, ( native )
     DX [BP] 0 MOVx[]+, BP DECx, BP DECx, ( popRS )
 ;CODE NOP,
 CODE (br) ( 0x53 ) L2 BSET ( used in br? )
