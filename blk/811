@@ -4,7 +4,7 @@ ORG @ 0x25 + HERE ! ( bypass BPB )
 L1 FSET ( start )
 CLI, CLD, AX 0x800 MOVxI, DS AX MOVsx, ES AX MOVsx,
 SS AX MOVsx, STI,
-AH 2 MOVri, DX 0 MOVxI, CH 0 MOVri, CL 2 MOVri, AL 1 MOVri,
-BX 0 MOVxI, 0x13 INT, ( read 2nd sector of boot floppy )
+AH 2 MOVri, DX 0 MOVxI, CH 0 MOVri, CL 2 MOVri, AL 2 MOVri,
+BX 0 MOVxI, 0x13 INT, ( read sectors 2-3 of boot floppy )
 0x800 0 JMPf,
 ORG @ 0x1fe + HERE ! 0x55 A, 0xaa A,

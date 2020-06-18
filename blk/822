@@ -1,0 +1,6 @@
+CODE BYE BEGIN, JMPs, AGAIN, ;CODE
+CODE EMIT
+    AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
+;CODE
+: FOO 'A' 'B' 'C' OVER EMIT EMIT EMIT ;
+: BOOT ['] FOO EXECUTE BYE ;
