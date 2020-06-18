@@ -7,6 +7,7 @@
 : OPrm+ ( r m off ) CREATE C, DOES>
     C@ A, ROT 3 LSHIFT ROT OR 0x40 OR A, A, ;
 0x8a OPrm+ MOVr[]+,    0x8b OPrm+ MOVx[]+,
+0x3a OPrm+ CMPr[]+,    0x3b OPrm+ CMPx[]+,
 
 : OPm+r ( m off r ) CREATE C, DOES>
     C@ A, 3 LSHIFT ROT OR 0x40 OR A, A, ;
