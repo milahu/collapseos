@@ -10,7 +10,7 @@ CODE PICK
     EXDEHL,
     HL PS_ADDR LDddnn,
     DE SUBHLss,
-    CC L2 @ JPccnn,    ( abortUnderflow-B298 )
+    CC lblofl @ JPccnn,    ( abortUnderflow-B298 )
     BC PUSHqq,
 ;CODE
 

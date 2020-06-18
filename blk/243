@@ -3,10 +3,9 @@
 : BJP, BIN( @ + JPnn, ;
 : BJPcc, BIN( @ + JPccnn, ;
 
+VARIABLE lblchkPS
+: chkPS, lblchkPS @ CALLnn, ; ( chkPS, B305 )
 : JPNEXT, 26 BJP, ; ( 26 == next )
-
-: chkPS, L4 @ CALLnn, ; ( chkPS, B305 )
-
 : CODE ( same as CREATE, but with native word )
     (entry) 0 C, ( 0 == native ) ;
 : ;CODE JPNEXT, ;

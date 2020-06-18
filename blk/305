@@ -1,4 +1,4 @@
-L4 BSET ( chkPS )
+lblchkPS BSET ( chkPS )
 ( Note that you only need to call this in words that push
   back to PSP. If they don't, calling chkPS is redundant with
   check in next )
@@ -9,7 +9,7 @@ L4 BSET ( chkPS )
     SP SUBHLss,
     EXX,
     CNC RETcc,      ( PS_ADDR >= SP? good )
-    JR, L2 BWR      ( abortUnderflow-B298 )
+    JR, lblofl BWR      ( abortUnderflow-B298 )
 
 
 

@@ -5,7 +5,7 @@
 CODE EXECUTE
     DE POPqq,
     chkPS,
-    JR, L3 BWR      ( execute-B301 )
+    JR, lblexec BWR      ( execute-B301 )
 
 ( a b c -- b c a )
 CODE ROT

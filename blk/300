@@ -5,11 +5,11 @@ PC ORG @ 0x1b + ! ( next )
 	( Before we continue: are stacks within bounds? )
     ( PS ) HL PS_ADDR LDddnn,
     SP SUBHLss,
-    JRC, L2 BWR ( abortUnderflow-B298 )
+    JRC, lblofl BWR ( abortUnderflow-B298 )
     ( RS ) IX PUSHqq, HL POPqq,
     DE RS_ADDR LDddnn,
     DE SUBHLss,
-    JRC, L2 BWR ( IX < RS_ADDR? abortUnderflow-B298 )
+    JRC, lblofl BWR ( IX < RS_ADDR? abortUnderflow-B298 )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
     IY INCss, IY INCss,

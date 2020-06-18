@@ -3,13 +3,13 @@
   2. Set new IP to the second atom of the list
   3. Execute the first atom of the list. )
     IY PUSHqq, HL POPqq, ( <-- IP )
-    L4 @ ( pushRS ) CALLnn,
+    lblpushRS @ ( pushRS ) CALLnn,
     EXDEHL,          ( HL points to PFA )
 ( While we inc, dereference into DE for execute call later. )
     LDDE(HL),
     HL INCss,
     HL PUSHqq, IY POPqq, ( --> IP )
-    JR, L3 BWR      ( execute-B301 )
+    JR, lblexec BWR      ( execute-B301 )
 
 
 
