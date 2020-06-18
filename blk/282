@@ -1,4 +1,5 @@
 VARIABLE lblofl VARIABLE lblpushRS VARIABLE lblexec
+VARIABLE lblfind
 1 53 LOADR+
 
 

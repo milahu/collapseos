@@ -2,8 +2,7 @@ CODE _find  ( cur w -- a f )
     HL POPqq,       ( w )
     DE POPqq,       ( cur )
     chkPS,
-    ( 3 == find )
-    3 BCALL,
+    lblfind @ CALLnn,
     IFNZ,
         ( not found )
         HL PUSHqq,
