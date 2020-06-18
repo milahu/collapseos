@@ -9,5 +9,5 @@ lblexec BSET L1 FSET ( B299 ) L2 FSET ( B298 )
     A ORr, IFZ, EXDEHL, JP(HL), THEN,
     A DECr, JRZ, L1 FWR ( compiled B303 )
     ( cell or does. push PFA ) DE PUSHqq,
-    A DECr, IFZ, JPNEXT, THEN, ( cell )
+    A DECr, JRZ, lblnext BWR ( cell )
     ( continue to does, B302 )
