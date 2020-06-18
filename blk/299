@@ -13,4 +13,4 @@ PC ORG @ 1 + ! ( main )
     EXDEHL,
     HL L1 @ LDddnn,
     lblfind @ CALLnn,
-    0x33 BJP,   ( 33 == execute )
+    JR, L1 FWR ( execute, B301 )

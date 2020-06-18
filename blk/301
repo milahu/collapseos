@@ -1,4 +1,5 @@
-lblexec BSET PC ORG @ 0x34 + ! ( execute. DE -> wordref )
+lblexec BSET L1 FSET ( B299 ) L2 FSET ( B298 )
+    ( DE -> wordref )
     ( We don't apply BIN( reliably on stable ABI stuff, we
       might need to adjust addr. Ugly, but well... )
     BIN( @ [IF]
