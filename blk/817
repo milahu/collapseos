@@ -1,4 +1,4 @@
-L4 BSET PC 3 - ORG @ 4 + ! ( find )
+lblfind BSET
 ( find word the same name as str in SI starting from tip in
   DI. Returns wordref in DI. Z if found, NZ if not. )
     CH CH XORrr, CL [SI] MOVr[], ( CX -> strlen )

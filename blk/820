@@ -1,3 +1,4 @@
+( native words )
 CODE >R
     BP INCx, BP INCx, [BP] 0 POP[w]+,
 ;CODE NOP, NOP, NOP,
@@ -8,3 +9,5 @@ CODE 2R>
     [BP] -2 PUSH[w]+, [BP] 0 PUSH[w]+, BP 4 SUBxi,
 ;CODE
 CODE I [BP] 0 PUSH[w]+, ;CODE
+CODE 1+ DI SP MOVxx, [DI] INC[w], ;CODE
+CODE 1- DI SP MOVxx, [DI] DEC[w], ;CODE

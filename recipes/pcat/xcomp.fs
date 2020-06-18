@@ -3,7 +3,7 @@
 750 LOAD  ( 8086 asm )
 262 LOAD  ( xcomp )
 270 LOAD  ( xcomp overrides )
-812 819 LOADR
+812 821 LOADR
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
