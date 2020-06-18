@@ -1,7 +1,6 @@
 : DOES>
     ( Overwrite cellWord in CURRENT )
-    ( 43 == doesWord )
-    43 CURRENT @ C!
+    3 ( does ) CURRENT @ C!
     ( When we have a DOES>, we forcefully place HERE to 4
       bytes after CURRENT. This allows a DOES word to use ","
       and "C," without messing everything up. )

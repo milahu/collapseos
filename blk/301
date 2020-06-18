@@ -4,11 +4,9 @@ L3 BSET PC ORG @ 0x34 + ! ( execute. DE -> wordref )
     BIN( @ [IF]
         A XORr, D ORr, IFZ, D BIN( @ 256 / LDrn, THEN,
     [THEN]
-    LDA(DE),
-    L A LDrr,
-    H BIN( @ 256 / LDrn,
-    DE INCss,
-    ( DE points to PFA )
-    JP(HL),
-
-
+    LDA(DE), DE INCss,
+    A ORr, IFZ, EXDEHL, JP(HL), THEN,
+    A DECr, JRZ, L1 FWR ( compiled B303 )
+    ( cell or does. push PFA ) DE PUSHqq,
+    A DECr, IFZ, JPNEXT, THEN, ( cell )
+    ( continue to does, B302 )

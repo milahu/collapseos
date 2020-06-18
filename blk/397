@@ -7,8 +7,7 @@
 ( gets its name at the very end. can't comment afterwards )
 : _ BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
 : _ ( : will get its name almost at the very end )
-    (entry)
-    [ 14 ( == compiledWord ) LITN ] C,
+    (entry) 1 ( compiled ) C,
     BEGIN
         WORD FIND
         IF ( is word ) DUP IMMED? IF EXECUTE ELSE , THEN

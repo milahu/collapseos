@@ -5,7 +5,7 @@
 0 A,, ( prev )
 4 A,
 H@ XCURRENT !        ( set current tip of dict, 0x42 )
-    0x17 A,          ( nativeWord )
+    0 A, ( native )
     0x14 BCALL,      ( popRS )
     HL PUSHqq, IY POPqq, ( --> IP )
     JPNEXT,

@@ -1,5 +1,5 @@
 : X:
-    (xentry) [ 0x0e LITN ] C,
+    (xentry) 1 ( compiled ) C,
     BEGIN WORD
     XCURRENT @ SWAP ( xcur w ) _find ( a f )
     IF   ( a )

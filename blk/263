@@ -2,7 +2,7 @@ VARIABLE XCURRENT
 : XCON XCURRENT CURRENT* ! ;
 : XCOFF 0x02 RAM+ CURRENT* ! ;
 : (xentry) XCON (entry) XCOFF ;
-: XCREATE (xentry) 11 C, ;
+: XCREATE (xentry) 2 C, ;
 : XCODE XCON CODE XCOFF ;
 : XIMM XCON IMMEDIATE XCOFF ;
 : _xapply ( a -- a-off )

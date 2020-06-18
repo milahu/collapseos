@@ -6,7 +6,7 @@ CODE (?br)           ( 0x67 )
     ( True, skip next 2 bytes and don't branch )
     IY INCss, IY INCss,
     JPNEXT, NOP, NOP, NOP,
-CODE (loop) ( 0x77 )
+CODE (loop) ( 0x80 )
     0 IX+ INC(IXY+), IFZ, 1 IX+ INC(IXY+), THEN, ( I++ )
     ( Jump if I <> I' )
     A 0 IX+ LDrIXY, 2 IX- CP(IXY+), JRNZ, L2 BWR ( branch )

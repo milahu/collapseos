@@ -6,7 +6,7 @@
     H@ CURRENT !
 ;
 : (entry) WORD [entry] ;
-: CREATE (entry) 11 ( 11 == cellWord ) C, ;
+: CREATE (entry) 2 ( cellWord ) C, ;
 : VARIABLE CREATE 2 ALLOT ;
 
 

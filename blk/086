@@ -1,13 +1,13 @@
-0x2b: doesWord. This word is created by "DOES>" and is followed
+3: DOES>. This word is created by "DOES>" and is followed
 by a 2-byte value as well as the address where "DOES>" was
 compiled. At that address is an atom list exactly like in a
 compiled word. Upon execution, after having pushed its cell
-addr to PSP, it execute its reference exactly like a
-compiledWord.
+addr to PSP, it executes its reference exactly like a
+compiled word.
 
-Also note that word routines references in wordrefs are 1b.
-This means that all word routine reference must live below
-0x100 in boot binary.
+
+
+
 
 
 
