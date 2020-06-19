@@ -1,10 +1,10 @@
-: FWRs BSET 0 A, ;
-: FSET @ THEN, ;
-( : BREAK, FJR, 0x8000 OR ;
-: BREAK?, DUP 0x8000 AND IF
-        0x7fff AND 1 ALLOT THEN, -1 ALLOT
-    THEN ; )
-: RPCs, PC - 1- A, ; : RPCn, PC - 2- A,, ;
-: AGAIN, ( BREAK?, ) RPCs, ;
-( Use RPCx with appropriate JMP/CALL op. Example:
-  JMPs, 0x42 RPCs, or CALLn, 0x1234 RPCn, )
+: MOVri, SWAP 0xb0 OR A, A, ;
+: MOVxI, SWAP 0xb8 OR A, A,, ;
+: MOVsx, 0x8e A, SWAP 3 LSHIFT OR 0xc0 OR A, ;
+: MOVxm, 0x8b A, SWAP 3 LSHIFT 0x6 OR A, A,, ;
+: INT, 0xcd A, A, ;
+: ADDAXI, 0x05 A, A,, ; : ADDALi, 0x04 A, A, ;
+: SUBxi, 0x83 A, SWAP 0xe8 OR A, A, ;
+: ADDxi, 0x83 A, SWAP 0xc0 OR A, A, ;
+: JMPr, 0xff A, 7 AND 0xe0 OR A, ;
+: JMPf, ( seg off ) 0xea A, SPLITB A, A, A,, ;

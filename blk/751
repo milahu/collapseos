@@ -8,3 +8,4 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : ES 0 ; : CS 1 ; : SS 2 ; : DS 3 ;
 : [BX+SI] 0 ; : [BX+DI] 1 ; : [BP+SI] 2 ; : [BP+DI] 3 ;
 : [SI] 4 ; : [DI] 5 ; : [BP] 6 ; : [BX] 7 ;
+: <<3 3 LSHIFT ;

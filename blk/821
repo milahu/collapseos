@@ -5,8 +5,12 @@ CODE SWAP AX POPx, BX POPx, AX PUSHx, BX PUSHx, ;CODE
 CODE OVER ( a b -- a b a )
     DI SP MOVxx, AX [DI] 2 MOVx[]+, AX PUSHx,
 ;CODE
-CODE 0 AX AX XORxx, AX PUSHx, ;CODE
-CODE 1 AX 1 MOVxI, AX PUSHx, ;CODE
-CODE I [BP] 0 PUSH[w]+, ;CODE
-CODE 1+ DI SP MOVxx, [DI] INC[w], ;CODE
-CODE 1- DI SP MOVxx, [DI] DEC[w], ;CODE
+CODE PICK
+    DI POPx, DI SHLx1, ( x2 )
+    DI SP ADDxx, DI [DI] MOVx[], DI PUSHx,
+;CODE
+CODE (roll) ( "2 3 4 5 4 --> 2 4 5 5". See B311 )
+    CX POPx, SI SP MOVxx, SI CX ADDxx,
+    DI SI MOVxx, SI DECx, SI DECx,
+    STD, REPZ, MOVSB,
+;CODE

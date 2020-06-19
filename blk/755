@@ -1,14 +1,10 @@
-: OPrm CREATE C, DOES> C@ A, SWAP 3 LSHIFT OR A, ;
-0x8a OPrm MOVr[],    0x8b OPrm MOVx[],
+: OPm ( modrm op ) CREATE C, C, DOES> C@+ A, C@ OR A, ;
+0 0xff OPm INC[w], 0 0xfe OPm INC[b],
+0x8 0xff OPm DEC[w], 0x8 0xfe OPm DEC[b],
+0x30 0xff OPm PUSH[w], 0 0x8f OPm POP[w],
 
-: OPmr CREATE C, DOES> C@ A, 3 LSHIFT OR A, ;
-0x88 OPmr MOV[]r,    0x89 OPmr MOV[]x,
-
-: OPrm+ ( r m off ) CREATE C, DOES>
-    C@ A, ROT 3 LSHIFT ROT OR 0x40 OR A, A, ;
-0x8a OPrm+ MOVr[]+,    0x8b OPrm+ MOVx[]+,
-0x3a OPrm+ CMPr[]+,    0x3b OPrm+ CMPx[]+,
-
-: OPm+r ( m off r ) CREATE C, DOES>
-    C@ A, 3 LSHIFT ROT OR 0x40 OR A, A, ;
-0x88 OPm+r MOV[]+r,    0x89 OPm+r MOV[]+x,
+: OPm+ ( modrm op ) CREATE C, C, DOES>
+    ( m off ) C@+ A, C@ ROT OR A, A, ;
+0x40 0xff OPm+ INC[w]+, 0x40 0xfe OPm+ INC[b]+,
+0x48 0xff OPm+ DEC[w]+, 0x48 0xfe OPm+ DEC[b]+,
+0x70 0xff OPm+ PUSH[w]+, 0x40 0x8f OPm+ POP[w]+,

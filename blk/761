@@ -1,0 +1,3 @@
+: CODE ( same as CREATE, but with native word )
+    (entry) 0 ( native ) C, ;
+: ;CODE JMPn, 0x1a ( next ) RPCn, ;
