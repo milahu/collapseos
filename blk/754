@@ -1,14 +1,14 @@
 : OPr0 ( reg op ) CREATE C, C, DOES>
     C@+ A, C@ <<3 OR 0xc0 OR A, ;
-0 0xd0 OPr0 ROLr1,   0 0xd1 OPr0 ROLx1,
-1 0xd0 OPr0 RORr1,   1 0xd1 OPr0 RORx1,
-4 0xd0 OPr0 SHLr1,   4 0xd1 OPr0 SHLx1,
-5 0xd0 OPr0 SHRr1,   5 0xd1 OPr0 SHRx1,
+0 0xd0 OPr0 ROLr1,   0 0xd1 OPr0 ROLx1,  4 0xf6 OPr0 MULr,
+1 0xd0 OPr0 RORr1,   1 0xd1 OPr0 RORx1,  4 0xf7 OPr0 MULx,
+4 0xd0 OPr0 SHLr1,   4 0xd1 OPr0 SHLx1,  6 0xf6 OPr0 DIVr,
+5 0xd0 OPr0 SHRr1,   5 0xd1 OPr0 SHRx1,  6 0xf7 OPr0 DIVx,
 
 : OPrr CREATE C, DOES> C@ A, <<3 OR 0xc0 OR A, ;
 0x31 OPrr XORxx,     0x30 OPrr XORrr,
 0x88 OPrr MOVrr,     0x89 OPrr MOVxx,    0x28 OPrr SUBrr,
 0x29 OPrr SUBxx,     0x08 OPrr ORrr,     0x09 OPrr ORxx,
 0x3a OPrr CMPrr,     0x3b OPrr CMPxx,    0x00 OPrr ADDrr,
-0x01 OPrr ADDxx,
+0x01 OPrr ADDxx,     0x20 OPrr ANDrr,    0x21 OPrr ANDxx,
 

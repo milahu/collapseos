@@ -1,0 +1,13 @@
+CODE + AX POPx, BX POPx, AX BX ADDxx, AX PUSHx, ;CODE
+CODE - BX POPx, AX POPx, AX BX SUBxx, AX PUSHx, ;CODE
+CODE *
+    AX POPx, BX POPx,
+    DX PUSHx, ( protect from MUL ) BX MULx, DX POPx,
+    AX PUSHx,
+;CODE
+CODE /MOD
+    BX POPx, AX POPx,
+    BL DIVr, ( TODO: use DIVx, risk of 8086 error )
+    BH BH XORrr, BL AH MOVrr, BX PUSHx, ( modulo )
+    BL AL MOVrr, BX PUSHx, ( division )
+;CODE
