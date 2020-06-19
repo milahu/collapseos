@@ -6,8 +6,8 @@
 : FJR, PC 0 A, ;
 : IFZ, JNZ, FJR, ;
 : IFNZ, JZ, FJR, ;
-( : IFC, JRNC, FJR, ;
-: IFNC, JRC, FJR, ; )
+: IFC, JNC, FJR, ;
+: IFNC, JC, FJR, ;
 : THEN,
     DUP PC          ( l l pc )
     -^ 1-           ( l off )

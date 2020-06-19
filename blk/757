@@ -1,5 +1,6 @@
 : OPrm CREATE C, DOES> C@ A, SWAP 3 LSHIFT OR A, ;
 0x8a OPrm MOVr[],    0x8b OPrm MOVx[],
+0x3a OPrm CMPr[],    0x3b OPrm CMPx[],
 
 : OPmr CREATE C, DOES> C@ A, 3 LSHIFT OR A, ;
 0x88 OPmr MOV[]r,    0x89 OPmr MOV[]x,

@@ -8,7 +8,8 @@
 0xaf OP1 SCASW,      0xaa OP1 STOSB,     0xab OP1 STOSW,
 ( no argument, jumps with relative addrs are special )
 0xeb OP1 JMPs,       0xe9 OP1 JMPn,      0x74 OP1 JZ,
-0x75 OP1 JNZ,        0xe8 OP1 CALLn,
+0x75 OP1 JNZ,        0x72 OP1 JC,        0x73 OP1 JNC,
+0xe8 OP1 CALLn,
 
 : OP1r CREATE C, DOES> C@ + A, ;
 0x40 OP1r INCx,      0x48 OP1r DECx,
