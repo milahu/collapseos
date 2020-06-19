@@ -1,10 +1,7 @@
-: OPm ( modrm op ) CREATE C, C, DOES> C@+ A, C@ OR A, ;
-0 0xff OPm INC[w], 0 0xfe OPm INC[b],
-0x8 0xff OPm DEC[w], 0x8 0xfe OPm DEC[b],
-0x30 0xff OPm PUSH[w], 0 0x8f OPm POP[w],
+: OPrr CREATE C, DOES> C@ A, <<3 OR 0xc0 OR A, ;
+0x31 OPrr XORxx,     0x30 OPrr XORrr,
+0x88 OPrr MOVrr,     0x89 OPrr MOVxx,    0x28 OPrr SUBrr,
+0x29 OPrr SUBxx,     0x08 OPrr ORrr,     0x09 OPrr ORxx,
+0x3a OPrr CMPrr,     0x3b OPrr CMPxx,    0x00 OPrr ADDrr,
+0x01 OPrr ADDxx,     0x20 OPrr ANDrr,    0x21 OPrr ANDxx,
 
-: OPm+ ( modrm op ) CREATE C, C, DOES>
-    ( m off ) C@+ A, C@ ROT OR A, A, ;
-0x40 0xff OPm+ INC[w]+, 0x40 0xfe OPm+ INC[b]+,
-0x48 0xff OPm+ DEC[w]+, 0x48 0xfe OPm+ DEC[b]+,
-0x70 0xff OPm+ PUSH[w]+, 0x40 0x8f OPm+ POP[w]+,
