@@ -1,0 +1,10 @@
+CODE 0 AX AX XORxx, AX PUSHx, ;CODE
+CODE 1 AX 1 MOVxI, AX PUSHx, ;CODE
+CODE 1+ DI SP MOVxx, [DI] INC[w], ;CODE
+CODE 1- DI SP MOVxx, [DI] DEC[w], ;CODE
+CODE EMIT
+    AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
+;CODE
+: FOO 'X' EMIT ;
+L1 BSET 3 A, 'F' A, 'O' A, 'O' A,
+: BOOT 0x08 @ [ L1 @ LITN ] _find DROP EXECUTE BYE ;

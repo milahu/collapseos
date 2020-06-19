@@ -1,4 +1,4 @@
-VARIABLE lblexec VARIABLE lblfind
+VARIABLE lblexec VARIABLE lblfind VARIABLE lblnext
 H@ ORG !
 JMPn, 0 A,,   ( 00, main )     0 A, 0 A,, ( unused )
 0 A,, ( unused ) 0 A,, ( 08, LATEST )

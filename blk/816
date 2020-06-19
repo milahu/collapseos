@@ -1,4 +1,4 @@
-PC 0x1d - ORG @ 0x1b + ! ( next )
+lblnext BSET PC 0x1d - ORG @ 0x1b + ! ( next )
     DI DX MOVxx, ( <-- IP ) DX INCx, DX INCx,
     DI [DI] MOVx[], ( wordref )
     ( continue to execute )
