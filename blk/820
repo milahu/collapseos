@@ -1,6 +1,6 @@
 ( native words )
 CODE EXECUTE
-    DI POPx, JMPs, lblexec @ RPCs,
+    DI POPx, JMPn, lblexec @ RPCn,
 CODE >R
     BP INCx, BP INCx, [BP] 0 POP[w]+,
 ;CODE NOP, NOP, NOP,

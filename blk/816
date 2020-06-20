@@ -5,9 +5,10 @@ lblnext BSET PC 0x1d - ORG @ 0x1b + ! ( next )
 lblexec BSET PC 0x36 - ORG @ 0x34 + ! ( DI -> wordref )
     AL [DI] MOVr[], DI INCx, ( PFA )
     AL AL ORrr, IFZ, DI JMPr, THEN, ( native )
-    ( continue to compiled )
-
-PC 0x11 - ORG @ 0x0f + ! ( compiled -- DI -> PFA )
+    AL DECr, IFNZ, ( cell or does )
+        DI PUSHx, ( push PFA ) JMPs, lblnext @ RPCs,
+        ( TODO: implement does )
+    THEN, ( compiled )
     BP INCx, BP INCx, [BP] 0 DX MOV[]+x, ( pushRS )
     DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
     DI [DI] MOVx[],
