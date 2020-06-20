@@ -9,8 +9,7 @@ lblfind BSET
         CL AL CMPrr, IFZ, ( same len )
             SI PUSHx, DI PUSHx, CX PUSHx, ( --> lvl 3 )
             3 ADDALi, ( header ) AH AH XORrr, DI AX SUBxx,
-            REPZ, CMPSB,
+            CLD, REPZ, CMPSB,
             CX POPx, DI POPx, SI POPx, ( <-- lvl 3 )
-            IFZ, AL AL XORrr, ( Z ) RETn, THEN,
+            IFZ, RETn, THEN,
         THEN,
-                                                      ( cont. )

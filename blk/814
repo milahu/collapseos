@@ -12,4 +12,4 @@ CODE 2>R ( 0xa9 )
 CODE (n) ( 0xbf, number literal )
     DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
     DX INCx, DX INCx,
-;CODE ( END OF STABLE ABI )
+;CODE NOP, NOP,
