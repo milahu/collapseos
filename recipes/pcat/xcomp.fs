@@ -10,10 +10,10 @@ CODE (emit)
     AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
 ;CODE
 CODE (key) AH AH XORrr, 0x16 INT, AX PUSHx, ;CODE
-: FOO (key) (emit) ;
-: BOOT 0x08 @ LIT< FOO _find DROP EXECUTE BYE ;
+380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
+EOT,
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

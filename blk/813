@@ -9,7 +9,7 @@ H@ XCURRENT ! ( set current tip of dict, 0x42 )
 CODE (br) ( 0x53 ) L2 BSET ( used in br? )
     DI DX MOVxx, DI [DI] MOVx[], DX DI ADDxx,
 ;CODE NOP, NOP,
-CODE (br?) ( 0x67 )
+CODE (?br) ( 0x67 )
     AX POPx, AX AX ORxx, JZ, L2 @ RPCs, ( False, branch )
     ( True, skip next 2 bytes and don't branch )
     L1 BSET ( loop will jump here ) DX INCx, DX INCx,
