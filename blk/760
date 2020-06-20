@@ -4,7 +4,8 @@
 : BREAK?, DUP 0x8000 AND IF
         0x7fff AND 1 ALLOT THEN, -1 ALLOT
     THEN ; )
-: RPCs, PC - 1- A, ; : RPCn, PC - 2- A,, ;
+: RPCs, PC - 1- DUP 128 + 0xff > IF ABORT" PC ovfl" THEN A, ;
+: RPCn, PC - 2- A,, ;
 : AGAIN, ( BREAK?, ) RPCs, ;
 ( Use RPCx with appropriate JMP/CALL op. Example:
   JMPs, 0x42 RPCs, or CALLn, 0x1234 RPCn, )
