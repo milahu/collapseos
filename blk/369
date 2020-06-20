@@ -1,8 +1,5 @@
 : '? WORD FIND ;
-: '
-    '? (?br) [ 4 , ] EXIT
-    LIT< (wnf) FIND DROP EXECUTE
-;
+: ' '? NOT IF LIT< (wnf) FIND DROP EXECUTE THEN ;
 : ROLL
     ?DUP NOT IF EXIT THEN
     1+ DUP PICK          ( n val )
