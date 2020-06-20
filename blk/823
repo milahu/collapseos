@@ -6,8 +6,8 @@ CODE *
     AX PUSHx,
 ;CODE
 CODE /MOD
-    BX POPx, AX POPx,
-    BL DIVr, ( TODO: use DIVx, risk of 8086 error )
-    BH BH XORrr, BL AH MOVrr, BX PUSHx, ( modulo )
-    BL AL MOVrr, BX PUSHx, ( division )
+    BX POPx, AX POPx, DX PUSHx, ( protect )
+    DX DX XORxx, BX DIVx,
+    BX DX MOVxx, DX POPx, ( unprotect )
+    BX PUSHx, ( modulo ) AX PUSHx, ( division )
 ;CODE
