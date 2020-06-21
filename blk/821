@@ -1,4 +1,3 @@
-L3 BSET 4 A, 'B' A, 'O' A, 'O' A, 'T' A,
 PC 3 - ORG @ 1+ ! ( main )
     SP PS_ADDR MOVxI, BP RS_ADDR MOVxI,
     DI 0x08 MOVxm, ( LATEST )
@@ -6,8 +5,5 @@ PC 3 - ORG @ 1+ ! ( main )
     BX RAMSTART MOVxI,
     [BX] 0x04 ( HERE ) DI MOV[]+x,
     [BX] 0x02 ( CURRENT ) DI MOV[]+x,
-    SI L3 @ MOVxI,
-    CALLn, lblfind @ RPCn, ( find )
-    IFZ, JMPn, lblexec @ RPCn, ( execute ) THEN,
-    AH 0x0e MOVri, ( print char ) AL '!' MOVri, 0x10 INT,
-    BEGIN, JMPs, AGAIN,
+    DI 0x04 ( BOOT ) MOVxm,
+    JMPn, lblexec @ RPCn, ( execute )

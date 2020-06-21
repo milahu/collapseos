@@ -1,4 +1,3 @@
-L1 BSET 4 A, 'B' A, 'O' A, 'O' A, 'T' A,
 PC ORG @ 1 + ! ( main )
 ( STACK OVERFLOW PROTECTION: See B76 )
     SP PS_ADDR LDddnn, IX RS_ADDR LDddnn,
@@ -10,7 +9,5 @@ PC ORG @ 1 + ! ( main )
   Forth. )
     BIN( @ 0x08 + LDHL(nn),
     RAMSTART 0x02 ( CURRENT ) + LD(nn)HL,
-    EXDEHL,
-    HL L1 @ LDddnn,
-    lblfind @ CALLnn,
+    DE BIN( @ 0x04 ( BOOT ) + LDdd(nn),
     JR, L1 FWR ( execute, B301 )

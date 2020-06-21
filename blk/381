@@ -6,6 +6,7 @@
 : CRLF CR LF ; : SPC 32 EMIT ;
 : NL 0x0a RAM+ @ ( NLPTR ) ?DUP IF EXECUTE ELSE CRLF THEN ;
 : (uflw) LIT" stack underflow" ERR ;
+XCURRENT @ _xapply ORG @ 0x06 ( stable ABI uflw ) + !
 : (wnf) (print) SPC LIT" word not found" ERR ;
 
 

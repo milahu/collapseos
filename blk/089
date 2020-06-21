@@ -6,9 +6,9 @@ very few things.
 1. Set SP to PS_ADDR and IX to RS_ADDR
 2. Sets HERE to RAMEND (RAMSTART+0x80).
 3. Sets CURRENT to value of LATEST field in stable ABI.
-4. Look for the word "BOOT" and calls it.
+4. Execute the word referred to by 0x04 (BOOT) in stable ABI.
 
-In a normal system, BOOT is in xcomp core (B411) and does a
+In a normal system, BOOT is in core words at B396 and does a
 few things:
 
 1. Initialize all overrides to 0.
