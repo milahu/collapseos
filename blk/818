@@ -2,4 +2,4 @@
         DI 3 SUBxi, AX [DI] MOVx[], ( prev )
         AX AX ORxx,
     JNZ, AGAIN, ( loop )
-    AX INCx, ( NZ ) RETn,
+    SI DECx, ( start of string, and NZ ) RETn,

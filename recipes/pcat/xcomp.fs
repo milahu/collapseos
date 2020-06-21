@@ -9,7 +9,8 @@ RS_ADDR 0x80 - CONSTANT RAMSTART
 CODE (emit)
     AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
 ;CODE
-CODE (key) AH AH XORrr, 0x16 INT, AX PUSHx, ;CODE
+CODE (key)
+    AH AH XORrr, 0x16 INT, AH AH XORrr, AX PUSHx, ;CODE
 380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
