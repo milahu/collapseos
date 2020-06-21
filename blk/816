@@ -1,13 +1,9 @@
 lblnext BSET PC 0x1d - ORG @ 0x1b + ! ( next )
+    ( RSP check )
+    AX RS_ADDR MOVxI, BP AX CMPxx,
+    IFC, ( BP < RS_ADDR )
+        DI 0x06 MOVxm, JMPs, L1 FWRs ( execute )
+    THEN,
     DI DX MOVxx, ( <-- IP ) DX INCx, DX INCx,
     DI [DI] MOVx[], ( wordref )
-    ( continue to execute )
-lblexec BSET PC 0x36 - ORG @ 0x34 + ! ( DI -> wordref )
-    AL [DI] MOVr[], DI INCx, ( PFA )
-    AL AL ORrr, IFZ, DI JMPr, THEN, ( native )
-    AL DECr, IFNZ, ( cell or does )
-        DI PUSHx, ( push PFA )
-        AL DECr, IFZ, ( cell ) JMPs, lblnext @ RPCs, THEN,
-        ( does, see B302 )
-        DI INCx, DI INCx, DI [DI] MOVx[],
-    THEN, ( continue to compiled                        cont. )
+    ( continue to execute ) L1 FSET
