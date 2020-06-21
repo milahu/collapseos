@@ -10,7 +10,7 @@ CODE S= 2 chkPS,
 CODE CMP 2 chkPS,
     BX POPx, AX POPx, CX CX XORxx, AX BX CMPxx,
     IFNZ, ( < or > )
-        CX INCx, IFNC, ( < ) CX DECx, CX DECx, THEN,
+        CX INCx, IFC, ( < ) CX DECx, CX DECx, THEN,
     THEN,
     CX PUSHx,
 ;CODE
