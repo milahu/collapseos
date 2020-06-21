@@ -1,4 +1,5 @@
-CODE S=
+CODE BYE BEGIN, JMPs, AGAIN, ;CODE
+CODE S= 2 chkPS,
     SI POPx, DI POPx, CH CH XORrr, CL [SI] MOVr[],
     CL [DI] CMPr[],
     IFZ, ( same size? )
@@ -6,7 +7,7 @@ CODE S=
     THEN,
     PUSHZ,
 ;CODE
-CODE CMP
+CODE CMP 2 chkPS,
     BX POPx, AX POPx, CX CX XORxx, AX BX CMPxx,
     IFNZ, ( < or > )
         CX INCx, IFNC, ( < ) CX DECx, CX DECx, THEN,

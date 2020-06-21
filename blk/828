@@ -1,4 +1,4 @@
-CODE _find ( cur w -- a f )
+CODE _find ( cur w -- a f ) 2 chkPS,
     SI POPx, ( w ) DI POPx, ( cur )
     CH CH XORrr, CL [SI] MOVr[], ( CX -> strlen )
     SI INCx, ( first char ) AX AX XORxx, ( initial prev )

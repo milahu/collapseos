@@ -6,7 +6,7 @@ RS_ADDR 0x80 - CONSTANT RAMSTART
 270 LOAD  ( xcomp overrides )
 812 829 LOADR
 353 LOAD  ( xcomp core low )
-CODE (emit)
+CODE (emit) 1 chkPS,
     AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
 ;CODE
 CODE (key)

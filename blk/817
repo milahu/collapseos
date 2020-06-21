@@ -3,3 +3,9 @@
     DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
     DI [DI] MOVx[],
     JMPs, lblexec @ RPCs,
+
+lblchkPS BSET ( CX -> expected size )
+    AX PS_ADDR MOVxI, AX SP SUBxx, 2 SUBAXI, ( CALL adjust )
+    AX CX SUBxx,
+    IFNC, ( we're good ) RETn, THEN,
+    ( underflow ) DI 0x06 MOVxm, JMPs, lblexec @ RPCs,

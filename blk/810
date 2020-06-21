@@ -4,4 +4,13 @@ Work in progress.
 
 Register usage: SP is PSP, BP is RSP, DX is IP
 
-811 Hello World boot
+Unlike z80 boot code, we don't check PS at each next call (we
+do check RS though). It is the responsibility of every native
+PSP-modifying word to call chkPS, . Also, chkPS, is a bit
+different than in z80: it is parametrizable. The idea is that
+we always call chkPS, before popping, telling the expected size
+of stack. This allows for some interesting optimization. For
+example, in SWAP, no need to pop, chkPS, then push, we can
+chkPS and then proceed to optimized swapping in PS.
+
+811 MBR bootloader             812-829 Boot code

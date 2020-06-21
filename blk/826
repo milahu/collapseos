@@ -1,11 +1,16 @@
-CODE ! DI POPx, AX POPx, [DI] AX MOV[]x, ;CODE
-CODE @ DI POPx, AX [DI] MOVx[], AX PUSHx, ;CODE
-CODE C! DI POPx, AX POPx, [DI] AX MOV[]r, ;CODE
-CODE C@
+CODE /MOD 2 chkPS,
+    BX POPx, AX POPx, DX PUSHx, ( protect )
+    DX DX XORxx, BX DIVx,
+    BX DX MOVxx, DX POPx, ( unprotect )
+    BX PUSHx, ( modulo ) AX PUSHx, ( division )
+;CODE
+CODE ! 2 chkPS, DI POPx, AX POPx, [DI] AX MOV[]x, ;CODE
+CODE @ 1 chkPS, DI POPx, AX [DI] MOVx[], AX PUSHx, ;CODE
+CODE C! 2 chkPS, DI POPx, AX POPx, [DI] AX MOV[]r, ;CODE
+CODE C@ 1 chkPS,
     DI POPx, AH AH XORrr, AL [DI] MOVr[], AX PUSHx, ;CODE
 CODE I [BP] 0 PUSH[w]+, ;CODE
 CODE I' [BP] -2 PUSH[w]+, ;CODE
 CODE J [BP] -4 PUSH[w]+, ;CODE
 CODE (resSP) SP PS_ADDR MOVxI, ;CODE
 CODE (resRS) BP RS_ADDR MOVxI, ;CODE
-CODE BYE BEGIN, JMPs, AGAIN, ;CODE
