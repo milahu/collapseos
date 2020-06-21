@@ -1,9 +1,16 @@
 CODE _find ( cur w -- a f )
     SI POPx, ( w ) DI POPx, ( cur )
-    CALLn, lblfind @ RPCn,
-    IFNZ, ( not found )
-        SI PUSHx, AX AX XORxx, AX PUSHx,
-        JMPn, lblnext @ RPCn,
-    THEN, ( found )
-    DI PUSHx, AX 1 MOVxI, AX PUSHx,
-;CODE
+    CH CH XORrr, CL [SI] MOVr[], ( CX -> strlen )
+    SI INCx, ( first char ) AX AX XORxx, ( initial prev )
+    BEGIN, ( loop )
+        DI AX SUBxx, ( jump to prev wordref )
+        AL [DI] -1 MOVr[]+, ( strlen )
+        CL AL CMPrr, IFZ, ( same len )
+            SI PUSHx, DI PUSHx, CX PUSHx, ( --> lvl 3 )
+            3 ADDALi, ( header ) AH AH XORrr, DI AX SUBxx,
+            CLD, REPZ, CMPSB,
+            CX POPx, DI POPx, SI POPx, ( <-- lvl 3 )
+            IFZ, DI PUSHx, AX 1 MOVxI, AX PUSHx,
+                JMPn, lblnext @ RPCn, THEN,
+        THEN,
+    DI 3 SUBxi, AX [DI] MOVx[], ( prev ) AX AX ORxx,  ( cont. )

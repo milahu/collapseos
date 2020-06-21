@@ -1,3 +1,6 @@
+( cont. find ) JNZ, AGAIN, ( loop )
+    SI DECx, SI PUSHx, AX AX XORrr, AX PUSHx,
+;CODE
 CODE 0 AX AX XORxx, AX PUSHx, ;CODE
 CODE 1 AX 1 MOVxI, AX PUSHx, ;CODE
 CODE -1 AX -1 MOVxI, AX PUSHx, ;CODE
