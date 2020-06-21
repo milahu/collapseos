@@ -1,5 +1,0 @@
-( find cont. )
-        DI 3 SUBxi, AX [DI] MOVx[], ( prev )
-        AX AX ORxx,
-    JNZ, AGAIN, ( loop )
-    SI DECx, ( start of string, and NZ ) RETn,

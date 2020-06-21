@@ -1,13 +1,15 @@
-L3 BSET 4 A, 'B' A, 'O' A, 'O' A, 'T' A,
-PC 3 - ORG @ 1+ ! ( main )
-    SP PS_ADDR MOVxI, BP RS_ADDR MOVxI,
-    DI 0x08 MOVxm, ( LATEST )
-( HERE begins at CURRENT )
-    BX RAMSTART MOVxI,
-    [BX] 0x04 ( HERE ) DI MOV[]+x,
-    [BX] 0x02 ( CURRENT ) DI MOV[]+x,
-    SI L3 @ MOVxI,
-    CALLn, lblfind @ RPCn, ( find )
-    IFZ, JMPn, lblexec @ RPCn, ( execute ) THEN,
-    AH 0x0e MOVri, ( print char ) AL '!' MOVri, 0x10 INT,
-    BEGIN, JMPs, AGAIN,
+lblfind BSET
+( find word the same name as str in SI starting from tip in
+  DI. Returns wordref in DI. Z if found, NZ if not. )
+    CH CH XORrr, CL [SI] MOVr[], ( CX -> strlen )
+    SI INCx, ( first char ) AX AX XORxx, ( initial prev )
+    BEGIN, ( loop )
+        DI AX SUBxx, ( jump to prev wordref )
+        AL [DI] -1 MOVr[]+, ( strlen )
+        CL AL CMPrr, IFZ, ( same len )
+            SI PUSHx, DI PUSHx, CX PUSHx, ( --> lvl 3 )
+            3 ADDALi, ( header ) AH AH XORrr, DI AX SUBxx,
+            CLD, REPZ, CMPSB,
+            CX POPx, DI POPx, SI POPx, ( <-- lvl 3 )
+            IFZ, RETn, THEN,
+        THEN,

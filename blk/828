@@ -1,0 +1,9 @@
+CODE _find ( cur w -- a f )
+    SI POPx, ( w ) DI POPx, ( cur )
+    CALLn, lblfind @ RPCn,
+    IFNZ, ( not found )
+        SI PUSHx, AX AX XORxx, AX PUSHx,
+        JMPn, lblnext @ RPCn,
+    THEN, ( found )
+    DI PUSHx, AX 1 MOVxI, AX PUSHx,
+;CODE

@@ -1,16 +1,5 @@
-( native words )
-CODE EXECUTE
-    DI POPx, JMPn, lblexec @ RPCn,
-CODE >R
-    BP INCx, BP INCx, [BP] 0 POP[w]+,
-;CODE NOP, NOP, NOP,
-CODE R>
-    [BP] 0 PUSH[w]+, BP DECx, BP DECx,
-;CODE
-CODE 2R>
-    [BP] -2 PUSH[w]+, [BP] 0 PUSH[w]+, BP 4 SUBxi,
-;CODE
-CODE ROT ( a b c -- b c a )
-    CX POPx, BX POPx, AX POPx,
-    BX PUSHx, CX PUSHx, AX PUSHx,
-;CODE
+( find cont. )
+        DI 3 SUBxi, AX [DI] MOVx[], ( prev )
+        AX AX ORxx,
+    JNZ, AGAIN, ( loop )
+    SI DECx, ( start of string, and NZ ) RETn,

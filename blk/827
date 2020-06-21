@@ -1,11 +1,15 @@
-CODE 0 AX AX XORxx, AX PUSHx, ;CODE
-CODE 1 AX 1 MOVxI, AX PUSHx, ;CODE
-CODE -1 AX -1 MOVxI, AX PUSHx, ;CODE
-CODE 1+ DI SP MOVxx, [DI] INC[w], ;CODE
-CODE 1- DI SP MOVxx, [DI] DEC[w], ;CODE
-CODE 2+ DI SP MOVxx, [DI] INC[w], [DI] INC[w], ;CODE
-CODE 2- DI SP MOVxx, [DI] DEC[w], [DI] DEC[w], ;CODE
-CODE RSHIFT ( n u -- n )
-    CX POPx, AX POPx, AX SHRxCL, AX PUSHx, ;CODE
-CODE LSHIFT ( n u -- n )
-    CX POPx, AX POPx, AX SHLxCL, AX PUSHx, ;CODE
+CODE S=
+    SI POPx, DI POPx, CH CH XORrr, CL [SI] MOVr[],
+    CL [DI] CMPr[],
+    IFZ, ( same size? )
+        SI INCx, DI INCx, CLD, REPZ, CMPSB,
+    THEN,
+    PUSHZ,
+;CODE
+CODE CMP
+    BX POPx, AX POPx, CX CX XORxx, AX BX CMPxx,
+    IFNZ, ( < or > )
+        CX INCx, IFNC, ( < ) CX DECx, CX DECx, THEN,
+    THEN,
+    CX PUSHx,
+;CODE

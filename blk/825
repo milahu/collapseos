@@ -1,15 +1,13 @@
-CODE S=
-    SI POPx, DI POPx, CH CH XORrr, CL [SI] MOVr[],
-    CL [DI] CMPr[],
-    IFZ, ( same size? )
-        SI INCx, DI INCx, CLD, REPZ, CMPSB,
-    THEN,
-    PUSHZ,
+CODE + AX POPx, BX POPx, AX BX ADDxx, AX PUSHx, ;CODE
+CODE - BX POPx, AX POPx, AX BX SUBxx, AX PUSHx, ;CODE
+CODE *
+    AX POPx, BX POPx,
+    DX PUSHx, ( protect from MUL ) BX MULx, DX POPx,
+    AX PUSHx,
 ;CODE
-CODE CMP
-    BX POPx, AX POPx, CX CX XORxx, AX BX CMPxx,
-    IFNZ, ( < or > )
-        CX INCx, IFNC, ( < ) CX DECx, CX DECx, THEN,
-    THEN,
-    CX PUSHx,
+CODE /MOD
+    BX POPx, AX POPx, DX PUSHx, ( protect )
+    DX DX XORxx, BX DIVx,
+    BX DX MOVxx, DX POPx, ( unprotect )
+    BX PUSHx, ( modulo ) AX PUSHx, ( division )
 ;CODE
