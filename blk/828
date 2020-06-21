@@ -4,7 +4,7 @@ CODE _find ( cur w -- a f )
     SI INCx, ( first char ) AX AX XORxx, ( initial prev )
     BEGIN, ( loop )
         DI AX SUBxx, ( jump to prev wordref )
-        AL [DI] -1 MOVr[]+, ( strlen )
+        AL [DI] -1 MOVr[]+, 0x7f ANDALi, ( strlen )
         CL AL CMPrr, IFZ, ( same len )
             SI PUSHx, DI PUSHx, CX PUSHx, ( --> lvl 3 )
             3 ADDALi, ( header ) AH AH XORrr, DI AX SUBxx,
