@@ -14,10 +14,9 @@ CODE (key)
 ;CODE
 CODE 13H08H ( driveno -- cx dx )
     DI POPx, DX PUSHx, ( protect ) DX DI MOVxx, AX 0x800 MOVxI,
-    DI DI XORxx, ES DI MOVsx,
-    0x13 INT, DI DX MOVxx, DX POPx, ( unprotect )
+    ES PUSHs, DI DI XORxx, ES DI MOVsx,
+    0x13 INT, DI DX MOVxx, ES POPs, DX POPx, ( unprotect )
     CX PUSHx, DI PUSHx,
-    DI 0x800 MOVxI, ES DI MOVsx,
 ;CODE
 CODE 13H ( ax bx cx dx -- ax bx cx dx )
     SI POPx, ( DX ) CX POPx, BX POPx, AX POPx,
