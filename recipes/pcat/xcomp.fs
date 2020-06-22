@@ -27,12 +27,12 @@ CODE 13H ( ax bx cx dx -- ax bx cx dx )
 : FDSPT 0x70 RAM+ ;
 : _ ( dest secno )
     ( AH=read sectors, AL=1 sector, BX=dest,
-      CH=trackno CL=secno DH=head. )
+      CH=trackno CL=secno DH=head DL=drive )
     0x0201 ROT ROT ( AX BX sec )
     FDSPT @ /MOD ( AX BX sec trk )
     2 /MOD ( AX BX sec head trk )
     8 LSHIFT ROT OR 1+ ( AX BX head CX )
-    SWAP 8 LSHIFT ( AX BX CX DX )
+    SWAP 8 LSHIFT 0x03 C@ ( boot drive ) OR ( AX BX CX DX )
     13H 2DROP 2DROP
 ;
 : FD@
@@ -41,7 +41,7 @@ CODE 13H ( ax bx cx dx -- ax bx cx dx )
 : FD! DROP ;
 : FD$
     ( get number of sectors per track with command 08H. )
-    0 13H08H 0x3f AND FDSPT !
+    0x03 ( boot drive ) C@ 13H08H 0x3f AND FDSPT !
 ;
 380 LOAD  ( xcomp core high )
 (entry) _

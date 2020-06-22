@@ -1,7 +1,10 @@
 : MOVri, SWAP 0xb0 OR A, A, ;
 : MOVxI, SWAP 0xb8 OR A, A,, ;
-: MOVsx, 0x8e A, SWAP 3 LSHIFT OR 0xc0 OR A, ;
-: MOVxm, 0x8b A, SWAP 3 LSHIFT 0x6 OR A, A,, ;
+: MOVsx, 0x8e A, SWAP <<3 OR 0xc0 OR A, ;
+: MOVrm, 0x8a A, SWAP <<3 0x6 OR A, A,, ;
+: MOVxm, 0x8b A, SWAP <<3 0x6 OR A, A,, ;
+: MOVmr, 0x88 A, <<3 0x6 OR A, A,, ;
+: MOVmx, 0x89 A, <<3 0x6 OR A, A,, ;
 : SUBxi, 0x83 A, SWAP 0xe8 OR A, A, ;
 : ADDxi, 0x83 A, SWAP 0xc0 OR A, A, ;
 : JMPr, 0xff A, 7 AND 0xe0 OR A, ;
