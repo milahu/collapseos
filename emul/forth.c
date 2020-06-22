@@ -13,10 +13,6 @@
 // This binary is also used for automated tests and those tests, when
 // failing, send a non-zero value to RET_PORT to indicate failure
 #define RET_PORT 0x01
-// Port for block reads. Write 2 bytes, MSB first, on that port and then
-// read 1024 bytes from the DATA port.
-#define BLK_PORT 0x03
-#define BLKDATA_PORT 0x04
 #define SETX_PORT 0x05
 #define SETY_PORT 0x06
 

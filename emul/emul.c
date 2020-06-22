@@ -5,10 +5,13 @@ They all run on the same kind of virtual machine: A z80 CPU, 64K of RAM/ROM.
 
 #include <string.h>
 #include "emul.h"
-// Port for block reads. Write 2 bytes, MSB first, on that port and then
-// read 1024 bytes from the DATA port.
+// Port for block reads. Each read or write has to be done in 5 IO writes:
+// 1 - r/w. 1 for read, 2 for write.
+// 2 - blkid MSB
+// 3 - blkid LSB
+// 4 - dest addr MSB
+// 5 - dest addr LSB
 #define BLK_PORT 0x03
-#define BLKDATA_PORT 0x04
 
 #ifndef BLKFS_PATH
 #error BLKFS_PATH needed
@@ -19,7 +22,7 @@ They all run on the same kind of virtual machine: A z80 CPU, 64K of RAM/ROM.
 
 static Machine m;
 static ushort traceval = 0;
-static uint16_t blkid = 0;
+static uint64_t blkop = 0; // 5 bytes
 static FILE *blkfp;
 
 static uint8_t io_read(int unused, uint16_t addr)
@@ -47,19 +50,20 @@ static void io_write(int unused, uint16_t addr, uint8_t val)
 
 static void iowr_blk(uint8_t val)
 {
-    blkid <<= 8;
-    blkid |= val;
-    fseek(blkfp, blkid*1024, SEEK_SET);
-}
-
-static uint8_t iord_blkdata()
-{
-    return getc(blkfp);
-}
-
-static void iowr_blkdata(uint8_t val)
-{
-    putc(val, blkfp);
+    blkop <<= 8;
+    blkop |= val;
+    uint8_t rw = blkop >> 32;
+    if (rw) {
+        uint16_t blkid = (blkop >> 16);
+        uint16_t dest = blkop & 0xffff;
+        blkop = 0;
+        fseek(blkfp, blkid*1024, SEEK_SET);
+        if (rw==2) { // write
+            fwrite(&m.mem[dest], 1024, 1, blkfp);
+        } else { // read
+            fread(&m.mem[dest], 1024, 1, blkfp);
+        }
+    }
 }
 
 static uint8_t mem_read(int unused, uint16_t addr)
@@ -120,8 +124,6 @@ Machine* emul_init()
     m.cpu.ioRead = io_read;
     m.cpu.ioWrite = io_write;
     m.iowr[BLK_PORT] = iowr_blk;
-    m.iord[BLKDATA_PORT] = iord_blkdata;
-    m.iowr[BLKDATA_PORT] = iowr_blkdata;
     return &m;
 }
 

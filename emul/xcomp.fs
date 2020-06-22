@@ -10,17 +10,14 @@
 : (emit) 0 PC! ;
 : (key) 0 PC@ ;
 : EFS@
-    256 /MOD 3 PC! 3 PC!
-    1024 0 DO
-        4 PC@
-        BLK( I + C!
-    LOOP
+    1 3 PC! ( read )
+    256 /MOD 3 PC! 3 PC! ( blkid )
+    BLK( 256 /MOD 3 PC! 3 PC! ( dest )
 ;
 : EFS!
-    256 /MOD 3 PC! 3 PC!
-    1024 0 DO
-        BLK( I + C@ 4 PC!
-    LOOP
+    2 3 PC! ( write )
+    256 /MOD 3 PC! 3 PC! ( blkid )
+    BLK( 256 /MOD 3 PC! 3 PC! ( dest )
 ;
 : COLS 80 ; : LINES 32 ;
 : AT-XY 6 PC! ( y ) 5 PC! ( x ) ;
