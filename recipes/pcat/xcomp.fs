@@ -27,10 +27,9 @@ CODE 13H ( ax bx cx dx -- ax bx cx dx )
 ;CODE
 : FDSPT 0x70 RAM+ ;
 : FDHEADS 0x71 RAM+ ;
-: _ ( dest secno )
+: _ ( AX BX sec )
     ( AH=read sectors, AL=1 sector, BX=dest,
       CH=trackno CL=secno DH=head DL=drive )
-    0x0201 ROT ROT ( AX BX sec )
     FDSPT C@ /MOD ( AX BX sec trk )
     FDHEADS C@ /MOD ( AX BX sec head trk )
     8 LSHIFT ROT OR 1+ ( AX BX head CX )
@@ -39,8 +38,12 @@ CODE 13H ( ax bx cx dx -- ax bx cx dx )
 ;
 : FD@
     2 * 16 + ( blkfs starts at sector 16 )
-    BLK( OVER _ BLK( 0x200 + SWAP 1+ _ ;
-: FD! DROP ;
+    0x0201 BLK( 2 PICK _
+    0x0201 BLK( 0x200 + ROT 1+ _ ;
+: FD!
+    2 * 16 + ( blkfs starts at sector 16 )
+    0x0301 BLK( 2 PICK _
+    0x0301 BLK( 0x200 + ROT 1+ _ ;
 : FD$
     ( get number of sectors per track with command 08H. )
     0x03 ( boot drive ) C@ 13H08H
