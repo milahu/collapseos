@@ -50,6 +50,13 @@ CODE 13H ( ax bx cx dx -- ax bx cx dx )
     8 RSHIFT 1+ FDHEADS C!
     0x3f AND FDSPT C!
 ;
+: COLS 80 ; : LINES 25 ;
+CODE AT-XY ( x y )
+    ( DH=row DL=col BH=page )
+    AX POPx, BX POPx, DX PUSHx, ( protect )
+    DH AL MOVrr, DL BL MOVrr, BX BX XORxx, AH 2 MOVri,
+    0x10 INT, DX POPx, ( unprotect )
+;CODE
 380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
