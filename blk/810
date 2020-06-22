@@ -1,16 +1,15 @@
-PC/AT Recipe
+lblexec BSET PC 0x36 - ORG @ 0x34 + ! ( DI -> wordref )
+    AL [DI] MOVr[], DI INCx, ( PFA )
+    AL AL ORrr, IFZ, DI JMPr, THEN, ( native )
+    AL DECr, IFNZ, ( cell or does )
+        DI PUSHx, ( push PFA )
+        AL DECr, IFZ, ( cell ) JMPs, lblnext @ RPCs, THEN,
+        ( does, see B302 )
+        DI INCx, DI INCx, DI [DI] MOVx[],
+    THEN, ( continue to compiled )
+    ( compiled )
+    BP INCx, BP INCx, [BP] 0 DX MOV[]+x, ( pushRS )
+    DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
+    DI [DI] MOVx[],
+    JMPs, lblexec @ RPCs,
 
-Work in progress.
-
-Register usage: SP is PSP, BP is RSP, DX is IP
-
-Unlike z80 boot code, we don't check PS at each next call (we
-do check RS though). It is the responsibility of every native
-PSP-modifying word to call chkPS, . Also, chkPS, is a bit
-different than in z80: it is parametrizable. The idea is that
-we always call chkPS, before popping, telling the expected size
-of stack. This allows for some interesting optimization. For
-example, in SWAP, no need to pop, chkPS, then push, we can
-chkPS and then proceed to optimized swapping in PS.
-
-811 MBR bootloader             812-829 Boot code

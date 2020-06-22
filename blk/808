@@ -1,0 +1,6 @@
+CODE (s) ( 0xd4, string literal, see B287 )
+    DI DX MOVxx, ( IP )
+    AH AH XORrr, AL [DI] MOVr[], ( slen )
+    DX PUSHx, DX INCx, DX AX ADDxx,
+;CODE
+( END OF STABLE ABI )

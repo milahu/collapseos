@@ -1,0 +1,15 @@
+CODE (loop) ( 0x80 )
+    [BP] 0 INC[w]+, ( I++ )
+    ( Jump if I <> I' )
+    AX [BP] 0 MOVx[]+, AX [BP] -2 CMPx[]+,
+    JNZ, L2 @ RPCs, ( branch )
+    ( don't branch )
+    BP 4 SUBxi, JMPs, L1 @ RPCs,
+ORG @ 0xa3 + HERE !
+CODE 2>R ( 0xa9 )
+    [BP] 4 POP[w]+, [BP] 2 POP[w]+, BP 4 ADDxi,
+;CODE NOP, NOP, NOP, NOP, NOP,
+CODE (n) ( 0xbf, number literal )
+    DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
+    DX INCx, DX INCx,
+;CODE NOP, NOP,

@@ -1,0 +1,16 @@
+8086 boot code
+
+Code in the following blocks assemble into a binary that is
+suitable to plug into Core words (B350) to achieve a fully
+functional Collapse OS. It is structured in a way that is
+very similar to Z80 boot code (B280) and requires the same
+constants to be pre-declared.
+
+RESERVED REGISTERS: SP is reserved for PSP, BP is for RSP and
+DX is for IP. Whenever you use these registers for another
+purpose, be sure to protect their initial value. Like with
+Z80, you can use SP freely in native code, but you have to make
+sure it goes back to its previous level before next is called.
+
+
+                                                        (cont.)

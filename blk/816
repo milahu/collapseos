@@ -1,9 +1,15 @@
-lblnext BSET PC 0x1d - ORG @ 0x1b + ! ( next )
-    ( RSP check )
-    AX RS_ADDR MOVxI, BP AX CMPxx,
-    IFC, ( BP < RS_ADDR )
-        DI 0x06 MOVxm, JMPs, L1 FWRs ( execute )
-    THEN,
-    DI DX MOVxx, ( <-- IP ) DX INCx, DX INCx,
-    DI [DI] MOVx[], ( wordref )
-    ( continue to execute ) L1 FSET
+CODE XOR 2 chkPS,
+    AX POPx, BX POPx, AX BX XORxx, AX PUSHx, ;CODE
+CODE NOT 1 chkPS,
+    AX POPx, AX AX ORxx,
+    IFNZ, AX -1 MOVxI, THEN, AX INCx, AX PUSHx,
+;CODE
+CODE + 2 chkPS,
+    AX POPx, BX POPx, AX BX ADDxx, AX PUSHx, ;CODE
+CODE - 2 chkPS,
+    BX POPx, AX POPx, AX BX SUBxx, AX PUSHx, ;CODE
+CODE * 2 chkPS,
+    AX POPx, BX POPx,
+    DX PUSHx, ( protect from MUL ) BX MULx, DX POPx,
+    AX PUSHx,
+;CODE

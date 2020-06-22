@@ -1,0 +1,5 @@
+PC/AT recipe
+
+832 MBR bootloader             834 KEY/EMIT drivers
+836-838 BLK drivers            840 AT-XY drivers
+842 xcomp unit

@@ -1,5 +1,16 @@
-lblchkPS BSET ( CX -> expected size )
-    AX PS_ADDR MOVxI, AX SP SUBxx, 2 SUBAXI, ( CALL adjust )
-    AX CX CMPxx,
-    IFNC, ( we're good ) RETn, THEN,
-    ( underflow ) DI 0x06 MOVxm, JMPs, lblexec @ RPCs,
+CODE BYE BEGIN, JMPs, AGAIN, ;CODE
+CODE S= 2 chkPS,
+    SI POPx, DI POPx, CH CH XORrr, CL [SI] MOVr[],
+    CL [DI] CMPr[],
+    IFZ, ( same size? )
+        SI INCx, DI INCx, CLD, REPZ, CMPSB,
+    THEN,
+    PUSHZ,
+;CODE
+CODE CMP 2 chkPS,
+    BX POPx, AX POPx, CX CX XORxx, AX BX CMPxx,
+    IFNZ, ( < or > )
+        CX INCx, IFC, ( < ) CX DECx, CX DECx, THEN,
+    THEN,
+    CX PUSHx,
+;CODE
