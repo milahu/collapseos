@@ -4,8 +4,8 @@ ORG @ 0x25 + HERE ! ( bypass BPB )
 L1 FSET ( start )
 CLI, CLD, AX 0x800 MOVxI, DS AX MOVsx, ES AX MOVsx,
 SS AX MOVsx, STI,
-AH 2 MOVri, DX 0 MOVxI, CH 0 MOVri, CL 2 MOVri, AL 12 MOVri,
-BX 0 MOVxI, 0x13 INT, ( read sectors 2-14 of boot floppy )
+AH 2 MOVri, DX 0 MOVxI, CH 0 MOVri, CL 2 MOVri, AL 15 MOVri,
+BX 0 MOVxI, 0x13 INT, ( read sectors 2-15 of boot floppy )
 ( TODO: reading 12 sectors like this probably doesn't work
   on real vintage PC/AT with floppy. Make this more robust. )
 0x800 0 JMPf,

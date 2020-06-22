@@ -10,11 +10,46 @@ CODE (emit) 1 chkPS,
     AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
 ;CODE
 CODE (key)
-    AH AH XORrr, 0x16 INT, AH AH XORrr, AX PUSHx, ;CODE
+    AH AH XORrr, 0x16 INT, AH AH XORrr, AX PUSHx,
+;CODE
+CODE 13H08H ( driveno -- cx )
+    DI POPx, DX PUSHx, ( protect ) DX DI MOVxx, AX 0x800 MOVxI,
+    DI DI XORxx, ES DI MOVsx,
+    0x13 INT, DX POPx, ( unprotect ) CX PUSHx,
+    DI 0x800 MOVxI, ES DI MOVsx,
+;CODE
+CODE 13H ( ax bx cx dx -- ax bx cx dx )
+    SI POPx, ( DX ) CX POPx, BX POPx, AX POPx,
+    DX PUSHx, ( protect ) DX SI MOVxx, DI DI XORxx,
+    0x13 INT, SI DX MOVxx, DX POPx, ( unprotect )
+    AX PUSHx, BX PUSHx, CX PUSHx, SI PUSHx,
+;CODE
+: FDSPT 0x70 RAM+ ;
+: _ ( dest secno )
+    ( AH=read sectors, AL=1 sector, BX=dest,
+      CH=trackno CL=secno DH=head. )
+    0x0201 ROT ROT ( AX BX sec )
+    FDSPT @ /MOD ( AX BX sec trk )
+    2 /MOD ( AX BX sec head trk )
+    8 LSHIFT ROT OR 1+ ( AX BX head CX )
+    SWAP 8 LSHIFT ( AX BX CX DX )
+    13H 2DROP 2DROP
+;
+: FD@
+    2 * 16 + ( blkfs starts at sector 16 )
+    BLK( OVER _ BLK( 0x200 + SWAP 1+ _ ;
+: FD! DROP ;
+: FD$
+    ( get number of sectors per track with command 08H. )
+    0 13H08H 0x3f AND FDSPT !
+;
 380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
+," BLK$ FD$ "
+," ' FD@ BLK@* ! "
+," ' FD! BLK!* ! "
 EOT,
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!
