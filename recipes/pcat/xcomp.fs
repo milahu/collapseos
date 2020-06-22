@@ -12,10 +12,11 @@ CODE (emit) 1 chkPS,
 CODE (key)
     AH AH XORrr, 0x16 INT, AH AH XORrr, AX PUSHx,
 ;CODE
-CODE 13H08H ( driveno -- cx )
+CODE 13H08H ( driveno -- cx dx )
     DI POPx, DX PUSHx, ( protect ) DX DI MOVxx, AX 0x800 MOVxI,
     DI DI XORxx, ES DI MOVsx,
-    0x13 INT, DX POPx, ( unprotect ) CX PUSHx,
+    0x13 INT, DI DX MOVxx, DX POPx, ( unprotect )
+    CX PUSHx, DI PUSHx,
     DI 0x800 MOVxI, ES DI MOVsx,
 ;CODE
 CODE 13H ( ax bx cx dx -- ax bx cx dx )
@@ -25,12 +26,13 @@ CODE 13H ( ax bx cx dx -- ax bx cx dx )
     AX PUSHx, BX PUSHx, CX PUSHx, SI PUSHx,
 ;CODE
 : FDSPT 0x70 RAM+ ;
+: FDHEADS 0x71 RAM+ ;
 : _ ( dest secno )
     ( AH=read sectors, AL=1 sector, BX=dest,
       CH=trackno CL=secno DH=head DL=drive )
     0x0201 ROT ROT ( AX BX sec )
-    FDSPT @ /MOD ( AX BX sec trk )
-    2 /MOD ( AX BX sec head trk )
+    FDSPT C@ /MOD ( AX BX sec trk )
+    FDHEADS C@ /MOD ( AX BX sec head trk )
     8 LSHIFT ROT OR 1+ ( AX BX head CX )
     SWAP 8 LSHIFT 0x03 C@ ( boot drive ) OR ( AX BX CX DX )
     13H 2DROP 2DROP
@@ -41,7 +43,9 @@ CODE 13H ( ax bx cx dx -- ax bx cx dx )
 : FD! DROP ;
 : FD$
     ( get number of sectors per track with command 08H. )
-    0x03 ( boot drive ) C@ 13H08H 0x3f AND FDSPT !
+    0x03 ( boot drive ) C@ 13H08H
+    8 RSHIFT 1+ FDHEADS C!
+    0x3f AND FDSPT C!
 ;
 380 LOAD  ( xcomp core high )
 (entry) _
