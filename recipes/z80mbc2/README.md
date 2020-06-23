@@ -8,7 +8,7 @@ Collapse OS on it rather simple.
 
 In this recipe, we're going to run Collapse OS on the Z80-MBC2, interfacing
 through its serial port. We're going to use the MBC's API to implement BLK on
-the SD card. (the BLK part isn't done yet. TODO)
+the SD card.
 
 ### Gathering parts
 
@@ -25,6 +25,16 @@ Running `make` will yield `os.bin` which is what we want.
 Mount the SD card on your modern computer and copy `os.bin` as `autoboot.bin`,
 overwriting the binary that was previously there.
 
+We also have to copy the blkfs over. This is done by using IOS' drive system.
+Each `DSxNyy.DSK` file on the card is a drive, each drive has 512 track of 32
+sectors of 512 bytes, so one drive is plenty for our needs. Collapse OS
+hardcodes drive 0.
+
+Each drive is part of a set. IOS theoretically supports up to 10 sets, but the
+binary shipped by default only accepts 4. You have to overwrite an existing set.
+I used set 3. So, copy `blkfs` to file `DS3N00.DSK`. If you want, you can change
+the name of the set by changing the contents of `DS3NAM.DAT`.
+
 Put back the SD card in the Z80-MBC2 and power it up by connecting the FTDI
 adapter to it (red: VCC, black: GND, green: TX, white: RX).
 
@@ -34,7 +44,10 @@ the Z80-MBC2 appears to be hardcoded to 115200.
 
 Then, enable IOS program selection by holding RESET and USER at the same time,
 wait 2 seconds, releasing RESET, wait 2 seconds, releasing USER. You should then
-be given a 1-8 choice, with 4 being "Autoboot". Type 4.
+be given a 1-8 choice.
+
+You begin by selecting the proper disk set, which is through choice 8, then you
+select the Autoboot binary through choice 4.
 
 You are now in Collapse OS.
 
