@@ -5,6 +5,7 @@ BLK(   -- a      Beginning addr of blk buf.
 BLK)   -- a      Ending addr of blk buf.
 COPY   s d --    Copy contents of s block to d block.
 FLUSH  --        Write current block to disk if dirty.
+FREEBLKS? a b -- List free blocks between blocks a and b.
 LIST   n --      Prints the contents of the block n on screen
                  in the form of 16 lines of 64 columns.
 LOAD   n --      Interprets Forth code from block n
@@ -12,5 +13,4 @@ LOAD+  n --      Relative load. Loads active block + n.
 LOADR  n1 n2 --  Load block range between n1 and n2, inclusive.
 LOADR+ n1 n2 --  Relative ranged load.
 WIPE   --        Empties current block
-
-
+WIPED? -- f      Whether current block is empty
