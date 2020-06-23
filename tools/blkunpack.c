@@ -20,14 +20,17 @@ int main(int argc, char *argv[])
     while (fread(buf, 1024, 1, stdin) == 1) {
         char fullpath[0x200];
         sprintf(fullpath, "%s/%03d", argv[1], blkid);
-        char c = 0;
-        for (int i=0; i<1024; i++) {
-            c |= buf[i];
+        int linecnt = 0 ;
+        for (int i=1023; i>=0; i--) {
+            if (buf[i]) {
+                linecnt = (i / 64) + 1;
+                break;
+            }
         }
-        if (c) {
+        if (linecnt) {
             // not an empty block
             FILE *fp = fopen(fullpath, "w");
-            for (int i=0; i<16; i++) {
+            for (int i=0; i<linecnt; i++) {
                 char *line = &buf[i*64];
                 // line length is *not* strlen()! it's the
                 // position of the first non-null, starting

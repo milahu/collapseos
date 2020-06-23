@@ -5,12 +5,3 @@
 : RJMP _raddr12 0xc000 OR ;
 : RCALL _raddr12 0xd000 OR ;
 : RJMP, RJMP A,, ; : RCALL, RCALL A,, ;
-
-
-
-
-
-
-
-
-

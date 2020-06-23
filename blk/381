@@ -8,9 +8,3 @@
 : (uflw) LIT" stack underflow" ERR ;
 XCURRENT @ _xapply ORG @ 0x06 ( stable ABI uflw ) + !
 : (wnf) (print) SPC LIT" word not found" ERR ;
-
-
-
-
-
-

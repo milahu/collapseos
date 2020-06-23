@@ -11,6 +11,3 @@
     clrscr 0 ACC ! 0 PREVPOS ! contents
     BEGIN status bufs setpos KEY handle UNTIL
     19 aty (infl) ;
-
-
-

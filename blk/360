@@ -8,9 +8,3 @@
         DUP 0< IF 2DROP 0 UNLOOP EXIT THEN
         SWAP 4 LSHIFT + ( a r*16+n ) LOOP
     NIP 1 ;
-
-
-
-
-
-

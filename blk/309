@@ -7,10 +7,3 @@ CODE OVER
     HL PUSHqq,      ( B )
     DE PUSHqq,      ( A )
 ;CODE
-
-
-
-
-
-
-

@@ -13,4 +13,3 @@ At compile time, colon definition stops processing words when
 reaching the DOES>.
 
 Example: ": CONSTANT CREATE HERE @ ! DOES> @ ;"
-

@@ -5,12 +5,3 @@ LIT    --         Write a LIT entry. You're expected to write
 LIT< x --         Read following word and write to HERE as a
                   string literal.
 S=     a1 a2 -- f Returns whether string a1 == a2.
-
-
-
-
-
-
-
-
-

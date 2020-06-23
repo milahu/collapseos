@@ -12,5 +12,3 @@ CODE _get
     EI,
     L A LDrr, HL PUSHqq,
 ;CODE
-
-

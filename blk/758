@@ -3,4 +3,3 @@
 0xcd OPi INT,
 : OPI CREATE C, DOES> C@ A, A,, ;
 0x05 OPI ADDAXI,     0x25 OPI ANDAXI,    0x2d OPI SUBAXI,
-

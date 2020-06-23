@@ -7,10 +7,3 @@ CODE @RDSEC ( drv cylsec addr -- f )
     0x28 RSTn,
     PUSHZ,
 ;CODE
-
-
-
-
-
-
-

@@ -4,13 +4,3 @@
 : _ldst ( Rd XYZ op ) SWAP DUP 0x10 AND 8 LSHIFT SWAP 0xf AND
     OR OR ( Rd op' ) SWAP _Rdp A,, ;
 : LD, 0x8000 _ldst ; : ST, SWAP 0x8200 _ldst ;
-
-
-
-
-
-
-
-
-
-

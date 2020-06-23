@@ -13,4 +13,3 @@ VARIABLE XCURRENT
     XCON ' _xapply LITN
     LIT< , FIND DROP _xapply , XCOFF ;
 : X[COMPILE] XCON ' _xapply , XCOFF ;
-

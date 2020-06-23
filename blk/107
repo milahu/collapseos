@@ -11,6 +11,3 @@ CREATE FBUF 64 ALLOT0
         EMIT
     LOOP ( lno ) 1+ . ;
 : _zbuf 64 0 FILL ; ( buf -- )
-
-
-

@@ -8,9 +8,3 @@ MOVE     a1 a2 u --      Copy u bytes from a1 to a2, starting
 MOVE-    a1 a2 u --      Copy u bytes from a1 to a2, starting
                          with a1+u, going down.
 MOVE,    a u --          Copy u bytes from a to HERE.
-
-
-
-
-
-

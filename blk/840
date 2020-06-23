@@ -5,4 +5,3 @@ CODE AT-XY ( x y )
     DH AL MOVrr, DL BL MOVrr, BX BX XORxx, AH 2 MOVri,
     0x10 INT, DX POPx, ( unprotect )
 ;CODE
-

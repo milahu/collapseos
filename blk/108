@@ -10,7 +10,3 @@
 : _mvln- ( ln -- move ln 1 line up )
     DUP 14 > IF DROP 15 _lpos _zbuf
     ELSE 1+ _lpos DUP 64 - 64 MOVE THEN ;
-
-
-
-

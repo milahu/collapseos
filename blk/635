@@ -11,6 +11,3 @@
     ( return whether any of the high 3 bits is low )
     0xe0 AND 0xe0 <
 ;
-
-
-

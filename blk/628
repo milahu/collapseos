@@ -8,9 +8,3 @@
     0 XYPOS !
     ( bit 6, enable display, bit 7, ?? ) 0x81c0 _ctl
 ;
-
-
-
-
-
-

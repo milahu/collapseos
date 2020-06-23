@@ -3,14 +3,3 @@
     DUP '0' '1' =><= IF '0' - EXIT THEN
     DROP -1 ( bad )
 ;
-
-
-
-
-
-
-
-
-
-
-

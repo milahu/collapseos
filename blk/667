@@ -11,6 +11,3 @@
 
 ( special cases )
 : CLR, DUP EOR, ;  : TST, DUP AND, ; : LSL, DUP ADD, ;
-
-
-

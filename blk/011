@@ -7,10 +7,3 @@ support the "-" prefix, but under the hood, it's all unsigned.
 This leads to some oddities. For example, "-1 0 <" is false.
 To compare whether something is negative, use the "0<" word
 which is the equivalent to "0x7fff >".
-
-
-
-
-
-
-

@@ -10,7 +10,3 @@
 : $B EDPOS @ BLK( + acc@ 0 DO
     BEGIN C@- WS? UNTIL BEGIN C@- WS? NOT UNTIL LOOP
     1+ BLK( - pos! ;
-
-
-
-

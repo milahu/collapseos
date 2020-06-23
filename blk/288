@@ -10,7 +10,3 @@ CODE 2R>
     20 BCALL, ( 20 == popRS ) EXDEHL, 20 BCALL,
     HL PUSHqq, DE PUSHqq,
 ;CODE
-
-
-
-

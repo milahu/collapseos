@@ -4,13 +4,3 @@ compiled. At that address is an atom list exactly like in a
 compiled word. Upon execution, after having pushed its cell
 addr to PSP, it executes its reference exactly like a
 compiled word.
-
-
-
-
-
-
-
-
-
-

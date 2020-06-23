@@ -11,6 +11,3 @@ TL. When the '164 is full, TL is low. Port A TL is bit 4 )
     0xdc PC@ ( bit 3:0 go in 7:4 ) 0x0f AND 4 LSHIFT OR ( n )
 	( Port A/B reset ) 0xff 0x3f PC!
 ;
-
-
-

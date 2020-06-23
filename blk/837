@@ -7,4 +7,3 @@
     SWAP 8 LSHIFT 0x03 C@ ( boot drive ) OR ( AX BX CX DX )
     13H 2DROP 2DROP
 ;
-

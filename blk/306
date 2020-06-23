@@ -13,4 +13,3 @@ CODE ROT
     chkPS,
     DE PUSHqq, ( B ) HL PUSHqq, ( C ) BC PUSHqq, ( A )
 ;CODE
-

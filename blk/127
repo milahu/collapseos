@@ -8,9 +8,3 @@
     DUP 0x20 < IF 2DROP DROP EXIT THEN
     ( buf ln c ) 63 nspcs SWAP 4 SWAP AT-XY ( buf c ) SWAP C!+
     IN( _zbuf (rdln) IN( SWAP 63 MOVE ;
-
-
-
-
-
-

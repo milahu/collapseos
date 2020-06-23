@@ -11,6 +11,3 @@ PC ORG @ 0x15 + ! ( popRS )
     IX DECss,
     IX DECss,
     RET,
-
-
-

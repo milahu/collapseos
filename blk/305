@@ -10,7 +10,3 @@ lblchkPS BSET ( chkPS )
     EXX,
     CNC RETcc,      ( PS_ADDR >= SP? good )
     JR, lblofl BWR      ( abortUnderflow-B298 )
-
-
-
-

@@ -7,10 +7,3 @@ CODE _blank ( this is way too slow in Forth )
         HL DECss, HLZ,
     JRNZ, AGAIN,
 ;CODE
-
-
-
-
-
-
-

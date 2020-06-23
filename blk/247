@@ -6,11 +6,3 @@
     THEN ;
 : AGAIN, BREAK?, PC - 1- A, ;
 : BWR @ AGAIN, ;
-
-
-
-
-
-
-
-

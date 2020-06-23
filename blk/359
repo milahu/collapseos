@@ -4,13 +4,3 @@
     DUP 'a' 'f' =><= IF 0x57 ( 'a' - 10 ) - EXIT THEN
     DROP -1 ( bad )
 ;
-
-
-
-
-
-
-
-
-
-

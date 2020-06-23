@@ -10,7 +10,3 @@
 : $h -1 cmv ; : $l 1 cmv ; : $k -64 cmv ; : $j 64 cmv ;
 : $H EDPOS @ 0x3c0 AND pos! ;
 : $L EDPOS @ 0x3f OR pos! ;
-
-
-
-

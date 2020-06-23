@@ -12,5 +12,3 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 ,
 : contents 3 aty BLK> @ LIST 3 16 gutter ;
 : selblk BLK> @ PREVBLK ! BLK@ contents ;
 : mode! ( c -- ) 63 0 AT-XY ;
-
-

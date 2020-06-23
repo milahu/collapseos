@@ -9,8 +9,3 @@ it. As a general rule, we go like this:
 4. Is it a number?
 5. If yes, push that number to PS, goto 1
 6. Error: undefined word.
-
-
-
-
-

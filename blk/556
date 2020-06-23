@@ -11,6 +11,3 @@
 : _data@ 0x11 ( DATA ) PC@ _wait ;
 : LCDOFF 0x02 ( CMD_DISABLE ) _cmd ;
 : LCDON 0x03 ( CMD_ENABLE ) _cmd ;
-
-
-

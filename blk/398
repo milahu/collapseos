@@ -10,7 +10,3 @@
     [COMPILE] THEN
     H@ 2- ( push a. -2 for allot offset )
 ; IMMEDIATE
-
-
-
-

@@ -4,4 +4,3 @@
 0x29 OPrr SUBxx,     0x08 OPrr ORrr,     0x09 OPrr ORxx,
 0x38 OPrr CMPrr,     0x39 OPrr CMPxx,    0x00 OPrr ADDrr,
 0x01 OPrr ADDxx,     0x20 OPrr ANDrr,    0x21 OPrr ANDxx,
-

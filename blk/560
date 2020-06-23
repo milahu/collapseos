@@ -2,15 +2,3 @@
     DUP 0xd = IF DROP _lf EXIT THEN
     DUP 0x20 0x7e =><= NOT IF DROP EXIT THEN
     0x20 - FNTH * ~FNT + _glyph> ;
-
-
-
-
-
-
-
-
-
-
-
-

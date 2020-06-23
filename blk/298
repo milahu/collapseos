@@ -1,13 +1,3 @@
 lblofl BSET ( abortUnderflow )
     DE BIN( @ 0x06 ( uflw ) + LDdd(nn),
     JR, L2 FWR ( execute, B301 )
-
-
-
-
-
-
-
-
-
-

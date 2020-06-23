@@ -11,6 +11,3 @@ CODE 1-
     HL DECss,
     HL PUSHqq,
 ;CODE
-
-
-

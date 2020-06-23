@@ -13,4 +13,3 @@
     OVER _r64c 0x30 AND 3 RSHIFT OR ( rd A op' )
     8 LSHIFT OR 0xff0f AND ( rd op' ) SWAP _r32c _Rdp A,, ;
 0xb0 OPRdA IN,     0xb8 OPRdA _ : OUT, SWAP _ ;
-

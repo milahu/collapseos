@@ -12,4 +12,3 @@ lblexec BSET PC 0x36 - ORG @ 0x34 + ! ( DI -> wordref )
     DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
     DI [DI] MOVx[],
     JMPs, lblexec @ RPCs,
-

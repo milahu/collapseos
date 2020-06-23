@@ -8,9 +8,3 @@
 : BLKDTY 0x3a RAM+ ;
 : BLK( 0x3c RAM+ @ ;
 : BLK) BLK( 1024 + ;
-
-
-
-
-
-

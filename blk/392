@@ -13,4 +13,3 @@
   is to check whether we're restoring to "_", the word above.
   if yes, then we're in a nested load. Also, the 1 in 0x06 is
   to avoid tons of "ok" displays. )
-

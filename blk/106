@@ -8,9 +8,3 @@ CREATE ACC 0 ,
 : L BLK> @ _LIST ;
 : B BLK> @ 1- BLK@ L ;
 : N BLK> @ 1+ BLK@ L ;
-
-
-
-
-
-

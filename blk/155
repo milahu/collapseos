@@ -3,14 +3,3 @@
         DUP I C!
     LOOP DROP ;
 : ALLOT0 ( n -- ) H@ OVER 0 FILL ALLOT ;
-
-
-
-
-
-
-
-
-
-
-

@@ -7,10 +7,3 @@
     LCDON 0x01 ( 8-bit mode ) _cmd
     FNTH 1+ _zoff!
 ;
-
-
-
-
-
-
-

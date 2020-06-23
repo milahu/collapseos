@@ -12,5 +12,3 @@
     _2nd@ IF DUP 'A' 'Z' =><= IF 0x20 OR THEN THEN
 ;
 : KBD$ 0 [ KBD_MEM LITN ] C! ;
-
-

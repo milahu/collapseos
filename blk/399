@@ -6,10 +6,3 @@
 : ] R> DROP ;
 : COMPILE ' LITN ['] , , ; IMMEDIATE
 : [COMPILE] ' , ; IMMEDIATE
-
-
-
-
-
-
-

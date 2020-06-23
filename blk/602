@@ -10,7 +10,3 @@ CODE _sdcSR  ( n -- n )
     L A LDrr,
     HL PUSHqq,
 ;CODE
-
-
-
-

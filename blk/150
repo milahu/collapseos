@@ -13,4 +13,3 @@ Some programs need them, so they will automatically LOAD them.
 Because more than one program can use the same extra words,
 conditional loaders are recommended. If you want to load all
 words do "152 LOAD" which conditionally loads all extra words.
-

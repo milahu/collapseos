@@ -10,7 +10,3 @@ CODE RSHIFT ( n u -- n )
     THEN,
     HL PUSHqq,
 ;CODE
-
-
-
-

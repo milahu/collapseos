@@ -4,13 +4,3 @@ Write to an AT28 EEPROM while making sure that proper timing
 is followed and verify data integrity.
 
 Load with "591 LOAD"
-
-
-
-
-
-
-
-
-
-

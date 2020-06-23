@@ -13,4 +13,3 @@ CODE (loop) ( 0x80 )
     A 1 IX+ LDrIXY, 1 IX- CP(IXY+), JRNZ, L2 BWR ( branch )
     ( don't branch )
     IX DECss, IX DECss, IX DECss, IX DECss, JR, L1 BWR
-

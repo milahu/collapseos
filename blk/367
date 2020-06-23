@@ -6,11 +6,3 @@
 : / /MOD NIP ;
 : MOD /MOD DROP ;
 : ALLOT HERE +! ;
-
-
-
-
-
-
-
-

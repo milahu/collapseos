@@ -10,7 +10,3 @@ CMP  n1 n2 -- n Compare n1 and n2 and set n to -1, 0, or 1.
 MIN  a b -- n   Returns the lowest of a and b
 MAX  a b -- n   Returns the highest of a and b
 NOT  f -- f     Push the logical opposite of f
-
-
-
-

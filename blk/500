@@ -5,12 +5,3 @@
 : _err LIT" *CLerr" ERR ;
 : *CL< 0 BEGIN DROP 0x0238 @GET UNTIL ;
 : *CL> 0x0238 @PUT NOT IF _err THEN ;
-
-
-
-
-
-
-
-
-

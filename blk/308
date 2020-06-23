@@ -6,11 +6,3 @@ CODE SWAP
     HL PUSHqq,      ( B )
     DE PUSHqq,      ( A )
 ;CODE
-
-
-
-
-
-
-
-

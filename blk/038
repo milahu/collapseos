@@ -3,14 +3,3 @@ FORGET x --       Rewind the dictionary (both CURRENT and HERE)
                   up to x's previous entry.             
 PREV   a -- a     Return a wordref's previous entry.
 WORD(  a -- a     Get wordref's beginning addr.
-
-
-
-
-
-
-
-
-
-
-

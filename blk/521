@@ -4,13 +4,3 @@
   Therefore, for a 5-bit wide char, "X.X.X" translates to
   0b10101000. Left-aligned bytes are easier to work with when
   compositing glyphs. )
-
-
-
-
-
-
-
-
-
-

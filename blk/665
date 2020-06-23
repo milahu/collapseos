@@ -11,6 +11,3 @@
     ROT _r32c 3 LSHIFT ROT _r8c OR A, A, ;
 0x98 OPAb CBI,     0x9a OPAb SBI,      0x99 OPAb SBIC,
 0x9b OPAb SBIS,
-
-
-

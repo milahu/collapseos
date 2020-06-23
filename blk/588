@@ -10,7 +10,3 @@
   CR1:0 (10) - Counter divide: 64 )
     0b10010110 [ ACIA_CTL LITN ] PC!
     (im1) ;
-
-
-
-

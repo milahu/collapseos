@@ -3,14 +3,3 @@ to send groups we want to "listen" to, with a 0 in the group
 bit. Thus, to know if *any* key is pressed, we send 0xff to
 reset the keypad, then 0x00 to select all groups, if the result
 isn't 0xff, at least one key is pressed.
-
-
-
-
-
-
-
-
-
-
-

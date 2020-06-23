@@ -8,9 +8,3 @@
     FLUSH DUP BLK> ! BLK@* @ EXECUTE ;
 
 : BLK!! 1 BLKDTY ! ;
-
-
-
-
-
-

@@ -10,7 +10,3 @@ always stay zero. )
 : _sfont ( a -- Send font to VDP )
     7 0 DO C@+ _data 3 _zero LOOP DROP
     ( blank row ) 4 _zero ;
-
-
-
-

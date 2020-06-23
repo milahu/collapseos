@@ -10,7 +10,3 @@ This logic below is for the Genesis controller, which is modal.
 TH is an output pin that switches the meaning of TL and TR. When
 TH is high (unselected), TL = Button B and TR = Button C. When
 TH is low (selected), TL = Button A and TR = Start. )
-
-
-
-

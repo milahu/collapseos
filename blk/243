@@ -10,5 +10,3 @@ CREATE lblnext 0x1a , ( stable ABI until set in B300 )
 : CODE ( same as CREATE, but with native word )
     (entry) 0 C, ( 0 == native ) ;
 : ;CODE JPNEXT, ;
-
-

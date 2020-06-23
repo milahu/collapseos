@@ -12,5 +12,3 @@
     ( ah, finally, we have a gentle run-of-the-mill KC )
     PS2_CODES PS2_SHIFT C@ IF 0x80 + THEN + C@
     ?DUP NOT IF (key) THEN ;
-
-

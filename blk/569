@@ -10,7 +10,3 @@
     BEGIN 1+ 2DUP RSHIFT NOT UNTIL 1-
     ( gid dpos dindex ) NIP
     ( gid dindex ) SWAP 8 * + ;
-
-
-
-

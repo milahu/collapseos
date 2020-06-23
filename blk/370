@@ -12,5 +12,3 @@
     LOOP THEN 2DROP ;
 : MOVE, ( a u -- ) H@ OVER ALLOT SWAP MOVE ;
 : PREV 3 - DUP @ - ;
-
-

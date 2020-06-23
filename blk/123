@@ -13,4 +13,3 @@
 'D' deletes "modifier" lines at the cursor. The first of those
 lines is copied to IBUF.
                                                         (cont.)
-

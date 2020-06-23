@@ -7,10 +7,3 @@ BS CR LF SPC CRLF
 NL is an indirect word (see B80) that aliases to CRLF by
 default and that should generally be used when we want to emit
 a newline.
-
-
-
-
-
-
-
