@@ -12,5 +12,5 @@
     _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
 : $o EDPOS @ 64 < IF EXIT THEN EDPOS @ 64 + EDPOS ! $O ;
 : $D $H 64 icpy
-    acc@ 0 DO 16 EDPOS @ 64 / DO i _mvln- LOOP LOOP
+    acc@ 0 DO 16 EDPOS @ 64 / DO I _mvln- LOOP LOOP
     BLK!! contents ;

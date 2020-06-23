@@ -10,7 +10,7 @@ P xxx: put typed IBUF on selected line.
 U xxx: insert typed IBUF on selected line.
 F xxx: find typed FBUF in block, starting from current
        position+1. If not found, don't move.
-I xxx: insert typed IBUF at cursor. "I" shadows core word. Use
-       "i" to access it.
+i xxx: insert typed IBUF at cursor. "i" is to avoid shadowing 
+       core word "I".   
 Y: Copy n characters after cursor into IBUF, n being length of
    FBUF.                                                (cont.)

@@ -3,7 +3,7 @@
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
     0 ACC ! UPPER 'Q' = ;
 : bufp ( buf -- )
-    DUP 64 + SWAP DO i C@ 0x20 MAX EMIT LOOP ;
+    DUP 64 + SWAP DO I C@ 0x20 MAX EMIT LOOP ;
 : bufs
     1 aty ." I: " IBUF bufp
     2 aty ." F: " FBUF bufp 0 3 gutter ;
