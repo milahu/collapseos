@@ -53,12 +53,4 @@ The Forth-based Collapse OS is the second incarnation of the concept. The first
 one was entirely written in z80 assembly. If you're interested in that
 incarnation, checkout the `z80asm` branch.
 
-## Discussion
-
-For a general discussion of Collapse OS and the ecosystem of technologies and
-ideas that may develop around it refer to [r/collapseos][discussion]
-
-I also stick around on IRC (#collapseos on freenode).
-
 [web]: https://collapseos.org
-[discussion]: https://www.reddit.com/r/collapseos
