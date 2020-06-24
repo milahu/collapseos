@@ -30,6 +30,11 @@ See `/emul/README.md` for getting an emulated system running.
 
 Then, run `0 LIST` for an introduction, follow instructions from there.
 
+Alternatively, there's also [Michael Schierl's JS Collapse OS emulator][jsemul]
+which is awesome and allows you to run Collapse OS from your browser, but it
+isn't always up to date. The "Javascript Forth" version is especially awesome:
+it's not a z80 emulator, but a *javascript port of Collapse OS*!
+
 ## Organisation of this repository
 
 * `blk`: Collapse OS filesystem's content. That's actually where Collapse OS'
@@ -54,3 +59,4 @@ one was entirely written in z80 assembly. If you're interested in that
 incarnation, checkout the `z80asm` branch.
 
 [web]: https://collapseos.org
+[jsemul]: https://schierlm.github.io/CollapseOS-Web-Emulator/
