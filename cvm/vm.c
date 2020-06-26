@@ -86,7 +86,8 @@ static void execute(word wordref) {
         vm.IP = wordref+1;
     } else { // cell or does
         push(wordref+1);
-        if (wtype == 4) {
+        if (wtype == 3) {
+            pushRS(vm.IP);
             vm.IP = gw(wordref+3);
         }
     }
