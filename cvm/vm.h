@@ -36,6 +36,7 @@ typedef struct {
     word maxRS;
     word minSP;
     bool running;
+    bool uflw;
 } VM;
 
 VM* VM_init();

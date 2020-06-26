@@ -1,4 +1,4 @@
-TARGETS = forth
+TARGETS = forth stage
 OBJS = vm.o
 BLKPACK = ../tools/blkpack
 BLKUNPACK = ../tools/blkunpack
@@ -18,17 +18,19 @@ stage: stage.c $(OBJS) blkfs
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
-forth: forth.c $(OBJS) blkfs
+forth: forth.c $(OBJS)
 	$(CC) forth.c $(OBJS) -lncurses -o $@
 
-vm.o: vm.c
+stage: stage.c $(OBJS)
+	$(CC) stage.c $(OBJS) -lncurses -o $@
+
+vm.o: vm.c blkfs
 	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" -c -o vm.o vm.c
 
 
 .PHONY: updatebootstrap
 updatebootstrap: stage xcomp.fs pack
 	./stage < xcomp.fs > new.bin
-	mv new.bin forth.bin
 
 .PHONY: pack
 pack:

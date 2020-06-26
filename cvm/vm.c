@@ -67,12 +67,20 @@ static void sw(word addr, word val) {
     vm.mem[addr] = val;
     vm.mem[addr+1] = val >> 8;
 }
-static word pop() { return vm.mem[vm.SP++] | vm.mem[vm.SP++] << 8; }
+static word pop() {
+    if (vm.uflw) return 0;
+    if (vm.SP >= SP_ADDR) { vm.uflw = true; }
+    return vm.mem[vm.SP++] | vm.mem[vm.SP++] << 8;
+}
 static void push(word x) {
     vm.SP -= 2; sw(vm.SP, x);
     if (vm.SP < vm.minSP) { vm.minSP = vm.SP; }
 }
-static word popRS() { word x = gw(vm.RS); vm.RS -= 2; return x; }
+static word popRS() {
+    if (vm.uflw) return 0;
+    if (vm.RS <= RS_ADDR) { vm.uflw = true; }
+    word x = gw(vm.RS); vm.RS -= 2; return x;
+}
 static void pushRS(word val) {
     vm.RS += 2; sw(vm.RS, val);
     if (vm.RS > vm.maxRS) { vm.maxRS = vm.RS; }
@@ -351,6 +359,7 @@ VM* VM_init() {
     vm.IP = gw(0x04) + 1; // BOOT
     sw(SYSVARS+0x02, gw(0x08)); // CURRENT
     sw(SYSVARS+0x04, gw(0x08)); // HERE
+    vm.uflw = false;
     vm.running = true;
     return &vm;
 }
@@ -369,6 +378,10 @@ bool VM_steps(int n) {
         word wordref = gw(vm.IP);
         vm.IP += 2;
         execute(wordref);
+        if (vm.uflw) {
+            vm.uflw = false;
+            execute(gw(0x06)); /* uflw */
+        }
         n--;
     }
     return vm.running;
