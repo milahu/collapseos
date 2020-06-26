@@ -31,6 +31,7 @@ vm.o: vm.c blkfs
 .PHONY: updatebootstrap
 updatebootstrap: stage xcomp.fs pack
 	./stage < xcomp.fs > new.bin
+	mv new.bin forth.bin
 
 .PHONY: pack
 pack:

@@ -238,18 +238,8 @@ static void MINUS2() { push(pop()-2); }
 static void PLUS2() { push(pop()+2); }
 static void RSHIFT() { word u = pop(); push(pop()>>u); }
 static void LSHIFT() { word u = pop(); push(pop()<<u); }
-// create a native word with a specific target offset. target is addr of
-// wordref.
-static void create_native_t(word target, char *name, NativeWord func) {
-    int len = strlen(name);
-    strcpy(&vm.mem[target-len-3], name);
-    word prev_off = target - 3 - vm.xcurrent;
-    sw(target-3, prev_off);
-    vm.mem[target-1] = len;
-    vm.mem[target] = 0; // native word type
-    vm.mem[target+1] = vm.nativew_count;
+static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
-    vm.xcurrent = target;
 }
 
 /* INITIAL BOOTSTRAP PLAN
@@ -299,63 +289,62 @@ VM* VM_init() {
         vm.iowr[i] = NULL;
     }
     vm.iowr[BLK_PORT] = iowr_blk;
-    vm.xcurrent = 0x3f; // make EXIT's prev field 0
-    create_native_t(0x42, "EXIT", EXIT);
-    create_native_t(0x53, "(br)", _br_);
-    create_native_t(0x67, "(?br)", _cbr_);
-    create_native_t(0x80, "(loop)", _loop_);
-    create_native_t(0xa9, "2>R", SP_to_R_2);
-    create_native_t(0xbf, "(n)", nlit);
-    create_native_t(0xd4, "(s)", slit);
+    native(EXIT);
+    native(_br_);
+    native(_cbr_);
+    native(_loop_);
+    native(SP_to_R_2);
+    native(nlit);
+    native(slit);
     // End of stable ABI
-    create_native_t(0xe7, ">R", SP_to_R);
-    create_native_t(0xf4, "R>", R_to_SP);
-    create_native_t(0x102, "2R>", R_to_SP_2);
-    create_native_t(0x1d4, "EXECUTE", EXECUTE);
-    create_native_t(0x1e1, "ROT", ROT);
-    create_native_t(0x1f4, "DUP", DUP);
-    create_native_t(0x205, "?DUP", CDUP);
-    create_native_t(0x21a, "DROP", DROP);
-    create_native_t(0x226, "SWAP", SWAP);
-    create_native_t(0x238, "OVER", OVER);
-    create_native_t(0x24b, "PICK", PICK);
-    create_native_t(0x26c, "(roll)", _roll_);
-    create_native_t(0x283, "2DROP", DROP2);
-    create_native_t(0x290, "2DUP", DUP2);
-    create_native_t(0x2a2, "S0", S0);
-    create_native_t(0x2af, "'S", Saddr);
-    create_native_t(0x2be, "AND", AND);
-    create_native_t(0x2d3, "OR", OR);
-    create_native_t(0x2e9, "XOR", XOR);
-    create_native_t(0x2ff, "NOT", NOT);
-    create_native_t(0x314, "+", PLUS);
-    create_native_t(0x323, "-", MINUS);
-    create_native_t(0x334, "*", MULT);
-    create_native_t(0x358, "/MOD", DIVMOD);
-    create_native_t(0x37c, "!", STORE);
-    create_native_t(0x389, "@", FETCH);
-    create_native_t(0x39a, "C!", CSTORE);
-    create_native_t(0x3a6, "C@", CFETCH);
-    create_native_t(0x3b8, "PC!", IO_OUT);
-    create_native_t(0x3c6, "PC@", IO_IN);
-    create_native_t(0x3d7, "I", RI);
-    create_native_t(0x3e7, "I'", RI_);
-    create_native_t(0x3f6, "J", RJ);
-    create_native_t(0x407, "BYE", BYE);
-    create_native_t(0x416, "(resSP)", _resSP_);
-    create_native_t(0x427, "(resRS)", _resRS_);
-    create_native_t(0x434, "S=", Seq);
-    create_native_t(0x457, "CMP", CMP);
-    create_native_t(0x476, "_find", _find);
-    create_native_t(0x4a4, "0", ZERO);
-    create_native_t(0x4b0, "1", ONE);
-    create_native_t(0x4bd, "-1", MONE);
-    create_native_t(0x4ca, "1+", PLUS1);
-    create_native_t(0x4d9, "1-", MINUS1);
-    create_native_t(0x4e8, "2+", PLUS2);
-    create_native_t(0x4f8, "2-", MINUS2);
-    create_native_t(0x50c, "RSHIFT", RSHIFT);
-    create_native_t(0x52a, "LSHIFT", LSHIFT);
+    native(SP_to_R);
+    native(R_to_SP);
+    native(R_to_SP_2);
+    native(EXECUTE);
+    native(ROT);
+    native(DUP);
+    native(CDUP);
+    native(DROP);
+    native(SWAP);
+    native(OVER);
+    native(PICK);
+    native(_roll_);
+    native(DROP2);
+    native(DUP2);
+    native(S0);
+    native(Saddr);
+    native(AND);
+    native(OR);
+    native(XOR);
+    native(NOT);
+    native(PLUS);
+    native(MINUS);
+    native(MULT);
+    native(DIVMOD);
+    native(STORE);
+    native(FETCH);
+    native(CSTORE);
+    native(CFETCH);
+    native(IO_OUT);
+    native(IO_IN);
+    native(RI);
+    native(RI_);
+    native(RJ);
+    native(BYE);
+    native(_resSP_);
+    native(_resRS_);
+    native(Seq);
+    native(CMP);
+    native(_find);
+    native(ZERO);
+    native(ONE);
+    native(MONE);
+    native(PLUS1);
+    native(MINUS1);
+    native(PLUS2);
+    native(MINUS2);
+    native(RSHIFT);
+    native(LSHIFT);
     vm.IP = gw(0x04) + 1; // BOOT
     sw(SYSVARS+0x02, gw(0x08)); // CURRENT
     sw(SYSVARS+0x04, gw(0x08)); // HERE
