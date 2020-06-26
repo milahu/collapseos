@@ -39,6 +39,8 @@ it's not a z80 emulator, but a *javascript port of Collapse OS*!
 
 * `blk`: Collapse OS filesystem's content. That's actually where Collapse OS'
          source code is located. Everything else is peripheral.
+* `cvm`: A C implementation of Collapse OS, allowing it to run natively on any
+         POSIX platform.
 * `recipes`: collection of recipes that assemble Collapse OS on a specific
              machine.
 * `tools`: Tools for working with Collapse OS from "modern" environments. For
