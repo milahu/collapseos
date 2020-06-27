@@ -1,0 +1,47 @@
+# C VM
+
+This is a C implementation of Collapse OS' native words. It allows Collapse OS
+to run natively on any POSIX environment.
+
+## Requirements
+
+You need `ncurses` to build the `forth` executable. In debian-based distros,
+it's `libncurses5-dev`.
+
+## Build
+
+Running `make` will yield `forth` and `stage` executables.
+
+## Usage
+
+To play around Collapse OS, you'll want to run `./forth`. Type `0 LIST` for
+help.
+
+The program is a curses interface with a limited, fixed size so that it can
+provide a AT-XY interface.
+
+You can get a REPL by launching the program with [`rlwrap(1)`][rlwrap] like
+this:
+
+    rlwrap -e '' -m -S '> ' ./forth /dev/stdin
+
+## Problems?
+
+If the `forth` executable works badly (hangs, spew garbage, etc.),
+it's probably because you've broken your bootstrap binary. It's easy to
+mistakenly break. To verify if you've done that, look at your git status. If
+`forth.bin` is modified, try resetting it and then run `make clean all`. Things
+should go better afterwards.
+
+A modified `blkfs` can also break things (although even with a completely broken
+blkfs, you should still get to prompt), you might want to run `make pack` to
+ensure that the `blkfs` file is in sync with the contents of the `blk/` folder.
+
+If that doesn't work, there's also the nuclear option of `git reset --hard`
+and `git clean -fxd`.
+
+If that still doesn't work, it might be because the current commit you're on
+is broken, but that is rather rare: the repo on Github is plugged on Travis
+and it checks that everything is smooth.
+
+[rlwrap]: https://linux.die.net/man/1/rlwrap

@@ -24,9 +24,10 @@ tools.
 ## Getting started
 
 Usage documentation is in-system, so access to documentation requires you to
-run Collapse OS. Fortunately, doing so in an emulator is easy.
+run Collapse OS. Fortunately, building and running Collapse OS on a POSIX
+environment is easy.
 
-See `/emul/README.md` for getting an emulated system running.
+See `/cvm/README.md` for instructions.
 
 Then, run `0 LIST` for an introduction, follow instructions from there.
 

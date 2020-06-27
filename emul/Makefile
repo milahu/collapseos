@@ -1,47 +1,30 @@
-TARGETS = forth stage 
+TARGETS = forth 
 OBJS = emul.o libz80/libz80.o
-BLKPACK = ../tools/blkpack
-BLKUNPACK = ../tools/blkunpack
+CDIR = ../cvm
+STAGE = $(CDIR)/stage
+BLKFS = $(CDIR)/blkfs
 
 .PHONY: all
 all: $(TARGETS)
 
-$(BLKPACK):
-	$(MAKE) -C ../tools
-
-.PHONY: $(BLKUNPACK)
-$(BLKUNPACK): $(BLKPACK)
-
-stage: stage.c $(OBJS) blkfs
-	$(CC) stage.c $(OBJS) -o $@
-
-blkfs: $(BLKPACK)
-	$(BLKPACK) ../blk > $@
-
-forth: forth.c $(OBJS) blkfs
+forth: forth.c $(OBJS) $(CDIR)/blkfs
 	$(CC) forth.c $(OBJS) -lncurses -o $@
 
 libz80/libz80.o: libz80/z80.c
 	$(MAKE) -C libz80/codegen opcodes
 	$(CC) -Wall -ansi -g -c -o libz80/libz80.o libz80/z80.c
 
-emul.o: emul.c
-	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" -c -o emul.o emul.c
+emul.o: emul.c forth.bin $(BLKFS)
+	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" -c -o emul.o emul.c
 
+forth.bin: xcomp.fs $(STAGE)
+	$(CDIR)/stage < xcomp.fs > $@
 
-.PHONY: updatebootstrap
-updatebootstrap: stage xcomp.fs pack
-	./stage < xcomp.fs > new.bin
-	mv new.bin forth.bin
+$(BLKFS): $(STAGE)
 
-.PHONY: pack
-pack:
-	rm blkfs && $(MAKE) blkfs
-
-.PHONY: unpack
-unpack:
-	$(BLKUNPACK) ../blk < blkfs
+$(STAGE):
+	$(MAKE) -C $(CDIR) all
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) emul.o *-bin.h blkfs libz80/libz80.o
+	rm -f $(TARGETS) emul.o *.bin libz80/libz80.o
