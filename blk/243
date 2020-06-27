@@ -5,8 +5,8 @@
 
 VARIABLE lblchkPS
 : chkPS, lblchkPS @ CALLnn, ; ( chkPS, B305 )
-CREATE lblnext 0x1a , ( stable ABI until set in B300 )
-: JPNEXT, lblnext @ JPnn, ;
+CREATE lblnext 0 , ( stable ABI until set in B300 )
+: JPNEXT, lblnext @ ?DUP IF JPnn, ELSE 0x1a BJP, THEN ;
 : CODE ( same as CREATE, but with native word )
     (entry) 0 C, ( 0 == native ) ;
 : ;CODE JPNEXT, ;
