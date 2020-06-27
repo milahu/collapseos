@@ -8,6 +8,7 @@ RAMSTART 0x72 + CONSTANT KBD_MEM
 : ZFILL, ( u ) 0 DO 0 A, LOOP ;
 262 LOAD  ( xcomp )
 522 LOAD  ( font compiler )
+282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )
 
 ( TI-84+ requires specific code at specific offsets which
@@ -59,7 +60,7 @@ HALT,
 CURRENT @ XCURRENT !
 
 0x100 BIN( !
-282 LOAD  ( boot.z80 )
+283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )
 CREATE ~FNT CPFNT3x5
 555 560 LOADR ( LCD low )

@@ -3,9 +3,9 @@
 0xfffa CONSTANT PS_ADDR
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
+282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )
-
-282 LOAD  ( boot.z80 )
+283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )
 : (emit) 0 PC! ;
 : (key) 0 PC@ ;

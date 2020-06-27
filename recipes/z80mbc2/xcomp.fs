@@ -1,8 +1,11 @@
 0xff00 CONSTANT RS_ADDR        0xfffa CONSTANT PS_ADDR
 RS_ADDR 0x80 - CONSTANT RAMSTART
 212 LOAD  ( z80 assembler )
-262 LOAD  ( xcomp )            270 LOAD  ( xcomp overrides )
-282 LOAD  ( boot.z80 )         353 LOAD  ( xcomp core low )
+262 LOAD  ( xcomp )
+282 LOAD  ( boot.z80.decl )
+270 LOAD  ( xcomp overrides )
+283 335 LOADR ( boot.z80 )
+353 LOAD  ( xcomp core low )
 CODE (emit)
     A 1 LDrn, 1 OUTnA, HL POPqq, A L LDrr, 0 OUTnA,
 ;CODE

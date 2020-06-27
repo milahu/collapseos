@@ -15,6 +15,7 @@ RAMSTART 0x72 + CONSTANT PAD_MEM
 : ZFILL, ( u ) 0 DO 0 A, LOOP ;
 262 LOAD  ( xcomp )
 524 LOAD  ( font compiler )
+282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )
 
 0x100 JPnn, 0x63 ZFILL, ( 0x66 )
@@ -22,7 +23,7 @@ RETN, 0x98 ZFILL, ( 0x100 )
 ( All set, carry on! )
 CURRENT @ XCURRENT !
 0x100 BIN( !
-282 LOAD  ( boot.z80 )
+283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )
 CREATE ~FNT CPFNT7x7
 623 628 LOADR ( VDP )
