@@ -1,9 +1,8 @@
 TARGET = os.bin
 BASEDIR = ../..
-FDIR = $(BASEDIR)/forth
 EDIR = $(BASEDIR)/emul
-STAGE = $(EDIR)/stage
-EMUL = $(BASEDIR)/emul/hw/rc2014/classic
+STAGE = $(BASEDIR)/cvm/stage
+EMUL = $(EDIR)/hw/rc2014/classic
 
 .PHONY: all
 all: $(TARGET) 

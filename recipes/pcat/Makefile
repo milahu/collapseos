@@ -1,7 +1,7 @@
 TARGET = disk.bin
 BASEDIR = ../..
-EDIR = $(BASEDIR)/emul
-STAGE = $(EDIR)/stage
+CDIR = $(BASEDIR)/cvm
+STAGE = $(CDIR)/stage
 
 .PHONY: all
 all: $(TARGET) 
@@ -13,10 +13,10 @@ os.bin: xcomp.fs $(STAGE)
 
 disk.bin: mbr.bin os.bin
 	cat mbr.bin os.bin > $@
-	dd if=$(EDIR)/blkfs of=$@ bs=512 seek=16
+	dd if=$(CDIR)/blkfs of=$@ bs=512 seek=16
 
 $(STAGE):
-	$(MAKE) -C $(EDIR) stage
+	$(MAKE) -C $(CDIR) stage
 
 .PHONY: emul
 emul: $(TARGET)

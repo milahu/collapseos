@@ -1,6 +1,6 @@
 TARGET = os.bin
-EDIR = ../../emul
-STAGE = $(EDIR)/stage
+CDIR = ../../cvm
+STAGE = $(CDIR)/stage
 
 .PHONY: all
 all: $(TARGET) 
@@ -8,4 +8,4 @@ $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
 
 $(STAGE):
-	$(MAKE) -C $(EDIR) stage
+	$(MAKE) -C $(CDIR) stage

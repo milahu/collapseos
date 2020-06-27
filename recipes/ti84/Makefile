@@ -1,9 +1,8 @@
 TARGET = os.bin
 BASEDIR = ../..
-FDIR = $(BASEDIR)/forth
-EDIR = $(BASEDIR)/emul
-STAGE = $(EDIR)/stage
-EMUL = $(EDIR)/hw/ti/ti84
+CDIR = $(BASEDIR)/cvm
+STAGE = $(CDIR)/stage
+EMUL = $(BASEDIR)/emul/hw/ti/ti84
 MKTIUPGRADE = mktiupgrade
 
 .PHONY: all
@@ -12,7 +11,7 @@ $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
 
 $(STAGE):
-	$(MAKE) -C $(EDIR) stage
+	$(MAKE) -C $(CDIR) stage
 
 $(EMUL):
 	$(MAKE) -C ${@:%/ti84=%}
