@@ -1,12 +1,12 @@
 #!/bin/sh -e
 
 BASE=../..
-EXEC="${BASE}/emul/forth"
+EXEC="${BASE}/cvm/forth"
 TMP=$(mktemp)
 
 chk() {
     echo "Running test $1"
-    cat harness.fs $1 > ${TMP}
+    cat ../harness.fs $1 > ${TMP}
     if ! ${EXEC} ${TMP}; then
         exit 1
     fi

@@ -4,8 +4,6 @@ git submodule init
 git submodule update
 git clean -fxd
 
-make -C cvm
-make -C emul
 make -C tests
 
 # verify that forth.bin is stable
