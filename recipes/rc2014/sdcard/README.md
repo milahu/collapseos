@@ -86,7 +86,7 @@ Build it and write it to EEPROM.
 The RC2014 emulator includes SDC emulation. You can attach a SD card image to
 it by invoking it with a second argument:
 
-    ../../../emul/hw/rc2014/classic os.bin ../../../emul/blkfs
+    ../../../emul/hw/rc2014/classic os.bin ../../../cvm/blkfs
 
 You will then run with a SD card having the contents from `/blk`.
 

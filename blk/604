@@ -13,4 +13,3 @@
     DUP 20 = UNTIL
     DROP 0xff
 ;
-1 12 LOADR+
