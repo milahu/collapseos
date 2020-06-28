@@ -4,10 +4,10 @@ Boot code (B280)
 
 This part contains core routines that underpins Forth fundamen-
 tal structures: dict navigation and search, PSP/RSP bounds
-checks, word types (atom, native, literals, "does type"), etc.
+checks, word types (B85).
 
 It also of course does core initialization: set RSP/PSP, HERE
-CURRENT, then find BOOT and call it (see B89).
+CURRENT, then call BOOT (see B89).
 
 It also contains what we call the "stable ABI" in its first
 0x100 bytes. The beginning og the dict is intertwined in this
