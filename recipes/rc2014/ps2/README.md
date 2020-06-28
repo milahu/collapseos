@@ -68,7 +68,7 @@ First, we need a `(ps2kc)` routine. In this case, it's easy, it's
 `: (ps2kc) 8 PC@ ;`. Add this after ACIA loading. Then, we can load PS/2
 subsystem. You add `411 414 LOADR`. Then, at initialization, you add `PS2$`
 after `ACIA$`. You also need to define `PS2_MEM` at the top. You can probably
-use `RAMSTART + 0x7a`.
+use `SYSVARS + 0x7a`.
 
 Rebuild, reflash, should work. For debugging purposes, you might not want to
 go straight to plugging PS/2 `(key)` into the system. What I did myself was

@@ -104,7 +104,7 @@ to TH (and also the A/B on the '157). Q is hooked to PB0 and TL.
 
 We start with the base recipe and add a few things:
 
-1. at the top: `RAMSTART 0x72 + CONSTANT PS2_MEM`
+1. at the top: `SYSVARS 0x72 + CONSTANT PS2_MEM`
 2. After VDP load: `641 LOAD : (ps2kc) (ps2kcB) ;` (that binds us to port B)
 3. Right after: `411 414 LOADR` (that gives us `(key)`)
 4. After `VDP$`: `PS2$`.

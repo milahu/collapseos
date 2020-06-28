@@ -2,7 +2,7 @@
 0x81 CONSTANT ACIA_IO ( IO port for ACIA's data registers )
 ( Address in memory that can be used variables shared
   with ACIA's native words. 8 bytes used. )
-CREATE ACIA_MEM RAMSTART 0x70 + ,
+CREATE ACIA_MEM SYSVARS 0x70 + ,
 ( Points to ACIA buf )
 : ACIA( ACIA_MEM @ 4 + ;
 ( Points to ACIA buf end )

@@ -2,12 +2,12 @@ PC ORG @ 1 + ! ( main )
 ( STACK OVERFLOW PROTECTION: See B76 )
     SP PS_ADDR LDdn, IX RS_ADDR LDdn,
 ( HERE begins at RAMEND )
-    HL RAMSTART 0x80 + LDdn,
-    RAMSTART 0x04 + LD(n)HL, ( RAM+04 == HERE )
+    HL SYSVARS 0x80 + LDdn,
+    SYSVARS 0x04 + LD(n)HL, ( RAM+04 == HERE )
 ( LATEST is a label to the latest entry of the dict. It is
   written at offset 0x08 by the process or person building
   Forth. )
     BIN( @ 0x08 + LDHL(n),
-    RAMSTART 0x02 ( CURRENT ) + LD(n)HL,
+    SYSVARS 0x02 ( CURRENT ) + LD(n)HL,
     DE BIN( @ 0x04 ( BOOT ) + LDdd(n),
     JR, L1 FWR ( execute, B301 )

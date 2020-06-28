@@ -4,8 +4,8 @@ This assembles the boot binary. It requires the Z80 assembler
 (B200) and cross compilation setup (B260). It also requires
 these constants to be set:
 
-RAMSTART: beginning address of RAM. This is where system
-variables are placed. HERE is then placed at RAM+80 (ref B80).
+SYSVARS: This is where system variables are placed. HERE is
+then placed at SYSVARS+0x80 (ref B80).
 
 RS_ADDR: to be set to the bottom address of the Return Stack.
 

@@ -1,4 +1,4 @@
-RAMSTART  FUTURE USES          +3c       BLK(*
+SYSVARS   FUTURE USES          +3c       BLK(*
 +02       CURRENT              +3e       A@*
 +04       HERE                 +40       A!*
 +06       C<?                  +42       FUTURE USES
@@ -6,8 +6,8 @@ RAMSTART  FUTURE USES          +3c       BLK(*
 +0a       NLPTR                +53       (emit) override
 +0c       C<*                  +55       (key) override
 +0e       WORDBUF              +57       FUTURE USES
-+2e       BOOT C< PTR          
-+30       IN>                 
++2e       BOOT C< PTR
++30       IN>
 +32       IN(*                 +70       DRIVERS
 +34       BLK@*                +80       RAMEND
 +36       BLK!*

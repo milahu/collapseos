@@ -1,5 +1,5 @@
 anatomy. First, we have constants. Some of them are device-
-specific, but some of them are always there. RAMSTART is the
+specific, but some of them are always there. SYSVARS is the
 address at which the RAM starts on the system. System variables
 will go there and HERE will go after it.
 

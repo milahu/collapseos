@@ -1,4 +1,4 @@
-: RAM+ [ RAMSTART LITN ] + ; : BIN+ [ BIN( @ LITN ] + ;
+: RAM+ [ SYSVARS LITN ] + ; : BIN+ [ BIN( @ LITN ] + ;
 : HERE 0x04 RAM+ ;
 : CURRENT* 0x51 RAM+ ; : CURRENT CURRENT* @ ;
 : H@ HERE @ ;
