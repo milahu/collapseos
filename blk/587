@@ -1,12 +1,12 @@
 : (key)
     ( inc then fetch )
-    ACIAR> @ 1+ DUP ACIA) @ = IF
-        DROP ACIA( @
+    [ ACIAR> LITN ] @ 1+ DUP [ ACIA) LITN ] @ = IF
+        DROP [ ACIA( LITN ] @
     THEN
     ( As long as R> == W>-1, it means that buffer is empty )
-    BEGIN DUP ACIAW> @ = NOT UNTIL
-    ACIAR> !
-    ACIAR> @ C@
+    BEGIN DUP [ ACIAW> LITN ] @ = NOT UNTIL
+    [ ACIAR> LITN ] !
+    [ ACIAR> LITN ] @ C@
 ;
 : (emit)
     ( As long at CTL bit 1 is low, we are transmitting. wait )

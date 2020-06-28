@@ -1,9 +1,7 @@
             IFZ, ( end of buffer reached? )
                 ( yes )
-                ( +4 == ACIA( )
-                ACIA_MEM 4 + LDHL(n),
-                ( +2 == ACIAW> )
-                ACIA_MEM 2+ LD(n)HL,
+                ACIA( LDHL(n),
+                ACIAW> LD(n)HL,
             THEN,
         THEN,
     THEN,

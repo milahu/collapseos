@@ -2,15 +2,11 @@ ACIA driver
 
 Manage I/O from an asynchronous communication interface adapter
 (ACIA). provides "(emit)" to put c char on the ACIA as well as
-an input buffer from which a provided "(key)" reads. You have
-to call "~ACIA" on interrupt for this module to work well.
+an input buffer from which a provided "(key)" reads. This driver
+installs an interrupt handler at RST38 to handle RX.      
 
-CONFIGURATION
+To use, begin by loading declarations (B582) before xcomp is    
+loaded. These declarations provide default values for ports and 
+memory offsets that you can override. See B582.
 
-ACIA_CTL: IO port for the ACIA's control registers
-ACIA_IO: IO port for the ACIA's data registers
-ACIA_MEM: Address in memory that can be used variables shared
-          with ACIA's native words. 8 bytes used.
-
-The whole driver is cross-compilable and is loaded with
-"582 LOAD"
+Then, in the driver part, load range 583-588.

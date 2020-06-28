@@ -1,7 +1,15 @@
-( Memory layout
-  +0 ACIAR>
-  +2 ACIAW>
-  +4 ACIA(
-  +6 ACIA) )
-
-1 6 LOADR+
+0x80 CONSTANT ACIA_CTL ( IO port for ACIA's control register )
+0x81 CONSTANT ACIA_IO ( IO port for ACIA's data registers )
+( Address in memory that can be used variables shared
+  with ACIA's native words. 8 bytes used. )
+CREATE ACIA_MEM RAMSTART 0x70 + ,
+( Points to ACIA buf )
+: ACIA( ACIA_MEM @ 4 + ;
+( Points to ACIA buf end )
+: ACIA) ACIA_MEM @ 6 + ;
+( Read buf pointer. Pre-inc )
+: ACIAR> ACIA_MEM @ ;
+( Write buf pointer. Post-inc )
+: ACIAW> ACIA_MEM @ 2+ ;
+( This means that if W> == R>, buffer is full.
+  If R>+1 == W>, buffer is empty. )

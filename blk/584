@@ -6,10 +6,8 @@
             (HL) A LDrr,
             ( advance W> )
             HL INCd,
-            ( +2 == ACIAW> )
-            ACIA_MEM 2+ LD(n)HL,
-            ( +6 == ACIA) )
-            DE ACIA_MEM 6 + LDdd(n),
+            ACIAW> LD(n)HL,
+            DE ACIA) LDdd(n),
             DE SUBHLd,
 
 

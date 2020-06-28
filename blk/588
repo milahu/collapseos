@@ -1,8 +1,8 @@
 : ACIA$
-    H@ DUP DUP ACIA( ! ACIAR> !
-    1+ ACIAW> !  ( write index starts one position later )
+    H@ DUP DUP [ ACIA( LITN ] ! [ ACIAR> LITN ] !
+    1+ [ ACIAW> LITN ] ! ( write index starts one pos later )
     0x20 ( buffer size ) ALLOT
-    H@ ACIA) !
+    H@ [ ACIA) LITN ] !
 ( setup ACIA
   CR7 (1) - Receive Interrupt enabled
   CR6:5 (00) - RTS low, transmit interrupt disabled.

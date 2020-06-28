@@ -5,10 +5,9 @@
     0x01 ANDi,   ( is ACIA rcv buf full? )
     IFNZ,
         ( correct interrupt cause )
-        ( +2 == ACIAW> )
-        ACIA_MEM 2+ LDHL(n),
+        ACIAW> LDHL(n),
         ( is it == to ACIAR>? )
         ( +0 == ACIAR> )
-        DE ACIA_MEM LDdd(n),
+        DE ACIAR> LDdd(n),
         ( carry cleared from ANDi above )
         DE SBCHLd,                                    ( cont. )
