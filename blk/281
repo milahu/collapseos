@@ -1,14 +1,3 @@
-RESERVED REGISTERS: At all times, IX points to RSP TOS and IY
-is IP. SP points to PSP TOS, but you can still use the stack\
-in native code. you just have to make sure you've restored it
-before "next".
-
-STABLE ABI: The boot binary starts with a list of references.
-The address of these references have to stay to those addr-
-esses. The rest of the Collapse OS code depend on it. In fact,
-up until 0x67, the (?br) wordref, pretty much everything has
-to stay put.
-
 The boot binary is loaded in 2 parts. The first part, "decla-
 rations", are loaded after xcomp, before xcomp overrides, with
 "282 LOAD". The rest, after xcomp overrides, with "283 335

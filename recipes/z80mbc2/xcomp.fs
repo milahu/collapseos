@@ -1,5 +1,6 @@
 0xff00 CONSTANT RS_ADDR        0xfffa CONSTANT PS_ADDR
 RS_ADDR 0x80 - CONSTANT SYSVARS
+0 CONSTANT HERESTART
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
 282 LOAD  ( boot.z80.decl )
@@ -37,6 +38,6 @@ CODE (key)
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," CURRENT @ HERE ! BLK$ FD$ ' FD@ BLK@* ! ' FD! BLK!* ! " EOT,
+," BLK$ FD$ ' FD@ BLK@* ! ' FD! BLK!* ! " EOT,
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

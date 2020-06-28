@@ -1,6 +1,7 @@
-0xe800 CONSTANT SYSVARS
 0xff00 CONSTANT RS_ADDR
 0xfffa CONSTANT PS_ADDR
+RS_ADDR 0x80 - CONSTANT SYSVARS
+0 CONSTANT HERESTART
 : CODE ( natidx -- ) (entry) 0 C, C, ;
 VARIABLE ORG
 CREATE BIN( 0 ,
@@ -95,7 +96,6 @@ ORG @ 0xce + HERE !
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," CURRENT @ HERE ! "
 ," BLK$ "
 ," ' EFS@ BLK@* ! "
 ," ' EFS! BLK!* ! "

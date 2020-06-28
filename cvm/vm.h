@@ -3,7 +3,7 @@
 
 #define SP_ADDR 0xffff
 #define RS_ADDR 0xff00
-#define SYSVARS 0xe800
+#define SYSVARS RS_ADDR-0x80
 
 typedef uint8_t byte;
 typedef uint16_t word;

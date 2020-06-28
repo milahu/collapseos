@@ -1,6 +1,7 @@
-0xe800 CONSTANT SYSVARS
 0xff00 CONSTANT RS_ADDR
 0xfffa CONSTANT PS_ADDR
+RS_ADDR 0x80 - CONSTANT SYSVARS
+0 CONSTANT HERESTART
 212 LOAD  ( z80 assembler )
 262 LOAD  ( xcomp )
 282 LOAD  ( boot.z80.decl )
@@ -26,7 +27,6 @@
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," CURRENT @ HERE ! "
 ," BLK$ "
 ," ' EFS@ BLK@* ! "
 ," ' EFS! BLK!* ! "

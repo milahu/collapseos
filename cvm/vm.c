@@ -242,15 +242,6 @@ static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
 }
 
-/* INITIAL BOOTSTRAP PLAN
-
-For the initial bootstrap of the C VM, we treat every native word as a stable
-word, giving it exactly the same memory offset as we have in the z80 forth.bin.
-This will greatly simplify the initial bootstrap because we'll be able to
-directly plug the "core words" part of forth.bin into our C VM and run it.
-Once we have that, we can de-stabilize the native words that aren't part of the
-stable ABI and bootstrap ourselves from ourselves. Good plan, right?
-*/
 VM* VM_init() {
     fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
     blkfp = fopen(BLKFS_PATH, "r+");

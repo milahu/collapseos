@@ -1,7 +1,10 @@
 anatomy. First, we have constants. Some of them are device-
 specific, but some of them are always there. SYSVARS is the
 address at which the RAM starts on the system. System variables
-will go there and HERE will go after it.
+will go there and use 0x80 bytes. See B80.
+
+HERESTART determines where... HERE is at startup. 0 means
+"same as CURRENT".
 
 RS_ADDR is where RSP starts and PS_ADDR is where PSP starts.
 RSP and PSP are designed to be contiguous. RSP goes up and PSP
@@ -10,7 +13,4 @@ goes down. If they meet, we know we have a stack overflow.
 Then, we load the assembler and cross compilation unit, which
 will be needed for the task ahead.
 
-Then, it's a matter of adding layer after layer. For most
-system, all those layers except the drivers will be added the
-same way. Drivers are a bit tricker and machine specific. I
-can't help you there, you'll have to use your wits.     (cont.)
+                                                        (cont.)
