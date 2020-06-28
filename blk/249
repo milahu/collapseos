@@ -1,12 +1,12 @@
 ( Macros )
 ( clear carry + SBC )
-: SUBHLss, A ORr, SBCHLss, ;
-: PUSH0, BC 0 LDddnn, BC PUSHqq, ;
-: PUSH1, BC 1 LDddnn, BC PUSHqq, ;
-: PUSHZ, BC 0 LDddnn, IFZ, BC INCss, THEN, BC PUSHqq, ;
-: PUSHA, B 0 LDrn, C A LDrr, BC PUSHqq, ;
+: SUBHLd, A ORr, SBCHLd, ;
+: PUSH0, BC 0 LDdn, BC PUSH, ;
+: PUSH1, BC 1 LDdn, BC PUSH, ;
+: PUSHZ, BC 0 LDdn, IFZ, BC INCd, THEN, BC PUSH, ;
+: PUSHA, B 0 LDri, C A LDrr, BC PUSH, ;
 : HLZ, A H LDrr, L ORr, ;
 : DEZ, A D LDrr, E ORr, ;
-: LDDE(HL), E (HL) LDrr, HL INCss, D (HL) LDrr, ;
-: OUTHL, DUP A H LDrr, OUTnA, A L LDrr, OUTnA, ;
-: OUTDE, DUP A D LDrr, OUTnA, A E LDrr, OUTnA, ;
+: LDDE(HL), E (HL) LDrr, HL INCd, D (HL) LDrr, ;
+: OUTHL, DUP A H LDrr, OUTiA, A L LDrr, OUTiA, ;
+: OUTDE, DUP A D LDrr, OUTiA, A E LDrr, OUTiA, ;

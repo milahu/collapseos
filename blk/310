@@ -1,15 +1,15 @@
 CODE PICK
-    HL POPqq,
+    HL POP,
     ( x2 )
-    L SLAr, H RLr,
-    SP ADDHLss,
+    L SLA, H RL,
+    SP ADDHLd,
     C (HL) LDrr,
-    HL INCss,
+    HL INCd,
     B (HL) LDrr,
     ( check PS range before returning )
     EXDEHL,
-    HL PS_ADDR LDddnn,
-    DE SUBHLss,
-    CC lblofl @ JPccnn,    ( abortUnderflow-B298 )
-    BC PUSHqq,
+    HL PS_ADDR LDdn,
+    DE SUBHLd,
+    CC lblofl @ JPc, ( abortUnderflow-B298 )
+    BC PUSH,
 ;CODE

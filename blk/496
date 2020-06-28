@@ -1,16 +1,16 @@
 CODE @WRSEC ( drv cylsec addr -- f )
-    HL POPqq,
-    DE POPqq,
-    BC POPqq,
+    HL POP,
+    DE POP,
+    BC POP,
     chkPS,
-    A 0x35 LDrn, ( @WRSEC )
-    0x28 RSTn,
+    A 0x35 LDri, ( @WRSEC )
+    0x28 RST,
     PUSHZ,
 ;CODE
 CODE @GET ( a -- c f )
-    DE POPqq,
+    DE POP,
     chkPS,
-    A 0x03 LDrn, ( @GET )
-    0x28 RSTn,
+    A 0x03 LDri, ( @GET )
+    0x28 RST,
     PUSHA, PUSHZ,
 ;CODE

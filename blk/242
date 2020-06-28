@@ -1,14 +1,14 @@
-: LDdd(nn), ( dd nn -- )
+: LDdd(n), ( d n -- )
     0xed A,
     SWAP <<4 0x4b OR A,
     A,,
 ;
-: LD(nn)dd, ( nn dd -- )
+: LD(n)d, ( n d -- )
     0xed A,
     <<4 0x43 OR A,
     A,,
 ;
-: RSTn, 0xc7 OR A, ;
+: RST, 0xc7 OR A, ;
 
 : JP(IX), IX DROP JP(HL), ;
 : JP(IY), IY DROP JP(HL), ;

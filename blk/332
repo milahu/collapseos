@@ -1,13 +1,13 @@
 CODE 1+
-    HL POPqq,
+    HL POP,
     chkPS,
-    HL INCss,
-    HL PUSHqq,
+    HL INCd,
+    HL PUSH,
 ;CODE
 
 CODE 1-
-    HL POPqq,
+    HL POP,
     chkPS,
-    HL DECss,
-    HL PUSHqq,
+    HL DECd,
+    HL PUSH,
 ;CODE

@@ -2,14 +2,14 @@
   "1 2 3 4 4 (roll)" --> "1 3 4 4". No sanity checks, never
   call with 0. )
 CODE (roll)
-    HL POPqq,
+    HL POP,
     B H LDrr,
     C L LDrr,
-    SP ADDHLss,
-    HL INCss,
+    SP ADDHLd,
+    HL INCd,
     D H LDrr,
     E L LDrr,
-    HL DECss,
-    HL DECss,
+    HL DECd,
+    HL DECd,
     LDDR,
 ;CODE

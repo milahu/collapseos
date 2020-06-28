@@ -3,13 +3,12 @@
   expected to be defined in platform-specific code. )
 
 CODE EXECUTE
-    DE POPqq,
+    DE POP,
     chkPS,
     JR, lblexec BWR      ( execute-B301 )
 
-( a b c -- b c a )
-CODE ROT
-    HL POPqq, ( C ) DE POPqq, ( B ) BC POPqq, ( A )
+CODE ROT ( a b c -- b c a )
+    HL POP, ( C ) DE POP, ( B ) BC POP, ( A )
     chkPS,
-    DE PUSHqq, ( B ) HL PUSHqq, ( C ) BC PUSHqq, ( A )
+    DE PUSH, ( B ) HL PUSH, ( C ) BC PUSH, ( A )
 ;CODE

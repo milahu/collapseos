@@ -1,13 +1,13 @@
 CODE C!
-    HL POPqq,
-    DE POPqq,
+    HL POP,
+    DE POP,
     (HL) E LDrr,
 ;CODE
 
 CODE C@
-    HL POPqq,
+    HL POP,
     chkPS,
     L (HL) LDrr,
-    H 0 LDrn,
-    HL PUSHqq,
+    H 0 LDri,
+    HL PUSH,
 ;CODE

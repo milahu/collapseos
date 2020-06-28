@@ -10,3 +10,5 @@
 0x04 OP1r INCr,                0x05 OP1r DECr,
 : INC(IXY+), INCr, A, ;
 : DEC(IXY+), DECr, A, ;
+( also works for c )
+0xc0 OP1r RETc,

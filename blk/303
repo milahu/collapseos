@@ -2,11 +2,11 @@
 ( 1. Push current IP to RS
   2. Set new IP to the second atom of the list
   3. Execute the first atom of the list. )
-    IY PUSHqq, HL POPqq, ( <-- IP )
-    lblpushRS @ ( pushRS ) CALLnn,
+    IY PUSH, HL POP, ( <-- IP )
+    lblpushRS @ ( pushRS ) CALL,
     EXDEHL,          ( HL points to PFA )
 ( While we inc, dereference into DE for execute call later. )
     LDDE(HL),
-    HL INCss,
-    HL PUSHqq, IY POPqq, ( --> IP )
+    HL INCd,
+    HL PUSH, IY POP, ( --> IP )
     JR, lblexec BWR      ( execute-B301 )

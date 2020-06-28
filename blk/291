@@ -2,7 +2,7 @@ lblfind BSET
 ( Find the entry corresponding to word name where (HL) points
   to in dictionary having its tip at DE and sets DE to point
   to that entry. Z if found, NZ if not. )
-    HL PUSHqq,
+    HL PUSH,
 	( First, figure out string len )
     A (HL) LDrr, A ORr,
 	( special case. zero len? we never find anything. )
@@ -10,6 +10,6 @@ lblfind BSET
 ( Let's do something weird: We'll hold HL by the *tail*.
   Because of our dict structure and because we know our
   lengths, it's easier to compare starting from the end. )
-    C A LDrr, B 0 LDrn, ( C holds our length )
-    BC ADDHLss, HL INCss, ( HL points to after-last-char )
+    C A LDrr, B 0 LDri, ( C holds our length )
+    BC ADDHLd, HL INCd, ( HL points to after-last-char )
                                                      ( cont . )

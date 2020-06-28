@@ -2,12 +2,12 @@
 ( Divides AC by DE and places the quotient in AC and the
   remainder in HL )
 CODE /MOD
-    DE POPqq,
-    BC POPqq,
+    DE POP,
+    BC POP,
     chkPS,
     A B LDrr,
-    B 16 LDrn,
-    HL 0 LDddnn,
+    B 16 LDri,
+    HL 0 LDdn,
 
 
 

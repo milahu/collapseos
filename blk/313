@@ -1,10 +1,10 @@
 CODE S0
-    HL PS_ADDR LDddnn,
-    HL PUSHqq,
+    HL PS_ADDR LDdn,
+    HL PUSH,
 ;CODE
 
 CODE 'S
-    HL 0 LDddnn,
-    SP ADDHLss,
-    HL PUSHqq,
+    HL 0 LDdn,
+    SP ADDHLd,
+    HL PUSH,
 ;CODE

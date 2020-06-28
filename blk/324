@@ -1,13 +1,13 @@
 CODE PC!
-    BC POPqq,
-    HL POPqq,
+    BC POP,
+    HL POP,
     L OUT(C)r,
 ;CODE
 
 CODE PC@
-    BC POPqq,
+    BC POP,
     chkPS,
-    H 0 LDrn,
+    H 0 LDri,
     L INr(C),
-    HL PUSHqq,
+    HL PUSH,
 ;CODE

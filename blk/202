@@ -1,3 +1,10 @@
+BIN( is the addr at which the compiled binary will live. It is
+often 0.
+
+ORG is H@ offset at which we begin spitting binary. Used to
+compute PC. To have a proper PC, call  "H@ ORG !" at the
+beginning of your assembly process. PC is H@ - ORG + BIN(.
+
 Labels are a convenient way of managing relative jump
 calculations. Backward labels are easy. It is only a matter or
 recording "HERE" and do subtractions. Forward labels record the
@@ -6,11 +13,4 @@ that point later on, the label records the offset there.
 
 To avoid using dict memory in compilation targets, we
 pre-declare label variables here, which means we have a limited
-number of it. For now, 4 ought to be enough.
-
-
-
-
-
-
-                                                        (cont.)
+number of it. For now, 4 ought to be enough.            (cont.)

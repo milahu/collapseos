@@ -1,16 +1,16 @@
 CODE (key)
-    A 0x01 LDrn, ( @KEY )
-    0x28 RSTn,
+    A 0x01 LDri, ( @KEY )
+    0x28 RST,
     PUSHA,
 ;CODE
 CODE (emit)
-    BC POPqq, ( c == @DSP arg ) chkPS,
-    A 0x02 LDrn, ( @DSP )
-    0x28 RSTn,
+    BC POP, ( c == @DSP arg ) chkPS,
+    A 0x02 LDri, ( @DSP )
+    0x28 RST,
 ;CODE
 CODE AT-XY
-    DE POPqq, H E LDrr, ( Y )
-    DE POPqq, L E LDrr, ( X ) chkPS,
-    A 0x0f LDrn, ( @VDCTL ) B 3 LDrn, ( setcur )
-    0x28 RSTn,
+    DE POP, H E LDrr, ( Y )
+    DE POP, L E LDrr, ( X ) chkPS,
+    A 0x0f LDri, ( @VDCTL ) B 3 LDri, ( setcur )
+    0x28 RST,
 ;CODE

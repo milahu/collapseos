@@ -1,8 +1,8 @@
 CODE @PUT ( c a -- f )
-    DE POPqq,
-    BC POPqq,
+    DE POP,
+    BC POP,
     chkPS,
-    A 0x04 LDrn, ( @PUT )
-    0x28 RSTn,
+    A 0x04 LDri, ( @PUT )
+    0x28 RST,
     PUSHZ,
 ;CODE

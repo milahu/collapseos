@@ -1,16 +1,14 @@
-( a -- a a )
-CODE DUP
-    HL POPqq, chkPS,
-    HL PUSHqq, HL PUSHqq,
+CODE DUP ( a -- a a )
+    HL POP, chkPS,
+    HL PUSH, HL PUSH,
 ;CODE
 
 CODE ?DUP
-    HL POPqq, chkPS,
-    HL PUSHqq,
-    HLZ, IFNZ, HL PUSHqq, THEN,
+    HL POP, chkPS,
+    HL PUSH,
+    HLZ, IFNZ, HL PUSH, THEN,
 ;CODE
 
-( a -- )
-CODE DROP
-    HL POPqq,
+CODE DROP ( a -- )
+    HL POP,
 ;CODE

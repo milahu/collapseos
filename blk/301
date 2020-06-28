@@ -3,11 +3,11 @@ lblexec BSET L1 FSET ( B299 ) L2 FSET ( B298 )
     ( We don't apply BIN( reliably on stable ABI stuff, we
       might need to adjust addr. Ugly, but well... )
     BIN( @ [IF]
-        A XORr, D ORr, IFZ, D BIN( @ 256 / LDrn, THEN,
+        A XORr, D ORr, IFZ, D BIN( @ 256 / LDri, THEN,
     [THEN]
-    LDA(DE), DE INCss,
+    LDA(DE), DE INCd,
     A ORr, IFZ, EXDEHL, JP(HL), THEN,
     A DECr, JRZ, L1 FWR ( compiled B303 )
-    ( cell or does. push PFA ) DE PUSHqq,
+    ( cell or does. push PFA ) DE PUSH,
     A DECr, JRZ, lblnext BWR ( cell )
     ( continue to does, B302 )

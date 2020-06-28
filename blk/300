@@ -3,14 +3,14 @@ lblnext BSET PC ORG @ 0x1b + ! ( next )
   we jump to current IP, but we also take care of increasing
   it by 2 before jumping. )
 	( Before we continue: are stacks within bounds? )
-    ( PS ) HL PS_ADDR LDddnn,
-    SP SUBHLss,
+    ( PS ) HL PS_ADDR LDdn,
+    SP SUBHLd,
     JRC, lblofl BWR ( abortUnderflow-B298 )
-    ( RS ) IX PUSHqq, HL POPqq,
-    DE RS_ADDR LDddnn,
-    DE SUBHLss,
+    ( RS ) IX PUSH, HL POP,
+    DE RS_ADDR LDdn,
+    DE SUBHLd,
     JRC, lblofl BWR ( IX < RS_ADDR? abortUnderflow-B298 )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
-    IY INCss, IY INCss,
+    IY INCd, IY INCd,
     ( continue to execute )

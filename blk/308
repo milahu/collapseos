@@ -1,8 +1,8 @@
 ( a b -- b a )
 CODE SWAP
-    HL POPqq,       ( B )
-    DE POPqq,       ( A )
+    HL POP,       ( B )
+    DE POP,       ( A )
     chkPS,
-    HL PUSHqq,      ( B )
-    DE PUSHqq,      ( A )
+    HL PUSH,      ( B )
+    DE PUSH,      ( A )
 ;CODE

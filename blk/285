@@ -1,10 +1,10 @@
-CODE (?br)           ( 0x67 )
-    HL POPqq,
+CODE (?br) ( 0x67 )
+    HL POP,
     HLZ,
     JRZ, L2 BWR ( br + 1. False, branch )
     L1 BSET ( loop will jump here )
     ( True, skip next 2 bytes and don't branch )
-    IY INCss, IY INCss,
+    IY INCd, IY INCd,
     JPNEXT, NOP, NOP, NOP,
 CODE (loop) ( 0x80 )
     0 IX+ INC(IXY+), IFZ, 1 IX+ INC(IXY+), THEN, ( I++ )
@@ -12,4 +12,4 @@ CODE (loop) ( 0x80 )
     A 0 IX+ LDrIXY, 2 IX- CP(IXY+), JRNZ, L2 BWR ( branch )
     A 1 IX+ LDrIXY, 1 IX- CP(IXY+), JRNZ, L2 BWR ( branch )
     ( don't branch )
-    IX DECss, IX DECss, IX DECss, IX DECss, JR, L1 BWR
+    IX DECd, IX DECd, IX DECd, IX DECd, JR, L1 BWR

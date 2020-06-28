@@ -1,15 +1,14 @@
 ( bitwise rotation ops have a similar sig )
-( r -- )
-: OProt
+: OProt ( r -- )
     CREATE C,
     DOES>
     0xcb A,
     C@              ( r op )
     OR A,
 ;
-0x10 OProt RLr,
-0x00 OProt RLCr,
-0x18 OProt RRr,
-0x08 OProt RRCr,
-0x20 OProt SLAr,
-0x38 OProt SRLr,
+0x10 OProt RL,
+0x00 OProt RLC,
+0x18 OProt RR,
+0x08 OProt RRC,
+0x20 OProt SLA,
+0x38 OProt SRL,

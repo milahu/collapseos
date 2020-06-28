@@ -1,15 +1,15 @@
 CODE !
-    HL POPqq,
-    DE POPqq,
+    HL POP,
+    DE POP,
     (HL) E LDrr,
-    HL INCss,
+    HL INCd,
     (HL) D LDrr,
 ;CODE
 CODE @
-    HL POPqq,
+    HL POP,
     chkPS,
     E (HL) LDrr,
-    HL INCss,
+    HL INCd,
     D (HL) LDrr,
-    DE PUSHqq,
+    DE PUSH,
 ;CODE

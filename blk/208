@@ -1,16 +1,16 @@
 Instructions list
 
 r => A B C D E H L (HL)
-ss/qq => BC DE HL AF/SP
-cc => CNZ CZ CNC CC CPO CPE CP CM
+d => BC DE HL AF/SP
+c => CNZ CZ CNC CC CPO CPE CP CM
 
-LD [rr, rn, ddnn, (nn)HL, HL(nn), dd(nn), (nn)dd, rIXY, IXYr,
+LD [rr, ri, di, (i)HL, HL(i), d(i), (i)d, rIXY, IXYr,
     (DE)A, A(DE)]
-ADD [r, n, HLss, IXss, IXIX, IYss, IYIY]
-ADC [r, HLss]
-CP  [r, n, (IXY+)]
-SBC [r, HLss]
-SUB [r, n]
-PUSH [qq]  POP [qq]
-INC [r, ss, (IXY+)]    DEC [r, ss, (IXY+)]
-AND [r, n] OR [r, n]   XOR [r, n]                       (cont.)
+ADD [r, i, HLd, IXd, IXIX, IYd, IYIY]
+ADC [r, HLd]
+CP  [r, i, (IXY+)]
+SBC [r, HLd]
+SUB [r, i]
+PUSH  POP
+INC [r, d, (IXY+)]    DEC [r, d, (IXY+)]
+AND [r, i] OR [r, i]   XOR [r, i]                       (cont.)

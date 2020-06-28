@@ -1,9 +1,9 @@
 ( a b -- a b a )
 CODE OVER
-    HL POPqq,       ( B )
-    DE POPqq,       ( A )
+    HL POP,       ( B )
+    DE POP,       ( A )
     chkPS,
-    DE PUSHqq,      ( A )
-    HL PUSHqq,      ( B )
-    DE PUSHqq,      ( A )
+    DE PUSH,      ( A )
+    HL PUSH,      ( B )
+    DE PUSH,      ( A )
 ;CODE

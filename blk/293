@@ -1,12 +1,12 @@
         IFZ,
             ( match, let's compare the string then )
-            DE DECss, ( Skip prev field. One less because we )
-            DE DECss, ( pre-decrement )
+            DE DECd, ( Skip prev field. One less because we )
+            DE DECd, ( pre-decrement )
             B C LDrr, ( loop C times )
             BEGIN,
                 ( pre-decrement for easier Z matching )
-                DE DECss,
-                HL DECss,
+                DE DECd,
+                HL DECd,
                 LDA(DE),
                 (HL) CPr,
                 JRNZ, BREAK,

@@ -1,11 +1,11 @@
-( dd nn -- )
-: OP3ddnn
+( d n -- )
+: OP3dn
     CREATE C,
     DOES>
-    C@              ( dd nn op )
-    ROT             ( nn op dd )
-    <<4             ( nn op dd<<4 )
+    C@              ( d n op )
+    ROT             ( n op d )
+    <<4             ( n op d<<4 )
     OR A,
     A,,
 ;
-0x01 OP3ddnn LDddnn,
+0x01 OP3dn LDdn,

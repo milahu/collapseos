@@ -2,5 +2,5 @@
     A XORr,
     A INCr,
     L2 FSET ( end )
-    HL POPqq,
+    HL POP,
     RET,

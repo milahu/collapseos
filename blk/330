@@ -1,15 +1,15 @@
 CODE _find  ( cur w -- a f )
-    HL POPqq,       ( w )
-    DE POPqq,       ( cur )
+    HL POP,       ( w )
+    DE POP,       ( cur )
     chkPS,
-    lblfind @ CALLnn,
+    lblfind @ CALL,
     IFNZ,
         ( not found )
-        HL PUSHqq,
+        HL PUSH,
         PUSH0,
         JPNEXT,
     THEN,
     ( found )
-    DE PUSHqq,
+    DE PUSH,
     PUSH1,
 ;CODE

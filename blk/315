@@ -1,6 +1,6 @@
 CODE OR
-    HL POPqq,
-    DE POPqq,
+    HL POP,
+    DE POP,
     chkPS,
     A E LDrr,
     L ORr,
@@ -8,5 +8,5 @@ CODE OR
     A D LDrr,
     H ORr,
     H A LDrr,
-    HL PUSHqq,
+    HL PUSH,
 ;CODE

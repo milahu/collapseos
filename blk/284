@@ -7,10 +7,10 @@
 H@ XCURRENT !        ( set current tip of dict, 0x42 )
     0 A, ( native )
     0x14 BCALL,      ( popRS )
-    HL PUSHqq, IY POPqq, ( --> IP )
+    HL PUSH, IY POP, ( --> IP )
     JPNEXT,
 CODE (br)            ( 0x53 )
 L2 BSET ( used in CBR )
     E 0 IY+ LDrIXY, D 1 IY+ LDrIXY,
-    DE ADDIYss,
+    DE ADDIYd,
     JPNEXT,

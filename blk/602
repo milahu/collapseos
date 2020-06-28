@@ -1,12 +1,12 @@
 ( Initiate SPI exchange with the SD card. n is the data to
   send. )
 CODE _sdcSR  ( n -- n )
-    HL POPqq,
+    HL POP,
     chkPS,
     A L LDrr,
-    SDC_SPI OUTnA,
+    SDC_SPI OUTiA,
     NOP, NOP,
-    SDC_SPI INAn,
+    SDC_SPI INAi,
     L A LDrr,
-    HL PUSHqq,
+    HL PUSH,
 ;CODE

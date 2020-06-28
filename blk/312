@@ -1,13 +1,10 @@
-( a b -- )
-CODE 2DROP
-    HL POPqq,
-    HL POPqq,
+CODE 2DROP ( a b -- )
+    HL POP, HL POP,
 ;CODE
 
-( a b -- a b a b )
-CODE 2DUP
-    HL POPqq, ( b ) DE POPqq, ( a )
+CODE 2DUP ( a b -- a b a b )
+    HL POP, ( b ) DE POP, ( a )
     chkPS,
-    DE PUSHqq, HL PUSHqq,
-    DE PUSHqq, HL PUSHqq,
+    DE PUSH, HL PUSH,
+    DE PUSH, HL PUSH,
 ;CODE

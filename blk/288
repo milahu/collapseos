@@ -1,12 +1,12 @@
 CODE >R
-    HL POPqq,
+    HL POP,
     17 BCALL, ( 17 == pushRS )
 ;CODE
 CODE R>
     20 BCALL, ( 20 == popRS )
-    HL PUSHqq,
+    HL PUSH,
 ;CODE
 CODE 2R>
     20 BCALL, ( 20 == popRS ) EXDEHL, 20 BCALL,
-    HL PUSHqq, DE PUSHqq,
+    HL PUSH, DE PUSH,
 ;CODE

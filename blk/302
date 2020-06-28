@@ -5,9 +5,8 @@
   linkfrom the PFA, and then continue as a regular
   compiledWord. )
     EXDEHL,
-    HL INCss,
-    HL INCss,
+    HL INCd, HL INCd,
     E (HL) LDrr,
-    HL INCss,
+    HL INCd,
     D (HL) LDrr,
     ( continue to compiledWord )

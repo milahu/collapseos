@@ -1,11 +1,11 @@
 CODE S=
-    DE POPqq, HL POPqq, chkPS,
+    DE POP, HL POP, chkPS,
     LDA(DE),
     (HL) CPr,
     IFZ, ( same size? )
         B A LDrr, ( loop A times )
         BEGIN,
-            HL INCss, DE INCss,
+            HL INCd, DE INCd,
             LDA(DE),
             (HL) CPr,
             JRNZ, BREAK, ( not equal? break early. NZ is set. )

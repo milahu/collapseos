@@ -8,6 +8,6 @@
     <<3             ( r op b<<3 )
     OR OR A,
 ;
-0xc0 OP2br SETbr,
-0x80 OP2br RESbr,
-0x40 OP2br BITbr,
+0xc0 OP2br SET,
+0x80 OP2br RES,
+0x40 OP2br BIT,

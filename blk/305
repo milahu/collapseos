@@ -4,9 +4,9 @@ lblchkPS BSET ( chkPS )
   check in next )
     EXX,
 ( We have the return address for this very call on the stack
-  and protected registers. 2 - is to compensate that. )
-    HL PS_ADDR 2 - LDddnn,
-    SP SUBHLss,
+  and protected registers. 2- is to compensate that. )
+    HL PS_ADDR 2- LDdn,
+    SP SUBHLd,
     EXX,
-    CNC RETcc,      ( PS_ADDR >= SP? good )
-    JR, lblofl BWR      ( abortUnderflow-B298 )
+    CNC RETc, ( PS_ADDR >= SP? good )
+    JR, lblofl BWR ( abortUnderflow-B298 )

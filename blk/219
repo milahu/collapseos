@@ -1,12 +1,6 @@
-( also works for cc )
-0xc0 OP1r RETcc,
-( r -- )
-: OP1r0
-    CREATE C,
-    DOES>
-    C@              ( r op )
-    OR A,
-;
+: OP1r0 ( r -- )
+    CREATE C, DOES>
+    C@ ( r op ) OR A, ;
 0x80 OP1r0 ADDr,               0x88 OP1r0 ADCr,
 0xa0 OP1r0 ANDr,               0xb8 OP1r0 CPr,
 0xb0 OP1r0 ORr,                0x90 OP1r0 SUBr,

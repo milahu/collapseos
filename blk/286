@@ -1,5 +1,5 @@
 CODE 2>R ( 0xa9 )
-    DE POPqq, HL POPqq,
+    DE POP, HL POP,
     17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
 ;CODE NOP, NOP, NOP,
 CODE (n) ( 0xbf, number literal )
@@ -8,7 +8,6 @@ CODE (n) ( 0xbf, number literal )
     Read, push, then advance IP. )
     E 0 IY+ LDrIXY,
     D 1 IY+ LDrIXY,
-    IY INCss,
-    IY INCss,
-    DE PUSHqq,
+    IY INCd, IY INCd,
+    DE PUSH,
 ;CODE

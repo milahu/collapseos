@@ -7,6 +7,6 @@ CODE 0 PUSH0, ;CODE
 CODE 1 PUSH1, ;CODE
 
 CODE -1
-    HL -1 LDddnn,
-    HL PUSHqq,
+    HL -1 LDdn,
+    HL PUSH,
 ;CODE

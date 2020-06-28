@@ -1,12 +1,12 @@
 CODE RSHIFT ( n u -- n )
-    BC POPqq, ( u )
-    HL POPqq, ( n )
+    BC POP, ( u )
+    HL POP, ( n )
     chkPS,
     B C LDrr,
     B INCr, B DECr, IFNZ,
         BEGIN,
-            H SRLr, L RRr,
+            H SRL, L RR,
         DJNZ, AGAIN,
     THEN,
-    HL PUSHqq,
+    HL PUSH,
 ;CODE

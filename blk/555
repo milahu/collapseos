@@ -7,7 +7,7 @@
   we have to. )
 CODE _wait
     BEGIN,
-        0x10 ( CMD ) INAn,
+        0x10 ( CMD ) INAi,
         RLA, ( When 7th bit is clr, we can send a new cmd )
     JRC, AGAIN,
 ;CODE

@@ -1,5 +1,5 @@
 CODE NOT
-    HL POPqq,
+    HL POP,
     chkPS,
     HLZ,
     PUSHZ,

@@ -1,15 +1,15 @@
 CODE +
-    HL POPqq,
-    DE POPqq,
+    HL POP,
+    DE POP,
     chkPS,
-    DE ADDHLss,
-    HL PUSHqq,
+    DE ADDHLd,
+    HL PUSH,
 ;CODE
 
 CODE -
-    DE POPqq,
-    HL POPqq,
+    DE POP,
+    HL POP,
     chkPS,
-    DE SUBHLss,
-    HL PUSHqq,
+    DE SUBHLd,
+    HL PUSH,
 ;CODE

@@ -1,11 +1,11 @@
 (cont.)
-OUT [nA, (C)r]         IN [An, r(C)]
-SET [br]   RES [br]    BIT [br]
-RL [r]     RLC [r]     SLA [r]     RLA         RLCA
-RR [r]     RRC [r]     SRL [r]     RRA         RRCA
-CALL [nn]  RST [n]     DJNZ
-JP [nn, (HL), (IX), (IY)]
+OUT [iA, (C)r]         IN [Ai, r(C)]
+SET        RES         BIT
+RL         RLC         SLA         RLA         RLCA
+RR         RRC         SRL         RRA         RRCA
+CALL       RST         DJNZ
+JP [i, (HL), (IX), (IY)]
 JR [, Z, NZ, C, NC]
 
 DI         EI          EXDEHL      EXX         HALT
-NOP        RET         RETI        RETN        SCF
+NOP        RET [,c]    RETI        RETN        SCF

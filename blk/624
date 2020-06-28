@@ -1,9 +1,9 @@
 CODE _blank ( this is way too slow in Forth )
-    A XORr, VDP_CTLPORT OUTnA,
-    A 0x40 LDrn, VDP_CTLPORT OUTnA,
-    HL 0x4000 LDddnn,
+    A XORr, VDP_CTLPORT OUTiA,
+    A 0x40 LDri, VDP_CTLPORT OUTiA,
+    HL 0x4000 LDdn,
     BEGIN,
-        A XORr, VDP_DATAPORT OUTnA,
-        HL DECss, HLZ,
+        A XORr, VDP_DATAPORT OUTiA,
+        HL DECd, HLZ,
     JRNZ, AGAIN,
 ;CODE

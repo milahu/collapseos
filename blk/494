@@ -1,12 +1,12 @@
 : LINES 24 ; : COLS 80 ;
 CODE BYE
-    HL 0 LDddnn,
-    A 0x16 LDrn, ( @EXIT )
-    0x28 RSTn,
+    HL 0 LDdn,
+    A 0x16 LDri, ( @EXIT )
+    0x28 RST,
 CODE @DCSTAT ( drv -- f )
-    BC POPqq,
+    BC POP,
     chkPS,
-    A 0x28 LDrn, ( @DCSTAT )
-    0x28 RSTn,
+    A 0x28 LDri, ( @DCSTAT )
+    0x28 RST,
     PUSHZ,
 ;CODE

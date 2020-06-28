@@ -1,15 +1,15 @@
     BEGIN, ( loop )
         SCF,
-        C RLr,
+        C RL,
         RLA,
-        HL ADCHLss,
-        DE SBCHLss,
+        HL ADCHLd,
+        DE SBCHLd,
         IFC,
-            DE ADDHLss,
+            DE ADDHLd,
             C DECr,
         THEN,
     DJNZ, AGAIN, ( loop )
     B A LDrr,
-    HL PUSHqq,
-    BC PUSHqq,
+    HL PUSH,
+    BC PUSH,
 ;CODE

@@ -3,9 +3,9 @@ CODE BYE
 ;CODE
 
 CODE (resSP)
-    SP PS_ADDR LDddnn,
+    SP PS_ADDR LDdn,
 ;CODE
 
 CODE (resRS)
-    IX RS_ADDR LDddnn,
+    IX RS_ADDR LDdn,
 ;CODE
