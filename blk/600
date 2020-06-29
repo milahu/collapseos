@@ -1,13 +1,11 @@
 SD Card driver
 
-Load range: 602-616
+Load range: 603-616
 
 This driver is designed for a ad-hoc adapter card that acts as a
-SPI relay between the z80 bus and the SD card. That adapter is  
-expected to pull CS low when something is written to SDC_CSLOW,
-high on SDC_CSHIGH and to initiate a SPI exchange when a byte is
-written to SDC_SPI, the result of that exchange being fetched   
-with a read to SDC_SPI.
+SPI relay between the z80 bus and the SD card. It requires a SPI
+driver providing (spix), (spie) and (spid), which oh surprise!
+is included in Collapse OS at B595.
 
-Through that layer, this driver implements the SDC protocol     
+Through that layer, this driver implements the SDC protocol
 allowing it to provide BLK@ and BLK!.

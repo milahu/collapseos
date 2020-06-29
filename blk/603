@@ -1,5 +1,3 @@
-CODE _sdcSel SDC_CSLOW OUTiA, ;CODE
-CODE _sdcDesel SDC_CSHIGH OUTiA, ;CODE
 ( Computes n into crc c with polynomial 0x1021 )
 CODE _crc16  ( c n -- c )
     HL POP, ( n ) DE POP, ( c )

@@ -71,11 +71,17 @@ instead.
 ## Building your binary
 
 The binary built in the base recipe doesn't have SDC drivers. Using the same
-instructions as in the `eeprom` recipe, you'll need to insert those drivers.
+instructions as in the `eeprom` recipe, you'll need to assemble a binary with
+those drivers. First, we need drivers for the SPI relay. This is done by
+declaring `SPI_DATA`, `SPI_CSLOW` and `SPI_CSHIGH`, which are respectively `4`,
+`5` and `6` in our relay design. You can then load the driver with `596 LOAD`.
+This driver provides `(spix)`, `(spie)` and `(spid)` which are then used in the
+SDC driver.
+
 The SDC driver is at B600. It gives you a load range. This means that what
 you need to insert in `xcomp` will look like:
 
-    602 616 LOADR  ( sdc )
+    603 616 LOADR  ( sdc )
 
 You also need to add `BLK$` to the init sequence.
 
@@ -104,7 +110,7 @@ If there is no error message, we're fine. Then, we need to hook `BLK@*` and
 
 And thats it! You have full access to disk block mechanism:
 
-    102 LOAD
+    105 LOAD
     BROWSE
 
 (at this moment, the driver is a bit slow though...)

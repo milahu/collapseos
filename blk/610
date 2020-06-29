@@ -1,4 +1,4 @@
-: _err _sdcDesel ABORT" SDerr" ;
+: _err (spid) ABORT" SDerr" ;
 
 ( Tight definition ahead, pre-comment.
 

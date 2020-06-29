@@ -1,5 +1,5 @@
 : _sdc@  ( dstaddr blkno -- )
-    _sdcSel 0x51 ( CMD17 ) 0 ROT ( a cmd 0 blkno ) _cmd
+    (spie) 0x51 ( CMD17 ) 0 ROT ( a cmd 0 blkno ) _cmd
     IF _err THEN
     _wait 0xfe = NOT IF _err THEN
     0 SWAP               ( crc a )
@@ -11,5 +11,5 @@
     LOOP
     DROP                 ( crc1 )
     _idle 8 LSHIFT _idle +  ( crc2 )
-    _wait DROP _sdcDesel
+    _wait DROP (spid)
     = NOT IF _err THEN ;

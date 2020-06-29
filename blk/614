@@ -1,16 +1,16 @@
 : _sdc!  ( srcaddr blkno -- )
-    _sdcSel 0x58 ( CMD24 ) 0 ROT ( a cmd 0 blkno ) _cmd
+    (spie) 0x58 ( CMD24 ) 0 ROT ( a cmd 0 blkno ) _cmd
     IF _err THEN
-    _idle DROP 0xfe _sdcSR DROP
+    _idle DROP 0xfe (spix) DROP
     0 SWAP           ( crc a )
     512 0 DO         ( crc a )
         C@+          ( crc a+1 n )
         ROT OVER     ( a n crc n )
         _crc16       ( a n crc )
         SWAP         ( a crc n )
-        _sdcSR DROP  ( a crc )
+        (spix) DROP  ( a crc )
         SWAP         ( crc a )
     LOOP
     DROP ( crc ) 256 /MOD ( lsb msb )
-    _sdcSR DROP _sdcSR DROP
-    _wait DROP _sdcDesel ;
+    (spix) DROP (spix) DROP
+    _wait DROP (spid) ;

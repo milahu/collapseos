@@ -1,0 +1,12 @@
+CODE (spix) ( n -- n )
+    HL POP,
+    chkPS,
+    A L LDrr,
+    SPI_DATA OUTiA,
+    NOP, NOP, ( let SPI relay breathe )
+    SPI_DATA INAi,
+    L A LDrr,
+    HL PUSH,
+;CODE
+CODE (spie) SPI_CSLOW OUTiA, ;CODE
+CODE (spid) SPI_CSHIGH OUTiA, ;CODE

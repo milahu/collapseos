@@ -1,8 +1,8 @@
 ( -- n )
-: _idle 0xff _sdcSR ;
+: _idle 0xff (spix) ;
 
 ( -- n )
-( _sdcSR 0xff until the response is something else than 0xff
+( spix 0xff until the response is something else than 0xff
   for a maximum of 20 times. Returns 0xff if no response. )
 : _wait
     0  ( cnt )
