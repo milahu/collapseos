@@ -8,9 +8,8 @@
         DUP 0x20 >= IF
         DUP EMIT EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
     THEN UNTIL mode! SPC contents ;
-: $O EDPOS @ 0x3c0 ( 15 * 64 ) >= IF EXIT THEN
-    _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
-: $o EDPOS @ 64 < IF EXIT THEN EDPOS @ 64 + EDPOS ! $O ;
+: $O _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
+: $o EDPOS @ 0x3c0 < IF EDPOS @ 64 + EDPOS ! $O THEN ;
 : $D $H 64 icpy
     acc@ 0 DO 16 EDPOS @ 64 / DO I _mvln- LOOP LOOP
     BLK!! contents ;
