@@ -1,0 +1,9 @@
+This is because there's bitwise ORing involved in the creation  
+of the final opcode, which makes z80a's approach impractical.
+
+This makes labelling a bit different too. Instead of expecting  
+label words after the naked branching op, we rather have label
+words expecting branching wordref as an argument. Examples:
+
+L2 ' BRTS FLBL! ( branch forward to L2 )
+L1 ' RJMP LBL, ( branch backward to L1 )

@@ -1,9 +1,16 @@
-This is because there's bitwise ORing involved in the creation  
-of the final opcode, which makes z80a's approach impractical.
+This assembler works very much like Z80 assembler (B200) so
+refer to this documentation first. Here, we document specifici-
+ties.
 
-This makes labelling a bit different too. Instead of expecting  
-label words after the naked branching op, we rather have label
-words expecting branching wordref as an argument. Examples:
+All mnemonics in AVR have a single signature. Therefore, we
+don't need any "argtype" suffixes.
 
-L2 ' BRTS FLBL! ( branch forward to L2 )
-L1 ' RJMP LBL, ( branch backward to L1 )
+Registers are referred to with consts R0-R31. There is
+X, Y, Z, X+, Y+, Z+, X-, Y-, Z- for appropriate ops (LD, ST).
+XL, XH, YL, YH, ZL, ZH are simple aliases to R26-R31.
+
+Branching works differently. Instead of expecting a byte to be
+written after the naked op, branching words expect a displace-
+ment argument.
+
+                                                        (cont.)

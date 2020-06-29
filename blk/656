@@ -1,0 +1,16 @@
+OPAb (B665)
+CBI   SBI   SBIC  SBIS
+
+OPNA (B666)
+BREAK  CL[C,H,I,N,S,T,V,Z] SE[C,H,I,N,S,T,V,Z] EIJMP ICALL
+EICALL IJMP  NOP   RET   RETI  SLEEP WDR
+
+OPb (B667)
+BCLR  BSET
+
+OPRdb (B667)
+BLD   BST   SBRC  SBRS
+
+Special (B667,B670)
+CLR   TST   LSL   LD    ST
+                                                        (cont.)

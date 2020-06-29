@@ -1,16 +1,5 @@
 AVR assembler
 
-This assembler works very much like Z80 assembler (B200) so 
-refer to this documentation first. Here, we document specifici-
-ties.
-
-All mnemonics in AVR have a single signature. Therefore, we     
-don't need any "argtype" suffixes. 
-
-Registers are referred to with consts R0-R31. There is
-X, Y, Z, X+, Y+, Z+, X-, Y-, Z- for appropriate ops (LD, ST).
-XL, XH, YL, YH, ZL, ZH are simple aliases to R26-R31.
-
-Branching works differently. Instead of expecting a byte to be  
-written after the naked op, branching words expect a displace-  
-ment argument.                                           (cont.)
+651 Guide                      655 Instructions list
+660 Loader                     661-672 Code
+672 Common AVR consts
