@@ -1,7 +1,8 @@
 TARGET = os.bin
 BASEDIR = ../..
+CDIR = $(BASEDIR)/cvm
 EDIR = $(BASEDIR)/emul
-STAGE = $(BASEDIR)/cvm/stage
+STAGE = $(CDIR)/stage
 EMUL = $(EDIR)/hw/rc2014/classic
 
 .PHONY: all
@@ -10,7 +11,7 @@ $(TARGET): xcomp.fs $(STAGE)
 	cat xcomp.fs | $(STAGE) > $@
 
 $(STAGE):
-	$(MAKE) -C $(EDIR) stage
+	$(MAKE) -C $(CDIR) stage
 
 $(EMUL):
 	$(MAKE) -C ${@:%/classic=%}

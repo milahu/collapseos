@@ -7,6 +7,9 @@ LDFLAGS += `pkg-config --libs xcb`
 .PHONY: all
 all: $(TARGET)
 
+../../emul.o:
+	make -C ../..
+
 $(TARGET): $(OBJS) $(EXTOBJS)
 	$(CC) $(OBJS) $(EXTOBJS) -o $@ $(LDFLAGS)
 

@@ -5,6 +5,9 @@ TARGET = classic
 .PHONY: all
 all: $(TARGET)
 
+../../emul.o:
+	make -C ../..
+
 $(TARGET): $(OBJS) $(EXTOBJS)
 	$(CC) $(OBJS) $(EXTOBJS) -o $@
 
