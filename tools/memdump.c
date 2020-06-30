@@ -38,7 +38,7 @@ int main(int argc, char **argv)
         unsigned char c = strtol(s, NULL, 16);
         putchar(c);
     }
-    read(fd, s, 2); // read prompt
+    readprompt(fd);
     sendcmdp(fd, "FORGET _");
     return 0;
 }
