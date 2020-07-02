@@ -14,12 +14,11 @@ int main(int argc, char **argv)
         fprintf(stderr, "Usage: ./exec device\n");
         return 1;
     }
-    int fd = open(argv[1], O_RDWR|O_NOCTTY|O_SYNC);
+    int fd = ttyopen(argv[1]);
     if (fd < 0) {
         fprintf(stderr, "Could not open %s\n", argv[1]);
         return 1;
     }
-    set_interface_attribs(fd, 0, 0);
     set_blocking(fd, 0);
     int c = getchar();
     while (c != EOF) {

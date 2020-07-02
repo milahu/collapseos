@@ -35,13 +35,11 @@ int main(int argc, char **argv)
         return 1;
     }
     rewind(fp);
-    int fd = open(argv[1], O_RDWR|O_NOCTTY|O_SYNC);
+    int fd = ttyopen(argv[1]);
     if (fd < 0) {
         fprintf(stderr, "Could not open %s\n", argv[1]);
         return 1;
     }
-    set_interface_attribs(fd, 0, 0);
-    set_blocking(fd, 1);
     char s[0x40];
     sprintf(s,
         ": _ 0x%04x 0x%04x DO KEY DUP .x I C! LOOP ; _",
@@ -50,8 +48,8 @@ int main(int argc, char **argv)
 
     int returncode = 0;
     while (fread(s, 1, 1, fp)) {
-        putchar('.');
-        fflush(stdout);
+        putc('.', stderr);
+        fflush(stderr);
         unsigned char c = s[0];
         write(fd, &c, 1);
         usleep(1000); // let it breathe
@@ -69,8 +67,11 @@ int main(int argc, char **argv)
     }
     readprompt(fd);
     sendcmdp(fd, "FORGET _");
-    printf("Done!\n");
+    fprintf(stderr, "Done!\n");
     fclose(fp);
+    if (fd > 0) {
+        close(fd);
+    }
     return returncode;
 }
 

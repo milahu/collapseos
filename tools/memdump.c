@@ -27,13 +27,17 @@ int main(int argc, char **argv)
         return 0;
     }
 
-    int fd = open(argv[1], O_RDWR|O_NOCTTY);
+    int fd = ttyopen(argv[1]);
+    if (fd < 0) {
+        fprintf(stderr, "Could not open %s\n", argv[1]);
+        return 1;
+    }
     char s[0x30];
     sprintf(s, ": _ 0x%04x 0x%04x DO I @ .x LOOP ; _", memptr+bytecount, memptr);
     sendcmd(fd, s);
 
     for (int i=0; i<bytecount; i++) {
-        read(fd, s, 2); // read hex pair
+        mread(fd, s, 2); // read hex pair
         s[2] = 0; // null terminate
         unsigned char c = strtol(s, NULL, 16);
         putchar(c);

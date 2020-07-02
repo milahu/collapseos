@@ -4,15 +4,30 @@
 #include <errno.h>
 #include <stdio.h>
 #include <string.h>
+#include <fcntl.h>
+
+#define BREATHE usleep(2000)
+//#define DEBUG(...) fprintf(stderr, __VA_ARGS__)
+#define DEBUG(...)
 
 void mread(int fd, char *s, int count)
 {
     while (count) {
         while (read(fd, s, 1) == 0) {
-            usleep(1000);
+            BREATHE;
         }
         s++;
         count--;
+    }
+}
+
+// Make sure that nothing is waiting in the pipeline
+static void mempty(int fd)
+{
+    char c;
+    while (read(fd, &c, 1) == 1) {
+        DEBUG("Emptying %d\n", c);
+        BREATHE;
     }
 }
 
@@ -36,19 +51,23 @@ void readprompt(int fd)
 
 void sendcmd(int fd, char *cmd)
 {
+    DEBUG("Sending %s\n", cmd);
     char junk[2];
     while (*cmd) {
+        DEBUG("W: %d\n", *cmd);
         write(fd, cmd, 1);
+        BREATHE;
         read(fd, &junk, 1);
+        DEBUG("R: %d\n", *junk);
         cmd++;
         // The other side is sometimes much slower than us and if we don't let
         // it breathe, it can choke.
-        usleep(1000);
+        BREATHE;
     }
     write(fd, "\r", 1);
     mexpect(fd, '\r');
     mexpect(fd, '\n');
-    usleep(1000);
+    BREATHE;
 }
 
 // Send a cmd and also read the " ok" prompt
@@ -79,6 +98,7 @@ int set_interface_attribs(int fd, int speed, int parity)
     // disable IGNBRK for mismatched speed tests; otherwise receive break
     // as \000 chars
     tty.c_iflag &= ~IGNBRK;         // disable break processing
+    tty.c_iflag &= ~ICRNL;          // disable CR->NL mapping
     tty.c_lflag = 0;                // no signaling chars, no echo,
                                     // no canonical processing
     tty.c_oflag = 0;                // no remapping, no delays
@@ -118,3 +138,15 @@ void set_blocking(int fd, int should_block)
     }
 }
 
+int ttyopen(char *devname)
+{
+    int fd = 0;
+    if (strcmp(devname, "-") != 0) {
+        fd = open(devname, O_RDWR|O_NOCTTY|O_SYNC);
+    }
+    set_interface_attribs(fd, 0, 0);
+    set_blocking(fd, 0);
+    mempty(fd);
+    set_blocking(fd, 1);
+    return fd;
+}

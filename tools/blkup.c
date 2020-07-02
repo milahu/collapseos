@@ -22,13 +22,11 @@ int main(int argc, char **argv)
         fprintf(stderr, "Can't open %s.\n", argv[3]);
         return 1;
     }
-    int fd = open(argv[1], O_RDWR|O_NOCTTY|O_SYNC);
+    int fd = ttyopen(argv[1]);
     if (fd < 0) {
         fprintf(stderr, "Could not open %s\n", argv[1]);
         return 1;
     }
-    set_interface_attribs(fd, 0, 0);
-    set_blocking(fd, 1);
     char s[0x40];
     char buf[1024] = {0};
     sendcmdp(fd, ": _ 1024 0 DO KEY DUP .x I BLK( + C! LOOP ;");
