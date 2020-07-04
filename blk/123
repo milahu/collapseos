@@ -1,5 +1,5 @@
 'h' and 'l' move the cursor by "modifier" characters. 'j' and
-'k', by lines.
+'k', by lines. 'g' moves to "modifier" line.
 
 'H' goes to the beginning of the line, 'L' to the end.
 

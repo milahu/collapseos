@@ -7,7 +7,7 @@ keystrokes described below. The modifier starts at zero, but
 most commands interpret a zero as a 1 so that they can have an
 effect.
 
-'g' selects the block specified by the modifier as the current
+'G' selects the block specified by the modifier as the current
 block. Any change made to the previously selected block is
 saved beforehand.
 

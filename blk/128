@@ -1,4 +1,4 @@
-: $g ACC @ selblk ;
+: $G ACC @ selblk ;
 : $[ BLK> @ acc@ - selblk ;
 : $] BLK> @ acc@ + selblk ;
 : $t PREVBLK @ selblk ;   
@@ -10,4 +10,5 @@
 : $h -1 cmv ; : $l 1 cmv ; : $k -64 cmv ; : $j 64 cmv ;
 : $H EDPOS @ 0x3c0 AND pos! ;
 : $L EDPOS @ 0x3f OR pos! ;
+: $g ACC @ 1 MAX 1- 64 * pos! ;
 : $@ BLK> @ BLK@* @ EXECUTE 0 BLKDTY ! contents ;
