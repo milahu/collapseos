@@ -6,6 +6,6 @@ CODE EXECUTE
 
 CODE EXIT
 PC ORG @ 0x0d + ! ( stable ABI JP )
-    0x14 BCALL,      ( popRS )
+    lblpopRS @ CALL,
     HL PUSH, IY POP, ( --> IP )
     JPNEXT,
