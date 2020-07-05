@@ -1,0 +1,15 @@
+CODE >R
+    HL POP, lblpushRS @ CALL,
+;CODE
+CODE R>
+    lblpopRS @ CALL, HL PUSH,
+;CODE
+CODE 2>R
+PC ORG @ 0x35 + ! ( stable ABI JP )
+    DE POP, HL POP,
+    lblpushRS @ CALL, EXDEHL, lblpushRS @ CALL,
+;CODE
+CODE 2R>
+    lblpopRS @ CALL, EXDEHL, lblpopRS @ CALL,
+    HL PUSH, DE PUSH,
+;CODE

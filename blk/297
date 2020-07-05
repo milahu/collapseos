@@ -1,10 +1,10 @@
-lblpushRS BSET PC ORG @ 0x12 + ! ( pushRS )
+lblpushRS BSET
     IX INCd, IX INCd,
     0 IX+ L LDIXYr,
     1 IX+ H LDIXYr,
     RET,
 
-PC ORG @ 0x15 + ! ( popRS )
+lblpopRS BSET PC ORG @ 0x15 + ! ( popRS )
     L 0 IX+ LDrIXY,
     H 1 IX+ LDrIXY,
     IX DECd, IX DECd,
