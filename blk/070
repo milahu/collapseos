@@ -3,4 +3,4 @@ Implementation notes
 71 Execution model             73 Executing a word
 75 Stack management            77 Dictionary
 80 System variables            85 Word types
-89 Initialization sequence
+89 Initialization sequence     91 Stable ABI

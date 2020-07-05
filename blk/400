@@ -2,10 +2,9 @@
   is not an IMMEDIATE yet and will not be treated properly by
   xcomp. )
 : _
-    ['] EXIT ,
+    0x42 ( EXIT ) ,
     R> DROP     ( exit : )
 ; IMMEDIATE
-: ['] ' LITN ; IMMEDIATE
 ';' X' _ 4 - C! ( give ; its name )
 ':' X' _ 4 - C! ( give : its name )
 '(' X' _ 4 - C!

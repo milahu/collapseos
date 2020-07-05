@@ -1,0 +1,16 @@
+Stable wordrefs are there for more complicated reasons. When
+cross-compiling Collapse OS, we use immediate words from the
+host and some of them compile wordrefs (IF compiles (?br),
+LOOP compiles (loop), etc.). These compiled wordref need to
+be stable across binaries, so they're part of the stable ABI.
+
+Another layer of complexity is the fact that some binaries
+don't begin at offset 0. In that case, the stable ABI doesn't
+begin at 0 either. The EXECUTE word has a special handling of
+those case where any wordref < 0x100 has the binary offset
+applied to it.
+
+But that's not the end of our problems. If an offsetted binary
+cross compiles a binary with a different offset, stable ABI
+references will be > 0x100 and be broken.
+                                                        (cont.)
