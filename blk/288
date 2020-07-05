@@ -1,11 +1,14 @@
 CODE >R
-    HL POP,
-    17 BCALL, ( 17 == pushRS )
+    HL POP, 17 BCALL, ( 17 == pushRS )
 ;CODE
 CODE R>
-    20 BCALL, ( 20 == popRS )
-    HL PUSH,
+    20 BCALL, ( 20 == popRS ) HL PUSH,
 ;CODE
+CODE 2>R ( 0xa9 )
+PC ORG @ 0x35 + ! ( stable ABI JP )
+    DE POP, HL POP,
+    17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
+;CODE NOP, NOP, NOP,
 CODE 2R>
     20 BCALL, ( 20 == popRS ) EXDEHL, 20 BCALL,
     HL PUSH, DE PUSH,

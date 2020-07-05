@@ -1,6 +1,6 @@
 ( Now we have "as late as possible" stuff. See B70 and B270. )
 : _bchk DUP 0x7f + 0xff > IF LIT< br-ovfl (print) ABORT THEN ;
-: DO 0xa9 ( 2>R ) , H@ ; IMMEDIATE
+: DO 0x33 ( 2>R ) , H@ ; IMMEDIATE
 : LOOP 0x80 ( loop ) , H@ - _bchk , ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
 : LITN 0xbf ( n ) , , ;

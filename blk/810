@@ -1,4 +1,4 @@
-lblexec BSET PC 0x36 - ORG @ 0x34 + ! ( DI -> wordref )
+lblexec BSET ( DI -> wordref )
     AL [DI] MOVr[], DI INCx, ( PFA )
     AL AL ORrr, IFZ, DI JMPr, THEN, ( native )
     AL DECr, IFNZ, ( cell or does )

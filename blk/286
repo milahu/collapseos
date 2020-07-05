@@ -1,7 +1,4 @@
-CODE 2>R ( 0xa9 )
-    DE POP, HL POP,
-    17 BCALL, ( 17 == pushRS ) EXDEHL, 17 BCALL,
-;CODE NOP, NOP, NOP,
+ORG @ 0xb9 + HERE !
 CODE (n) ( 0xbf, number literal )
   ( Literal value to push to stack is next to (n) reference
     in the atom list. That is where IP is currently pointing.

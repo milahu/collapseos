@@ -5,11 +5,8 @@ CODE (loop) ( 0x80 )
     JNZ, L2 @ RPCs, ( branch )
     ( don't branch )
     BP 4 SUBxi, JMPs, L1 @ RPCs,
-ORG @ 0xa3 + HERE !
-CODE 2>R ( 0xa9 )
-    [BP] 4 POP[w]+, [BP] 2 POP[w]+, BP 4 ADDxi,
-;CODE NOP, NOP, NOP, NOP, NOP,
+ORG @ 0xb9 + HERE !
 CODE (n) ( 0xbf, number literal )
     DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
     DX INCx, DX INCx,
-;CODE NOP, NOP,
+;CODE NOP, NOP, NOP, NOP,

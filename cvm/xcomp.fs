@@ -10,6 +10,8 @@ CREATE BIN( 0 ,
 270 LOAD  ( xcomp overrides )
 
 H@ ORG !
+ORG @ 0x33 + HERE !
+0 C, 0x04 C, ( 2>R )
 ORG @ 0x3b + HERE !
 ," EXIT"
 0 , ( prev ) 4 C,
@@ -21,13 +23,12 @@ ORG @ 0x5f + HERE !
 0x02 CODE (?br) ( 0x67 )
 ORG @ 0x77 + HERE !
 0x03 CODE (loop) ( 0x80 )
-ORG @ 0xa3 + HERE !
-0x04 CODE 2>R ( 0xa9 )
 ORG @ 0xb9 + HERE !
 0x05 CODE (n) ( 0xbf )
 ORG @ 0xce + HERE !
 0x06 CODE (s) ( 0xd4 )
 ( END OF STABLE ABI )
+0x04 CODE 2>R
 0x07 CODE >R
 0x08 CODE R>
 0x09 CODE 2R>

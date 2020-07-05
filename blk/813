@@ -7,10 +7,10 @@ CODE >R 1 chkPS,
 CODE R>
     [BP] 0 PUSH[w]+, BP DECx, BP DECx,
 ;CODE
+CODE 2>R
+PC 0x37 - ORG @ 0x35 + ! ( stable abi )
+    [BP] 4 POP[w]+, [BP] 2 POP[w]+, BP 4 ADDxi,
+;CODE
 CODE 2R> 2 chkPS,
     [BP] -2 PUSH[w]+, [BP] 0 PUSH[w]+, BP 4 SUBxi,
-;CODE
-CODE ROT ( a b c -- b c a ) 3 chkPS,
-    CX POPx, BX POPx, AX POPx,
-    BX PUSHx, CX PUSHx, AX PUSHx,
 ;CODE

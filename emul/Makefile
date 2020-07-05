@@ -7,7 +7,7 @@ BLKFS = $(CDIR)/blkfs
 .PHONY: all
 all: $(TARGETS)
 
-forth: forth.c $(OBJS) $(CDIR)/blkfs
+forth: forth.c $(OBJS) $(BLKFS)
 	$(CC) forth.c $(OBJS) -lncurses -o $@
 
 libz80/libz80.o: libz80/z80.c
@@ -17,7 +17,7 @@ libz80/libz80.o: libz80/z80.c
 emul.o: emul.c forth.bin $(BLKFS)
 	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" -c -o emul.o emul.c
 
-forth.bin: xcomp.fs $(STAGE)
+forth.bin: xcomp.fs $(STAGE) $(BLKFS)
 	$(CDIR)/stage < xcomp.fs > $@
 
 $(BLKFS): $(STAGE)
