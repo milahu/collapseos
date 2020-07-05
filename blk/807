@@ -1,8 +1,9 @@
-CODE (loop) ( 0x80 )
+CODE (loop)
+PC 0x47 - ORG @ 0x45 + ! ( stable abi )
     [BP] 0 INC[w]+, ( I++ )
     ( Jump if I <> I' )
     AX [BP] 0 MOVx[]+, AX [BP] -2 CMPx[]+,
-    JNZ, L2 @ RPCs, ( branch )
+    JNZ, L1 @ RPCs, ( branch )
     ( don't branch )
-    BP 4 SUBxi, JMPs, L1 @ RPCs,
-( END OF STABLE ABI )
+    BP 4 SUBxi, DX INCx, DX INCx,
+;CODE
