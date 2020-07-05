@@ -10,15 +10,13 @@ CREATE BIN( 0 ,
 270 LOAD  ( xcomp overrides )
 
 H@ ORG !
+ORG @ 0x0b + HERE !
+0 C, 0 C, ( EXIT )
 ORG @ 0x2b + HERE !
 0 C, 0x06 C, ( (s) )
 ORG @ 0x33 + HERE !
 0 C, 0x04 C, ( 2>R )
-ORG @ 0x3b + HERE !
-," EXIT"
-0 , ( prev ) 4 C,
-H@ XCURRENT ! ( set current tip of dict, 0x42 )
-0 C, 0 C,
+H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 ORG @ 0x4c + HERE !
 0x01 CODE (br) ( 0x53 )
 ORG @ 0x5f + HERE !
@@ -28,6 +26,7 @@ ORG @ 0x77 + HERE !
 ORG @ 0xb9 + HERE !
 0x05 CODE (n) ( 0xbf )
 ( END OF STABLE ABI )
+0x00 CODE EXIT
 0x06 CODE (s)
 0x04 CODE 2>R
 0x07 CODE >R

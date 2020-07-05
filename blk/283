@@ -1,7 +1,7 @@
 H@ ORG !
 0 JP, ( 00, main ) NOP, ( unused ) NOP, NOP, ( 04, BOOT )
-NOP, NOP, ( 06, uflw ) NOP, NOP, ( 08, LATEST )
-NOP, NOP, NOP, NOP, NOP, NOP, ( unused )
+NOP, NOP, ( 06, uflw ) NOP, NOP, ( 08, LATEST ) NOP, ( unused )
+0 A, 0 JP, ( 0b, EXIT ) NOP, ( unused )
 0 JP, ( RST 10 )  NOP, ( unused ) 0 JP, ( 14, popRS )
 NOP, NOP, NOP, ( unused )
 0 JP, ( 1a, next ) NOP, NOP, NOP, ( unused )

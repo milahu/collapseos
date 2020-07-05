@@ -287,7 +287,6 @@ VM* VM_init() {
     native(SP_to_R_2);
     native(nlit);
     native(slit);
-    // End of stable ABI
     native(SP_to_R);
     native(R_to_SP);
     native(R_to_SP_2);

@@ -1,11 +1,5 @@
-( BOOT DICT: There are only 3 words in the boot dict, but
-  these words' offset need to be stable, so they're part of
-  the "stable ABI" )
+ORG @ 0x4c + HERE !
 H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
-CODE EXIT ( 0x42 )
-    0x14 BCALL,      ( popRS )
-    HL PUSH, IY POP, ( --> IP )
-    JPNEXT,
 CODE (br)            ( 0x53 )
 L2 BSET ( used in CBR )
     E 0 IY+ LDrIXY, D 1 IY+ LDrIXY,

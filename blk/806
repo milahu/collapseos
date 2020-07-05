@@ -1,11 +1,5 @@
-( BOOT DICT: There are only 3 words in the boot dict, but
-  these words' offset need to be stable, so they're part of
-  the "stable ABI" )
-'E' A, 'X' A, 'I' A, 'T' A, 0 A,, ( prev ) 4 A, ( len )
-H@ XCURRENT ! ( set current tip of dict, 0x42 )
-    0 A, ( native )
-    DX [BP] 0 MOVx[]+, BP DECx, BP DECx, ( popRS )
-;CODE NOP,
+ORG @ 0x4c + HERE !
+H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 CODE (br) ( 0x53 ) L2 BSET ( used in br? )
     DI DX MOVxx, DI [DI] MOVx[], DX DI ADDxx,
 ;CODE NOP, NOP,

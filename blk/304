@@ -1,0 +1,12 @@
+lblchkPS BSET ( chkPS )
+( Note that you only need to call this in words that push
+  back to PSP. If they don't, calling chkPS is redundant with
+  check in next )
+    EXX,
+( We have the return address for this very call on the stack
+  and protected registers. 2- is to compensate that. )
+    HL PS_ADDR 2- LDdn,
+    SP SUBHLd,
+    EXX,
+    CNC RETc, ( PS_ADDR >= SP? good )
+    JR, lblofl BWR ( abortUnderflow-B298 )
