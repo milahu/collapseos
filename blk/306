@@ -1,14 +1,16 @@
-( Core words )
-( KEY and EMIT are not defined here. There're
-  expected to be defined in platform-specific code. )
-
+( Native words )
 CODE EXECUTE
     DE POP,
     chkPS,
     JR, lblexec BWR      ( execute-B301 )
-
-CODE ROT ( a b c -- b c a )
-    HL POP, ( C ) DE POP, ( B ) BC POP, ( A )
-    chkPS,
-    DE PUSH, ( B ) HL PUSH, ( C ) BC PUSH, ( A )
+CODE (s) ( string literal )
+PC ORG @ 0x2d + ! ( stable ABI JP )
+( Like (n) but instead of being followed by a 2 bytes
+  number, it's followed by a string. When called, puts the
+  string's address on PS )
+    IY PUSH, HL POP, ( <-- IP )
+    E (HL) LDrr, D 0 LDri,
+    DE INCd,
+    DE ADDIYd,
+    HL PUSH,
 ;CODE

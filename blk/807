@@ -9,4 +9,5 @@ ORG @ 0xb9 + HERE !
 CODE (n) ( 0xbf, number literal )
     DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
     DX INCx, DX INCx,
-;CODE NOP, NOP, NOP, NOP,
+;CODE
+( END OF STABLE ABI )

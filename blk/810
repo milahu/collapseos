@@ -1,14 +1,5 @@
-lblexec BSET ( DI -> wordref )
-    AL [DI] MOVr[], DI INCx, ( PFA )
-    AL AL ORrr, IFZ, DI JMPr, THEN, ( native )
-    AL DECr, IFNZ, ( cell or does )
-        DI PUSHx, ( push PFA )
-        AL DECr, IFZ, ( cell ) JMPs, lblnext @ RPCs, THEN,
-        ( does, see B302 )
-        DI INCx, DI INCx, DI [DI] MOVx[],
-    THEN, ( continue to compiled )
-    ( compiled )
-    BP INCx, BP INCx, [BP] 0 DX MOV[]+x, ( pushRS )
-    DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
-    DI [DI] MOVx[],
-    JMPs, lblexec @ RPCs,
+lblchkPS BSET ( CX -> expected size )
+    AX PS_ADDR MOVxI, AX SP SUBxx, 2 SUBAXI, ( CALL adjust )
+    AX CX CMPxx,
+    IFNC, ( we're good ) RETn, THEN,
+    ( underflow ) DI 0x06 MOVxm, JMPs, lblexec @ RPCs,

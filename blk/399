@@ -1,4 +1,4 @@
-: LIT< 0xd4 ( s ) , WORD DUP C@ 1+ MOVE, ; IMMEDIATE
+: LIT< 0x2b ( s ) , WORD DUP C@ 1+ MOVE, ; IMMEDIATE
 : BEGIN H@ ; IMMEDIATE
 : AGAIN 0x53 ( br ) , H@ - _bchk , ; IMMEDIATE
 : UNTIL 0x67 ( ?br ) , H@ - _bchk , ; IMMEDIATE

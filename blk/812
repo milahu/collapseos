@@ -1,9 +1,10 @@
-PC 3 - ORG @ 1+ ! ( main )
-    DX POPx, ( boot drive no ) 0x03 DL MOVmr,
-    SP PS_ADDR MOVxI, BP RS_ADDR MOVxI,
-    DI 0x08 MOVxm, ( LATEST )
-( HERE begins at CURRENT )
-    SYSVARS 0x4 ( HERE ) + DI MOVmx,
-    SYSVARS 0x2 ( CURRENT ) + DI MOVmx,
-    DI 0x04 ( BOOT ) MOVxm,
-    JMPn, lblexec @ RPCn, ( execute )
+( native words )
+CODE EXECUTE 1 chkPS,
+    DI POPx, JMPn, lblexec @ RPCn,
+
+CODE (s) ( string literal, see B287 )
+PC 0x2f - ORG @ 0x2d + ! ( stable abi )
+    DI DX MOVxx, ( IP )
+    AH AH XORrr, AL [DI] MOVr[], ( slen )
+    DX PUSHx, DX INCx, DX AX ADDxx,
+;CODE

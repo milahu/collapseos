@@ -8,3 +8,4 @@ CODE (n) ( 0xbf, number literal )
     IY INCd, IY INCd,
     DE PUSH,
 ;CODE
+( END OF STABLE ABI )

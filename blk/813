@@ -1,6 +1,3 @@
-( native words )
-CODE EXECUTE 1 chkPS,
-    DI POPx, JMPn, lblexec @ RPCn,
 CODE >R 1 chkPS,
     BP INCx, BP INCx, [BP] 0 POP[w]+,
 ;CODE NOP, NOP, NOP,

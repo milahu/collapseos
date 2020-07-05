@@ -5,9 +5,9 @@ sets that don't change (well, not without some binary manipu-
 lation). Here's the complete list of these references:
 
 04 BOOT addr         06 (uflw) addr      08 LATEST
-33 2>R wordref       42 EXIT wordref     53 (br) wordref
-67 (?br) wordref     80 (loop) wordref   bf (n) wordref
-d4 (s) wordref
+2b (s) wordref       33 2>R wordref      42 EXIT wordref
+53 (br) wordref      67 (?br) wordref    80 (loop) wordref
+bf (n) wordref
 
 BOOT and (uflw) exist because they are referred to before those
 words are defined (in core words). LATEST is a critical part
