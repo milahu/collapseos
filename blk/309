@@ -1,9 +1,11 @@
-( a b -- a b a )
-CODE OVER
-    HL POP,       ( B )
-    DE POP,       ( A )
+CODE SWAP ( a b -- b a )
+    HL POP, ( B ) DE POP, ( A )
     chkPS,
-    DE PUSH,      ( A )
-    HL PUSH,      ( B )
-    DE PUSH,      ( A )
+    HL PUSH, ( B ) DE PUSH, ( A )
+;CODE
+
+CODE OVER ( a b -- a b a )
+    HL POP, ( B ) DE POP, ( A )
+    chkPS,
+    DE PUSH, ( A ) HL PUSH, ( B ) DE PUSH, ( A )
 ;CODE

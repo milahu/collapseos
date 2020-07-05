@@ -1,8 +1,16 @@
-( a b -- b a )
-CODE SWAP
-    HL POP,       ( B )
-    DE POP,       ( A )
-    chkPS,
-    HL PUSH,      ( B )
-    DE PUSH,      ( A )
+CODE ROT ( a b c -- b c a )
+    HL POP, ( C ) DE POP, ( B ) BC POP, ( A ) chkPS,
+    DE PUSH, ( B ) HL PUSH, ( C ) BC PUSH, ( A )
+;CODE
+CODE DUP ( a -- a a )
+    HL POP, chkPS,
+    HL PUSH, HL PUSH,
+;CODE
+CODE ?DUP
+    HL POP, chkPS,
+    HL PUSH,
+    HLZ, IFNZ, HL PUSH, THEN,
+;CODE
+CODE DROP ( a -- )
+    HL POP,
 ;CODE

@@ -5,9 +5,4 @@ CODE (loop) ( 0x80 )
     JNZ, L2 @ RPCs, ( branch )
     ( don't branch )
     BP 4 SUBxi, JMPs, L1 @ RPCs,
-ORG @ 0xb9 + HERE !
-CODE (n) ( 0xbf, number literal )
-    DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
-    DX INCx, DX INCx,
-;CODE
 ( END OF STABLE ABI )

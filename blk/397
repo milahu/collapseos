@@ -1,9 +1,9 @@
-( Now we have "as late as possible" stuff. See B70 and B270. )
+( Now we have "as late as possible" stuff. See B70 and B260. )
 : _bchk DUP 0x7f + 0xff > IF LIT< br-ovfl (print) ABORT THEN ;
 : DO 0x33 ( 2>R ) , H@ ; IMMEDIATE
 : LOOP 0x80 ( loop ) , H@ - _bchk , ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
-: LITN 0xbf ( n ) , , ;
+: LITN 0x23 ( n ) , , ;
 ( gets its name at the very end. can't comment afterwards )
 : _ BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
 : _ ( : will get its name almost at the very end )

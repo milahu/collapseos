@@ -12,6 +12,8 @@ CREATE BIN( 0 ,
 H@ ORG !
 ORG @ 0x0b + HERE !
 0 C, 0 C, ( EXIT )
+ORG @ 0x23 + HERE !
+0 C, 0x05 C, ( (n) )
 ORG @ 0x2b + HERE !
 0 C, 0x06 C, ( (s) )
 ORG @ 0x33 + HERE !

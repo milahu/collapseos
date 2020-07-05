@@ -1,9 +1,7 @@
-( native words )
-CODE EXECUTE 1 chkPS,
-    DI POPx, JMPn, lblexec @ RPCn,
-CODE EXIT
-PC 0x0f - ORG @ 0x0d + ! ( stable abi )
-    DX [BP] 0 MOVx[]+, BP DECx, BP DECx, ( popRS )
+CODE (n) ( number literal )
+PC 0x27 - ORG @ 0x25 + ! ( stable abi )
+    DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
+    DX INCx, DX INCx,
 ;CODE
 CODE (s) ( string literal, see B287 )
 PC 0x2f - ORG @ 0x2d + ! ( stable abi )

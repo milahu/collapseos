@@ -1,16 +1,11 @@
-CODE ROT ( a b c -- b c a )
-    HL POP, ( C ) DE POP, ( B ) BC POP, ( A ) chkPS,
-    DE PUSH, ( B ) HL PUSH, ( C ) BC PUSH, ( A )
-;CODE
-CODE DUP ( a -- a a )
-    HL POP, chkPS,
-    HL PUSH, HL PUSH,
-;CODE
-CODE ?DUP
-    HL POP, chkPS,
+CODE (s) ( string literal )
+PC ORG @ 0x2d + ! ( stable ABI JP )
+( Like (n) but instead of being followed by a 2 bytes
+  number, it's followed by a string. When called, puts the
+  string's address on PS )
+    IY PUSH, HL POP, ( <-- IP )
+    E (HL) LDrr, D 0 LDri,
+    DE INCd,
+    DE ADDIYd,
     HL PUSH,
-    HLZ, IFNZ, HL PUSH, THEN,
-;CODE
-CODE DROP ( a -- )
-    HL POP,
 ;CODE
