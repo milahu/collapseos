@@ -1,16 +1,15 @@
 ( At this point, Z is set if we have a match. In all cases,
   we want to pop HL and DE )
-        DE POP, ( <-- lvl 2 )
-        HL POP, ( <-- lvl 1 )
-        JRZ, L2 FWR ( end-B296, match? we're done! )
+        DE POP, ( <-- lvl 3 )
+        IFZ, ( match, we're done! )
+            HL POP, HL POP, ( <-- lvl 1-2 ) DE PUSH, PUSH1,
+            JPNEXT,
+        THEN,
         ( no match, go to prev and continue )
-        HL PUSH, ( --> lvl 1 )
         DE DECd, DE DECd, DE DECd, ( prev field )
-        DE PUSH, ( --> lvl 2 )
+        DE PUSH, ( --> lvl 3 )
         EXDEHL,
         LDDE(HL),
-
-
 
 
                                                       ( cont. )

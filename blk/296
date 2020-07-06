@@ -1,6 +1,0 @@
-    THEN, ( zero length check, B291 )
-    A XORr,
-    A INCr,
-    L2 FSET ( end )
-    HL POP,
-    RET,

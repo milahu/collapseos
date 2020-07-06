@@ -1,7 +1,7 @@
-    BEGIN, ( inner )
+    BEGIN, ( loop )
     ( DE is a wordref, first step, do our len correspond? )
-        HL PUSH, ( --> lvl 1 )
-        DE PUSH, ( --> lvl 2 )
+        HL PUSH, ( --> lvl 2 )
+        DE PUSH, ( --> lvl 3 )
         DE DECd,
         LDA(DE),
         0x7f ANDi, ( remove IMMEDIATE flag )

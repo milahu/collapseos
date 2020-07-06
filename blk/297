@@ -1,6 +1,4 @@
-( Native words )
-H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
-CODE (br) ( TODO: move with other native words )
+CODE (br)
 L1 BSET ( used in ?br and loop )
 PC ORG @ 0x3d + ! ( stable ABI JP )
     E 0 IY+ LDrIXY, D 1 IY+ LDrIXY,

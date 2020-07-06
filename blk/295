@@ -1,16 +1,13 @@
         ( DE contains prev offset )
-        HL POP, ( <-- lvl 2 )
-        ( HL is prev field's addr. Is offset zero? )
-        DEZ,
-        IFNZ,
+        HL POP, ( <-- lvl 3, prev field )
+        DEZ, IFNZ, ( offset not zero )
             ( get absolute addr from offset )
             ( carry cleared from "or e" )
             DE SBCHLd,
             EXDEHL, ( result in DE )
         THEN,
-        HL POP, ( <-- lvl 1 )
-    JRNZ, AGAIN, ( inner-B292, try to match again )
-    ( Z set? end of dict, unset Z )
-
-
-                                                      ( cont. )
+        HL POP, ( <-- lvl 2 )
+    JRNZ, AGAIN, ( loop-B292, try to match again )
+    ( Z set? end of dict, not found. "w" already on PSP TOS )
+    PUSH0,
+;CODE
