@@ -1,4 +1,4 @@
-CODE PICK
+CODE PICK EXX, ( protect BC )
     HL POP,
     ( x2 )
     L SLA, H RL,
@@ -10,6 +10,6 @@ CODE PICK
     EXDEHL,
     HL PS_ADDR LDdn,
     DE SUBHLd,
-    CC lblofl @ JPc, ( abortUnderflow-B298 )
+    IFC, EXX, lblofl @ JP, THEN,
     BC PUSH,
-;CODE
+EXX, ( unprotect BC ) ;CODE

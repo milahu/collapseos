@@ -1,4 +1,4 @@
-CODE @RDSEC ( drv cylsec addr -- f )
+CODE @RDSEC ( drv cylsec addr -- f ) EXX, ( protect BC )
     HL POP,
     DE POP,
     BC POP,
@@ -6,4 +6,4 @@ CODE @RDSEC ( drv cylsec addr -- f )
     A 0x31 LDri, ( @RDSEC )
     0x28 RST,
     PUSHZ,
-;CODE
+EXX, ( unprotect BC ) ;CODE

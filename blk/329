@@ -3,13 +3,13 @@ CODE CMP
     DE  POP,
     chkPS,
     DE SUBHLd,
-    BC 0 LDdn,
+    DE 0 LDdn,
     IFNZ, ( < or > )
-        BC INCd,
+        DE INCd,
         IFNC, ( < )
-            BC DECd,
-            BC DECd,
+            DE DECd,
+            DE DECd,
         THEN,
     THEN,
-    BC PUSH,
+    DE PUSH,
 ;CODE

@@ -1,16 +1,15 @@
 ( Borrowed from http://wikiti.brandonw.net/ )
 ( Divides AC by DE and places the quotient in AC and the
   remainder in HL )
-CODE /MOD
-    DE POP,
-    BC POP,
-    chkPS,
-    A B LDrr,
-    B 16 LDri,
+CODE /MOD EXX, ( protect BC )
+    DE POP, BC POP, chkPS,
+    A B LDrr, B 16 LDri,
     HL 0 LDdn,
-
-
-
-
-
-                                                      ( cont. )
+    BEGIN,
+        SCF, C RL, RLA,
+        HL ADCHLd, DE SBCHLd,
+        IFC, DE ADDHLd, C DECr, THEN,
+    DJNZ, AGAIN,
+    B A LDrr,
+    HL PUSH, BC PUSH,
+EXX, ( unprotect BC ) ;CODE

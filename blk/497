@@ -1,8 +1,8 @@
-CODE @PUT ( c a -- f )
+CODE @PUT ( c a -- f ) EXX, ( protect BC )
     DE POP,
     BC POP,
     chkPS,
     A 0x04 LDri, ( @PUT )
     0x28 RST,
     PUSHZ,
-;CODE
+EXX, ( unprotect BC ) ;CODE

@@ -3,10 +3,10 @@ CODE BYE
     HL 0 LDdn,
     A 0x16 LDri, ( @EXIT )
     0x28 RST,
-CODE @DCSTAT ( drv -- f )
+CODE @DCSTAT ( drv -- f ) EXX, ( protect BC )
     BC POP,
     chkPS,
     A 0x28 LDri, ( @DCSTAT )
     0x28 RST,
     PUSHZ,
-;CODE
+EXX, ( unprotect BC ) ;CODE

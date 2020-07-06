@@ -1,13 +1,13 @@
-CODE PC!
+CODE PC! EXX, ( protect BC )
     BC POP,
     HL POP,
     L OUT(C)r,
-;CODE
+EXX, ( unprotect BC ) ;CODE
 
-CODE PC@
+CODE PC@ EXX, ( protect BC )
     BC POP,
     chkPS,
     H 0 LDri,
     L INr(C),
     HL PUSH,
-;CODE
+EXX, ( unprotect BC ) ;CODE
