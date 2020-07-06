@@ -1,15 +1,16 @@
 CODE >R
-    HL POP, lblpushRS @ CALL,
+    HL POP, IX INCd, IX INCd, 0 IX+ L LDIXYr, 1 IX+ H LDIXYr,
 ;CODE
 CODE R>
-    lblpopRS @ CALL, HL PUSH,
+    L 0 IX+ LDrIXY, H 1 IX+ LDrIXY, IX DECd, IX DECd, HL PUSH,
 ;CODE
-CODE 2>R
-PC ORG @ 0x35 + ! ( stable ABI JP )
+CODE 2>R PC ORG @ 0x35 + ! ( stable ABI JP )
     DE POP, HL POP,
-    lblpushRS @ CALL, EXDEHL, lblpushRS @ CALL,
+    IX INCd, IX INCd, 0 IX+ L LDIXYr, 1 IX+ H LDIXYr,
+    IX INCd, IX INCd, 0 IX+ E LDIXYr, 1 IX+ D LDIXYr,
 ;CODE
 CODE 2R>
-    lblpopRS @ CALL, EXDEHL, lblpopRS @ CALL,
-    HL PUSH, DE PUSH,
+    L 0 IX+ LDrIXY, H 1 IX+ LDrIXY, IX DECd, IX DECd,
+    E 0 IX+ LDrIXY, D 1 IX+ LDrIXY, IX DECd, IX DECd,
+    DE PUSH, HL PUSH,
 ;CODE
