@@ -1,0 +1,16 @@
+( Native words )
+H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
+CODE (br) ( TODO: move with other native words )
+L1 BSET ( used in ?br and loop )
+PC ORG @ 0x3d + ! ( stable ABI JP )
+    E 0 IY+ LDrIXY, D 1 IY+ LDrIXY,
+    DE ADDIYd,
+;CODE
+CODE (?br)
+PC ORG @ 0x41 + ! ( stable ABI JP )
+    HL POP,
+    HLZ,
+    JRZ, L1 BWR ( br + 1. False, branch )
+    ( True, skip next 2 bytes and don't branch )
+    IY INCd, IY INCd,
+;CODE

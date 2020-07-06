@@ -11,4 +11,4 @@
     LDDE(HL),
     HL INCd,
     HL PUSH, IY POP, ( --> IP )
-    JR, lblexec BWR      ( execute-B301 )
+    JR, lblexec BWR      ( execute-B287 )

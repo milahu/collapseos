@@ -1,10 +1,3 @@
-CODE (loop)
-PC ORG @ 0x45 + ! ( stable ABI JP )
-    0 IX+ INC(IXY+), IFZ, 1 IX+ INC(IXY+), THEN, ( I++ )
-    ( Jump if I <> I' )
-    A 0 IX+ LDrIXY, 2 IX- CP(IXY+), JRNZ, L1 BWR ( branch )
-    A 1 IX+ LDrIXY, 1 IX- CP(IXY+), JRNZ, L1 BWR ( branch )
-    ( don't branch )
-    IX DECd, IX DECd, IX DECd, IX DECd,
-    IY INCd, IY INCd,
-;CODE
+lblofl BSET ( abortUnderflow )
+    DE BIN( @ 0x06 ( uflw ) + LDdd(n),
+    JR, L2 FWR ( execute, B287 )

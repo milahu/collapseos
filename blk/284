@@ -1,15 +1,14 @@
-H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
-CODE (br) ( TODO: move with other native words )
-L1 BSET ( used in ?br and loop )
-PC ORG @ 0x3d + ! ( stable ABI JP )
-    E 0 IY+ LDrIXY, D 1 IY+ LDrIXY,
-    DE ADDIYd,
-;CODE
-CODE (?br)
-PC ORG @ 0x41 + ! ( stable ABI JP )
-    HL POP,
-    HLZ,
-    JRZ, L1 BWR ( br + 1. False, branch )
-    ( True, skip next 2 bytes and don't branch )
-    IY INCd, IY INCd,
-;CODE
+PC ORG @ 1 + ! ( main )
+( STACK OVERFLOW PROTECTION: See B76 )
+    SP PS_ADDR LDdn, IX RS_ADDR LDdn,
+( LATEST is a label to the latest entry of the dict. It is
+  written at offset 0x08 by the process or person building
+  Forth. )
+    BIN( @ 0x08 + LDHL(n),
+    SYSVARS 0x02 ( CURRENT ) + LD(n)HL,
+HERESTART [IF]
+    HL HERESTART LDdn,
+[THEN]
+    SYSVARS 0x04 + LD(n)HL, ( RAM+04 == HERE )
+    DE BIN( @ 0x04 ( BOOT ) + LDdd(n),
+    JR, L1 FWR ( execute, B287 )

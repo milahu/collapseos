@@ -1,0 +1,13 @@
+lblexec BSET L1 FSET ( B284 ) L2 FSET ( B285 )
+    ( DE -> wordref )
+    ( When we have a BIN( offset, we need to adjust stable
+      ABI offsets. )
+    BIN( @ [IF]
+        A XORr, D ORr, IFZ, D BIN( @ 256 / LDri, THEN,
+    [THEN]
+    LDA(DE), DE INCd,
+    A ORr, IFZ, EXDEHL, JP(HL), THEN,
+    A DECr, JRZ, L1 FWR ( compiled B289 )
+    ( cell or does. push PFA ) DE PUSH,
+    A DECr, JRZ, lblnext BWR ( cell )
+    ( continue to does )

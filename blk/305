@@ -1,8 +1,7 @@
-( Native words )
 CODE EXECUTE
     DE POP,
     chkPS,
-    JR, lblexec BWR      ( execute-B301 )
+    lblexec @ JP,
 
 CODE EXIT
 PC ORG @ 0x0d + ! ( stable ABI JP )
