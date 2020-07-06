@@ -1,7 +1,8 @@
 CODE (br)
 L1 BSET ( used in ?br and loop )
 PC ORG @ 0x3d + ! ( stable ABI JP )
-    E 0 IY+ LDrIXY, D 1 IY+ LDrIXY,
+    E 0 IY+ LDrIXY, D 0 LDri,
+    7 E BIT, IFNZ, D DECr, THEN,
     DE ADDIYd,
 ;CODE
 CODE (?br)
@@ -9,6 +10,6 @@ PC ORG @ 0x41 + ! ( stable ABI JP )
     HL POP,
     HLZ,
     JRZ, L1 BWR ( br + 1. False, branch )
-    ( True, skip next 2 bytes and don't branch )
-    IY INCd, IY INCd,
+    ( True, skip next byte and don't branch )
+    IY INCd,
 ;CODE

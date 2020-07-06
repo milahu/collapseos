@@ -1,7 +1,7 @@
 : OP1 CREATE C, DOES> C@ A, ;
 0xc3 OP1 RETn,       0xfa OP1 CLI,       0xfb OP1 STI,
 0xf4 OP1 HLT,        0xfc OP1 CLD,       0xfd OP1 STD,
-0x90 OP1 NOP,
+0x90 OP1 NOP,        0x98 OP1 CBW,
 0xf3 OP1 REPZ,       0xf2 OP1 REPNZ,     0xac OP1 LODSB,
 0xad OP1 LODSW,      0xa6 OP1 CMPSB,     0xa7 OP1 CMPSW,
 0xa4 OP1 MOVSB,      0xa5 OP1 MOVSW,     0xae OP1 SCASB,

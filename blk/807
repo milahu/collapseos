@@ -5,5 +5,5 @@ PC 0x47 - ORG @ 0x45 + ! ( stable abi )
     AX [BP] 0 MOVx[]+, AX [BP] -2 CMPx[]+,
     JNZ, L1 @ RPCs, ( branch )
     ( don't branch )
-    BP 4 SUBxi, DX INCx, DX INCx,
+    BP 4 SUBxi, DX INCx,
 ;CODE

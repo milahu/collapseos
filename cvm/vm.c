@@ -119,13 +119,17 @@ static word find(word daddr, word waddr) {
 }
 
 static void EXIT() { vm.IP = popRS(); }
-static void _br_() { vm.IP += gw(vm.IP); };
-static void _cbr_() { if (!pop()) { _br_(); } else { vm.IP += 2; } };
+static void _br_() {
+    word off = vm.mem[vm.IP];
+    if (off > 0x7f ) { off -= 0x100; }
+    vm.IP += off;
+}
+static void _cbr_() { if (!pop()) { _br_(); } else { vm.IP++; } }
 static void _loop_() {
     word I = gw(vm.RS); I++; sw(vm.RS, I);
     if (I == gw(vm.RS-2)) { // don't branch
         popRS(); popRS();
-        vm.IP += 2;
+        vm.IP++;
     } else { // branch
         _br_();
     }
