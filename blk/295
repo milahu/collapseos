@@ -1,13 +1,14 @@
         ( DE contains prev offset )
-        HL POP, ( <-- lvl 3, prev field )
+        HL POP, ( <-- lvl 4, prev field )
         DEZ, IFNZ, ( offset not zero )
             ( get absolute addr from offset )
             ( carry cleared from "or e" )
             DE SBCHLd,
             EXDEHL, ( result in DE )
         THEN,
-        HL POP, ( <-- lvl 2 )
+        HL POP, ( <-- lvl 3 )
     JRNZ, AGAIN, ( loop-B292, try to match again )
+    BC POP, ( <-- lvl 2 )
     ( Z set? end of dict, not found. "w" already on PSP TOS )
     PUSH0,
 ;CODE
