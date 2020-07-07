@@ -1,4 +1,4 @@
-CODE S=
+CODE S= EXX, ( protect BC )
     DE POP, HL POP, chkPS,
     LDA(DE),
     (HL) CPr,
@@ -12,4 +12,4 @@ CODE S=
         DJNZ, AGAIN,
     THEN,
     PUSHZ,
-;CODE
+EXX, ( unprotect BC ) ;CODE

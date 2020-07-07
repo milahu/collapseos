@@ -5,8 +5,7 @@ CODE EXECUTE
 
 CODE EXIT
 PC ORG @ 0x0d + ! ( stable ABI JP )
-    L 0 IX+ LDrIXY,
-    H 1 IX+ LDrIXY,
+    C 0 IX+ LDrIXY,
+    B 1 IX+ LDrIXY,
     IX DECd, IX DECd,
-    HL PUSH, IY POP, ( --> IP )
     JPNEXT,

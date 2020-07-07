@@ -6,7 +6,7 @@ PC ORG @ 0x45 + ! ( stable ABI JP )
     A 1 IX+ LDrIXY, 1 IX- CP(IXY+), JRNZ, L1 BWR ( branch )
     ( don't branch )
     IX DECd, IX DECd, IX DECd, IX DECd,
-    IY INCd,
+    BC INCd,
 ;CODE
 
 

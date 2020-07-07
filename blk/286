@@ -10,7 +10,6 @@ lblnext BSET PC ORG @ 0x1b + ! ( next )
     DE RS_ADDR LDdn,
     DE SUBHLd,
     JRC, lblofl BWR ( IX < RS_ADDR? abortUnderflow-B285 )
-    E 0 IY+ LDrIXY,
-    D 1 IY+ LDrIXY,
-    IY INCd, IY INCd,
+    LDA(BC), E A LDrr, BC INCd,
+    LDA(BC), D A LDrr, BC INCd,
     ( continue to execute )

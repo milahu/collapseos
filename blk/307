@@ -3,9 +3,9 @@ PC ORG @ 0x2d + ! ( stable ABI JP )
 ( Like (n) but instead of being followed by a 2 bytes
   number, it's followed by a string. When called, puts the
   string's address on PS )
-    IY PUSH, HL POP, ( <-- IP )
-    E (HL) LDrr, D 0 LDri,
-    DE INCd,
-    DE ADDIYd,
-    HL PUSH,
+    BC PUSH,
+    LDA(BC), C ADDr,
+    IFC, B INCr, THEN,
+    C A LDrr,
+    BC INCd,
 ;CODE

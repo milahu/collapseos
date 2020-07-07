@@ -3,8 +3,7 @@ PC ORG @ 0x25 + ! ( stable ABI JP )
   ( Literal value to push to stack is next to (n) reference
     in the atom list. That is where IP is currently pointing.
     Read, push, then advance IP. )
-    E 0 IY+ LDrIXY,
-    D 1 IY+ LDrIXY,
-    IY INCd, IY INCd,
-    DE PUSH,
+    LDA(BC), L A LDrr, BC INCd,
+    LDA(BC), H A LDrr, BC INCd,
+    HL PUSH,
 ;CODE

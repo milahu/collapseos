@@ -1,5 +1,5 @@
 ( Computes n into crc c with polynomial 0x1021 )
-CODE _crc16  ( c n -- c )
+CODE _crc16  ( c n -- c ) EXX, ( protect BC )
     HL POP, ( n ) DE POP, ( c )
     A L LDrr, D XORr, D A LDrr,
     B 8 LDri,
@@ -11,4 +11,4 @@ CODE _crc16  ( c n -- c )
         THEN,
     DJNZ, AGAIN,
     DE PUSH,
-;CODE
+EXX, ( unprotect BC ) ;CODE

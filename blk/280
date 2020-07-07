@@ -4,8 +4,8 @@ This assembles the boot binary. It requires the Z80 assembler
 (B200) and cross compilation setup (B260). It requires some
 constants to be set. See B420 for details.
 
-RESERVED REGISTERS: At all times, IX points to RSP TOS and IY
-is IP. SP points to PSP TOS, but you can still use the stack\
+RESERVED REGISTERS: At all times, IX points to RSP TOS and BC
+is IP. SP points to PSP TOS, but you can still use the stack
 in native code. you just have to make sure you've restored it
 before "next".
 
