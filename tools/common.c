@@ -31,13 +31,15 @@ static void mempty(int fd)
     }
 }
 
-static void mexpect(int fd, char ec)
+int mexpect(int fd, unsigned char ec)
 {
-    char c;
+    unsigned char c;
     mread(fd, &c, 1);
     if (c != ec) {
-        fprintf(stderr, "Expected %d but got %d\n", ec, c);
+        fprintf(stderr, "Expected %x but got %x\n", ec, c);
+        return 0;
     }
+    return 1;
 }
 
 void readprompt(int fd)
