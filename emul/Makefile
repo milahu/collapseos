@@ -12,7 +12,7 @@ forth: forth.c $(OBJS) $(BLKFS)
 
 libz80/libz80.o: libz80/z80.c
 	$(MAKE) -C libz80/codegen opcodes
-	$(CC) -Wall -ansi -g -c -o libz80/libz80.o libz80/z80.c
+	$(CC) -Wall -std=c89 -g -c -o libz80/libz80.o libz80/z80.c
 
 emul.o: emul.c forth.bin $(BLKFS)
 	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" -c -o emul.o emul.c
