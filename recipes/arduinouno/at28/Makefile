@@ -13,8 +13,8 @@ AVRA = avra
 all: $(TARGET)
 	@echo Done!
 
-send: $(PROGNAME).hex
-	avrdude $(AVRDUDEARGS) -p $(AVRDUDEMCU) -U flash:w:$(PROGNAME).hex
+send: $(TARGET)
+	avrdude $(AVRDUDEARGS) -p $(AVRDUDEMCU) -U flash:w:$(TARGET)
 
 $(TARGET): $(PROGNAME).asm
 	$(AVRA) -o $@ $(PROGNAME).asm
