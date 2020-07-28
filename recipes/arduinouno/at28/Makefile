@@ -14,10 +14,10 @@ all: $(TARGET)
 	@echo Done!
 
 send: $(PROGNAME).hex
-	avrdude $(AVRDUDEARGS) -p $(AVRDUDEMCU) -U flash:w:$<
+	avrdude $(AVRDUDEARGS) -p $(AVRDUDEMCU) -U flash:w:$(PROGNAME).hex
 
-$(TARGET): at28wr.asm
-	$(AVRA) -o $@ at28wr.asm
+$(TARGET): $(PROGNAME).asm
+	$(AVRA) -o $@ $(PROGNAME).asm
 
 clean:
 	rm -f $(TARGET) *.S.eep.hex *.S.obj

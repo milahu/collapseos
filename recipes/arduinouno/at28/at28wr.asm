@@ -8,6 +8,17 @@
 ; with PD7:2 for bits 7:2 and PB1:0 for bits 1:0 (PD1 and PD0 are used for
 ; UART).
 ;
+; *** Timing, matching and CE ***
+;
+; A lot of trial-and-errors went into those NOPs being place to give time for
+; latching. All these timing are well, well above maximums given in the specs,
+; but when I wasn't going well, well above those specs, I was experiencing
+; read/write errors. It seems we live in an imperfect world!
+;
+; I'm also not sure, in "writedata", whether toggling CE along with WE is
+; actually needed, but until I did, I was experiencing random write failures.
+; So, we end up with this...
+;
 ; *** Register Usage ***
 ;
 ; r0:  holds whether last received char was tty-escaped (0 = no, 1=yes)
@@ -92,6 +103,10 @@ sendaddr:
 
 ; send r20 to EEPROM's I/O7:0 through PD7:2 and PB1:0
 writedata:
+	cbi	PORTB, FLCE
+	; addr is latched on WE falling edge
+	cbi	PORTB, FLWE
+
 	; send bits 7:2
 	mov	r16, r20
 	andi	r16, 0xfc
@@ -106,49 +121,59 @@ writedata:
 	andi	r17, 0xfc
 	or	r16, r17
 	out	PORTB, r16
+
+	; data is latched on rising edge
+	sbi	PORTB, FLWE
+	sbi	PORTB, FLCE
+	nop			; Give the AT28 time to latch
+	nop
+	nop
 	ret
 
 ; push r20 to the rom and increase the memory counter
-pushdata:
+nextaddr:
 	; first, set up addr
 	mov	r23, r21
 	rcall	sendaddr
 	mov	r23, r22
 	rcall	sendaddr
 	inc	r22
-	brne	pushdata_0	; no overflow? skip
+	brne	nextaddr_0	; no overflow? skip
 	inc	r21
-
-pushdata_0:
-	; addr is latched on WE falling edge
-	cbi	PORTB, FLWE
-
-	; now, lets set up data. Plenty enough instructions to ensure a 100ns
-	; minimum delay.
-	rcall	writedata
-
-	; data is latched on rising edge
-	sbi	PORTB, FLWE
-
+nextaddr_0:
 	ret
 
 ; wait until I/O7 stops toggling
 waitio7:
+	cbi	PORTB, FLCE
 	cbi	PORTB, FLOE
+	nop			; Give the AT28 time to latch
+	nop
+	nop
 	in	r16, PIND
 	sbi	PORTB, FLOE
+	sbi	PORTB, FLCE
 	andi	r16, 0xfc
+	cbi	PORTB, FLCE
 	cbi	PORTB, FLOE
+	nop			; Give the AT28 time to latch
+	nop
+	nop
 	in	r17, PIND
 	sbi	PORTB, FLOE
+	sbi	PORTB, FLCE
 	andi	r17, 0xfc
 	cp	r16, r17
 	brne	waitio7
 	ret
 
-; read EEPROM's I/O7:0 through PD7:2 and PB1:0 and put result in r20.
+; read EEPROM's I/O7:0 through PD7:2 and PB1:0 into r20
 readdata:
+	cbi	PORTB, FLCE
 	cbi	PORTB, FLOE
+	nop			; Give the AT28 time to latch
+	nop
+	nop
 	; read bits 7:2
 	in	r20, PIND
 	andi	r20, 0xfc
@@ -157,13 +182,14 @@ readdata:
 	andi	r16, 0x03
 	or	r20, r16
 	sbi	PORTB, FLOE
+	sbi	PORTB, FLCE
 	ret
 
 ; Set PD7:2 and PB1:0 to output
 ioout:
 	ldi	r16, 0xfc	; PD7:2
 	out	DDRD, r16
-	ldi	r16, 0x3f	; PB5:0 (WE, OE and CE too)
+	ldi	r16, 0x3f	; PB5:0 (CP, WE, OE and CE too)
 	out	DDRB, r16
 	ret
 
@@ -181,11 +207,9 @@ main:
 	ldi	r16, high(RAMEND)
 	out	SPH, r16
 
-	; We begin with WE and OE disabled (high), but CE stays enabled (low)
-	; the whole time.
 	sbi	PORTB, FLWE
 	sbi	PORTB, FLOE
-	cbi	PORTB, FLCE
+	sbi	PORTB, FLCE
 
 	; Clear counters and flags
 	clr	r0
@@ -204,7 +228,8 @@ main:
 loop:
 	rcall	uartrd
 	rcall	ioout
-	rcall	pushdata
+	rcall	nextaddr
+	rcall	writedata
 	rcall	ioin
 	rcall	waitio7
 	rcall	readdata

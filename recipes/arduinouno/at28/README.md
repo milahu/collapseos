@@ -23,6 +23,11 @@ on the Arduino's right side (except for VCC, which needs to be wired).
 
 PD0 and PD1 are not used because they're used for the UART.
 
+AT28 selection pins are pulled up to avoid accidental writes due to their line
+floating before Arduino's initialization.
+
+I've put 1uf decoupling caps next to each IC.
+
 ## Software
 
 The software in at28wr.asm listens to the UART and writes every byte it receives
