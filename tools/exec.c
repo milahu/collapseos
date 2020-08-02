@@ -2,17 +2,23 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <string.h>
 
 #include "common.h"
 
-/* Execute code from stdin on the target machine.
+/* Execute code from target file on the target machine.
+   fname can be "-" for stdin.
  */
 
 int main(int argc, char **argv)
 {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: ./exec device\n");
+    if (argc != 3) {
+        fprintf(stderr, "Usage: ./exec device fname\n");
         return 1;
+    }
+    FILE *fp = stdin;
+    if (strcmp(argv[2], "-") != 0) {
+        fp = fopen(argv[2], "r");
     }
     int fd = ttyopen(argv[1]);
     if (fd < 0) {
@@ -20,15 +26,22 @@ int main(int argc, char **argv)
         return 1;
     }
     set_blocking(fd, 0);
-    int c = getchar();
+    int c = getc(fp);
     while (c != EOF) {
         if (c == '\n') c = '\r';
         write(fd, &c, 1);
+        usleep(1000); // let it breathe
         while (read(fd, &c, 1) == 1) {
             putchar(c);
             fflush(stdout);
         }
-        c = getchar();
+        c = getc(fp);
+    }
+    if (fd > 0) {
+        close(fd);
+    }
+    if (strcmp(argv[2], "-") != 0) {
+        fclose(fp);
     }
     printf("Done!\n");
     return 0;
