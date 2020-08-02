@@ -12,7 +12,7 @@ properly set up, TTY-wise. You'll probably want to do that with `stty`. The tool
 itself takes care of setting the regular stuff (`cs8`, `-parenb`, etc), but you
 need to set the speed. Here's an example working on OpenBSD:
 
-    $ ( stty 115200 raw ; ./upload - a000 os.bin ) <>/dev/cuaU0
+    $ ( stty 115200 raw ; sleep 2 ; ./upload - a000 os.bin ) <> /dev/cuaU0
 
 To be honest, I'm having a bit of troubles making these tools work as well on
 OpenBSD as they do in Linux. But it *does* work. Here are some advices:
@@ -20,6 +20,10 @@ OpenBSD as they do in Linux. But it *does* work. Here are some advices:
 * Use `cuaXX` instead of `ttyXX`.
 * Run `cu -l /dev/cuaXX` before running your tool and run a dummy command to
   make sure that the output buffer is flushed.
+* Use the "raw" option to avoid TTY-processing options to mess with data.
+* If you experience random failures in your command, try inserting a "sleep 2"
+  between your "stty" invocation and the command. In my experience, these tend
+  to help.
 
 On Linux, it's generally easier:
 
