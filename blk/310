@@ -10,6 +10,6 @@ CODE PICK EXX, ( protect BC )
     EXDEHL,
     HL PS_ADDR LDdn,
     DE SUBHLd,
-    IFC, EXX, lblofl @ JP, THEN,
+    IFC, EXX, lbluflw @ JP, THEN,
     BC PUSH,
 EXX, ( unprotect BC ) ;CODE

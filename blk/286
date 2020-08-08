@@ -8,7 +8,7 @@ lblnext BSET PC ORG @ 0x1b + ! ( next )
     IFNC, ( SP <= IX? overflow )
         SP PS_ADDR LDdn, IX RS_ADDR LDdn,
         DE BIN( @ 0x13 ( oflw ) + LDdd(n),
-        JR, L3 FWR ( execute, B287 )
+        JR, L2 FWR ( execute, B287 )
     THEN,
     LDA(BC), E A LDrr, BC INCd,
     LDA(BC), D A LDrr, BC INCd,

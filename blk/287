@@ -1,4 +1,4 @@
-lblexec BSET L1 FSET ( B284 ) L2 FSET ( B285 ) L3 FSET ( B286 )
+lblexec BSET L1 FSET ( B284 ) L2 FSET ( B286 )
     ( DE -> wordref )
     ( When we have a BIN( offset, we need to adjust stable
       ABI offsets. )
