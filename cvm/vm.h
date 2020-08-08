@@ -14,28 +14,30 @@ typedef void (*NativeWord) ();
 typedef byte (*IORD) ();
 typedef void (*IOWR) (byte data);
 
-/* Native word placement
-    Being a C VM, all actual native code is outside the VM's memory. However,
-    we have a stable ABI to conform to. VM_init() configures the memory by
-    placing references to stable words at proper offsets, and then add all other
-    native words next to it. This will result in a "boot binary" that is much
-    more compact than a real Collapse OS memory layout.
-*/
 typedef struct {
     byte mem[0x10000];
-    word SP;
-    word RS;
-    word IP;
+    word SP; // parameter Stack Pointer
+    word RS; // Return Stack pointer
+    word IP; // Interpreter Pointer
+    // A list of native words' code. This is filled in VM_init() by calls to
+    // native(). The order is very important because we refer to these elements
+    // by index. For example, "0x42 CODE FOO" in Forth creates the native word
+    // FOO which, when executed, will call the code at index 0x42 in this array.
     NativeWord nativew[0x100];
     byte nativew_count;
     // Array of 0x100 function pointers to IO read and write routines. Leave to
     // NULL when IO port is unhandled.
     IORD iord[0x100];
     IOWR iowr[0x100];
-    word xcurrent; // only used during native bootstrap
+    // Used for keeping track of max RS and min SP during the lifetime of the
+    // program. Useful for debugging.
     word maxRS;
     word minSP;
     bool running;
+    // Whether we're in stack underflow situation. Alters the behavior of some
+    // core action, notably popping. Doesn't stay set for more than a single
+    // execute cycle. The goal is to avoid over-popping in native words that
+    // pop more than once and thus corrupt memory.
     bool uflw;
 } VM;
 

@@ -21,6 +21,8 @@ static VM vm;
 static uint64_t blkop = 0; // 5 bytes
 static FILE *blkfp;
 
+// Read single byte from I/O handler, if set. addr is a word only because of
+// Forth's cell size, but can't actually address more than a byte-ful of ports.
 static byte io_read(word addr)
 {
     addr &= 0xff;
@@ -44,6 +46,9 @@ static void io_write(word addr, byte val)
     }
 }
 
+// I/O hook to read/write a chunk of 1024 byte to blkfs at specified blkid.
+// This is used by EFS@ and EFS! in xcomp.fs.
+// See comment above BLK_PORT define for poking convention.
 static void iowr_blk(byte val)
 {
     blkop <<= 8;
@@ -62,29 +67,37 @@ static void iowr_blk(byte val)
     }
 }
 
+// get/set word from/to memory
 static word gw(word addr) { return vm.mem[addr+1] << 8 | vm.mem[addr]; }
 static void sw(word addr, word val) {
     vm.mem[addr] = val;
     vm.mem[addr+1] = val >> 8;
 }
+// pop word from SP
 static word pop() {
     if (vm.uflw) return 0;
     if (vm.SP >= SP_ADDR) { vm.uflw = true; }
     return vm.mem[vm.SP++] | vm.mem[vm.SP++] << 8;
 }
+// push word to SP
 static void push(word x) {
     vm.SP -= 2; sw(vm.SP, x);
     if (vm.SP < vm.minSP) { vm.minSP = vm.SP; }
 }
+// pop word from RS
 static word popRS() {
     if (vm.uflw) return 0;
     if (vm.RS <= RS_ADDR) { vm.uflw = true; }
     word x = gw(vm.RS); vm.RS -= 2; return x;
 }
+// push word to RS
 static void pushRS(word val) {
     vm.RS += 2; sw(vm.RS, val);
     if (vm.RS > vm.maxRS) { vm.maxRS = vm.RS; }
 }
+
+// The functions below directly map to native forth words defined in the
+// dictionary (B30)
 static void execute(word wordref) {
     byte wtype = vm.mem[wordref];
     if (wtype == 0) { // native
@@ -242,6 +255,7 @@ static void MINUS2() { push(pop()-2); }
 static void PLUS2() { push(pop()+2); }
 static void RSHIFT() { word u = pop(); push(pop()>>u); }
 static void LSHIFT() { word u = pop(); push(pop()<<u); }
+
 static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
 }
@@ -284,6 +298,7 @@ VM* VM_init() {
         vm.iowr[i] = NULL;
     }
     vm.iowr[BLK_PORT] = iowr_blk;
+    // Added in the same order as in xcomp.fs
     native(EXIT);
     native(_br_);
     native(_cbr_);
