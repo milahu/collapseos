@@ -1,5 +1,4 @@
 PC ORG @ 1 + ! ( main )
-( STACK OVERFLOW PROTECTION: See B76 )
     SP PS_ADDR LDdn, IX RS_ADDR LDdn,
 ( LATEST is a label to the latest entry of the dict. It is
   written at offset 0x08 by the process or person building

@@ -1,6 +1,11 @@
-STACK OVERFLOW PROTECTION: To avoid having to check for stack
-underflow after each pop operation (which can end up being
-prohibitive in terms of costs), PS_ADDR should be set to
-at least 6 bytes before its actual limit. 6 bytes because we
-seldom have words requiring more than 3 items from the stack.
-Then, at each "exit" call we check for stack underflow.
+Stack underflow and overflow: In each native word involving
+PSP popping, we check whether the stack is big enough. If it's
+not we go in "uflw" (underflow) error condition, then abort.
+
+We don't check RSP for underflow because the cost of the check
+is significant and its usefulness is dubious: if RSP isn't
+tightly in control, we're screwed anyways, and that, well
+before we reach underflow.
+
+Overflow condition happen when RSP and PSP meet somewhere in
+the middle. That check is made at each "next" call.
