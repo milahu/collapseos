@@ -39,6 +39,11 @@ typedef struct {
     // execute cycle. The goal is to avoid over-popping in native words that
     // pop more than once and thus corrupt memory.
     bool uflw;
+    // Same as uflw, but for stack overflow. However, we behave differently with
+    // oflw than with uflw. We can't prevent push() and pushRS() because it
+    // would prevent us from calling (oflw). Instead, we clear both stacks on
+    // oflw conditions, which gives us the room to maneuver.
+    bool oflw;
 } VM;
 
 VM* VM_init();

@@ -76,23 +76,33 @@ static void sw(word addr, word val) {
 // pop word from SP
 static word pop() {
     if (vm.uflw) return 0;
-    if (vm.SP >= SP_ADDR) { vm.uflw = true; }
+    if (vm.SP >= SP_ADDR) { vm.uflw = true; return 0; }
     return vm.mem[vm.SP++] | vm.mem[vm.SP++] << 8;
 }
 // push word to SP
 static void push(word x) {
-    vm.SP -= 2; sw(vm.SP, x);
+    vm.SP -= 2;
+    if (vm.SP <= vm.RS) {
+        vm.oflw = true; vm.SP = SP_ADDR; vm.RS = RS_ADDR;
+        return;
+    }
+    sw(vm.SP, x);
     if (vm.SP < vm.minSP) { vm.minSP = vm.SP; }
 }
 // pop word from RS
 static word popRS() {
     if (vm.uflw) return 0;
-    if (vm.RS <= RS_ADDR) { vm.uflw = true; }
+    if (vm.RS <= RS_ADDR) { vm.uflw = true; return 0; }
     word x = gw(vm.RS); vm.RS -= 2; return x;
 }
 // push word to RS
 static void pushRS(word val) {
-    vm.RS += 2; sw(vm.RS, val);
+    vm.RS += 2;
+    if (vm.SP <= vm.RS) {
+        vm.oflw = true; vm.SP = SP_ADDR; vm.RS = RS_ADDR;
+        return;
+    }
+    sw(vm.RS, val);
     if (vm.RS > vm.maxRS) { vm.maxRS = vm.RS; }
 }
 
@@ -358,6 +368,7 @@ VM* VM_init() {
     sw(SYSVARS+0x02, gw(0x08)); // CURRENT
     sw(SYSVARS+0x04, gw(0x08)); // HERE
     vm.uflw = false;
+    vm.oflw = false;
     vm.running = true;
     return &vm;
 }
@@ -379,6 +390,10 @@ bool VM_steps(int n) {
         if (vm.uflw) {
             vm.uflw = false;
             execute(gw(0x06)); /* uflw */
+        }
+        if (vm.oflw) {
+            vm.oflw = false;
+            execute(gw(0x13)); /* oflw */
         }
         n--;
     }
