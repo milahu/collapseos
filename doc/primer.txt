@@ -1,0 +1,201 @@
+# Forth Primer
+
+# First steps
+
+Before you read this primer, let's try a few commands, just for
+fun.
+
+42 .
+
+This will push the number 42 to the stack, then print the number
+at the top of the stack.
+
+4 2 + .
+
+This pushes 4, then 2 to the stack, then adds the 2 numbers on
+the top of the stack, then prints the result.
+
+42 0x8000 C! 0x8000 C@ .
+
+This writes the byte "42" at address 0x8000, and then reads
+back that bytes from the same address and print it.
+
+# Interpreter loop
+
+Forth's main interpeter loop is very simple:
+
+1. Read a word from input
+2. Look it up in the dictionary
+3. Found? Execute.
+4. Not found?
+4.1. Is it a number?
+4.2. Yes? Parse and push on the Parameter Stack.
+4.3. No? Error.
+5. Repeat
+
+# Word
+
+A word is a string of non-whitepace characters. We consider that
+we're finished reading a word when we encounter a whitespace
+after having read at least one non-whitespace character
+
+# Character encoding
+
+Collapse OS doesn't support any other encoding than 7bit ASCII.
+A character smaller than 0x21 is considered a whitespace,
+others are considered non-whitespace.
+
+Characters above 0x7f have no special meaning and can be used in
+words (if your system has glyphs for them).
+
+# Dictionary
+
+Forth's dictionary link words to code. On boot, this dictionary
+contains the system's words (look in B30 for a list of them),
+but you can define new words with the ":" word. For example:
+
+: FOO 42 . ;
+
+defines a new word "FOO" with the code "42 ." linked to it. The
+word ";" closes the definition. Once defined, a word can be
+executed like any other word.
+
+You can define a word that already exists. In that case, the new
+definition will overshadow the old one. However, any word def-
+ined *before* the overshadowing took place will still use the
+old word.
+
+# Cell size
+
+The cell size in Collapse OS is 16 bit, that is, each item in
+stacks is 16 bit, @ and ! read and write 16 bit numbers.
+Whenever we refer to a number, a pointer, we speak of 16 bit.
+
+To read and write bytes, use C@ and C!.
+
+# Number literals
+
+Traditional Forth often uses HEX/DEC switches to go from deci-
+mal to hexadecimal parsing. Collapse OS parses literals in a
+way that is closer to C.
+
+Straight numbers are decimals, numbers starting with "0x"
+are hexadecimals (example "0x12ef"), "0b" prefixes indicate
+binary (example "0b1010"), char literals are single characters
+surrounded by ' (example 'X'). Char literals can't be used for
+whitespaces.
+
+# Parameter Stack
+
+Unlike most programming languages, Forth execute words directly,
+without arguments. The Parameter Stack (PS) replaces them. There
+is only one, and we're constantly pushing to and popping from
+it. All the time.
+
+For example, the word "+" pops the 2 number on the Top Of Stack
+(TOS), adds them, then pushes back the result on the same stack.
+It thus has the "stack signature" of "a b -- n". Every word in
+a dictionary specifies that signature because stack balance, as
+you can guess, is paramount. It's easy to get confused so you
+need to know the stack signature of words you use very well.
+
+# Return Stack
+
+There's a second stack, the Return Stack (RS), which is used to
+keep track of execution, that is, to know where to go back after
+we've executed a word. It is also used in other contexts, but
+this is outside of the scope of this primer.
+
+# Conditional execution
+
+Code can be executed conditionally with IF/ELSE/THEN. IF pops
+PS and checks whether its nonzero. If it is, it does nothing.
+If it's zero, it jumps to the following ELSE or the following
+THEN. Similarly, when ELSE is encountered in the context of a
+nonzero IF, we jump to the following THEN.
+
+Because IFs involve jumping, they only work inside word defin-
+itions. You can't use IF directly in the interpreter loop.
+
+Example usage:
+
+: FOO IF 42 ELSE 43 THEN . ;
+0 FOO --> 42
+1 FOO --> 43
+
+# Loops
+
+Loops work a bit like conditionals, and there's 3 forms:
+
+BEGIN..AGAIN --> Loop forever
+BEGIN..UNTIL --> Loop conditionally
+DO..LOOP --> Loop X times
+
+UNTIL works exactly like IF, but instead of jumping forward to
+THEN, it jumps backward to BEGIN.
+
+DO pops the lower, then the higher bounds of the loop to be
+executed, then pushes them on RS. Then, each time LOOP is
+encountered, RS' TOS is increased. As long as the 2 numbers at
+RS' TOS aren't equal, we jump back to DO.
+
+The word "I" copies RS' TOS to PS, which can be used to get our
+"loop counter".
+
+Beware: the bounds arguments for DO are unintuitive. We begin
+with the upper bound. Example:
+
+42 0 DO I . SPC LOOP
+
+Will print numbers 0 to 41, separated by a space.
+
+# Variables
+
+We can read and write to arbitrary memory address with @ and !
+(C@ and C! for bytes). For example, "1234 0x8000 !" writes the
+word 1234 to address 0x8000.
+
+The word "VARIABLE" link a name to an address. For example,
+"VARIABLE FOO" defines the word "FOO" and "reserves" 2 bytes of
+memory. Then, when FOO is executed, it pushes the address of the
+"reserved" area to PS.
+
+For example, "1234 FOO !" writes 1234 to memory address reserved
+for FOO.
+
+# IMMEDIATE
+
+We approach the end of our primer. So far, we've covered the
+"cute and cuddly" parts of the language. However, that's not
+what makes Forth powerful. Forth becomes mind-bending when we
+throw IMMEDIATE into the mix.
+
+A word can be declared immediate thus:
+
+: FOO ; IMMEDIATE
+
+That is, when the IMMEDIATE word is executed, it makes the
+latest defined word immediate.
+
+An immediate word, when used in a definition, is executed
+immediately instead of being compiled. This seemingly simple
+mechanism (and it *is* simple) has very wide implications.
+
+For example, The words "(" and ")" are comment indicators. In
+the definition:
+
+: FOO 42 ( this is a comment ) . ;
+
+The word "(" is read like any other word. What prevents us from
+trying to compile "this" and generate an error because the word
+doesn't exist? Because "(" is immediate. Then, that word reads
+from input stream until a ")" is met, and then returns to word
+compilation.
+
+Words like "IF", "DO", ";" are all regular Forth words, but
+their "power" come from the fact that they're immediate.
+
+Starting Forth by Leo Brodie explain all of this in details.
+Read this if you can. If you can't, well, let this sink in for
+a while, browse the dictionary (B30) and try to understand why
+this or that word is immediate. Good luck!

@@ -1,0 +1,33 @@
+# Introduction to Collapse OS
+
+Collapse OS is a minimal operating system created to preserve
+the ability to program microcontrollers through civilizational
+collapse. Its author expect the collapse of the global supply
+chain means the loss of our computer production capability. Many
+microcontrollers require a computer to program them.
+
+Collapse OS innovates by self-hosting on extremely tight resour-
+ces and is thus (theoretically thus far) able to operate and be
+improved in a world without modern computers.
+
+# Forth
+
+This OS is a Forth. It doesn't adhere to any pre-collapse stand-
+ard, but is pretty close to the Forth described by Starting
+Forth by Leo Brodie. It is therefore the recommended introduct-
+ory material to learn Forth in the context of Collapse OS.
+
+If you don't have access to this book and don't know anything
+about Forth, learning Collapse OS could be a rough ride, but
+don't despair. There's a Forth primer in primer.txt.
+
+# Documentation and self-hosting
+
+Collapse OS is self-hosting, its documentation is not, that is,
+Collapse OS cannot read this document you're reading. Text
+blocks could, of course, be part of Collapse OS' blocks, but
+doing so needlessly uses blocks and make the system heavier than
+it should.
+
+This documentation is expected to be printed before the last
+modern computer of your community dies.
