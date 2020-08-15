@@ -1,4 +1,4 @@
-: LDdd(n), ( d n -- )
+: LDd(n), ( d n -- )
     0xed A,
     SWAP <<4 0x4b OR A,
     A,,

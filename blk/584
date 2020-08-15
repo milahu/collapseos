@@ -7,7 +7,7 @@
             ( advance W> )
             HL INCd,
             ACIAW> LD(n)HL,
-            DE ACIA) LDdd(n),
+            DE ACIA) LDd(n),
             DE SUBHLd,
 
 

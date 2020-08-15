@@ -9,5 +9,5 @@ HERESTART [IF]
     HL HERESTART LDdn,
 [THEN]
     SYSVARS 0x04 + LD(n)HL, ( RAM+04 == HERE )
-    DE BIN( @ 0x04 ( BOOT ) + LDdd(n),
+    DE BIN( @ 0x04 ( BOOT ) + LDd(n),
     JR, L1 FWR ( execute, B287 )

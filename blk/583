@@ -8,6 +8,6 @@
         ACIAW> LDHL(n),
         ( is it == to ACIAR>? )
         ( +0 == ACIAR> )
-        DE ACIAR> LDdd(n),
+        DE ACIAR> LDd(n),
         ( carry cleared from ANDi above )
         DE SBCHLd,                                    ( cont. )

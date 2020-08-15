@@ -1,5 +1,5 @@
 lbluflw BSET ( abortUnderflow )
-    DE BIN( @ 0x06 ( uflw ) + LDdd(n),
+    DE BIN( @ 0x06 ( uflw ) + LDd(n),
     JR, lblexec BWR
 lblchkPS BSET ( chkPS )
 ( Note that you only need to call this in words that push
