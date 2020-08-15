@@ -10,7 +10,7 @@
 : BS? DUP 0x7f = SWAP 0x8 = OR ;
 
 : KEY
-    85 RAM+ @ ( (key) override )
+    0x55 RAM+ @ ( (key) override )
     ?DUP IF EXECUTE ELSE (key) THEN ;
 ( cont.: read one char into input buffer and returns whether we
   should continue, that is, whether CR was not met. )

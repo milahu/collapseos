@@ -3,7 +3,7 @@
 : BJP, BIN( @ + JP, ;
 : BJPc, BIN( @ + JPc, ;
 
-VARIABLE lblchkPS
+CREATE lblchkPS 0 ,
 : chkPS, lblchkPS @ CALL, ; ( chkPS, B305 )
 CREATE lblnext 0 , ( stable ABI until set in B300 )
 : JPNEXT, lblnext @ ?DUP IF JP, ELSE 0x1a BJP, THEN ;

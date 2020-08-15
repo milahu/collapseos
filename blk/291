@@ -1,5 +1,5 @@
 ( Native words )
-H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
+H@ 5 + XCURRENT ! ( make next CODE have 0 prev field )
 CODE _find  ( cur w -- a f )
     HL POP, ( w ) DE POP, ( cur ) chkPS,
     HL PUSH, ( --> lvl 1 )
