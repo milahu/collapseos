@@ -149,19 +149,67 @@ with the upper bound. Example:
 
 Will print numbers 0 to 41, separated by a space.
 
-# Variables
+# Memory access and HERE
 
 We can read and write to arbitrary memory address with @ and !
 (C@ and C! for bytes). For example, "1234 0x8000 !" writes the
-word 1234 to address 0x8000.
+word 1234 to address 0x8000. We call the @ and ! actions
+"fetch" and "store".
 
-The word "VARIABLE" link a name to an address. For example,
+There's a 3rd kind of memory-related action: "," (write). This
+action stores value on PS at where a special variable called
+"HERE" points to, and then advances HERE by 2 (there's also
+"C," for bytes).
+
+Note that the HERE word returns the address containing the
+pointer (it doesn't change). There's a shortcut word for
+"HERE @" named "H@", which is used much more often.
+
+HERE is initialized at the first writable address in RAM, often
+directly following the latest entry in the dictionary. Explain-
+ing the "culture of HERE" is beyond the scope of this primer,
+but know that it's a very important concept in Forth. For examp-
+le, new word definitions are written to HERE.
+
+# Variables
+
+The word "VARIABLE" links a name to an address. For example,
 "VARIABLE FOO" defines the word "FOO" and "reserves" 2 bytes of
 memory. Then, when FOO is executed, it pushes the address of the
 "reserved" area to PS.
 
 For example, "1234 FOO !" writes 1234 to memory address reserved
 for FOO.
+
+Another way to create a variable is with the word CREATE, which
+creates a variable entry without reserving anything for it: it's
+your responsibility to reserve memory for it after you call it.
+It can be useful for arrays. For example, look at VARIABLE's
+definition:
+
+: VARIABLE CREATE 2 ALLOT ;
+
+# DOES>
+
+Calling DOES> makes the newly created entry into a special
+"does word" which behaves like a variable, that is, it pushes
+the address of the "reserved" space to PS, but with additional
+behavior attached to it.
+
+DOES> must be called in the context of a word definition and
+calling it stops the definition right there. Every word follow-
+ing the DOES> is our new entry's behavior. For example, let's
+look at CONSTANT's definition:
+
+: CONSTANT CREATE , DOES> @ ;
+
+A constant is created with "42 CONSTANT FOO" and FOO, instead
+of putting FOO's address on PS, puts 42 on it.
+
+You can see above that after we've created our FOO entry, we
+write it to HERE and then assign the behavior "@" to it, which
+means that it will transform the address currently on PS to its
+value.
 
 # IMMEDIATE
 
