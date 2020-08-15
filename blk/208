@@ -5,7 +5,7 @@ d => BC DE HL AF/SP
 c => CNZ CZ CNC CC CPO CPE CP CM
 
 LD [rr, ri, di, (i)HL, HL(i), d(i), (i)d, rIXY, IXYr,
-    (DE)A, A(DE)]
+    (DE)A, A(DE), (i)A, A(i)]
 ADD [r, i, HLd, IXd, IXIX, IYd, IYIY]
 ADC [r, HLd]
 CP  [r, i, (IXY+)]

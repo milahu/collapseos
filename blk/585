@@ -1,9 +1,0 @@
-            IFZ, ( end of buffer reached? )
-                ( yes )
-                ACIA( LDHL(n),
-                ACIAW> LD(n)HL,
-            THEN,
-        THEN,
-    THEN,
-    DE POP, HL POP, AF POP,
-    EI, RETI,

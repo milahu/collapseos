@@ -7,5 +7,5 @@
 ;
 0xcd OP3n CALL,
 0xc3 OP3n JP,
-0x22 OP3n LD(n)HL,
-0x2a OP3n LDHL(n),
+0x22 OP3n LD(n)HL,             0x2a OP3n LDHL(n),
+0x32 OP3n LD(i)A,              0x3a OP3n LDA(i),

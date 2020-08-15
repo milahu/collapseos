@@ -1,13 +1,16 @@
-(entry) ~ACIA ( Set RST 38 jump ) PC ORG @ 0x39 + !
-    AF PUSH, HL PUSH, DE PUSH,
-	( Read our character from ACIA into our BUFIDX )
-    ACIA_CTL INAi,
-    0x01 ANDi,   ( is ACIA rcv buf full? )
-    IFNZ,
-        ( correct interrupt cause )
-        ACIAW> LDHL(n),
-        ( is it == to ACIAR>? )
-        ( +0 == ACIAR> )
-        DE ACIAR> LDd(n),
-        ( carry cleared from ANDi above )
-        DE SBCHLd,                                    ( cont. )
+( ACIA INT handler, read into ACIAW> )
+( Set RST 38 jump ) PC ORG @ 0x39 + !
+    AF PUSH,
+    ACIA_CTL INAi, 0x01 ANDi, ( is ACIA rcv buf full? )
+    IFZ, ( no, abort ) AF POP, EI, RETI, THEN,
+    HL PUSH,
+    HL ACIAW> LDdn, A (HL) LDrr,
+    HL DECd, (HL) CPr, ( W> == R> ? )
+    IFNZ, ( buffer not full )
+        ( get wr ptr ) HL ACIA( LDd(n),
+        L ADDr, IFC, H INCr, THEN, L A LDrr,
+        ( fetch/write ) ACIA_IO INAi, (HL) A LDrr,
+        ( advance W> ) ACIAW> LDA(i), A INCr,
+        ACIA_BUFSZ 1- ANDi, ACIAW> LD(i)A,
+    THEN,
+    HL POP, AF POP, EI, RETI,
