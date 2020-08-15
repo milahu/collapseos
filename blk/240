@@ -1,11 +1,11 @@
-( n -- )
-: OP3n
+( i -- )
+: OP3i
     CREATE C,
     DOES>
     C@ A,
     A,,
 ;
-0xcd OP3n CALL,
-0xc3 OP3n JP,
-0x22 OP3n LD(n)HL,             0x2a OP3n LDHL(n),
-0x32 OP3n LD(i)A,              0x3a OP3n LDA(i),
+0xcd OP3i CALL,
+0xc3 OP3i JP,
+0x22 OP3i LD(i)HL,             0x2a OP3i LDHL(i),
+0x32 OP3i LD(i)A,              0x3a OP3i LDA(i),

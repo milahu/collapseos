@@ -1,7 +1,7 @@
 CODE * EXX, ( protect BC )
     ( DE * BC -> DE (high) and HL (low) )
     DE POP, BC POP, chkPS,
-    HL 0 LDdn,
+    HL 0 LDdi,
     A 0x10 LDri,
     BEGIN,
         HL ADDHLd,

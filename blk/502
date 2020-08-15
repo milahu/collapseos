@@ -3,7 +3,7 @@
   0xff mask. If it was a 0x20, we put a 0x7f mask. )
 : @GET,
     A 0x03 LDri, ( @GET )
-    DE COM_DRV_ADDR LDdn,
+    DE COM_DRV_ADDR LDdi,
     0x28 RST, JRNZ, L2 FWR ( maybeerror )
     A ORr,
     CZ RETc, ( Sending a straight NULL ends the comm. ) ;
@@ -13,4 +13,4 @@
         0x28 RST, JRNZ, L3 FWR ( error )
         A C LDrr, ;
 H@ ORG !
-HL DEST_ADDR LDdn,                                    ( cont. )
+HL DEST_ADDR LDdi,                                    ( cont. )

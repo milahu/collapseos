@@ -8,7 +8,7 @@ CODE PICK EXX, ( protect BC )
     B (HL) LDrr,
     ( check PS range before returning )
     EXDEHL,
-    HL PS_ADDR LDdn,
+    HL PS_ADDR LDdi,
     DE SUBHLd,
     IFC, EXX, lbluflw @ JP, THEN,
     BC PUSH,

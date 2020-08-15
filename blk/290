@@ -1,5 +1,5 @@
 lbluflw BSET ( abortUnderflow )
-    DE BIN( @ 0x06 ( uflw ) + LDd(n),
+    DE BIN( @ 0x06 ( uflw ) + LDd(i),
     JR, lblexec BWR
 lblchkPS BSET ( chkPS )
 ( Note that you only need to call this in words that push
@@ -8,7 +8,7 @@ lblchkPS BSET ( chkPS )
     EXX,
 ( We have the return address for this very call on the stack
   and protected registers. 2- is to compensate that. )
-    HL PS_ADDR 2- LDdn,
+    HL PS_ADDR 2- LDdi,
     SP SUBHLd,
     EXX,
     CNC RETc, ( PS_ADDR >= SP? good )

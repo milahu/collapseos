@@ -1,5 +1,5 @@
-( d n -- )
-: OP3dn
+( d i -- )
+: OP3di
     CREATE C,
     DOES>
     C@              ( d n op )
@@ -8,4 +8,4 @@
     OR A,
     A,,
 ;
-0x01 OP3dn LDdn,
+0x01 OP3di LDdi,

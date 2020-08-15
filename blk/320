@@ -4,7 +4,7 @@
 CODE /MOD EXX, ( protect BC )
     DE POP, BC POP, chkPS,
     A B LDrr, B 16 LDri,
-    HL 0 LDdn,
+    HL 0 LDdi,
     BEGIN,
         SCF, C RL, RLA,
         HL ADCHLd, DE SBCHLd,

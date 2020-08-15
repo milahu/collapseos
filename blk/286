@@ -6,8 +6,8 @@ lblnext BSET PC ORG @ 0x1b + ! ( next )
     IX PUSH, EX(SP)HL, ( do EX to count the IX push in SP )
     SP SUBHLd, HL POP,
     IFNC, ( SP <= IX? overflow )
-        SP PS_ADDR LDdn, IX RS_ADDR LDdn,
-        DE BIN( @ 0x13 ( oflw ) + LDd(n),
+        SP PS_ADDR LDdi, IX RS_ADDR LDdi,
+        DE BIN( @ 0x13 ( oflw ) + LDd(i),
         JR, L2 FWR ( execute, B287 )
     THEN,
     LDA(BC), E A LDrr, BC INCd,

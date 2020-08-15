@@ -3,11 +3,11 @@ Z80 Assembler
 201 Guide                      208 Instructions list
 212 Loader                     213 Variables & consts
 215 Utils                      216 OP1
-218 OP1r                       220 OP1qq
+218 OP1r                       220 OP1d
 222 OP1rr                      224 OP2
-226 OP2n                       228 OP2rn
+226 OP2i                       228 OP2ri
 230 OP2br                      232 OProt
-234 OP2r                       236 OP2ss
-238 OP3ddnn                    240 OP3nn
+234 OP2r                       236 OP2d
+238 OP3di                      240 OP3i
 242 Specials                   246 Flow
 249 Macros

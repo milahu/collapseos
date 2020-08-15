@@ -1,6 +1,6 @@
 : LINES 24 ; : COLS 80 ;
 CODE BYE
-    HL 0 LDdn,
+    HL 0 LDdi,
     A 0x16 LDri, ( @EXIT )
     0x28 RST,
 CODE @DCSTAT ( drv -- f ) EXX, ( protect BC )

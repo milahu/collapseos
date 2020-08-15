@@ -3,7 +3,7 @@ CODE CMP
     DE  POP,
     chkPS,
     DE SUBHLd,
-    DE 0 LDdn,
+    DE 0 LDdi,
     IFNZ, ( < or > )
         DE INCd,
         IFNC, ( < )

@@ -4,10 +4,10 @@
     ACIA_CTL INAi, 0x01 ANDi, ( is ACIA rcv buf full? )
     IFZ, ( no, abort ) AF POP, EI, RETI, THEN,
     HL PUSH,
-    HL ACIAW> LDdn, A (HL) LDrr,
+    HL ACIAW> LDdi, A (HL) LDrr,
     HL DECd, (HL) CPr, ( W> == R> ? )
     IFNZ, ( buffer not full )
-        ( get wr ptr ) HL ACIA( LDd(n),
+        ( get wr ptr ) HL ACIA( LDd(i),
         L ADDr, IFC, H INCr, THEN, L A LDrr,
         ( fetch/write ) ACIA_IO INAi, (HL) A LDrr,
         ( advance W> ) ACIAW> LDA(i), A INCr,
