@@ -1,0 +1,12 @@
+: _ [ SIO_ACTL LITN ] PC! ;
+: SIO$
+    H@ [ SIO( LITN ] ! 0 [ SIOR> LITN ] C!
+    1 [ SIOW> LITN ] C! ( write index starts one pos later )
+    [ SIO_BUFSZ LITN ] ALLOT
+    0x18 _ ( CMD3 )
+    0x24 _ ( CMD2/PTR4 ) 0b11000100 _ ( WR4/64x/1stop/nopar )
+    0x03 _ ( PTR3 ) 0b11000001 _ ( WR3/RXen/8char )
+    0x05 _ ( PTR5 ) 0b11001000 _ ( WR5/TXen/8char )
+    0x21 _ ( CMD2/PTR1 ) 0b00011000 _ ( WR1/Rx INT all chars )
+    (im1)
+;

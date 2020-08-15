@@ -1,0 +1,15 @@
+( INT handler. Set RST 38 jump ) PC ORG @ 0x39 + !
+AF PUSH, BEGIN,
+SIO_ACTL INAi, ( RR0 ) 0x01 ANDi, ( is recv buf full? )
+IFZ, ( nope, exit ) A 0x20 ( CMD 4 ) LDri, SIO_ACTL OUTiA,
+    AF POP, EI, RETI, THEN,
+HL PUSH,
+HL SIOW> LDdi, A (HL) LDrr,
+HL DECd, (HL) CPr, ( W> == R> ? )
+IFNZ, ( buffer not full )
+    ( get wr ptr ) HL SIO( LDd(i),
+    L ADDr, IFC, H INCr, THEN, L A LDrr,
+    ( fetch/write ) SIO_ADATA INAi, (HL) A LDrr,
+    ( advance W> ) SIOW> LDA(i), A INCr,
+    SIO_BUFSZ 1- ANDi, SIOW> LD(i)A,
+THEN, HL POP, JR, AGAIN,

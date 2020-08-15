@@ -1,0 +1,14 @@
+: (key)
+    ( inc then fetch )
+    [ SIOR> LITN ] C@ 1+ [ SIO_BUFSZ 1- LITN ] AND
+    ( As long as R> == W>-1, it means that buffer is empty )
+    BEGIN DUP [ SIOW> LITN ] C@ = NOT UNTIL
+    DUP [ SIO( LITN ] @ + C@ ( ridx c )
+    SWAP [ SIOR> LITN ] C! ( c )
+;
+: (emit)
+    ( As long at CTL bit 2 is low, we are transmitting. wait )
+    BEGIN [ SIO_ACTL LITN ] PC@ 0x04 AND UNTIL
+    ( The way is clear, go! )
+    [ SIO_ADATA LITN ] PC!
+;
