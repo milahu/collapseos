@@ -6,23 +6,24 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 VARIABLE ORG
 CREATE BIN( 0 ,
 : PC H@ ORG @ - ;
+155 LOAD  ( ALLOT0 )
 262 LOAD  ( xcomp )
 270 LOAD  ( xcomp overrides )
 
 H@ ORG !
-ORG @ 0x0b + HERE !
+0x0b ALLOT0
 0 C, 0 C, ( EXIT )
-ORG @ 0x23 + HERE !
+0x16 ALLOT0
 0 C, 0x05 C, ( (n) )
-ORG @ 0x2b + HERE !
+0x6 ALLOT0
 0 C, 0x06 C, ( (s) )
-ORG @ 0x33 + HERE !
+0x6 ALLOT0
 0 C, 0x04 C, ( 2>R )
-ORG @ 0x3b + HERE !
+0x6 ALLOT0
 0 C, 0x01 C, ( (br) )
-ORG @ 0x3f + HERE !
+0x2 ALLOT0
 0 C, 0x02 C, ( (?br) )
-ORG @ 0x43 + HERE !
+0x2 ALLOT0
 0 C, 0x03 C, ( (loop) )
 ( END OF STABLE ABI )
 H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )

@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include "vm.h"
@@ -284,8 +285,6 @@ VM* VM_init() {
         return NULL;
     }
     fseek(blkfp, 0, SEEK_SET);
-    // initialize memory
-    memset(vm.mem, 0, 0x10000);
     FILE *bfp = fopen(FBIN_PATH, "r");
     if (!bfp) {
         fprintf(stderr, "Can't open forth.bin\n");
@@ -298,6 +297,13 @@ VM* VM_init() {
         c = getc(bfp);
     }
     fclose(bfp);
+    // initialize rest of memory with random data. Many, many bugs we've seen in
+    // Collapse OS were caused by bad initialization and weren't reproducable
+    // in CVM because it has a neat zeroed-out memory. Let's make bugs easier
+    // to spot.
+    while (i<0x10000) {
+        vm.mem[i++] = random();
+    }
     vm.SP = SP_ADDR;
     vm.RS = RS_ADDR;
     vm.minSP = SP_ADDR;
