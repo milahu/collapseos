@@ -1,6 +1,0 @@
-Addressed devices
-
-A@ and A! are the indirect versions of C@ and C!. Their target
-word is controlled through A@* and A!* and by default point to
-C@ and C*. There is also a AMOVE word that is the same as MOVE
-but using A@ and A!.

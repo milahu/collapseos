@@ -23,13 +23,10 @@ tools.
 
 ## Getting started
 
-Usage documentation is in-system, so access to documentation requires you to
-run Collapse OS. Fortunately, building and running Collapse OS on a POSIX
-environment is easy.
+Documentation is in text files in `doc/`. Begin with `intro.txt`.
 
+Collapse OS can run on any POSIX platform and builds easily.
 See `/cvm/README.md` for instructions.
-
-Then, run `0 LIST` for an introduction, follow instructions from there.
 
 Alternatively, there's also [Michael Schierl's JS Collapse OS emulator][jsemul]
 which is awesome and allows you to run Collapse OS from your browser, but it
@@ -42,6 +39,7 @@ it's not a z80 emulator, but a *javascript port of Collapse OS*!
          source code is located. Everything else is peripheral.
 * `cvm`: A C implementation of Collapse OS, allowing it to run natively on any
          POSIX platform.
+* `doc`: Documentation.
 * `recipes`: collection of recipes that assemble Collapse OS on a specific
              machine.
 * `tools`: Tools for working with Collapse OS from "modern" environments. For

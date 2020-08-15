@@ -1,8 +1,0 @@
-However, absolute LOAD operations in Collapse OS aren't aware
-of disk spanning and will not work properly in your spanned
-system.
-
-Although the usage of absolute LOAD calls are minimally used
-(relative LOADs are preferred), they are sometimes unavoidable.
-When you span Collapse OS over multiple disks, don't forget to
-adjust those absolute LOADs.
