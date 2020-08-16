@@ -1,0 +1,10 @@
+SD Card subsystem
+
+Load range: B423-B436
+
+This subsystem is designed for a ad-hoc adapter card that acts
+as a SPI relay between the z80 bus and the SD card. It requires
+a driver providing the SPI Relay protocol.
+
+Through that layer, this driver implements the SDC protocol
+allowing it to provide BLK@ and BLK!.

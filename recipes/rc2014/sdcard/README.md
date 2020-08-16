@@ -78,10 +78,10 @@ declaring `SPI_DATA`, `SPI_CSLOW` and `SPI_CSHIGH`, which are respectively `4`,
 This driver provides `(spix)`, `(spie)` and `(spid)` which are then used in the
 SDC driver.
 
-The SDC driver is at B600. It gives you a load range. This means that what
+The SDC driver is at B420. It gives you a load range. This means that what
 you need to insert in `xcomp` will look like:
 
-    603 616 LOADR  ( sdc )
+    423 436 LOADR  ( sdc )
 
 You also need to add `BLK$` to the init sequence.
 

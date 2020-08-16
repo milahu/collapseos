@@ -1,10 +1,10 @@
 PS/2 keyboard subsystem
 
-Provides (key) from a driver providing (ps2kc). That is, for a
-driver taking care of providing all key codes emanating from a
-PS/2 keyboard, this subsystem takes care of mapping those key-
-strokes to ASCII characters. This code is designed to be cross-
-compiled and loaded with drivers.
+Provides (key) from a driver providing the PS/2 protocol. That
+is, for a driver taking care of providing all key codes emanat-
+ing from a PS/2 keyboard, this subsystem takes care of mapping
+those keystrokes to ASCII characters. This code is designed to
+be cross-compiled and loaded with drivers.
 
 Requires PS2_MEM to be defined.
 

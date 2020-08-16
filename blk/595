@@ -1,12 +1,12 @@
 SPI relay driver
 
 This driver is designed for a ad-hoc adapter card that acts as a
-SPI relay between the z80 bus and the SPI device. Sending any-  
+SPI relay between the z80 bus and the SPI device. Sending any-
 thing on SPI_CSLOW and SPI_CSHIGH is expected to select/deselect
-the device, and writing to SPI_DATA is expected to initiate a   
+the device, and writing to SPI_DATA is expected to initiate a
 byte exchange. The result of the exchange is excpected to be re-
 trieved by reading SPI_DATA.
 
-Provides (spie) (enable), (spid) (disable), (spix) (xchange).
+Provides the SPI relay protocol.
 
 Load driver with "596 LOAD".
