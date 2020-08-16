@@ -1,3 +1,0 @@
-For this reason, any stable wordref compiled in the "hot zone"
-(B397-B400) has to be compiled by direct offset reference to
-avoid having any binary offset applied to it.

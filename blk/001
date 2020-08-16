@@ -1,7 +1,6 @@
 MASTER INDEX
 
- 30 Dictionary
- 70 Implementation notes      100 Block editor
+ 30 Dictionary                100 Block editor
 120 Visual Editor             150 Extra words
 200 Z80 assembler             260 Cross compilation
 280 Z80 boot code             350 Core words
