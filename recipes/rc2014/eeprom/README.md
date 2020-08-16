@@ -35,12 +35,12 @@ I don't think you need a schematic. It's really simple.
 ### Building the binary
 
 The binary from the base recipe has almost all it needs to write to EEPROM. The
-only thing it needs is the AT28 driver from B590. You could add it to the
+only thing it needs is the AT28 driver from B592. You could add it to the
 `xcomp` unit and rebuild, but the driver is so tiny, you're probably better off
 loading it at runtime.
 
 If your system has mass storage, it's as easy as a LOAD. If it doesn't, you
-can use `/tools/exec` to send `blk/591` to the RC2014.
+can use `/tools/exec` to send `blk/593` to the RC2014.
 
 ## Writing contents to the AT28
 

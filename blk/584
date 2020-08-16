@@ -1,0 +1,14 @@
+: (key)
+    ( inc then fetch )
+    [ ACIAR> LITN ] C@ 1+ [ ACIA_BUFSZ 1- LITN ] AND
+    ( As long as R> == W>-1, it means that buffer is empty )
+    BEGIN DUP [ ACIAW> LITN ] C@ = NOT UNTIL
+    DUP [ ACIA( LITN ] @ + C@ ( ridx c )
+    SWAP [ ACIAR> LITN ] C! ( c )
+;
+: (emit)
+    ( As long at CTL bit 1 is low, we are transmitting. wait )
+    BEGIN [ ACIA_CTL LITN ] PC@ 0x02 AND UNTIL
+    ( The way is clear, go! )
+    [ ACIA_IO LITN ] PC!
+;

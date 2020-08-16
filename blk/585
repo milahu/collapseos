@@ -1,0 +1,11 @@
+: ACIA$
+    H@ [ ACIA( LITN ] ! 0 [ ACIAR> LITN ] C!
+    1 [ ACIAW> LITN ] C! ( write index starts one pos later )
+    [ ACIA_BUFSZ LITN ] ALLOT
+( setup ACIA
+  CR7 (1) - Receive Interrupt enabled
+  CR6:5 (00) - RTS low, transmit interrupt disabled.
+  CR4:2 (101) - 8 bits + 1 stop bit
+  CR1:0 (10) - Counter divide: 64 )
+    0b10010110 [ ACIA_CTL LITN ] PC!
+    (im1) ;

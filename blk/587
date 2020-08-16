@@ -1,14 +1,14 @@
-: (key)
-    ( inc then fetch )
-    [ ACIAR> LITN ] C@ 1+ [ ACIA_BUFSZ 1- LITN ] AND
-    ( As long as R> == W>-1, it means that buffer is empty )
-    BEGIN DUP [ ACIAW> LITN ] C@ = NOT UNTIL
-    DUP [ ACIA( LITN ] @ + C@ ( ridx c )
-    SWAP [ ACIAR> LITN ] C! ( c )
-;
-: (emit)
-    ( As long at CTL bit 1 is low, we are transmitting. wait )
-    BEGIN [ ACIA_CTL LITN ] PC@ 0x02 AND UNTIL
-    ( The way is clear, go! )
-    [ ACIA_IO LITN ] PC!
-;
+0x80 CONSTANT SIO_ACTL   0x81 CONSTANT SIO_ADATA
+0x82 CONSTANT SIO_BCTL   0x83 CONSTANT SIO_BDATA
+0x20 CONSTANT SIO_BUFSZ ( SZ-1 must be a mask )
+( Address in memory that can be used variables shared
+  with SIO native words. 4 bytes used. )
+CREATE SIO_MEM SYSVARS 0x70 + ,
+( Points to SIO buf )
+: SIO( SIO_MEM @ 2+ ;
+( Read buf idx Pre-inc )
+: SIOR> SIO_MEM @ ;
+( Write buf idx Post-inc )
+: SIOW> SIO_MEM @ 1+ ;
+( This means that if W> == R>, buffer is full.
+  If R>+1 == W>, buffer is empty. )
