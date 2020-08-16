@@ -108,7 +108,7 @@ static void pushRS(word val) {
 }
 
 // The functions below directly map to native forth words defined in the
-// dictionary (B30)
+// dictionary (doc/dict.txt)
 static void execute(word wordref) {
     byte wtype = vm.mem[wordref];
     if (wtype == 0) { // native

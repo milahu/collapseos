@@ -51,8 +51,9 @@ words (if your system has glyphs for them).
 # Dictionary
 
 Forth's dictionary link words to code. On boot, this dictionary
-contains the system's words (look in B30 for a list of them),
-but you can define new words with the ":" word. For example:
+contains the system's words (look in dict.txt for a list of
+them), but you can define new words with the ":" word. For
+example:
 
 : FOO 42 . ;
 
@@ -245,5 +246,5 @@ their "power" come from the fact that they're immediate.
 
 Starting Forth by Leo Brodie explain all of this in details.
 Read this if you can. If you can't, well, let this sink in for
-a while, browse the dictionary (B30) and try to understand why
-this or that word is immediate. Good luck!
+a while, browse the dictionary (dict.txt) and try to understand
+why this or that word is immediate. Good luck!

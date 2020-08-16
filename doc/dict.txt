@@ -1,0 +1,281 @@
+# Dictionary
+
+List of words defined in Inner core (B390), Core words (B420)
+and Extra words (B150).
+
+# Glossary
+
+Stack notation: "<stack before> -- <stack after>". Rightmost is
+top of stack (TOS). For example, in "a b -- c d", b is TOS
+before, d is TOS after. "R:" means that the Return Stack is
+modified. "I:" prefix means "IMMEDIATE", that is, that this
+stack transformation is made at compile time.
+
+Word references (wordref): When we say we have a "word
+reference", it's a pointer to a word's *code link*. For example,
+the address that "' DUP" puts on the stack is a wordref, that
+is, a reference to the code link of the word DUP.
+
+PF: Parameter field. The area following the code link of a
+word. For example, "' H@ 1+" points to the PF of the word H@.
+
+Atom: A word of the type compiledWord contains, in its PF, a
+list of what we call "atoms". Those atoms are most of the time
+word references, but they can also be references to NUMBER and
+LIT.
+
+Words between "()" are "support words" that aren't really meant
+to be used directly, but as part of another word.
+
+"*I*" in description indicates an IMMEDIATE word.
+
+# Symbols
+
+Throughout words, different symbols are used in different
+contexts, but we try to been consistent in their use. Here's
+their definitions:
+
+! - Store
+@ - Fetch
+$ - Initialize
+^ - Arguments in their opposite order
+< - Input
+> - 1. Pointer in a buffer 2. Opposite of "<".
+( - Lower boundary
+) - Upper boundary
+* - Word indirection (pointer to word)
+? - Is it ...? (example: IMMED?)
+
+# Entry management
+
+'? x     -- a f   Find x it in dict. If found, f=1 and
+                  a = wordref. If not found, f=0 and
+                  a = string addr.
+' x      -- a     Push addr of word x to a. If not found,
+                  aborts.
+['] x    --       *I* Like "'", but spits the addr as a number
+                  literal. If not found, aborts.
+,        n --     Write n in HERE and advance it.
+ALLOT    n --     Move HERE by n bytes
+C,       b --     Write byte b in HERE and advance it.
+FIND     w -- a f Like '?, but for w.
+EMPTY  --         Rewind HERE and CURRENT where they were at
+                  system initialization.            
+FORGET x --       Rewind the dictionary (both CURRENT and HERE)
+                  up to x's previous entry.             
+PREV   a -- a     Return a wordref's previous entry.
+WORD(  a -- a     Get wordref's beginning addr.
+
+# Defining words
+
+: x ...     --     Define a new word
+;           R:I -- Exit a colon definition
+CREATE x    --     Create cell named x. Doesn't allocate a PF.
+[COMPILE] x --     Compile word x and write it to HERE.
+                   IMMEDIATE words are *not* executed.
+COMPILE x   --     Meta compiles. See B6.
+CONSTANT x  n --   Creates cell x that when called pushes its
+                   value.
+DOES>       --     See primer.txt
+IMMED?      a -- f Checks whether wordref at a is immediate.
+IMMEDIATE   --     Flag the latest defined word as immediate.
+LITN        n --   Write number n as a literal.
+VARIABLE c  --     Creates cell x with 2 bytes allocation.
+
+# Flow
+
+Note that flow words can only be used in definitions. In the
+INTERPRET loop, they don't have the desired effect because each
+word from the input stream is executed immediately. In this
+context, branching doesn't work.
+
+f IF A ELSE B THEN: if f is true, execute A, if false, execute
+B. ELSE is optional.
+[IF] .. [THEN]: Meta-IF. Works outside definitions. No [ELSE].
+BEGIN .. f UNTIL: if f is false, branch to BEGIN.
+BEGIN .. AGAIN: Always branch to BEGIN.
+x y DO .. LOOP: LOOP increments y. if y != x, branch to DO.
+
+x CASE y OF A ENDOF z OF B ENDOF C ENDCASE: If x == y, execute
+A, if x == z, execute B. Otherwise, execute C. x is dropped
+in case of an OF match, *but it is kept if it reaches C*. You
+have to consume it to avoid PSP leak.           
+
+(br)      --   Branches by the number specified in the 2
+               following bytes. Can be negative.
+(?br)     f -- Branch if f is false.
+(         --   *I* Comment. Ignore input until ")" is read.
+[         --   Begin interpretative mode. In a definition,
+               execute words instead of compiling them.
+]         --   End interpretative mode.
+ABORT     --   Resets PS and RS and returns to interpreter.
+ABORT" x" --   *I* Compiles a ." followed by a ABORT.
+ERR       a -- Prints a and ABORT. Defined early and used by
+               drivers.
+EXECUTE   a -- Execute wordref at addr a
+INTERPRET --   Get a line from stdin, compile it in tmp memory,
+               then execute the compiled contents.
+LEAVE     --   In a DO..LOOP, exit at the next LOOP call.
+QUIT      --   Return to interpreter prompt immediately
+
+# Parameter Stack
+
+DROP        a --
+DUP         a -- a a
+?DUP        DUP if a is nonzero
+NIP         a b -- b
+OVER        a b -- a b a
+ROT         a b c -- b c a
+SWAP        a b -- b a
+TUCK        a b -- b a b
+2DROP       a a --
+2DUP        a b -- a b a b
+2OVER       a b c d -- a b c d a b
+2SWAP       a b c d -- c d a b
+'S          Returns current stack pointer, not counting the
+            push it's making right now.
+S0          Returns address of PSP TOS. When PSP is empty,
+            'S == S0                                 
+PICK        Pick nth item from stack. "0 PICK" = DUP,
+            "1 PICK" = OVER.
+ROLL        Rotate PSP over n items. "1 ROLL" = SWAP,
+            "2 ROLL" = ROT. 0 is noop.
+
+# Return Stack
+
+>R          n -- R:n        Pops PS and push to RS
+2>R         x y -- R:x y    Equivalent to SWAP >R >R
+R>          R:n -- n        Pops RS and push to PS
+2R>         R:x y -- x y    Equivalent to R> R> SWAP
+I           -- n            Copy RS TOS to PS
+I'          -- n            Copy RS second item to PS
+J           -- n            Copy RS third item to PS
+
+# Memory
+
+@        a -- n          Set n to value at address a
+!        n a --          Store n in address a
+?        a --            Print value of addr a
++!       n a --          Increase value of addr a by n
+BIT@     b a -- f        Get bit b from addr a.
+BIT!     f b a --        Set bit b to f in addr a.
+C@       a -- c          Set c to byte at address a
+C@+      a -- a+1 c      Fetch c from a and inc a.
+C@-      a -- a-1 c      Fetch c from a and dec a.
+C!       c a --          Store byte c in address a
+C!+      c a -- a+1      Store byte c in a and inc a.
+C!-      c a -- a-1      Store byte c in a and dec a.
+CURRENT  -- a            Set a to wordref of last added entry.
+CURRENT* -- a            A pointer to active CURRENT*. Useful
+                         when we have multiple active dicts.
+FILL     a n b --        Fill n bytes at addr a with val b.
+HERE     -- a            Push HERE's address
+H@       -- a            HERE @
+MOVE     a1 a2 u --      Copy u bytes from a1 to a2, starting
+                         with a1, going up.
+MOVE-    a1 a2 u --      Copy u bytes from a1 to a2, starting
+                         with a1+u, going down.
+MOVE,    a u --          Copy u bytes from a to HERE.
+
+# Addressed devices
+
+ADEV$       --              Initialize adev subsystem
+A@          a -- c          Indirect C@
+A!          c a --          Indirect C!
+A@*         -- a            Address for A@ word
+A!*         -- a            Address for A! word
+AMOVE       src dst u --    Same as MOVE, but with A@ and A!
+
+# Arithmetic / Bits
+
++           a b -- c        a + b -> c
+-           a b -- c        a - b -> c
+-^          a b -- c        b - a -> c
+*           a b -- c        a * b -> c
+/           a b -- c        a / b -> c
+MOD         a b -- c        a % b -> c
+/MOD        a b -- r q      r:remainder q:quotient
+AND         a b -- c        a & b -> c
+OR          a b -- c        a | b -> c
+XOR         a b -- c        a ^ b -> c
+LSHIFT      a u -- c        a << u -> c
+RSHIFT      a u -- c        a >> u -> c
+
+Shortcuts: 1+ 2+ 1- 2-
+
+# Logic
+
+=    n1 n2 -- f Push true if n1 == n2
+<    n1 n2 -- f Push true if n1 < n2
+>    n1 n2 -- f Push true if n1 > n2
+><   n l h -- f Push true if l < n < h
+=><= n l h -- f Push true if l <= n <= h
+CMP  n1 n2 -- n Compare n1 and n2 and set n to -1, 0, or 1.
+                n=0: a1=a2. n=1: a1>a2. n=-1: a1<a2.
+MIN  a b -- n   Returns the lowest of a and b
+MAX  a b -- n   Returns the highest of a and b
+NOT  f -- f     Push the logical opposite of f
+
+# Strings
+
+LIT    --         Write a LIT entry. You're expected to write
+                  actual string to HERE right afterwards.
+LIT< x --         Read following word and write to HERE as a
+                  string literal.
+S=     a1 a2 -- f Returns whether string a1 == a2.
+
+# I/O
+
+(parse)  a -- n   Parses string at a as a number and push the
+                  result in n as well as whether parsing was a
+                  success in f (false = failure, true =
+                  success)
+(print)  a --     Print string at addr a. Stops at 0x0 or 0xd.
+.        n --     Print n in its decimal form
+.x       n --     Print n's LSB in hex form. Always 2
+                  characters.
+.X       n --     Print n in hex form. Always 4 characters.
+                  Numbers are never considered negative.
+                  "-1 .X" --> ffff
+," xxx" --     Write xxx to HERE
+." xxx" --     *I* Compiles string literal xxx followed by a
+               call to (print).
+C<?     -- f   Returns whether there's a char waiting in buf.
+C<      -- c   Read one char from buffered input.
+DUMP    n a -- Prints n bytes at addr a in a hexdump format.
+               Prints in chunks of 8 bytes. Doesn't do partial
+               lines. Output is designed to fit in 32 columns.
+EMIT    c --   Spit char c to output stream
+IN>     -- a   Address of variable containing current pos in
+               input buffer.
+KEY     -- c   Get char c from direct input
+PC!     c a -- Spit c to port a
+PC@     a -- c Fetch c from port a
+WORD    -- a   Read one word from buffered input and push its
+               addr. Always null terminated. If ASCII EOT is
+               encountered, a will point to it (it is cons-
+               idered a word).
+
+There are also ascii const emitters:
+BS CR LF SPC CRLF
+
+NL is an indirect word (see SYSVARS in impl.txt) that aliases to
+CRLF by default and that should generally be used when we want
+to emit a newline.
+
+# Disk
+
+BLK>   -- a      Address of the current block variable.
+BLK(   -- a      Beginning addr of blk buf.
+BLK)   -- a      Ending addr of blk buf.
+COPY   s d --    Copy contents of s block to d block.
+FLUSH  --        Write current block to disk if dirty.
+FREEBLKS? a b -- List free blocks between blocks a and b.
+LIST   n --      Prints the contents of the block n on screen
+                 in the form of 16 lines of 64 columns.
+LOAD   n --      Interprets Forth code from block n
+LOAD+  n --      Relative load. Loads active block + n.
+LOADR  n1 n2 --  Load block range between n1 and n2, inclusive.
+LOADR+ n1 n2 --  Relative ranged load.
+WIPE   --        Empties current block
+WIPED? -- f      Whether current block is empty

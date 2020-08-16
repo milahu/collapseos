@@ -6,8 +6,7 @@ disk blocks access running. The goal here is to minimize the
 binary size of a minimum Collapse OS install.
 
 Extra words are words you will most likely want because they
-are generally useful. They are so useful that they are part
-of the Dictionary (B30).
+are generally useful.
 
 Some programs need them, so they will automatically LOAD them.
 Because more than one program can use the same extra words,

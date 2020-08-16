@@ -1,9 +1,0 @@
-Return Stack
-
->R          n -- R:n        Pops PS and push to RS
-2>R         x y -- R:x y    Equivalent to SWAP >R >R
-R>          R:n -- n        Pops RS and push to PS
-2R>         R:x y -- x y    Equivalent to R> R> SWAP
-I           -- n            Copy RS TOS to PS
-I'          -- n            Copy RS second item to PS
-J           -- n            Copy RS third item to PS
