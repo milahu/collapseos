@@ -115,5 +115,5 @@ int main(int argc, char *argv[])
         retcode = 1;
     }
     VM_deinit();
-    return 0;
+    return retcode;
 }
