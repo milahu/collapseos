@@ -15,10 +15,10 @@ Build Collapse OS' from within Collapse OS is very similar to how we do
 it from the makefile. If you take the time to look at the base recipe
 `Makefile`, you'll see `cat xcomp.fs | $(STAGE)`. That's the thing.  Open
 `xcomp.fs` in a text editor and take a look at it. You'll see that it loads
-B618, which contains the meat, and then spits stuff to port 2, which is a
+B599, which contains the meat, and then spits stuff to port 2, which is a
 special signal for the `stage` binary.
 
-To assemble from RC2014, all you need to do is load B618. This will
+To assemble from RC2014, all you need to do is load B599. This will
 yield a binary in memory. To know the start/end offset of the binary, you'll
 type the same two commands and in `xcomp.fs`, but replace the `/MOD 2 PC! 2 PC!`
 words with `.X`. Then, write that binary between those offsets on your target

@@ -70,13 +70,15 @@ instead.
 
 ## Building your binary
 
-The binary built in the base recipe doesn't have SDC drivers. Using the same
-instructions as in the `eeprom` recipe, you'll need to assemble a binary with
-those drivers. First, we need drivers for the SPI relay. This is done by
-declaring `SPI_DATA`, `SPI_CSLOW` and `SPI_CSHIGH`, which are respectively `4`,
-`5` and `6` in our relay design. You can then load the driver with `596 LOAD`.
-This driver provides `(spix)`, `(spie)` and `(spid)` which are then used in the
-SDC driver.
+The binary built in the base recipe doesn't have SDC drivers. You'll need to
+assemble a binary with those drivers. To do so, you'll modify the xcomp unit
+of the base recipe. Look at `xcomp.fs`, you'll see that we load a block. That's
+our xcomp block (likely, B599). Open it.
+
+First, we need drivers for the SPI relay. This is done by declaring `SPI_DATA`,
+`SPI_CSLOW` and `SPI_CSHIGH`, which are respectively `4`, `5` and `6` in our
+relay design. You can then load the driver with `596 LOAD`. This driver provides
+`(spix)`, `(spie)` and `(spid)` which are then used in the SDC driver.
 
 The SDC driver is at B420. It gives you a load range. This means that what
 you need to insert in `xcomp` will look like:
@@ -85,7 +87,8 @@ you need to insert in `xcomp` will look like:
 
 You also need to add `BLK$` to the init sequence.
 
-Build it and write it to EEPROM.
+Build it (run `make pack` in `cvm/` first to ensure an up-to-date blkfs) and
+write it to EEPROM.
 
 ## Testing in the emulator
 
