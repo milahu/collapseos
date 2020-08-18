@@ -17,7 +17,7 @@ you can put it on your cartridge.
 This recipe is for installing a minimal Collapse OS system on the SMS. There
 are other recipes related to the SMS:
 
-* [Interfacing a PS/2 keyboard](kbd/README.md)
+* [Interfacing a PS/2 keyboard](kbd.md)
 
 ## Gathering parts
 

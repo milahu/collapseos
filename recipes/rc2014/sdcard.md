@@ -124,5 +124,5 @@ Very easy. You see that `/emul/blkfs` file? You dump it to your raw device.
 For example, if the device you get when you insert your SD card is `/dev/sdb`,
 then you type `cat emul/blkfs | sudo tee /dev/sdb > /dev/null`.
 
-[schematic]: spirelay/spirelay.pdf
+[schematic]: spirelay.pdf
 [inspiration]: https://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html

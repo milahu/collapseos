@@ -23,10 +23,10 @@ disabled.
 This recipe is for installing a minimal Collapse OS system on the RC2014. There
 are other recipes related to the RC2014:
 
-* [Writing to a AT28 from Collapse OS](eeprom/README.md)
-* [Accessing a MicroSD card](sdcard/README.md)
-* [Self-hosting](selfhost/README.md)
-* [Interfacing a PS/2 keyboard](ps2/README.md)
+* [Writing to a AT28 from Collapse OS](eeprom.md)
+* [Accessing a MicroSD card](sdcard.md)
+* [Self-hosting](selfhost.md)
+* [Interfacing a PS/2 keyboard](ps2.md)
 
 ## Recipe
 

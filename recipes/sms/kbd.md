@@ -112,4 +112,4 @@ We start with the base recipe and add a few things:
 Rebuild, send to SMS, then run with your keyboard interface plugged to PortB.
 It should mostly work. There are still a few glitches to iron out...
 
-[rc2014-ps2]: ../../rc2014/ps2
+[rc2014-ps2]: ../rc2014/ps2

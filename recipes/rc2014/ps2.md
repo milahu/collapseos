@@ -27,18 +27,18 @@ the ACIA.
 
 Let's start with the PS/2 connector, which has two pins:
 
-![PS/2 connector](schema-ps2.png)
+![PS/2 connector](ps2-conn.png)
 
 Both are connected to the ATtiny45, `CLK` being on `PB2` to have `INT0` on it.
 
 The `DATA` line is multi-use. That is, `PB1` is connected both to the PS/2 data
 line and to the 595's `SER`. This saves us a precious pin.
 
-![ATtiny45](schema-t45.png)
+![ATtiny45](ps2-t45.png)
 
 The ATtiny 45 hooks everything together. `CE` comes from the z80 bus, see below.
 
-![74xx595](schema-595.png)
+![74xx595](ps2-595.png)
 
 This allows us to supply the z80 bus with data within its 375ns limits. `SRCLR`
 is hooked to the `CE` line so that whenever a byte is read, the 595 is zeroed
@@ -48,7 +48,7 @@ The 595, to have its `SRCLR` becoming effective, needs a `RCLK` trigger, which
 doesn't happen immediately. It's the ATtiny45, in its `PCINT` interrupt, that
 takes care of doing that trigger (as fast as possible).
 
-![z80](schema-z80.png)
+![z80](ps2-z80.png)
 
 Our device is read only, on one port. That makes the "Chip Enable" (`CE`)
 selection rather simple. In my design, I chose the IO port 8, so I inverted
