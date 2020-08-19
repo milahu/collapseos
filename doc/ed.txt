@@ -1,0 +1,140 @@
+# Editing text
+
+Collapse OS has 2 levels of text editing capabilities: command-
+based editing and visual editing.
+
+The command-based editor is a "traditional" Forth text editor as
+described in Starting Forth by Leo Brodie. We call this editor
+the "Block editor" and it is located at B100.
+
+The visual editor is a full-blown application that takes over
+the interpreter loop with its own key interpreter and takes over
+the whole screen using AT-XY. We call this editor the "Visual
+Editor" and is located at B120.
+
+When available, the Visual editor is almost always preferable to
+the Block editor. It's much more usable. We have the Block edi-
+tor around because not all machines can implement AT-XY. For ex-
+ample, a machine with only a serial console can't.
+
+# Block editor
+
+The Block editor augments the built-in work LIST with words to
+modify the block currently being loaded. Block saving happens
+automatically: Whenever you load a new block, the old block, if
+changed, is saved to disk first. You can force that with FLUSH.
+
+Editing works around 3 core concepts: cursor, insert buffer
+(IBUF), find buffer (FBUF).
+
+The cursor is simply the character index in the 64x16 grid. The
+word T allows you to select a line. For example, "3 T" selects
+the 3rd line. It then prints the selected line with a "^" char-
+acter to show your position on it. After a T, that "^" will 
+always be at the beginning of the line.
+
+You can insert text at the current position with "i". For exam-
+ple, "i foo" inserts "foo" at cursor. Text to the right of it
+is shifted right. Any content above 64 chars is lost.
+
+You can "put" a new line with "P". "P foo" will insert a new
+line under the cursor and place "foo" on it. The last line of
+the block is lost. "U" does the same thing, but on the line
+above the cursor.
+
+Inserting anything also copies the inserted content into IBUF.
+Whenever an inserting command is used with no content (you still
+have to type the whitespace after the word though), what is in-
+serted is the content of IBUF.
+
+This is all well and good, but a bit more granularity would be
+nice, right? What if you want to insert at a specific position
+in the line? Enter FBUF.
+
+"F foo" finds the next occurrence of "foo" in the block and
+places the cursor in front of it. It then spits the current line
+in the same way "T" does.
+
+It's with this command that you achieve granularity. This allows
+you to insert at arbitrary places in the block. You can also
+delete contents with this, using "E". "E" deletes the last found
+contents. So, after you've done "F foo" and found "foo", running
+"E" will delete "foo", shifting the rest of the line left.
+
+List of commands:
+
+T ( n -- ): select line n for editing.
+P xxx: put typed IBUF on selected line.
+U xxx: insert typed IBUF on selected line.
+F xxx: find typed FBUF in block, starting from current
+       position+1. If not found, don't move.
+i xxx: insert typed IBUF at cursor. "i" is to avoid shadowing 
+       core word "I".   
+Y: Copy n characters after cursor into IBUF, n being length of
+   FBUF.
+X ( n -- ): Delete X chars after cursor and place in IBUF.
+E: Run X with n = length of FBUF.
+
+# Visual editor
+
+This editor, unlike the Block Editor, is grid-based instead of
+being command-based. It requires the AT-XY, COLS and LINES words
+to be implemented.
+
+It is loaded with "125 LOAD" and invoked with "VE". Note that
+this also fully loads the Block Editor.
+
+This editor uses 19 lines. The top line is the status line and
+it's followed by 2 lines showing the contents of IBUF and
+FBUF. There are then 16 contents lines. The contents shown is
+that of the currently selected block.
+
+The status line displays the active block number, then the
+"modifier" and then the cursor position. When the block is dir-
+ty, an "*" is displayed next. At the right corner, a mode letter
+can appear. 'R' for replace, 'I' for insert, 'F' for find.
+
+All keystrokes are directly interpreted by VE and have the
+effect described below.
+
+Pressing a 0-9 digit accumulates that digit into what is named
+the "modifier". That modifier affects the behavior of many
+keystrokes described below. The modifier starts at zero, but
+most commands interpret a zero as a 1 so that they can have an
+effect.
+
+'G' selects the block specified by the modifier as the current
+block. Any change made to the previously selected block is
+saved beforehand.
+
+'[' and ']' advances the selected block by "modifier". 't' opens
+the previously opened block. 
+
+'h' and 'l' move the cursor by "modifier" characters. 'j' and
+'k', by lines. 'g' moves to "modifier" line.
+
+'H' goes to the beginning of the line, 'L' to the end.
+
+'w' moves forward by "modifier" words. 'b' moves backward.
+'W' moves to end-of-word. 'B', backwards.
+
+'I', 'F', 'Y', 'X' and 'E' invoke the corresponding command
+
+'o' inserts a blank line after the cursor. 'O', before.
+
+'D' deletes "modifier" lines at the cursor. The first of those
+lines is copied to IBUF.
+
+'f' puts the contents of your previous cursor movement into
+FBUF. If that movement was a forward movement, it brings the
+cursor back where it was. This allows for an efficient combi-
+nation of movements and 'E'. For example, if you want to delete
+the next word, you type 'w', then 'f', then check your FBUF to
+be sure, then press 'E'.
+
+'R' goes into replace mode at current cursor position.
+Following keystrokes replace current character and advance
+cursor. Press return to return to normal mode.
+
+'@' re-reads current block even if it's dirty, thus undoing     
+recent changes.
