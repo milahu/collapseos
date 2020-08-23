@@ -8,13 +8,8 @@ You can't really keep pins high and low on an IO line. You need some kind of
 intermediary between z80 IOs and SPI.
 
 There are many ways to achieve this. This recipe explains how to build your own
-hacked off SPI relay for the RC2014. It can then be used with `sdc.fs` to
-drive a SD card.
-
-## Goal
-
-Read and write to a SD card from Collapse OS using a SPI relay of our own
-design.
+hacked off SPI relay for the RC2014. It can then be used with the SD Card
+subsystem (B420) to drive a SD card.
 
 ## Gathering parts
 
@@ -60,13 +55,21 @@ To that end, I was heavily inspired by [this design][inspiration].
 This board uses port `4` for SPI data, port `5` to pull `CS` low and port `6`
 to pull it high. Port `7` is unused but monopolized by the card.
 
-Little advice: If you make your own design, double check propagation delays!
+Advice 1: If you make your own design, double check propagation delays!
 Some NAND gates, such as the 4093, are too slow to properly respond within
 a 300ns limit. For example, in my own prototype, I use a 4093 because that's
 what I have in inventory. For the `CS` flip-flop, the propagation delay doesn't
 matter. However, it *does* matter for the `SELECT` line, so I don't follow my
 own schematic with regards to the `M1` and `A2` lines and use two inverters
 instead.
+
+Advice 2: Make `SCK` polarity configurable at all 3 endpoints (the 595, the 165
+and SPI connector). Those jumpers will be useful when you need to mess with
+polarity in your many tinkering sessions to come.
+
+Advice 3: Make input `CLK` override-able. SD cards are plenty fast enough for us
+to use the system clock, but you might want to interact with devices that
+require a slower clock.
 
 ## Building your binary
 
@@ -77,7 +80,12 @@ our xcomp block (likely, B599). Open it.
 
 First, we need drivers for the SPI relay. This is done by declaring `SPI_DATA`,
 `SPI_CSLOW` and `SPI_CSHIGH`, which are respectively `4`, `5` and `6` in our
-relay design. You can then load the driver with `596 LOAD`. This driver provides
+relay design. We also need to define SPI_DELAY, which we keep to 2 NOPs because
+we use the system clock:
+
+    : SPI_DELAY NOP, NOP, ;
+
+You can then load the driver with `596 LOAD`. This driver provides
 `(spix)`, `(spie)` and `(spid)` which are then used in the SDC driver.
 
 The SDC driver is at B420. It gives you a load range. This means that what

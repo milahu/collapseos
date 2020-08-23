@@ -3,7 +3,7 @@ CODE (spix) ( n -- n )
     chkPS,
     A L LDrr,
     SPI_DATA OUTiA,
-    NOP, NOP, ( let SPI relay breathe )
+    SPI_DELAY
     SPI_DATA INAi,
     L A LDrr,
     HL PUSH,

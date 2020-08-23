@@ -7,6 +7,9 @@ the device, and writing to SPI_DATA is expected to initiate a
 byte exchange. The result of the exchange is excpected to be re-
 trieved by reading SPI_DATA.
 
-Provides the SPI relay protocol.
+You also need to define the exchange delay with SPI_DELAY. If
+SPI clock is the same as system clock, 2 NOPs are enough:
 
-Load driver with "596 LOAD".
+: SPI_DELAY NOP, NOP, ;
+
+Provides the SPI relay protocol. Load driver with "596 LOAD".
