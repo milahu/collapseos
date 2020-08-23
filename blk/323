@@ -1,12 +1,10 @@
 CODE C!
-    HL POP,
-    DE POP,
+    HL POP, DE POP, chkPS,
     (HL) E LDrr,
 ;CODE
 
 CODE C@
-    HL POP,
-    chkPS,
+    HL POP, chkPS,
     L (HL) LDrr,
     H 0 LDri,
     HL PUSH,

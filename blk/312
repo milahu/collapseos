@@ -1,5 +1,5 @@
 CODE 2DROP ( a b -- )
-    HL POP, HL POP,
+    HL POP, HL POP, chkPS,
 ;CODE
 
 CODE 2DUP ( a b -- a b a b )

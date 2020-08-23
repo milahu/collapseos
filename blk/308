@@ -12,5 +12,5 @@ CODE ?DUP
     HLZ, IFNZ, HL PUSH, THEN,
 ;CODE
 CODE DROP ( a -- )
-    HL POP,
+    HL POP, chkPS,
 ;CODE

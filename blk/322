@@ -1,13 +1,11 @@
 CODE !
-    HL POP,
-    DE POP,
+    HL POP, DE POP, chkPS,
     (HL) E LDrr,
     HL INCd,
     (HL) D LDrr,
 ;CODE
 CODE @
-    HL POP,
-    chkPS,
+    HL POP, chkPS,
     E (HL) LDrr,
     HL INCd,
     D (HL) LDrr,

@@ -1,11 +1,8 @@
-CODE >R
-    HL POP, IX INCd, IX INCd, 0 IX+ L LDIXYr, 1 IX+ H LDIXYr,
-;CODE
 CODE R>
     L 0 IX+ LDrIXY, H 1 IX+ LDrIXY, IX DECd, IX DECd, HL PUSH,
 ;CODE
 CODE 2>R PC ORG @ 0x35 + ! ( stable ABI JP )
-    DE POP, HL POP,
+    DE POP, HL POP, chkPS,
     IX INCd, IX INCd, 0 IX+ L LDIXYr, 1 IX+ H LDIXYr,
     IX INCd, IX INCd, 0 IX+ E LDIXYr, 1 IX+ D LDIXYr,
 ;CODE
