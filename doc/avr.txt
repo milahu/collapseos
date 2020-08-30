@@ -1,0 +1,50 @@
+# Working with AVR microcontrollers
+
+# Assembling AVR binaries
+
+TODO
+
+# Programming AVR chips
+
+To program AVR chips, you need a device that provides the SPI protocol. The
+device built in the rc2014/sdcard recipe fits the bill. Make sure you can
+override the SPI clock because the system clock will be too fast for most AVR
+chips, which are usually running at 1MHz. Because the SPI clock needs to be a
+4th of that, a safe frequency for SPI communication would be 250kHz.
+
+Because you will not be using your system clock, you'll also need to override
+SPI_DELAY in your xcomp unit: the default value for this is 2 NOP, which only
+works when you use the system clock.
+
+Alternatively, you could run your whole system at 250kHz, but that's going to be
+really slow.
+
+The AVR programmer device is really simple: Wire SPI connections to proper AVR
+pins as described in the MCU's datasheet. Note that this device will be the same
+as the one you'll use for any modern SPI-based AVR programmer, with RESET
+replacing SS.
+
+(TODO: design a SPI relay that supports more than one device. At the time of
+this writing, one has to disconnect the SD card reader before enabling the AVR
+programmer)
+
+The AVR programming code is at B690.
+
+Before you begin programming the chip, the device must be deselected. Ensure
+with "(spid)".
+
+Then, you initiate programming mode with "asp$", and then issue your commands.
+
+At this time, only fuse commands are implemented. You get/set they values with
+"aspfx@/aspfx!", x being one of "l" (low fuse), "h" (high fuse), "e" (extended
+fuse).
+
+Each command will verify that it's in sync, that is, that its 3rd exchange
+echoes the byte that was sent in the 2nd exchange. If it doesn't, the command
+aborts with "AVR err".
+
+At the time of this writing, it is recommended that you perform your commands in
+batch, that is, running your commands right after the "asp$" command, ending
+your batch with "(spid)" so that the next batch works. In my tests, interacting
+with the chip "live" in a single "asp$" session sometimes resulted in unreliable
+data that didn't properly detect sync errors. TODO: investigate further.
