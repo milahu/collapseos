@@ -26,9 +26,9 @@ subsystem (B420) to drive a SD card.
 
 ## Building the SPI relay
 
-The [schematic][schematic] supplied with this recipe works well with `sdc.fs`.
-Of course, it's not the only possible design that works, but I think it's one
-of the most straighforwards.
+The [schematic][schematic] supplied with this recipe works well with the SD
+Card subsystem (B420).  Of course, it's not the only possible design that
+works, but I think it's one of the most straighforwards.
 
 The basic idea with this relay is to have one shift register used as input,
 loaded in parallel mode from the z80 bus and a shift register that takes the
@@ -128,7 +128,7 @@ And thats it! You have full access to disk block mechanism:
 
 ## How do I fill my SD card with Collapse OS' FS?
 
-Very easy. You see that `/emul/blkfs` file? You dump it to your raw device.
+Very easy. You see that `/cvm/blkfs` file? You dump it to your raw device.
 For example, if the device you get when you insert your SD card is `/dev/sdb`,
 then you type `cat emul/blkfs | sudo tee /dev/sdb > /dev/null`.
 
