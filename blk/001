@@ -11,6 +11,6 @@ MASTER INDEX
 490 TRS-80 Recipe             520 Fonts
 550 TI-84+ Recipe             580 RC2014 Recipe
 600-619 unused                620 Sega Master System Recipe
-650 AVR assembler             690-729 unused
-730 8086 assembler
+650 AVR assembler             690 AVR SPI programmer
+700-729 unused                730 8086 assembler
 800 8086 boot code            830 PC/AT recipe

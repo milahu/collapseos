@@ -1,0 +1,14 @@
+: _cmd ( b4 b3 b2 b1 -- r4 )
+    (spix) DROP DUP (spix) DROP SWAP (spix) = ( b4 f )
+    SWAP (spix) SWAP ( r4 f ) NOT IF ABORT" AVR err" THEN ;
+: asp$ ( -- )
+    ( RESET pulse ) (spie) (spid) (spie)
+    ( wait 20ms ) 2000 0 DO LOOP
+    ( enable prog ) 0 0 0x53 0xac _cmd DROP ;
+: asprdy ( -- f ) 0 0 0 0xf0 _cmd NOT ;
+: aspfl@ ( -- lfuse ) 0 0 0 0x50 _cmd ;
+: aspfh@ ( -- hfuse ) 0 0 0x08 0x58 _cmd ;
+: aspfe@ ( -- efuse ) 0 0 0x00 0x58 _cmd ;
+: aspfl! ( lfuse -- ) 0 0xa0 0xac _cmd ;
+: aspfh! ( hfuse -- ) 0 0xa8 0xac _cmd ;
+: aspfe! ( efuse -- ) 0 0xa4 0xac _cmd ;
