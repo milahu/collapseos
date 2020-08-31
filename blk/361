@@ -1,5 +1,0 @@
-( returns negative value on error )
-: _            ( c -- n )
-    DUP '0' '1' =><= IF '0' - EXIT THEN
-    DROP -1 ( bad )
-;

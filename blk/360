@@ -1,4 +1,10 @@
-: (parseh)          ( a -- n f )
+( returns negative value on error )
+: _            ( c -- n )
+    DUP '0' '9' =><= IF '0' - EXIT THEN
+    DUP 'a' 'f' =><= IF 0x57 ( 'a' - 10 ) - EXIT THEN
+    DROP -1 ( bad )
+;
+: _ph          ( a -- n f, parse hex )
     ( '0': ASCII 0x30 'x': 0x78 0x7830 )
     DUP 1+ @ 0x7830 = NOT IF 0 EXIT THEN ( a 0 )
     ( We have "0x" prefix )

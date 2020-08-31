@@ -1,8 +1,8 @@
 : (parse)           ( a -- n )
-    (parsec) IF EXIT THEN
-    (parseh) IF EXIT THEN
-    (parseb) IF EXIT THEN
-    (parsed) IF EXIT THEN
+    _pc IF EXIT THEN
+    _ph IF EXIT THEN
+    _pb IF EXIT THEN
+    _pd IF EXIT THEN
     ( nothing works )
     LIT< (wnf) FIND IF EXECUTE ELSE ABORT THEN
 ;

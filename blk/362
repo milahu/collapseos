@@ -1,4 +1,9 @@
-: (parseb)          ( a -- n f )
+( returns negative value on error )
+: _            ( c -- n )
+    DUP '0' '1' =><= IF '0' - EXIT THEN
+    DROP -1 ( bad )
+;
+: _pb          ( a -- n f, parse binary )
     ( '0': ASCII 0x30 'b': 0x62 0x6230 )
     DUP 1+ @ 0x6230 = NOT IF 0 EXIT THEN ( a 0 )
     ( We have "0b" prefix )

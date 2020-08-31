@@ -1,7 +1,7 @@
 ( strings being sent to parse routines are always null
   terminated )
 
-: (parsec)          ( a -- n f )
+: _pc ( a -- n f, parse character )
     ( apostrophe is ASCII 39 )
     DUP 1+ C@ 39 = OVER 3 + C@ 39 = AND  ( a f )
     NOT IF 0 EXIT THEN   ( a 0 )

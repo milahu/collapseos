@@ -1,6 +1,0 @@
-( returns negative value on error )
-: _            ( c -- n )
-    DUP '0' '9' =><= IF '0' - EXIT THEN
-    DUP 'a' 'f' =><= IF 0x57 ( 'a' - 10 ) - EXIT THEN
-    DROP -1 ( bad )
-;
