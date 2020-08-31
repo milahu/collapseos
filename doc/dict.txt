@@ -185,6 +185,14 @@ A!          c a --          Indirect C!
 A@*         -- a            Address for A@ word
 A!*         -- a            Address for A! word
 AMOVE       src dst u --    Same as MOVE, but with A@ and A!
+AMOVEW      src dst u --    Same as AMOVE, but with words
+
+AMOVEW notes: this word's purpose is to interface with word-
+based systems. src and dst are addressed as *bytes* but u is a
+*word* count. Every iteration increases src and dst by 2. When
+you use it, be aware that default values for A!* and A@* are C!
+and C@. If you don't adjust before using AMOVEW, you will get
+weird results.
 
 # Arithmetic / Bits
 
