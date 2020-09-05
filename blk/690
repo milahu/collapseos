@@ -4,4 +4,4 @@ This program allows you to access AVR chips Flash memory, EEPROM
 and fuses using a SPI relay. This requires drivers that imple-
 ment the SPI Relay protocol.
 
-Load range: B691-BXXX
+Load range: B691-B693

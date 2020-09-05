@@ -48,3 +48,22 @@ batch, that is, running your commands right after the "asp$" command, ending
 your batch with "(spid)" so that the next batch works. In my tests, interacting
 with the chip "live" in a single "asp$" session sometimes resulted in unreliable
 data that didn't properly detect sync errors. TODO: investigate further.
+
+# Writing data to Flash
+
+Writing to AVR's flash is done in batch mode, page by page. To this end, the
+chip has a buffer which is writable byte-by-byte. To write to the flash, you
+begin by writing to that buffer using aspfb! and then write to a page using
+aspfp!.
+
+Please note that aspfb! deals with *words*, not bytes. If, for example, you want
+to hook it to A!*, make sure you use AMOVEW instead of AMOVE. You will need to
+create a wrapper word around aspfb! that divides dst addr by 2 because AMOVEW
+use byte-based addresses but aspfb! uses word-based ones. You also have to make
+sure that A@* points to @ (or another word-based fetcher) instead of its default
+value of C@.
+
+Beware of bootloader sections! By default, AVR chips have a bootloader using the
+first few pages (by default, the ATMega328P uses 4 pages for its bootloader).
+Check (or modify) the BOOTSZ fuses to confirm where you whould start writing
+your program.
