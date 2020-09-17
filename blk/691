@@ -7,8 +7,8 @@ VARIABLE aspprevx
     SWAP aspprevx ! ( b ) ;
 : _cmd ( b4 b3 b2 b1 -- r4 ) _xc DROP _x DROP _xc DROP _x ;
 : asprdy ( -- ) BEGIN 0 0 0 0xf0 _cmd 1 AND NOT UNTIL ;
-: asp$ ( -- )
-    ( RESET pulse ) (spie) (spid) (spie)
+: asp$ ( spidevid -- )
+    ( RESET pulse ) DUP (spie) 0 (spie) (spie)
     ( wait >20ms ) 5000 0 DO LOOP
     ( enable prog ) 0xac (spix) DROP
     0x53 _x DROP 0 _xc DROP 0 _x DROP ;

@@ -15,13 +15,25 @@ These protocols are described here.
 
 # PS/2 protocol
 
+This protocol enables communication with a device that spits
+PS/2 keycodes.
+
 (ps2kc)   -- kc    Returns the next typed PS/2 keycode from the
                    console. Blocking.
 
 # SPI Relay protocol
 
-(spie)    --       Enable SPI device
-(spid)    --       Disable SPI device
+This protocol enables communication with a SPI relay. This
+protocol is designed to support devices with multiple endpoints.
+To that end, (spie) takes a device ID argument, with a meaning
+that is up to the device itself. To disable all devices, supply
+0 to (spie).
+
+We expect relay devices to support only one enabled device at
+once. Enabling a specific device is expected to disable the
+previously enabled one.
+
+(spie)    n --     Enable SPI device
 (spix)    n -- n   Perform SPI exchange (push a number, get a
                    number back)
                   

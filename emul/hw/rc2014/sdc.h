@@ -31,7 +31,6 @@ typedef struct {
 } SDC;
 
 void sdc_init(SDC *sdc);
-void sdc_cslow(SDC *sdc);
-void sdc_cshigh(SDC *sdc);
+void sdc_ctl_wr(SDC *sdc, uint8_t val);
 void sdc_spi_wr(SDC *sdc, uint8_t val);
 uint8_t sdc_spi_rd(SDC *sdc);

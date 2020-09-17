@@ -1,5 +1,12 @@
 # Accessing a MicroSD card
 
+Warning: this recipe is temporarily broken. The schema below hasn't yet been
+updated to work with the new SPI relay protocol. If you've already built an
+old design, use an earlier commit or work around it in the SPI driver it should
+only be a matter of testing the input value for zero-ness to decide whether we
+ping the CSLOW or CSHIGH port. If you haven't, wait a little bit before building
+one: the upcoming design is better.
+
 SD cards are great because they are accessible directly. No supporting IC is
 necessary. The easiest way to access them is through the SPI protocol.
 

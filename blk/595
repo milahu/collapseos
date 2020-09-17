@@ -1,15 +1,10 @@
 SPI relay driver
 
 This driver is designed for a ad-hoc adapter card that acts as a
-SPI relay between the z80 bus and the SPI device. Sending any-
-thing on SPI_CSLOW and SPI_CSHIGH is expected to select/deselect
-the device, and writing to SPI_DATA is expected to initiate a
-byte exchange. The result of the exchange is excpected to be re-
-trieved by reading SPI_DATA.
-
-You also need to define the exchange delay with SPI_DELAY. If
-SPI clock is the same as system clock, 2 NOPs are enough:
-
-: SPI_DELAY NOP, NOP, ;
+SPI relay between the z80 bus and the SPI device. When writing
+to SPI_CTL, we expect a bitmask of the device to select, with
+0 meaning that everything is de-selected. Reading SPI_CTL
+returns 0 if the device is ready or 1 if it's still running an
+exchange. Writing to SPI_DATA initiates an exchange.
 
 Provides the SPI relay protocol. Load driver with "596 LOAD".

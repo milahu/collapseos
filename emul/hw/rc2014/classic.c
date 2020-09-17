@@ -18,8 +18,7 @@
 #define RAMSTART 0x8000
 #define ACIA_CTL_PORT 0x80
 #define ACIA_DATA_PORT 0x81
-#define SDC_CSHIGH 0x06
-#define SDC_CSLOW 0x05
+#define SDC_CTL 0x05
 #define SDC_SPI 0x04
 #define MAX_ROMSIZE 0x2000
 
@@ -56,14 +55,16 @@ static void iowr_sdc_spi(uint8_t val)
     sdc_spi_wr(&sdc, val);
 }
 
-static void iowr_sdc_cshigh(uint8_t val)
+// in emulation, exchanges are always instantaneous, so we
+// always report as ready.
+static uint8_t iord_sdc_ctl()
 {
-    sdc_cshigh(&sdc);
+    return 0;
 }
 
-static void iowr_sdc_cslow(uint8_t val)
+static void iowr_sdc_ctl(uint8_t val)
 {
-    sdc_cslow(&sdc);
+    sdc_ctl_wr(&sdc, val);
 }
 
 int main(int argc, char *argv[])
@@ -117,8 +118,8 @@ int main(int argc, char *argv[])
     m->iowr[ACIA_DATA_PORT] = iowr_acia_data;
     m->iord[SDC_SPI] = iord_sdc_spi;
     m->iowr[SDC_SPI] = iowr_sdc_spi;
-    m->iowr[SDC_CSHIGH] = iowr_sdc_cshigh;
-    m->iowr[SDC_CSLOW] = iowr_sdc_cslow;
+    m->iord[SDC_CTL] = iord_sdc_ctl;
+    m->iowr[SDC_CTL] = iowr_sdc_ctl;
 
     char tosend = 0;
     while (emul_step()) {

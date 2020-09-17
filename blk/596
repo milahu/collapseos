@@ -1,12 +1,13 @@
 CODE (spix) ( n -- n )
-    HL POP,
-    chkPS,
-    A L LDrr,
+    HL POP, chkPS, A L LDrr,
     SPI_DATA OUTiA,
-    SPI_DELAY
+    ( wait until xchg is done )
+    BEGIN, SPI_CTL INAi, A ORr, JRNZ, AGAIN,
     SPI_DATA INAi,
     L A LDrr,
     HL PUSH,
 ;CODE
-CODE (spie) SPI_CSLOW OUTiA, ;CODE
-CODE (spid) SPI_CSHIGH OUTiA, ;CODE
+CODE (spie) ( n -- )
+    HL POP, chkPS, A L LDrr,
+    SPI_CTL OUTiA,
+;CODE

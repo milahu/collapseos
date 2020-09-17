@@ -23,14 +23,12 @@ void sdc_init(SDC *sdc)
     sdc->cmd24bytes = -2;
 }
 
-void sdc_cslow(SDC *sdc)
+// TODO: for now, any nonzero value enables the SDC. To allow
+// emulation of systems with multi-devices SPI relay, change
+// this.
+void sdc_ctl_wr(SDC *sdc, uint8_t val)
 {
-    sdc->selected = true;
-}
-
-void sdc_cshigh(SDC *sdc)
-{
-    sdc->selected = false;
+    sdc->selected = val;
 }
 
 void sdc_spi_wr(SDC *sdc, uint8_t val)

@@ -1,8 +1,8 @@
 : _sdc!  ( srcaddr blkno -- )
-    (spie) 0x58 ( CMD24 ) 0 ROT ( a cmd 0 blkno ) _cmd
+    [ SDC_DEVID LITN ] (spie)
+    0x58 ( CMD24 ) 0 ROT ( a cmd 0 blkno ) _cmd
     IF _err THEN
-    _idle DROP 0xfe (spix) DROP
-    0 SWAP           ( crc a )
+    _idle DROP 0xfe (spix) DROP 0 SWAP ( crc a )
     512 0 DO         ( crc a )
         C@+          ( crc a+1 n )
         ROT OVER     ( a n crc n )
@@ -13,4 +13,4 @@
     LOOP
     DROP ( crc ) 256 /MOD ( lsb msb )
     (spix) DROP (spix) DROP
-    _wait DROP (spid) ;
+    _wait DROP 0 (spie) ;
