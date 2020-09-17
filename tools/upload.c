@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     }
     char s[0x40];
     sprintf(s,
-        ": _ 0x%04x 0x%04x DO KEY DUP .x I C! LOOP ; _",
+        ": _ 0x%04x 0x%04x DO KEY DUP .x I A! LOOP ; _",
         memptr+bytecount, memptr);
     sendcmd(fd, s);
 

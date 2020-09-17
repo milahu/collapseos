@@ -44,18 +44,9 @@ can use `/tools/exec` to send `blk/593` to the RC2014.
 
 ## Writing contents to the AT28
 
-The driver provides `AT28!` which can be plugged in adev's `A!*`.
+The driver provides `AT28!` which can be plugged in adev's `A!*`. You can do so
+with `' AT28! A!* !`.
 
-First, upload your binary to some place in memory, for example `a000`. To do so,
-run this from your modern computer:
+Then, upload your binary to EEPROM with:
 
-    ./upload <tty device> a000 <filename>
-
-Then, activate `AT28!` with `' AT28! A!* !` and then run
-`0xa000 0x2000 <size-of-bin> AMOVE`. `AT28!` checks every byte for integrity,
-so it there's no error, you should be fine. Your content is now on the EEPROM!
-
-Why not upload content directly to `0x2000` after having activated `AT28!`?
-Technically, you could. It was my first idea too. However, at the time of this
-writing, I always get weird mismatch errors about halfway through. Maybe that
-the ACIA interrupt does something wrong...
+    ./upload <tty device> 2000 <filename>
