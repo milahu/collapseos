@@ -149,6 +149,11 @@ int ttyopen(char *devname)
     set_interface_attribs(fd, 0, 0);
     set_blocking(fd, 0);
     mempty(fd);
+    // Communication with device is much more reliable if we
+    // begin by sending, asynchronously, a CR to make sure we
+    // empty any pending stuff on all sides.
+    write(fd, "\r", 1);
+    mempty(fd);
     set_blocking(fd, 1);
     return fd;
 }
