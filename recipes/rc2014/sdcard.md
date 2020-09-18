@@ -1,12 +1,5 @@
 # Accessing a MicroSD card
 
-Warning: this recipe is temporarily broken. The schema below hasn't yet been
-updated to work with the new SPI relay protocol. If you've already built an
-old design, use an earlier commit or work around it in the SPI driver it should
-only be a matter of testing the input value for zero-ness to decide whether we
-ping the CSLOW or CSHIGH port. If you haven't, wait a little bit before building
-one: the upcoming design is better.
-
 SD cards are great because they are accessible directly. No supporting IC is
 necessary. The easiest way to access them is through the SPI protocol.
 
@@ -25,57 +18,57 @@ subsystem (B420) to drive a SD card.
 * A proto board + header pins with 39 positions so we can make a RC2014 card.
 * Diodes, resistors and stuff
 * 40106 (Inverter gates)
-* 4011 (NAND gates)
-* 74xx139 (Decoder)
+* 74xx138 (Decoder)
+* 74xx375 (Latches)
+* 74xx125 (Buffer)
 * 74xx161 (Binary counter)
 * 74xx165 (Parallel input shift register)
 * 74xx595 (Shift register)
 
 ## Building the SPI relay
 
-The [schematic][schematic] supplied with this recipe works well with the SD
-Card subsystem (B420).  Of course, it's not the only possible design that
-works, but I think it's one of the most straighforwards.
+![SPI relay](spirelay.jpg)
 
-The basic idea with this relay is to have one shift register used as input,
-loaded in parallel mode from the z80 bus and a shift register that takes the
-serial input from `MISO` and has its output wired to the z80 bus.
+The schematic above works well with the SD Card subsystem (B420). Of course,
+it's not the only possible design that works, but I think it's one of the most
+straighforwards.
 
-These two shift registers are clocked by a binary counter that clocks exactly
-8 times whenever a write operation on port `4` occurs. Those 8 clocks send
-data we've just received in the `74xx165` into `MOSI` and get `MISO` into the
-`74xx595`.
+This relay communicates through the z80 bus with 2 ports, `DATA` and `CTL` and
+allows up to 4 devices to be connected to it at once, although only one device
+can ever be active at once. This schema only has 2 (and the real prototype I've
+built from it), but the '375 has room for 4. In this schema, `DATA` is port 4,
+`CTL` is port `5`.
 
-The `74xx139` then takes care of activating the right ICs on the right
-combinations of `IORQ/WR/RD/Axx`.
+We activate a device by sending a bitmask to `CTL`, this will end up in the
+'375 latches and activate the `SS` pin of one of the device, or deactivate them
+all if `0` is sent.
 
-The rest of the ICs is fluff around this all.
+You then initiate a SPI exchange by sending a byte to send to the `DATA` port.
+This byte will end up in the '165 and the '161 counter will be activated,
+triggering a clock for the SPI exchange. At each clock, a bit is sent to `MOSI`
+from the '161 and received from `MISO` into the '595, which is the byte sent to
+the z80 bus when we read from `DATA`.
 
-My first idea was to implement the relay with an AVR microcontroller to
-minimize the number of ICs, but it's too slow. We have to be able to respond
-within 300ns! Following that, it became necessary to add a 595 and a 165, but
-if we're going to add that, why not go the extra mile and get rid of the
-microcontroller?
+When the '161 is wired to the system clock, as it is in the schema, two `NOP`s
+are a sufficient delay between your `DATA` write and subsequent `DATA` read.
 
-To that end, I was heavily inspired by [this design][inspiration].
+However, if you build yourself some kind of clock override and run the '161 at
+something slower than the system clock, those 2 `NOP`s will be too quick. That's
+where that '125 comes into play. When reading `CTL`, it spits `RUNNING` into
+`D0`. This allows you to know when the result of the SPI exchange is ready to be
+fetched. Make sure you `AND` away other bits, because they'll be garbage.
 
-This board uses port `4` for SPI data, port `5` to pull `CS` low and port `6`
-to pull it high. Port `7` is unused but monopolized by the card.
+The '138 is to determine our current IORQ mode (`DATA`/`CTL` and `WR/RO`), the
+'106 is to provide for those `NOT`s sprinkled around.
 
-Advice 1: If you make your own design, double check propagation delays!
-Some NAND gates, such as the 4093, are too slow to properly respond within
-a 300ns limit. For example, in my own prototype, I use a 4093 because that's
-what I have in inventory. For the `CS` flip-flop, the propagation delay doesn't
-matter. However, it *does* matter for the `SELECT` line, so I don't follow my
-own schematic with regards to the `M1` and `A2` lines and use two inverters
-instead.
+Please note that this design is inspired by [this design][inspiration].
 
-Advice 2: Make `SCK` polarity configurable at all 3 endpoints (the 595, the 165
+Advice 1: Make `SCK` polarity configurable at all 3 endpoints (the 595, the 165
 and SPI connector). Those jumpers will be useful when you need to mess with
 polarity in your many tinkering sessions to come.
 
-Advice 3: Make input `CLK` override-able. SD cards are plenty fast enough for us
-to use the system clock, but you might want to interact with devices that
+Advice 2: Make input `CLK` override-able. SD cards are plenty fast enough for
+us to use the system clock, but you might want to interact with devices that
 require a slower clock.
 
 ## Building your binary
@@ -85,15 +78,14 @@ assemble a binary with those drivers. To do so, you'll modify the xcomp unit
 of the base recipe. Look at `xcomp.fs`, you'll see that we load a block. That's
 our xcomp block (likely, B599). Open it.
 
-First, we need drivers for the SPI relay. This is done by declaring `SPI_DATA`,
-`SPI_CSLOW` and `SPI_CSHIGH`, which are respectively `4`, `5` and `6` in our
-relay design. We also need to define SPI_DELAY, which we keep to 2 NOPs because
-we use the system clock:
+First, we need drivers for the SPI relay. This is done by declaring `SPI_DATA`
+and `SPI_CTL`,  which are respectively `4` and `5` in our relay design.
 
-    : SPI_DELAY NOP, NOP, ;
+You also need to tell the SDC subsystem which SPI device to activate by defining
+the `SDC_DEVID` (1, 2, 4, 8 for device 0, 1, 2 or 3)
 
 You can then load the driver with `596 LOAD`. This driver provides
-`(spix)`, `(spie)` and `(spid)` which are then used in the SDC driver.
+`(spix)` and `(spie)` which are then used in the SDC driver.
 
 The SDC driver is at B420. It gives you a load range. This means that what
 you need to insert in `xcomp` will look like:
@@ -139,5 +131,4 @@ Very easy. You see that `/cvm/blkfs` file? You dump it to your raw device.
 For example, if the device you get when you insert your SD card is `/dev/sdb`,
 then you type `cat emul/blkfs | sudo tee /dev/sdb > /dev/null`.
 
-[schematic]: spirelay.pdf
 [inspiration]: https://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html

@@ -2,7 +2,7 @@ CODE (spix) ( n -- n )
     HL POP, chkPS, A L LDrr,
     SPI_DATA OUTiA,
     ( wait until xchg is done )
-    BEGIN, SPI_CTL INAi, A ORr, JRNZ, AGAIN,
+    BEGIN, SPI_CTL INAi, 1 ANDi, JRNZ, AGAIN,
     SPI_DATA INAi,
     L A LDrr,
     HL PUSH,
