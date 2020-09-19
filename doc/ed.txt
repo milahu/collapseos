@@ -19,7 +19,7 @@ ample, a machine with only a serial console can't.
 
 # Block editor
 
-The Block editor augments the built-in work LIST with words to
+The Block editor augments the built-in word LIST with words to
 modify the block currently being loaded. Block saving happens
 automatically: Whenever you load a new block, the old block, if
 changed, is saved to disk first. You can force that with FLUSH.
@@ -36,6 +36,9 @@ always be at the beginning of the line.
 You can insert text at the current position with "i". For exam-
 ple, "i foo" inserts "foo" at cursor. Text to the right of it
 is shifted right. Any content above 64 chars is lost.
+
+Why "i" and not "I"? Because "I" is already used and we don't
+want to overshadow it.
 
 You can "put" a new line with "P". "P foo" will insert a new
 line under the cursor and place "foo" on it. The last line of
@@ -68,8 +71,7 @@ P xxx: put typed IBUF on selected line.
 U xxx: insert typed IBUF on selected line.
 F xxx: find typed FBUF in block, starting from current
        position+1. If not found, don't move.
-i xxx: insert typed IBUF at cursor. "i" is to avoid shadowing 
-       core word "I".   
+i xxx: insert typed IBUF at cursor.
 Y: Copy n characters after cursor into IBUF, n being length of
    FBUF.
 X ( n -- ): Delete X chars after cursor and place in IBUF.
@@ -118,7 +120,8 @@ the previously opened block.
 'w' moves forward by "modifier" words. 'b' moves backward.
 'W' moves to end-of-word. 'B', backwards.
 
-'I', 'F', 'Y', 'X' and 'E' invoke the corresponding command
+'I', 'F', 'Y', 'X' and 'E' invoke the corresponding command from
+command-based editor.
 
 'o' inserts a blank line after the cursor. 'O', before.
 

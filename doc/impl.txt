@@ -168,33 +168,31 @@ territory, identical)
 On boot, we jump to the "main" routine in B289 which does
 very few things.
 
-1. Set SP to PS_ADDR and IX to RS_ADDR
-2. Sets HERE to SYSVARS+0x80.
-3. Sets CURRENT to value of LATEST field in stable ABI.
+1. Set SP to PS_ADDR and IX to RS_ADDR.
+2. Set CURRENT to value of LATEST field in stable ABI.
+3. Set HERE to HERESTART const if defined, to CURRENT other-
+   wise.
 4. Execute the word referred to by 0x04 (BOOT) in stable ABI.
 
 In a normal system, BOOT is in core words at B396 and does a
 few things:
 
 1. Initialize all overrides to 0.
-2. Write LATEST in BOOT C< PTR ( see below )
-3. Set "C<*", the word that C< calls to (boot<).
+2. Write LATEST in BOOT C< PTR ( see below ).
+3. Set "C<*", the word that C< calls, to (boot<).
 4. Call INTERPRET which interprets boot source code until
-   ASCII EOT (4) is met. This usually init drivers.
+   ASCII EOT (4) is met. This usually initializes drivers.
 5. Initialize rdln buffer, _sys entry (for EMPTY), prints
    "CollapseOS" and then calls (main).
 6. (main) interprets from rdln input (usually from KEY) until
    EOT is met, then calls BYE.
 
-In RAM-only environment, we will typically have a
-"CURRENT @ HERE !" line during init to have HERE begin at the
-end of the binary instead of RAMEND.
-
 # Stable ABI
 
-Across all architectures, some offset are referred to by off-
-sets that don't change (well, not without some binary manipu-
-lation). Here's the complete list of these references:
+The Stable ABI lives at the beginning of the binary and prov-
+ides a way for Collapse OS code to access values that would
+otherwise be difficult to access. Here's the complete list of
+these references:
 
 04 BOOT addr         06 (uflw) addr      08 LATEST
 13 (oflw) addr       2b (s) wordref      33 2>R wordref

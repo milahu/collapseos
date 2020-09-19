@@ -24,7 +24,7 @@ a bit tight at first, having this limit saves us a non-
 negligible amount of resource usage.
 
 The reasoning behind this intentional limit is that huge
-branches are generally a indicator that a logic ought to be
+branches are generally an indicator that a logic ought to be
 simplified. So here's one more constraint for you to help you
 towards simplicity.
 
@@ -41,9 +41,9 @@ from KEY, puts it in a buffer, then yields the buffered line,
 one character at a time.
 
 Both C< and KEY can be overridden by setting an alternate
-routine at the proper RAM offset (see B80). For example, C<
-overrides are used during LOAD so that input comes from
-disk blocks instead of keyboard.
+routine at the proper RAM offset (see impl.txt). For example,
+C< overrides are used during LOAD so that input comes from disk
+blocks instead of keyboard.
 
 KEY overrides can be used to, for example, temporarily give
 prompt control to a RS-232 device instead of the keyboard.
@@ -108,8 +108,13 @@ try to strive towards a few goals:
 
 1. Block 0 contains documentation discovery core keys to the
    uninitiated.
-2. First section (up to B100) is usage documentation.
-3. B100-B200 are for runtime usage utilities
-4. B200-B500 are for bootstrapping
+2. B1-B4 are for a master index of blocks.
+3. B5-B199 are for runtime usage utilities
+4. B200-B599 are for bootstrapping
 5. The rest is for recipes.
-6. I'm not sure yet how I'll organize multiple arches.
+
+Blocks are currently not organized neatly. I'm planning the
+extraction of recipes into some kind of block "overlays" that
+would live in the recipes subfolder so each recipe would build
+its own specific blkfs which would contain only its recipe code,
+starting at B600.

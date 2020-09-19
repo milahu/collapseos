@@ -6,60 +6,53 @@ TODO
 
 # Programming AVR chips
 
-To program AVR chips, you need a device that provides the SPI protocol. The
-device built in the rc2014/sdcard recipe fits the bill. Make sure you can
-override the SPI clock because the system clock will be too fast for most AVR
-chips, which are usually running at 1MHz. Because the SPI clock needs to be a
-4th of that, a safe frequency for SPI communication would be 250kHz.
+To program AVR chips, you need a device that provides the SPI
+protocol. The device built in the rc2014/sdcard recipe fits the
+bill. Make sure you can override the SPI clock because the sys-
+tem clock will be too fast for most AVR chips, which are usually
+running at 1MHz. Because the SPI clock needs to be a 4th of
+that, a safe frequency for SPI communication would be 250kHz.
 
-Because you will not be using your system clock, you'll also need to override
-SPI_DELAY in your xcomp unit: the default value for this is 2 NOP, which only
-works when you use the system clock.
-
-Alternatively, you could run your whole system at 250kHz, but that's going to be
-really slow.
-
-The AVR programmer device is really simple: Wire SPI connections to proper AVR
-pins as described in the MCU's datasheet. Note that this device will be the same
-as the one you'll use for any modern SPI-based AVR programmer, with RESET
-replacing SS.
-
-(TODO: design a SPI relay that supports more than one device. At the time of
-this writing, one has to disconnect the SD card reader before enabling the AVR
-programmer)
+The AVR programmer device is really simple: Wire SPI connections
+to proper AVR pins as described in the MCU's datasheet. Note
+that this device will be the same as the one you'll use for any
+modern SPI-based AVR programmer, with RESET replacing SS.
 
 The AVR programming code is at B690.
 
-Before you begin programming the chip, the device must be deselected. Ensure
-with "(spid)".
+Before you begin programming the chip, the device must be desel-
+ected. Ensure with "0 (spie)".
 
-Then, you initiate programming mode with "asp$", and then issue your commands.
+Then, you initiate programming mode with "asp$", and then issue
+your commands.
 
-Each command will verify that it's in sync, that is, that its 3rd exchange
-echoes the byte that was sent in the 2nd exchange. If it doesn't, the command
-aborts with "AVR err".
+Each command will verify that it's in sync, that is, that its
+3rd exchange echoes the byte that was sent in the 2nd exchange.
+If it doesn't, the command aborts with "AVR err".
 
 # Access fuses
 
-You get/set they values with "aspfx@/aspfx!", x being one of "l" (low fuse),
-"h" (high fuse), "e" (extended fuse).
+You get/set they values with "aspfx@/aspfx!", x being one of "l"
+(low fuse), "h" (high fuse), "e" (extended fuse).
 
 # Access flash
 
-Writing to AVR's flash is done in batch mode, page by page. To this end, the
-chip has a buffer which is writable byte-by-byte.
+Writing to AVR's flash is done in batch mode, page by page. To
+this end, the chip has a buffer which is writable byte-by-byte.
 
-Writing to the flash begins with a call to asperase, which erases the whole
-chip. It seems possible to erase flash page-by-page through parallel
-programming, but the SPI protocol doesn't expose it, we have to erase the whole
-chip. Then, you write to the buffer using aspfb! and then write to a page using
-aspfp!. Example to write 0x1234 to the first byte of the first page:
+Writing to the flash begins with a call to asperase, which
+erases the whole chip. It seems possible to erase flash page-by-
+page through parallel programming, but the SPI protocol doesn't
+expose it, we have to erase the whole chip. Then, you write to
+the buffer using aspfb! and then write to a page using aspfp!.
+Example to write 0x1234 to the first byte of the first page:
 
 asperase 0x1234 0 aspfb! 0 aspfp!
 
-Please note that aspfb! deals with *words*, not bytes. If, for example, you want
-to hook it to A!*, make sure you use AMOVEW instead of AMOVE. You will need to
-create a wrapper word around aspfb! that divides dst addr by 2 because AMOVEW
-use byte-based addresses but aspfb! uses word-based ones. You also have to make
-sure that A@* points to @ (or another word-based fetcher) instead of its default
-value of C@.
+Please note that aspfb! deals with *words*, not bytes. If, for
+example, you want to hook it to A!*, make sure you use AMOVEW
+instead of AMOVE. You will need to create a wrapper word around
+aspfb! that divides dst addr by 2 because AMOVEW use byte-based
+addresses but aspfb! uses word-based ones. You also have to make
+sure that A@* points to @ (or another word-based fetcher)
+instead of its default value of C@.

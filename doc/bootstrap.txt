@@ -7,32 +7,32 @@ What is Collapse OS? It is a binary placed either in ROM on
 in RAM by a bootloader. That binary, when executed, initializes
 itself to a Forth interpreter. In most cases, that Forth
 interpreter will have some access to a mass storage device,
-which allows it to access Collapse OS' disk blocks and come
-to this block to bootstrap itself some more.
+which allows it to access Collapse OS' disk blocks and bootstrap
+itself some more.
 
 This binary can be separated in 5 distinct layers:
 
-1. Boot code (B280)
-2. Boot words (B305)
-3. Core words (low) (B350)
-4. Drivers
-5. Core words (high)
+1. Arch-specific boot code (B280 for Z80)
+2. Arch-specific boot words (B305 for Z80)
+3. Arch-independant core words (low) (B350)
+4. Drivers, might contain arch-specific code
+5. Arch-independant core words (high) (B380)
 
-# Boot code (B280)
+# Boot code
 
 This part contains core routines that underpins Forth fundamen-
-tal structures: dict navigation and search, PSP/RSP bounds
-checks, word types.
+tal structures: dict navigation and FIND, PSP/RSP bounds checks,
+word types.
 
 It also of course does core initialization: set RSP/PSP, HERE
 CURRENT, then call BOOT.
 
 It also contains what we call the "stable ABI" in its first
-0x100 bytes. The beginning og the dict is intertwined in this
+0x100 bytes. The beginning of the dict is intertwined in this
 layer because EXIT, (br), (?br) and (loop) are part of the
 stable ABI.
 
-# Boot words (B305)
+# Boot words
 
 Then come the implementation of core Forth words in native
 assembly. Performance is not Collapse OS' primary design goal,
@@ -42,7 +42,7 @@ to implement our words in Forth.
 However, some words are in this section for performance
 reasons. Sometimes, the gain is too great to pass up.
 
-# Core words (low) (B350)
+# Core words (low)
 
 Then comes the part where we begin defining words in Forth.
 Core words are designed to be cross-compiled (B260), from a
@@ -63,7 +63,7 @@ precisely to fit drivers in there. This way, they have access
 to a pretty good vocabulary and they're also give the oppor-
 tunity to provide (emit) and (key).
 
-# Core words (high) (B350)
+# Core words (high)
 
 Then come EMIT, KEY and everything that depend on it, until
 we have a full Forth interpreter. At the very end, we define
@@ -82,7 +82,7 @@ new xcomp (cross compilation) unit. Let's look at its
 anatomy. First, we have constants. Some of them are device-
 specific, but some of them are always there. SYSVARS is the
 address at which the RAM starts on the system. System variables
-will go there and use 0x80 bytes. See B80.
+will go there and use 0x80 bytes. See impl.txt.
 
 HERESTART determines where... HERE is at startup. 0 means
 "same as CURRENT".
@@ -100,13 +100,10 @@ same way. Drivers are a bit tricker and machine specific. I
 can't help you there, you'll have to use your wits.
 
 After we've loaded the high part of the core words, we're at
-the "wrapping up" part. We add what we call a "hook word" (an
-empty word with a single letter name) which doesn't cost us
-much and can be very useful if we need to augment the binary
-with more words, and at that point we have our future boot
-CURRENT, which PC yields. That is why we write it to the
-LATEST field of the stable ABI: This value will be used at
-boot.
+the "wrapping up" part. We add what we call a "hook word", an
+empty word with a single letter name. This allows us to boot
+with CURRENT pointing to "source init" content rather than being
+an actual wordref.
 
 After the last word of the dictionary comes the "source init"
 part. The boot sequence is designed to interpret whatever comes
