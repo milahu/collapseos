@@ -3,7 +3,7 @@
 : DO COMPILE 2>R H@ ; IMMEDIATE
 : LOOP COMPILE (loop) H@ - _bchk C, ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
-: LITN 0x23 ( n ) , , ;
+: LITN COMPILE (n) , ;
 ( gets its name at the very end. can't comment afterwards )
 : _ BEGIN LIT" )" WORD S= UNTIL ; IMMEDIATE
 : _ ( : will get its name almost at the very end )

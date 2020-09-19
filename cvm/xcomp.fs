@@ -13,8 +13,7 @@ CREATE BIN( 0 ,
 H@ ORG !
 0x0b ALLOT0
 0 C, 0 C, ( EXIT )
-0x16 ALLOT0
-0 C, 0x05 C, ( (n) )
+0x08 ALLOT0
 ( END OF STABLE ABI )
 H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x00 CODE EXIT

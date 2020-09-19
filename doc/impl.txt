@@ -195,7 +195,7 @@ otherwise be difficult to access. Here's the complete list of
 these references:
 
 04 BOOT addr         06 (uflw) addr      08 LATEST
-0b EXIT wordref      13 (oflw) addr      23 (n) wordref
+0b EXIT wordref      13 (oflw) addr      1a next addr
 
 BOOT, (uflw) and (oflw) exist because they are referred to
 before those words are defined (in core words). LATEST is a

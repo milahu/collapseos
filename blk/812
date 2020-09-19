@@ -1,5 +1,4 @@
 CODE (n) ( number literal )
-PC 0x27 - ORG @ 0x25 + ! ( stable abi )
     DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
     DX INCx, DX INCx,
 ;CODE

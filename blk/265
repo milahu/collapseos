@@ -8,7 +8,7 @@
     ELSE ( w )
         0x02 RAM+ @ SWAP ( cur w ) _find ( a f )
         IF DUP IMMED? NOT IF ABORT THEN EXECUTE
-        ELSE (parse) LITN THEN
+        ELSE (parse) XLITN THEN
     THEN
     AGAIN
 ;

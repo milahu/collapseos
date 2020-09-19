@@ -1,3 +1,7 @@
+: XDO LIT" 2>R" XFIND , H@ ;
+: XLOOP LIT" (loop)" XFIND , H@ - C, ;
+: XIF LIT" (?br)" XFIND , H@ 1 ALLOT ;
+: XELSE LIT" (br)" XFIND , 1 ALLOT [COMPILE] THEN H@ 1- ;
 : XAGAIN LIT" (br)" XFIND , H@ - C, ;
 : XUNTIL LIT" (?br)" XFIND , H@ - C, ;
 : XLIT"

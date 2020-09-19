@@ -1,5 +1,4 @@
 CODE (n) ( number literal )
-PC ORG @ 0x25 + ! ( stable ABI JP )
   ( Literal value to push to stack is next to (n) reference
     in the atom list. That is where IP is currently pointing.
     Read, push, then advance IP. )
