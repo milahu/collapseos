@@ -2,9 +2,3 @@
     BEGIN
         C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
     AGAIN ;
-: LIT"
-    COMPILE (s) H@ 0 C, ,"
-    DUP H@ -^ 1- ( a len ) SWAP C!
-; IMMEDIATE
-: ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
-: ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE

@@ -11,6 +11,6 @@
     ['] C@ A@* ! ['] C! A!* !
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
-    RDLN$ LIT< _sys [entry]
-    LIT< CollapseOS (print) NL (main) ;
+    RDLN$ LIT" _sys" [entry]
+    LIT" Collapse OS" (print) NL (main) ;
 XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !

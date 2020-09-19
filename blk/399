@@ -1,4 +1,10 @@
-: LIT< COMPILE (s) WORD DUP C@ 1+ MOVE, ; IMMEDIATE
+: LIT"
+    COMPILE (s) H@ 0 C, ,"
+    DUP H@ -^ 1- ( a len ) SWAP C!
+; IMMEDIATE
+( We don't use ." and ABORT in core, they're not xcomp-ed )
+: ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
+: ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
 : BEGIN H@ ; IMMEDIATE
 : AGAIN COMPILE (br) H@ - _bchk C, ; IMMEDIATE
 : UNTIL COMPILE (?br) H@ - _bchk C, ; IMMEDIATE

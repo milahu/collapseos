@@ -2,7 +2,7 @@
     BEGIN
     WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
     FIND NOT IF (parse) ELSE EXECUTE THEN
-    C<? NOT IF SPC LIT< ok (print) NL THEN
+    C<? NOT IF SPC LIT" ok" (print) NL THEN
     AGAIN ;
 ( Read from BOOT C< PTR and inc it. )
 : (boot<)

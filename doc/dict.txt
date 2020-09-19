@@ -221,9 +221,8 @@ NOT  f -- f     Push the logical opposite of f
 
 # Strings
 
-LIT< x  --         Read following word and write to HERE as a
-                   string literal.
-LIT" x" --         Same as LIT<, but can contain whitespaces.
+LIT" x" --         Read following characters and write to HERE
+                   as a string literal.
 S=      a1 a2 -- f Returns whether string a1 == a2.
 
 # I/O

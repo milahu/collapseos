@@ -1,7 +1,6 @@
-: XAGAIN LIT< (br) XFIND , H@ - C, ;
-: XUNTIL LIT< (?br) XFIND , H@ - C, ;
-: XLIT< LIT< (s) XFIND , WORD DUP C@ 1+ MOVE, ;
+: XAGAIN LIT" (br)" XFIND , H@ - C, ;
+: XUNTIL LIT" (?br)" XFIND , H@ - C, ;
 : XLIT"
-    LIT< (s) XFIND , H@ 0 C, ,"
+    LIT" (s)" XFIND , H@ 0 C, ,"
     DUP H@ -^ 1- SWAP C!
 ;

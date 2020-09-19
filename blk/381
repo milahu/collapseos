@@ -9,4 +9,3 @@
 XCURRENT @ _xapply ORG @ 0x06 ( stable ABI uflw ) + !
 : (oflw) LIT" stack overflow" ERR ;
 XCURRENT @ _xapply ORG @ 0x13 ( stable ABI oflw ) + !
-: (wnf) (print) SPC LIT" word not found" ERR ;

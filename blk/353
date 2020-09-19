@@ -9,6 +9,6 @@
 : (infl) 0 IN( DUP IN> ! ! ; ( flush input buffer )
 : QUIT
     (resRS) 0 0x08 RAM+ ! ( C<* override ) (infl)
-    LIT< (main) FIND DROP EXECUTE
+    LIT" (main)" FIND DROP EXECUTE
 ;
 1 25 LOADR+ ( xcomp core low )

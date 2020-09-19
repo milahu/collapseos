@@ -1,11 +1,11 @@
 ( Now we have "as late as possible" stuff. See bootstrap doc. )
-: _bchk DUP 0x7f + 0xff > IF LIT< br-ovfl (print) ABORT THEN ;
+: _bchk DUP 0x7f + 0xff > IF LIT" br ovfl" (print) ABORT THEN ;
 : DO COMPILE 2>R H@ ; IMMEDIATE
 : LOOP COMPILE (loop) H@ - _bchk C, ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
 : LITN 0x23 ( n ) , , ;
 ( gets its name at the very end. can't comment afterwards )
-: _ BEGIN LIT< ) WORD S= UNTIL ; IMMEDIATE
+: _ BEGIN LIT" )" WORD S= UNTIL ; IMMEDIATE
 : _ ( : will get its name almost at the very end )
     (entry) 1 ( compiled ) C,
     BEGIN
