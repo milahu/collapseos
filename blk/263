@@ -1,15 +1,15 @@
 CREATE XCURRENT 0 ,
-: XCON XCURRENT CURRENT* ! ;
-: XCOFF 0x02 RAM+ CURRENT* ! ;
-: (xentry) XCON (entry) XCOFF ;
-: XCREATE (xentry) 2 C, ;
-: XCODE XCON CODE XCOFF ;
-: XIMM XCON IMMEDIATE XCOFF ;
+: XCON XCURRENT CURRENT* ! ; : XCOFF 0x02 RAM+ CURRENT* ! ;
+: (xentry) XCON (entry) XCOFF ; : XCREATE (xentry) 2 C, ;
+: XCODE XCON CODE XCOFF ; : XIMM XCON IMMEDIATE XCOFF ;
 : _xapply ( a -- a-off )
     DUP ORG @ > IF ORG @ - BIN( @ + THEN ;
-: X' XCON ' XCOFF ;
-: X['] XCON ' _xapply LITN XCOFF ;
-: XCOMPILE
-    XCON ' _xapply LITN
+: XFIND XCURRENT @ SWAP _find DROP _xapply ;
+: X' XCON ' XCOFF ; : X['] XCON ' _xapply LITN XCOFF ;
+: XCOMPILE XCON ' _xapply LITN
     LIT< , FIND DROP _xapply , XCOFF ;
 : X[COMPILE] XCON ' _xapply , XCOFF ;
+: XDO LIT< 2>R XFIND , H@ ;
+: XLOOP LIT< (loop) XFIND , H@ - C, ;
+: XIF LIT< (?br) XFIND , H@ 1 ALLOT ;
+: XELSE LIT< (br) XFIND , 1 ALLOT [COMPILE] THEN H@ 1- ;

@@ -1,11 +1,11 @@
 : IF ( -- a | a: br cell addr )
-    0x3f ( ?br ) , H@ 1 ALLOT ( br cell allot )
+    COMPILE (?br) H@ 1 ALLOT ( br cell allot )
 ; IMMEDIATE
 : THEN ( a -- | a: br cell addr )
     DUP H@ -^ _bchk SWAP ( a-H a ) C!
 ; IMMEDIATE
 : ELSE ( a1 -- a2 | a1: IF cell a2: ELSE cell )
-    0x3b ( br ) ,
+    COMPILE (br)
     1 ALLOT
     [COMPILE] THEN
     H@ 1- ( push a. 1- for allot offset )

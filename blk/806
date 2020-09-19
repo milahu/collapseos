@@ -1,12 +1,10 @@
 ( TODO: move these words with other native words. )
 H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 CODE (br) L1 BSET ( used in ?br )
-PC 0x3f - ORG @ 0x3d + ! ( stable abi )
     DI DX MOVxx, AL [DI] MOVr[], AH AH XORrr, CBW,
     DX AX ADDxx,
 ;CODE
 CODE (?br)
-PC 0x43 - ORG @ 0x41 + ! ( stable abi )
     AX POPx, AX AX ORxx, JZ, L1 @ RPCs, ( False, branch )
     ( True, skip next byte and don't branch )
     DX INCx,

@@ -1,5 +1,4 @@
 CODE (loop)
-PC ORG @ 0x45 + ! ( stable ABI JP )
     0 IX+ INC(IXY+), IFZ, 1 IX+ INC(IXY+), THEN, ( I++ )
     ( Jump if I <> I' )
     A 0 IX+ LDrIXY, 2 IX- CP(IXY+), JRNZ, L1 BWR ( branch )

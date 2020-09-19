@@ -15,16 +15,6 @@ H@ ORG !
 0 C, 0 C, ( EXIT )
 0x16 ALLOT0
 0 C, 0x05 C, ( (n) )
-0x6 ALLOT0
-0 C, 0x06 C, ( (s) )
-0x6 ALLOT0
-0 C, 0x04 C, ( 2>R )
-0x6 ALLOT0
-0 C, 0x01 C, ( (br) )
-0x2 ALLOT0
-0 C, 0x02 C, ( (?br) )
-0x2 ALLOT0
-0 C, 0x03 C, ( (loop) )
 ( END OF STABLE ABI )
 H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x00 CODE EXIT

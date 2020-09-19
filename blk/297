@@ -1,12 +1,10 @@
 CODE (br)
 L1 BSET ( used in ?br and loop )
-PC ORG @ 0x3d + ! ( stable ABI JP )
     LDA(BC), H 0 LDri, L A LDrr,
     RLA, IFC, H DECr, THEN,
     BC ADDHLd, B H LDrr, C L LDrr,
 ;CODE
 CODE (?br)
-PC ORG @ 0x41 + ! ( stable ABI JP )
     HL POP,
     HLZ,
     JRZ, L1 BWR ( br + 1. False, branch )

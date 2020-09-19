@@ -1,7 +1,7 @@
-: LIT< 0x2b ( s ) , WORD DUP C@ 1+ MOVE, ; IMMEDIATE
+: LIT< COMPILE (s) WORD DUP C@ 1+ MOVE, ; IMMEDIATE
 : BEGIN H@ ; IMMEDIATE
-: AGAIN 0x3b ( br ) , H@ - _bchk C, ; IMMEDIATE
-: UNTIL 0x3f ( ?br ) , H@ - _bchk C, ; IMMEDIATE
+: AGAIN COMPILE (br) H@ - _bchk C, ; IMMEDIATE
+: UNTIL COMPILE (?br) H@ - _bchk C, ; IMMEDIATE
 : [ INTERPRET ; IMMEDIATE
 : ] R> DROP ;
 : COMPILE ' LITN ['] , , ; IMMEDIATE

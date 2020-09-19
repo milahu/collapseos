@@ -4,7 +4,6 @@ PC 0x27 - ORG @ 0x25 + ! ( stable abi )
     DX INCx, DX INCx,
 ;CODE
 CODE (s) ( string literal, see B287 )
-PC 0x2f - ORG @ 0x2d + ! ( stable abi )
     DI DX MOVxx, ( IP )
     AH AH XORrr, AL [DI] MOVr[], ( slen )
     DX PUSHx, DX INCx, DX AX ADDxx,
