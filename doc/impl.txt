@@ -14,7 +14,7 @@ it. As a general rule, we go like this:
 
 # Executing a word
 
-At it's core, executing a word is pushing the wordref on PS and
+At its core, executing a word is pushing the wordref on PS and
 calling EXECUTE. Then, we let the word do its things. Some
 words are special, but most of them are of the "compiled"
 type (regular nonnative word), and that's their execution that
@@ -30,10 +30,16 @@ contain a wordref to execute next, after we EXIT.
 At the end of every compiled word is an EXIT. This pops RS, sets
 IP to it, and continues.
 
+A compiled word is simply a list of wordrefs, but not all those
+wordrefs are 2 bytes in length. Some wordrefs are special. For
+example, a reference to (n) will be followed by an extra 2 bytes
+number. It's the responsibility of the (n) word to advance IP
+by 2 extra bytes.
+
 # Stack management
 
 In all supported arches, The Parameter Stack and Return Stack
-tops are trackes by a registered assigned to this purpose. For
+tops are tracked by a registered assigned to this purpose. For
 example, in z80, it's SP and IX that do that. The value in those
 registers are referred to as PS Pointer (PSP) and RS Pointer
 (RSP).
@@ -65,7 +71,7 @@ A dictionary entry has this structure:
 - Parameter field (PF)
 
 The prev offset is the number of bytes between the prev field
-and the previous word's code pointer.
+and the previous word's entry type.
 
 The size + flag indicate the size of the name field, with the
 7th bit being the IMMEDIATE flag.
@@ -83,15 +89,15 @@ number is the word type and the word's behavior depends on it.
 0: native. This words PFA contains native binary code and is
 jumped to directly.
 
-1: compiled. This word's PFA contains an atom list and its
+1: compiled. This word's PFA contains a list of wordrefs and its
 execution is described in "Execution model" above.
 
 2: cell. This word is usually followed by a 2-byte value in its
 PFA. Upon execution, the address of the PFA is pushed to PS.
 
 3: DOES>. This word is created by "DOES>" and is followed
-by a 2-byte value as well as the address where "DOES>" was
-compiled. At that address is an atom list exactly like in a
+by a 2-bytes value as well as the address where "DOES>" was
+compiled. At that address is an wordref list exactly like in a
 compiled word. Upon execution, after having pushed its cell
 addr to PSP, it executes its reference exactly like a
 compiled word.
@@ -131,10 +137,6 @@ CURRENT points to the last dict entry.
 
 HERE points to current write offset.
 
-IP is the Interpreter Pointer
-
-PARSEPTR holds routine address called on (parse)
-
 C<* holds routine address called on C<. If the C<* override
 at 0x08 is nonzero, this routine is called instead.
 
@@ -153,9 +155,9 @@ CRLF).
 
 BLK* see B416.
 
-FUTURE USES section is unused for now.          
-
 DRIVERS section is reserved for recipe-specific drivers.
+
+FUTURE USES section is unused for now.          
 
 # Initialization sequence
 

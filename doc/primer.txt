@@ -18,7 +18,7 @@ the top of the stack, then prints the result.
 42 0x8000 C! 0x8000 C@ .
 
 This writes the byte "42" at address 0x8000, and then reads
-back that bytes from the same address and print it.
+back that byte from the same address and print it.
 
 # Interpreter loop
 
@@ -37,7 +37,7 @@ Forth's main interpeter loop is very simple:
 
 A word is a string of non-whitepace characters. We consider that
 we're finished reading a word when we encounter a whitespace
-after having read at least one non-whitespace character
+after having read at least one non-whitespace character.
 
 # Character encoding
 
@@ -244,7 +244,7 @@ compilation.
 Words like "IF", "DO", ";" are all regular Forth words, but
 their "power" come from the fact that they're immediate.
 
-Starting Forth by Leo Brodie explain all of this in details.
+Starting Forth by Leo Brodie explains all of this in detail.
 Read this if you can. If you can't, well, let this sink in for
 a while, browse the dictionary (dict.txt) and try to understand
 why this or that word is immediate. Good luck!

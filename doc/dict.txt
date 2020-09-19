@@ -1,28 +1,23 @@
 # Dictionary
 
-List of words defined in Inner core (B390), Core words (B420)
-and Extra words (B150).
+List of words defined in arch-specific boot code (for example,
+B280 for Z80), Core words (B350) and Extra words (B150).
 
 # Glossary
 
 Stack notation: "<stack before> -- <stack after>". Rightmost is
 top of stack (TOS). For example, in "a b -- c d", b is TOS
 before, d is TOS after. "R:" means that the Return Stack is
-modified. "I:" prefix means "IMMEDIATE", that is, that this
-stack transformation is made at compile time.
+modified.
 
 Word references (wordref): When we say we have a "word
-reference", it's a pointer to a word's *code link*. For example,
-the address that "' DUP" puts on the stack is a wordref, that
-is, a reference to the code link of the word DUP.
+reference", it's a pointer to a word's *entry type field*. For
+example, the address that "' DUP" puts on the stack is a
+wordref, that is, a reference to the entry type field of the
+word DUP. See impl.txt for details.
 
-PF: Parameter field. The area following the code link of a
-word. For example, "' H@ 1+" points to the PF of the word H@.
-
-Atom: A word of the type compiledWord contains, in its PF, a
-list of what we call "atoms". Those atoms are most of the time
-word references, but they can also be references to NUMBER and
-LIT.
+PF: Parameter field. The area following the entry type field of
+a word. For example, "' H@ 1+" points to the PF of the word H@.
 
 Words between "()" are "support words" that aren't really meant
 to be used directly, but as part of another word.
@@ -59,21 +54,22 @@ $ - Initialize
 ALLOT    n --     Move HERE by n bytes
 C,       b --     Write byte b in HERE and advance it.
 FIND     w -- a f Like '?, but for w.
-EMPTY  --         Rewind HERE and CURRENT where they were at
+EMPTY    --       Rewind HERE and CURRENT where they were at
                   system initialization.            
-FORGET x --       Rewind the dictionary (both CURRENT and HERE)
+FORGET   x --     Rewind the dictionary (both CURRENT and HERE)
                   up to x's previous entry.             
-PREV   a -- a     Return a wordref's previous entry.
-WORD(  a -- a     Get wordref's beginning addr.
+PREV     a -- a   Return a wordref's previous entry.
+WORD(    a -- a   Get wordref's beginning addr.
 
 # Defining words
 
 : x ...     --     Define a new word
 ;           R:I -- Exit a colon definition
 CREATE x    --     Create cell named x. Doesn't allocate a PF.
-[COMPILE] x --     Compile word x and write it to HERE.
+[COMPILE] x --     *I* Compile word x and write it to HERE.
                    IMMEDIATE words are *not* executed.
-COMPILE x   --     Meta compiles. See B6.
+COMPILE x   --     *I* Meta compiles: write wordrefs that will
+                   compile x when executed.
 CONSTANT x  n --   Creates cell x that when called pushes its
                    value.
 DOES>       --     See primer.txt
@@ -105,7 +101,7 @@ have to consume it to avoid PSP leak.
                following bytes. Can be negative.
 (?br)     f -- Branch if f is false.
 (         --   *I* Comment. Ignore input until ")" is read.
-[         --   Begin interpretative mode. In a definition,
+[         --   *I* Begin interpretative mode. In a definition,
                execute words instead of compiling them.
 ]         --   End interpretative mode.
 ABORT     --   Resets PS and RS and returns to interpreter.
@@ -113,10 +109,9 @@ ABORT" x" --   *I* Compiles a ." followed by a ABORT.
 ERR       a -- Prints a and ABORT. Defined early and used by
                drivers.
 EXECUTE   a -- Execute wordref at addr a
-INTERPRET --   Get a line from stdin, compile it in tmp memory,
-               then execute the compiled contents.
+INTERPRET --   Main interpret loop.
 LEAVE     --   In a DO..LOOP, exit at the next LOOP call.
-QUIT      --   Return to interpreter prompt immediately
+QUIT      --   Return to interpreter prompt immediately.
 
 # Parameter Stack
 
@@ -226,11 +221,10 @@ NOT  f -- f     Push the logical opposite of f
 
 # Strings
 
-LIT    --         Write a LIT entry. You're expected to write
-                  actual string to HERE right afterwards.
-LIT< x --         Read following word and write to HERE as a
-                  string literal.
-S=     a1 a2 -- f Returns whether string a1 == a2.
+LIT< x  --         Read following word and write to HERE as a
+                   string literal.
+LIT" x" --         Same as LIT<, but can contain whitespaces.
+S=      a1 a2 -- f Returns whether string a1 == a2.
 
 # I/O
 

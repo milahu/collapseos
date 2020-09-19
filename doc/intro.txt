@@ -2,7 +2,7 @@
 
 Collapse OS is a minimal operating system created to preserve
 the ability to program microcontrollers through civilizational
-collapse. Its author expect the collapse of the global supply
+collapse. Its author expects the collapse of the global supply
 chain means the loss of our computer production capability. Many
 microcontrollers require a computer to program them.
 
