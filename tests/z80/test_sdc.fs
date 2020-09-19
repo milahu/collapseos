@@ -1,9 +1,9 @@
 212 LOAD ( z80a )
 : SPI_DATA 4 ;
-: SPI_CSLOW 5 ;
-: SPI_CSHIGH 6 ;
+: SPI_CTL 5 ;
+: SDC_DEVID 1 ;
 596 LOAD ( spi )
-603 616 LOADR ( sdc )
+423 436 LOADR ( sdc )
 
 0x0000 0x00 _crc16 0x0000 #eq
 0x0000 0x01 _crc16 0x1021 #eq
