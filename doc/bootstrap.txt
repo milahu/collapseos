@@ -1,7 +1,7 @@
 # Bootstrap guide
 
-You want to deploy Collapse OS on a new system? Read usage.txt
-and impl.txt, then continue here.
+You want to deploy Collapse OS on a new system? Read usage.txt,
+impl.txt, cross.txt, then continue here.
 
 What is Collapse OS? It is a binary placed either in ROM on
 in RAM by a bootloader. That binary, when executed, initializes

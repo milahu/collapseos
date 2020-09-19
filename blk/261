@@ -1,9 +1,6 @@
 Words overrides like ":", "IMMEDIATE" and "CODE" are not
 automatically shadowed to allow the harmless inclusion of
 this unit. This shadowing has to take place in your xcomp
-configuration.                      
+configuration.
 
-See example in /emul/xcomp.fs
-
-Why limit ourselves to icore? Oh, I've tried cross-compiling
-the whole shebang. I tried. And failed. Too dynamic.
+See /doc/cross.txt for details.
