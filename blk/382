@@ -3,7 +3,7 @@
         C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
     AGAIN ;
 : LIT"
-    0x2b ( (s) ) , H@ 0 C, ,"
+    COMPILE (s) H@ 0 C, ,"
     DUP H@ -^ 1- ( a len ) SWAP C!
 ; IMMEDIATE
 : ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
