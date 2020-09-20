@@ -19,7 +19,7 @@ SYSVARS 0x72 + CONSTANT PAD_MEM
 282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )
 
-0x100 JPnn, 0x63 ZFILL, ( 0x66 )
+0x100 JP, 0x63 ZFILL, ( 0x66 )
 RETN, 0x98 ZFILL, ( 0x100 )
 ( All set, carry on! )
 CURRENT @ XCURRENT !
