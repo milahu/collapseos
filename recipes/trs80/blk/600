@@ -4,7 +4,6 @@ Support code for the TRS-80 recipe. Contains drivers for the
 keyboard, video and floppy. At the moment, they are thin layer
 over the drivers provided by TRSDOS' SVC.
 
-Load with "492 LOAD".
+Load with "602 LOAD".
 
-There is also the RECV program at B502 and the XCOMP unit at
-B504
+There is also the RECV program at B612.

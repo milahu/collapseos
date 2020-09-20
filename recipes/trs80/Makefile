@@ -1,11 +1,18 @@
 TARGET = os.bin
-CDIR = ../../cvm
-STAGE = $(CDIR)/stage
+BASE = ../..
+BLKPACK = $(BASE)/tools/blkpack
+STAGE = $(BASE)/cvm/stage
 
 .PHONY: all
 all: $(TARGET) 
-$(TARGET): xcomp.fs $(STAGE)
-	cat xcomp.fs | $(STAGE) > $@
+$(TARGET): xcomp.fs $(STAGE) blkfs
+	cat xcomp.fs | $(STAGE) blkfs > $@
+
+$(BLKPACK):
+	$(MAKE) -C ../tools
+
+blkfs: $(BLKPACK)
+	$(BLKPACK) $(BASE)/blk blk > $@
 
 $(STAGE):
-	$(MAKE) -C $(CDIR) stage
+	$(MAKE) -C $(BASE)/cvm stage

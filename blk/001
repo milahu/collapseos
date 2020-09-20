@@ -7,8 +7,7 @@ MASTER INDEX
 200 Z80 assembler             260 Cross compilation
 280 Z80 boot code             350 Core words
 410 PS/2 keyboard subsystem   420 SD Card subsystem
-440-489 unused
-490 TRS-80 Recipe             520 Fonts
+440-519 unused                520 Fonts
 550 TI-84+ Recipe             580-649 unused
 650 AVR assembler             690 AVR SPI programmer
 700-729 unused                730 8086 assembler
