@@ -46,7 +46,7 @@ typedef struct {
     bool oflw;
 } VM;
 
-VM* VM_init();
+VM* VM_init(char *blkfs_path);
 void VM_deinit();
 bool VM_steps(int n);
 void VM_memdump();

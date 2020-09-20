@@ -1,0 +1,8 @@
+RC2014 Recipe
+
+Support code for the RC2014 recipe. Contains drivers for the
+ACIA, SD card and AT28 EEPROM.
+
+601 ACIA                       606 Zilog SIO driver
+612 AT28 EEPROM                615 SPI relay
+619 Xcomp unit

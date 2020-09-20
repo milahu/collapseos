@@ -9,8 +9,7 @@ MASTER INDEX
 410 PS/2 keyboard subsystem   420 SD Card subsystem
 440-489 unused
 490 TRS-80 Recipe             520 Fonts
-550 TI-84+ Recipe             580 RC2014 Recipe
-600-649 unused
+550 TI-84+ Recipe             580-649 unused
 650 AVR assembler             690 AVR SPI programmer
 700-729 unused                730 8086 assembler
 800 8086 boot code            830 PC/AT recipe
