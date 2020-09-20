@@ -3,6 +3,9 @@
 #include <unistd.h>
 #include "vm.h"
 
+#ifndef BLKFS_PATH
+#error BLKFS_PATH needed
+#endif
 #define RAMSTART 0
 #define STDIO_PORT 0x00
 // To know which part of RAM to dump, we listen to port 2, which at the end of
@@ -41,7 +44,11 @@ static void iowr_here(uint8_t val)
 
 int main(int argc, char *argv[])
 {
-    vm = VM_init();
+    if (argc < 2) {
+        vm = VM_init(BLKFS_PATH);
+    } else {
+        vm = VM_init(argv[1]);
+    }
     if (vm == NULL) {
         return 1;
     }

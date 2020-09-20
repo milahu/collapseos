@@ -13,16 +13,16 @@ $(BLKPACK):
 $(BLKUNPACK): $(BLKPACK)
 
 stage: stage.c $(OBJS) blkfs
-	$(CC) stage.c $(OBJS) -o $@
+	$(CC) -DBLKFS_PATH=\"`pwd`/blkfs\" stage.c $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
 forth: forth.c $(OBJS)
-	$(CC) forth.c $(OBJS) -lncurses -o $@
+	$(CC) -DBLKFS_PATH=\"`pwd`/blkfs\" forth.c $(OBJS) -lncurses -o $@
 
 vm.o: vm.c blkfs
-	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" -c -o vm.o vm.c
+	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -c -o vm.o vm.c
 
 
 .PHONY: updatebootstrap

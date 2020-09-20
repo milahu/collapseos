@@ -11,9 +11,6 @@
 // 5 - dest addr LSB
 #define BLK_PORT 0x03
 
-#ifndef BLKFS_PATH
-#error BLKFS_PATH needed
-#endif
 #ifndef FBIN_PATH
 #error FBIN_PATH needed
 #endif
@@ -271,9 +268,9 @@ static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
 }
 
-VM* VM_init() {
-    fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
-    blkfp = fopen(BLKFS_PATH, "r+");
+VM* VM_init(char *blkfs_path) {
+    fprintf(stderr, "Using blkfs %s\n", blkfs_path);
+    blkfp = fopen(blkfs_path, "r+");
     if (!blkfp) {
         fprintf(stderr, "Can't open\n");
         return NULL;

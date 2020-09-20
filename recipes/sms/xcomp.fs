@@ -27,8 +27,8 @@ CURRENT @ XCURRENT !
 283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )
 CREATE ~FNT CPFNT7x7
-623 628 LOADR ( VDP )
-632 637 LOADR ( PAD )
+603 608 LOADR ( VDP )
+612 617 LOADR ( PAD )
 380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
