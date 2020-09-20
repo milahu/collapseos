@@ -1,7 +1,3 @@
-: LIT"
-    COMPILE (s) H@ 0 C, ,"
-    DUP H@ -^ 1- ( a len ) SWAP C!
-; IMMEDIATE
 ( We don't use ." and ABORT in core, they're not xcomp-ed )
 : ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
 : ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
@@ -13,3 +9,5 @@
 : COMPILE ' LITN ['] , , ; IMMEDIATE
 : [COMPILE] ' , ; IMMEDIATE
 : ['] ' LITN ; IMMEDIATE
+':' X' _ 4 - C! ( give : its name )
+'(' X' _ 4 - C!

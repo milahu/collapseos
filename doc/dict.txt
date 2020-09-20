@@ -63,8 +63,7 @@ WORD(    a -- a   Get wordref's beginning addr.
 
 # Defining words
 
-: x ...     --     Define a new word
-;           R:I -- Exit a colon definition
+: x ... ;   --     Define a new word
 CREATE x    --     Create cell named x. Doesn't allocate a PF.
 [COMPILE] x --     *I* Compile word x and write it to HERE.
                    IMMEDIATE words are *not* executed.

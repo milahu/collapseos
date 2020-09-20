@@ -10,3 +10,7 @@
     [COMPILE] THEN
     H@ 1- ( push a. 1- for allot offset )
 ; IMMEDIATE
+: LIT"
+    COMPILE (s) H@ 0 C, ,"
+    DUP H@ -^ 1- ( a len ) SWAP C!
+; IMMEDIATE

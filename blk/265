@@ -1,6 +1,7 @@
 : X:
     (xentry) 1 ( compiled ) C,
-    BEGIN WORD
+    BEGIN
+    WORD DUP LIT" ;" S= IF DROP 0x0b , EXIT THEN
     XCURRENT @ SWAP ( xcur w ) _find ( a f )
     IF   ( a )
         DUP IMMED? IF ABORT THEN
