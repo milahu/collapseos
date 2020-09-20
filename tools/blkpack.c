@@ -6,24 +6,22 @@
 #include <string.h>
 #include <sys/stat.h>
 
+static char *buf;
+static int blkcnt;
+
 static void usage()
 {
-    fprintf(stderr, "Usage: blkpack dirname\n");
+    fprintf(stderr, "Usage: blkpack dirname [dirname ...]\n");
 }
 
-int main(int argc, char *argv[])
+static int spit(char *dirname)
 {
     DIR *dp;
     struct dirent *ep;
-    char *buf = NULL;
-    int blkcnt = 0;
-    if (argc != 2) {
-        usage();
-        return 1;
-    }
-    dp = opendir(argv[1]);
+
+    dp = opendir(dirname);
     if (dp == NULL) {
-        fprintf(stderr, "Couldn't open directory.\n");
+        fprintf(stderr, "Couldn't open directory %s.\n", dirname);
         return 1;
     }
     while ((ep = readdir(dp))) {
@@ -37,11 +35,12 @@ int main(int argc, char *argv[])
             memset(buf+(blkcnt*1024), 0, (newcnt-blkcnt)*1024);
             blkcnt = newcnt;
         }
-        char fullpath[0x200];
-        strcpy(fullpath, argv[1]);
+        char *fullpath = malloc(strlen(dirname) + MAXNAMLEN + 2);
+        strcpy(fullpath, dirname);
         strcat(fullpath, "/");
         strcat(fullpath, ep->d_name);
         FILE *fp = fopen(fullpath, "r");
+        free(fullpath);
         if (fp == NULL) {
             fprintf(stderr, "Could not open %s: %s\n", ep->d_name, strerror(errno));
             continue;
@@ -63,9 +62,25 @@ int main(int argc, char *argv[])
         free(line);
         fclose(fp);
     }
+    closedir(dp);
+    return 0;
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc < 2) {
+        usage();
+        return 1;
+    }
+    buf = NULL;
+    blkcnt = 0;
+    for (int i=1; i<argc; i++) {
+        if (spit(argv[i]) != 0) {
+            return 1;
+        }
+    }
     fwrite(buf, 1024, blkcnt, stdout);
     free(buf);
-    closedir(dp);
     return 0;
 }
 
