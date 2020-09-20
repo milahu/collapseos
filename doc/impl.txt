@@ -195,28 +195,13 @@ otherwise be difficult to access. Here's the complete list of
 these references:
 
 04 BOOT addr         06 (uflw) addr      08 LATEST
-0b EXIT wordref      13 (oflw) addr      1a next addr
+13 (oflw) addr       1a next addr
 
 BOOT, (uflw) and (oflw) exist because they are referred to
 before those words are defined (in core words). LATEST is a
 critical part of the initialization sequence.
 
-Stable wordrefs are there for more complicated reasons. When
-cross-compiling Collapse OS, we use immediate words from the
-host and some of them compile wordrefs (LITN compiles (n),
-";" compiles EXIT). These compiled wordref need to be stable
-across binaries, so they're part of the stable ABI.
-
-Another layer of complexity is the fact that some binaries
-don't begin at offset 0. In that case, the stable ABI doesn't
-begin at 0 either. The EXECUTE word has a special handling of
-those case where any wordref < 0x100 has the binary offset
-applied to it.
-
-But that's not the end of our problems. If an offsetted binary
-cross compiles a binary with a different offset, stable ABI
-references will be > 0x100 and be broken.
-
-For this reason, any stable wordref compiled in the "hot zone"
-(B397-B400) has to be compiled by direct offset reference to
-avoid having any binary offset applied to it.
+All Collapse OS binaries, regardless of architecture, have
+those values at those offsets of them. Some binaries are built
+to run at offset different than zero. This stable ABI lives at
+that offset, not 0.

@@ -9,7 +9,7 @@
 : _ ( : will get its name almost at the very end )
     (entry) 1 ( compiled ) C,
     BEGIN
-        WORD DUP LIT" ;" S= IF DROP 0x0b , EXIT THEN
+        WORD DUP LIT" ;" S= IF DROP COMPILE EXIT EXIT THEN
         FIND IF ( is word ) DUP IMMED? IF EXECUTE ELSE , THEN
         ELSE ( maybe number ) (parse) LITN THEN
     AGAIN ;

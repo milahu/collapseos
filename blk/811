@@ -2,7 +2,6 @@
 CODE EXECUTE 1 chkPS,
     DI POPx, JMPn, lblexec @ RPCn,
 CODE EXIT
-PC 0x0f - ORG @ 0x0d + ! ( stable abi )
     DX [BP] 0 MOVx[]+, BP DECx, BP DECx, ( popRS )
 ;CODE
 

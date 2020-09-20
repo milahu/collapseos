@@ -11,9 +11,7 @@ CREATE BIN( 0 ,
 270 LOAD  ( xcomp overrides )
 
 H@ ORG !
-0x0b ALLOT0
-0 C, 0 C, ( EXIT )
-0x08 ALLOT0
+0x15 ALLOT0
 ( END OF STABLE ABI )
 H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x00 CODE EXIT

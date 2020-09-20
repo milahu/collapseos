@@ -4,7 +4,6 @@ CODE EXECUTE
     lblexec @ JP,
 
 CODE EXIT
-PC ORG @ 0x0d + ! ( stable ABI JP )
     C 0 IX+ LDrIXY,
     B 1 IX+ LDrIXY,
     IX DECd, IX DECd,
