@@ -8,10 +8,10 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )
 CODE (emit)
-    A 1 LDrn, 1 OUTnA, HL POPqq, A L LDrr, 0 OUTnA,
+    A 1 LDri, 1 OUTiA, HL POP, A L LDrr, 0 OUTiA,
 ;CODE
 CODE (key)
-    BEGIN, 1 INAn, A INCr, JRZ, AGAIN,
+    BEGIN, 1 INAi, A INCr, JRZ, AGAIN,
     A DECr, PUSHA,
 ;CODE
 : _sel ( sec )
