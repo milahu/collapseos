@@ -5,7 +5,7 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 SYSVARS 0x70 + CONSTANT LCD_MEM
 SYSVARS 0x72 + CONSTANT KBD_MEM
 0x01 CONSTANT KBD_PORT
-212 LOAD  ( z80 assembler )
+5 LOAD  ( z80 assembler )
 : ZFILL, ( u ) 0 DO 0 A, LOOP ;
 262 LOAD  ( xcomp )
 522 LOAD  ( font compiler )

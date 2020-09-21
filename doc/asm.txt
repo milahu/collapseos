@@ -1,0 +1,140 @@
+# Assembling Z80 binaries
+
+(All assembers in Collapse OS follow the same basic principles.
+There are sections, below, for each supported architectures, but
+you should read this first section first to be familiar with
+those common, basic principles)
+
+Words in the Z80 assembler (B5) allow you to assemble z80 bin-
+aries. Being Forth words, opcode assembly is a bit different
+than with a typical assembler. For example, what would tradi-
+tionally be "ld a, b" would become "A B LDrr,".
+
+Those opcode words, of which there is a complete list below, end
+with "," to indicate that their effect is to write (,) the cor-
+responding opcode.
+
+The "argtype" suffix after each mnemonic is needed because the
+assembler doesn't auto-detect the op's form based on arguments.
+It has to be explicitly specified. "r" is for 8-bit registers,
+"d" for 16-bit ones, "i" for immediate, "c" is for conditions.
+Be aware that "SP" and "AF" refer to the same value: some 16-
+bit ops can affect SP, others, AF. If you use the wrong argu-
+ment on the wrong op, you will affect the wrong register.
+
+Mnemonics having only a single form, such as PUSH and POP,
+don't have argtype suffixes.
+
+In addition to opcode words, some variables are also defined by
+this program:
+
+BIN( is the addr at which the compiled binary will live. It is
+often 0.
+
+ORG is H@ offset at which we begin spitting binary. Used to
+compute PC. To have a proper PC, call  "H@ ORG !" at the
+beginning of your assembly process. PC is H@ - ORG + BIN(.
+
+Labels are a convenient way of managing relative jump
+calculations. Backward labels are easy. It is only a matter or
+recording "HERE" and do subtractions. Forward labels record the
+place where we should write the offset, and then when we get to
+that point later on, the label records the offset there.
+
+To avoid using dict memory in compilation targets, we
+pre-declare label variables here, which means we have a limited
+number of it. We have 4: L1, L2, L3, L4.
+
+# Flow
+
+There are 2 label types: backward and forward. For each type,
+there are two actions: set and write. Setting a label is
+declaring where it is. Words for this are BSET and FSET. It has
+to be performed at the label's destination. Writing a label is
+writing its offset difference to the binary result. It has to be
+done right after a relative jump operation. Word for this are
+BWR and FWR. Yes, those words are only for relative jumps.
+
+For backward labels, set happens before write. For forward
+labels, write happen before set. The write operation writes a
+dummy placeholder, and then the set operation writes the offset
+at that placeholder's address.
+
+Variable actions are expected to be called with labels in
+front of them. Examples:
+
+L1 BSET NOP, JR, L1 BWR ( backward jump )
+JR, L1 FWR NOP, L1 FSET ( forward jump )
+
+If you look at the code for those words, you'll notice a mys-
+terious "1-". z80 relative jumps receives "e-2", that is, the
+offset that *counts the 2 bytes of the jump itself*. Because we
+set the label *after* the jump OP1 itself, that's 1 byte that is
+taken care of. We still need to adjust by another byte before
+writing the offset.
+
+Can you use labels with JP, and CALL,? Yes, but only backwards
+jumps, and in that case, you use the label's value directly.
+Example: L2 @ CALL,
+
+# Structured flow
+
+z80a also has words that behave similarly to IF..THEN and
+BEGIN..UNTIL.
+
+On the IF side, we have IFZ, IFNZ, IFC, IFNC, and THEN,. When
+the opposite condition is met, a relative jump is made to
+THEN,'s PC. For example, if you have IFZ, a jump is made when
+Z is unset.
+
+On the BEGIN,..AGAIN, side, it's a bit different. You start
+with your BEGIN, instruction, and then later you issue a
+JRxx, instr followed by AGAIN,. Exactly like you would do
+with a label.
+
+On top of that, you have the very nice BREAK, instruction,
+which must also be preceded by a JRxx, and will jump to the
+PC following the next AGAIN,. Examples:
+
+IFZ, NOP, THEN,
+BEGIN, NOP, JR, AGAIN, ( unconditional )
+BEGIN, NOP, JRZ, AGAIN, ( conditional )
+BEGIN, NOP, JRZ, BREAK, JR, AGAIN, ( break off the loop )
+
+# Z80 Instructions list
+
+Letters in [] brackets indicate "argtype" variants. When the
+bracket starts with ",", it means that a "plain" mnemonic is
+available. For example, "RET," and "RETc," exist.
+
+Note that assemblers in Collapse OS are incomplete and opcode
+words were implemented in a "just-in-time" fashion, when needed.
+
+r => A B C D E H L (HL)
+d => BC DE HL AF/SP
+c => CNZ CZ CNC CC CPO CPE CP CM
+
+LD  [rr, ri, di, (i)HL, HL(i), d(i), (i)d, rIXY, IXYr,
+    (DE)A, A(DE), (i)A, A(i)]
+ADD [r, i, HLd, IXd, IXIX, IYd, IYIY]
+ADC [r, HLd]
+CP  [r, i, (IXY+)]
+SBC [r, HLd]
+SUB [r, i]
+INC [r, d, (IXY+)]
+DEC [r, d, (IXY+)]
+AND [r, i]
+OR  [r, i]
+XOR [r, i]
+OUT [iA, (C)r]
+IN  [Ai, r(C)]
+JP  [i, (HL), (IX), (IY)]
+JR  [, Z, NZ, C, NC]
+
+PUSH       POP
+SET        RES         BIT
+RL         RLC         SLA         RLA         RLCA
+RR         RRC         SRL         RRA         RRCA
+CALL       RST         DJNZ
+DI         EI          EXDEHL      EXX         HALT
+NOP        RET [,c]    RETI        RETN        SCF

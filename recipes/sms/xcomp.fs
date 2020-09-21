@@ -12,7 +12,7 @@ SYSVARS 0x70 + CONSTANT VDP_MEM
 SYSVARS 0x72 + CONSTANT PAD_MEM
 0x3f   CONSTANT PAD_CTLPORT
 0xdc   CONSTANT PAD_D1PORT
-212 LOAD  ( z80 assembler )
+5 LOAD  ( z80 assembler )
 : ZFILL, ( u ) 0 DO 0 A, LOOP ;
 262 LOAD  ( xcomp )
 524 LOAD  ( font compiler )

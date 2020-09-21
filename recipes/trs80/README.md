@@ -106,7 +106,7 @@ As stated in the overview, we need a program on the TRS-80 that:
 You're in luck: that program has already been written. It's in B502 and B503.
 You can compile it with:
 
-    212 LOAD ( z80 assembler )
+    5 LOAD ( z80 assembler )
     0x0238 CONSTANT COM_DRV_ADDR
     0x3000 CONSTANT DEST_ADDR
     502 LOAD

@@ -2,7 +2,7 @@
 0xfffa CONSTANT PS_ADDR
 RS_ADDR 0x80 - CONSTANT SYSVARS
 0 CONSTANT HERESTART
-212 LOAD ( z80 assembler )
+5 LOAD   ( z80 assembler )
 262 LOAD ( xcomp )
 282 LOAD ( boot.z80.decl )
 270 LOAD ( xcomp overrides )
