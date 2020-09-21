@@ -1,3 +1,4 @@
+( AVR Programmer, load range 160-162. doc/avr.txt )
 ( page size in words, 64 is default on atmega328P )
 CREATE aspfpgsz 64 ,
 VARIABLE aspprevx

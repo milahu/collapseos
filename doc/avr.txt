@@ -1,10 +1,8 @@
-# Working with AVR microcontrollers
-
-# Assembling AVR binaries
-
-TODO
-
 # Programming AVR chips
+
+(In this documentation, you are expected to have an AVR binary
+ready to send. To assemble an AVR binary from source, see
+asm.txt)
 
 To program AVR chips, you need a device that provides the SPI
 protocol. The device built in the rc2014/sdcard recipe fits the
@@ -18,7 +16,7 @@ to proper AVR pins as described in the MCU's datasheet. Note
 that this device will be the same as the one you'll use for any
 modern SPI-based AVR programmer, with RESET replacing SS.
 
-The AVR programming code is at B690.
+The AVR programming code is at B160.
 
 Before you begin programming the chip, the device must be desel-
 ected. Ensure with "0 (spie)".
