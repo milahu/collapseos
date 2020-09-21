@@ -1,14 +1,2 @@
-'? CASE NOT [IF] 48 49 LOADR+ [THEN] DROP ( B153-154 )
 '? FILL NOT [IF] 50 LOAD+ [THEN] DROP ( B155 )
 1 7 LOADR+
-: BROWSE
-    0 ACC ! L
-    BEGIN
-        KEY CASE
-            'Q' OF EXIT ENDOF
-            'B' OF B ENDOF
-            'N' OF N ENDOF
-            _NUM
-        ENDCASE
-    AGAIN
-;

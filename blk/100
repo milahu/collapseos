@@ -3,14 +3,4 @@ Block editor
 This is an application to conveniently browse the contents of
 the disk blocks and edit them. You can load it with "105 LOAD".
 
-Browse mode: If you execute BROWSE, the Forth interpreter is
-replaced by browser's loop. Typing "Q" quits the browser.
-
-In this mode, typing a decimal number followed by space or
-return lists the contents of that block. B for previous block,
-N for next.
-
-When not in browse mode, your prompt is a regular Forth prompt
-with editor words loaded.
-
-                                                        (cont.)
+See doc/ed.txt

@@ -1,3 +1,2 @@
-'? CASE NOT [IF] 1 2 LOADR+ [THEN] DROP ( from '? )
 '? FILL NOT [IF] 3 LOAD+ [THEN] DROP
 '? WIPE NOT [IF] 5 LOAD+ [THEN] DROP
