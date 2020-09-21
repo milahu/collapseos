@@ -1,22 +1,29 @@
 TARGET = disk.bin
-BASEDIR = ../..
-CDIR = $(BASEDIR)/cvm
+BASE = ../..
+CDIR = $(BASE)/cvm
+BLKPACK = $(BASE)/tools/blkpack
 STAGE = $(CDIR)/stage
 
 .PHONY: all
 all: $(TARGET) 
-mbr.bin: mbr.fs $(STAGE)
-	cat mbr.fs | $(STAGE) > $@
+os.bin: xcomp.fs $(STAGE) blkfs
+	$(STAGE) blkfs < xcomp.fs > $@
 
-os.bin: xcomp.fs $(STAGE)
-	cat xcomp.fs | $(STAGE) > $@
+$(BLKPACK):
+	$(MAKE) -C ../tools
 
-disk.bin: mbr.bin os.bin
-	cat mbr.bin os.bin > $@
-	dd if=$(CDIR)/blkfs of=$@ bs=512 seek=16
+blkfs: $(BLKPACK)
+	$(BLKPACK) $(BASE)/blk blk > $@
 
 $(STAGE):
 	$(MAKE) -C $(CDIR) stage
+
+mbr.bin: mbr.fs $(STAGE)
+	cat mbr.fs | $(STAGE) > $@
+
+$(TARGET): mbr.bin os.bin
+	cat mbr.bin os.bin > $@
+	dd if=blkfs of=$@ bs=512 seek=16
 
 .PHONY: emul
 emul: $(TARGET)

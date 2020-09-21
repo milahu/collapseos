@@ -11,4 +11,4 @@ MASTER INDEX
 550-649 unused
 650 AVR assembler             690 AVR SPI programmer
 700-729 unused                730 8086 assembler
-800 8086 boot code            830 PC/AT recipe
+800 8086 boot code
