@@ -64,8 +64,8 @@ CURRENT @ XCURRENT !
 283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )
 CREATE ~FNT CPFNT3x5
-555 560 LOADR ( LCD low )
-566 570 LOADR ( KBD low )
+605 610 LOADR ( LCD low )
+616 620 LOADR ( KBD low )
 380 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )

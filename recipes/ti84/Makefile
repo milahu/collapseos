@@ -1,14 +1,21 @@
 TARGET = os.bin
-BASEDIR = ../..
-CDIR = $(BASEDIR)/cvm
+BASE = ../..
+CDIR = $(BASE)/cvm
 STAGE = $(CDIR)/stage
-EMUL = $(BASEDIR)/emul/hw/ti/ti84
+BLKPACK = $(BASE)/tools/blkpack
+EMUL = $(BASE)/emul/hw/ti/ti84
 MKTIUPGRADE = mktiupgrade
 
 .PHONY: all
 all: $(TARGET) 
-$(TARGET): xcomp.fs $(STAGE)
-	cat xcomp.fs | $(STAGE) > $@
+$(TARGET): xcomp.fs $(STAGE) blkfs
+	$(STAGE) blkfs < xcomp.fs > $@
+
+$(BLKPACK):
+	$(MAKE) -C ../tools
+
+blkfs: $(BLKPACK)
+	$(BLKPACK) $(BASE)/blk blk > $@
 
 $(STAGE):
 	$(MAKE) -C $(CDIR) stage
