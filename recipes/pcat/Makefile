@@ -18,8 +18,8 @@ blkfs: $(BLKPACK)
 $(STAGE):
 	$(MAKE) -C $(CDIR) stage
 
-mbr.bin: mbr.fs $(STAGE)
-	cat mbr.fs | $(STAGE) > $@
+mbr.bin: mbr.fs $(STAGE) blkfs
+	cat mbr.fs | $(STAGE) blkfs > $@
 
 $(TARGET): mbr.bin os.bin
 	cat mbr.bin os.bin > $@
