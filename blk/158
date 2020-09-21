@@ -1,2 +1,0 @@
-: LOWER DUP 'A' 'Z' =><= IF 32 + THEN ;
-: UPPER DUP 'a' 'z' =><= IF 32 - THEN ;

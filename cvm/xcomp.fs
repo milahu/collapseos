@@ -6,7 +6,6 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 VARIABLE ORG
 CREATE BIN( 0 ,
 : PC H@ ORG @ - ;
-155 LOAD  ( ALLOT0 )
 262 LOAD  ( xcomp )
 270 LOAD  ( xcomp overrides )
 

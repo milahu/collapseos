@@ -1,8 +1,0 @@
-: WIPE BLK( 1024 0 FILL BLK!! ;
-: WIPED? ( -- f )
-    1 ( f ) BLK) BLK( DO
-        I C@ IF DROP 0 ( f ) LEAVE THEN LOOP ;
-: COPY ( src dst -- )
-    FLUSH SWAP BLK@ BLK> ! BLK! ;
-: FREEBLKS? ( b1 b2 -- )
-    1+ SWAP DO I BLK@ WIPED? IF I . SPC THEN LOOP ;

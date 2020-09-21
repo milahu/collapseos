@@ -1,10 +1,14 @@
-( strings being sent to parse routines are always null
-  terminated )
-
-: _pc ( a -- n f, parse character )
-    ( apostrophe is ASCII 39 )
-    DUP 1+ C@ 39 = OVER 3 + C@ 39 = AND  ( a f )
-    NOT IF 0 EXIT THEN   ( a 0 )
-    ( surrounded by apos, good, return )
-    2+ C@ 1                             ( n 1 )
+( r c -- r f )
+( Parse digit c and accumulate into result r.
+  Flag f is 0 when c was a valid digit, 1 when c was WS,
+  -1 when c was an invalid digit. )
+: _pdacc
+    DUP 0x21 < IF DROP 1 EXIT THEN
+    ( parse char )
+    ( if bad, return "r -1" )
+    '0' -
+    DUP 10 < NOT IF DROP -1 EXIT THEN
+    ( good, add to running result )
+    SWAP 10 * +                    ( r*10+n )
+    0                              ( good )
 ;

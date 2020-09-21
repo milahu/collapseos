@@ -1,8 +1,0 @@
-: IMMEDIATE
-    CURRENT @ 1-
-    DUP C@ 128 OR SWAP C! ;
-: IMMED? 1- C@ 0x80 AND ;
-: +! TUCK @ + SWAP ! ;
-: / /MOD NIP ;
-: MOD /MOD DROP ;
-: ALLOT HERE +! ;

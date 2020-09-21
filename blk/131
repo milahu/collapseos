@@ -1,3 +1,4 @@
+: UPPER DUP 'a' 'z' =><= IF 32 - THEN ;
 : handle ( c -- f )
     DUP '0' '9' =><= IF num 0 EXIT THEN
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN

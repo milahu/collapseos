@@ -1,5 +1,0 @@
-: FILL ( a n b -- )
-    SWAP 2 PICK + ( a b a+n ) ROT ( b a+n a ) DO ( b )
-        DUP I C!
-    LOOP DROP ;
-: ALLOT0 ( n -- ) H@ OVER 0 FILL ALLOT ;

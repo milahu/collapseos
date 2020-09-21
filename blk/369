@@ -1,3 +1,7 @@
+: IMMEDIATE
+    CURRENT @ 1-
+    DUP C@ 128 OR SWAP C! ;
+: IMMED? 1- C@ 0x80 AND ;
 : '? WORD FIND ;
 : ' '? NOT IF (wnf) THEN ;
 : ROLL
