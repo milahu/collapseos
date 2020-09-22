@@ -7,6 +7,5 @@ MASTER INDEX
 170-259 unused                260 Cross compilation
 280 Z80 boot code             350 Core words
 410 PS/2 keyboard subsystem   420 SD Card subsystem
-440-519 unused                520 Fonts
-550-799 unused
-800 8086 boot code
+440 8086 boot code
+470-519 unused                520 Fonts
