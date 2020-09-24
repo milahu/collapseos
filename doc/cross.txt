@@ -71,3 +71,28 @@ bootstrap.txt.
 
 After you're done, you can run EMPTY to go back to a usable
 system.
+
+# Immediate compiling words trickyness
+
+When using an immediate compiling word such as "IF" during
+xcomp, things are a bit tricky for two reasons:
+
+1. Immediates used during xcomp are from the host system.
+2. The reference of the word(s) they compile is for the host
+   system.
+
+Therefore, unless the compiled word (for example (?br) compiled
+by IF) has exactly the same address in both the host and guest,
+the resulting binary will be broken.
+
+For this reason, we re-implement many of those compiling words
+in xcomp overrides, hacking our way through, so that those
+compiling words compile proper guest references. We don't do
+this for all compiling words though. This means that some words
+can't be used in core and drivers, for example, ABORT" and .".
+
+How to know whether a word can be used?
+
+1. If it's not an immediate compiling word, it's fine.
+2. If its overriden in B270, it's fine.
+3. Otherwise, you can't cross-compile it.

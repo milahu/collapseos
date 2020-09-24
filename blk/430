@@ -1,4 +1,4 @@
-: _err 0 (spie) ABORT" SDerr" ;
+: _err 0 (spie) LIT" SDerr" ERR ;
 
 ( Tight definition ahead, pre-comment.
 
