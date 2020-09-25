@@ -1,5 +1,5 @@
 : OP1 CREATE C, DOES> C@ A, ;
-0xc3 OP1 RETn,       0xfa OP1 CLI,       0xfb OP1 STI,
+0xc3 OP1 RET,        0xfa OP1 CLI,       0xfb OP1 STI,
 0xf4 OP1 HLT,        0xfc OP1 CLD,       0xfd OP1 STD,
 0x90 OP1 NOP,        0x98 OP1 CBW,
 0xf3 OP1 REPZ,       0xf2 OP1 REPNZ,     0xac OP1 LODSB,
@@ -9,7 +9,7 @@
 ( no argument, jumps with relative addrs are special )
 0xeb OP1 JMPs,       0xe9 OP1 JMPn,      0x74 OP1 JZ,
 0x75 OP1 JNZ,        0x72 OP1 JC,        0x73 OP1 JNC,
-0xe8 OP1 CALLn,
+0xe8 OP1 CALL,
 
 : OP1r CREATE C, DOES> C@ + A, ;
 0x40 OP1r INCx,      0x48 OP1r DECx,

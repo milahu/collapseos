@@ -1,5 +1,5 @@
 CODE (roll) ( "2 3 4 5 4 --> 2 4 5 5". See B311 )
-    CX POPx, CX 2 ADDxi, CALLn, lblchkPS @ RPCn, CX 2 SUBxi,
+    CX POPx, CX 2 ADDxi, CALL, lblchkPS @ RPCn, CX 2 SUBxi,
     SI SP MOVxx, SI CX ADDxx,
     DI SI MOVxx, DI 2 ADDxi, STD, REPZ, MOVSB,
 ;CODE

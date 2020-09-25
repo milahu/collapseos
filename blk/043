@@ -4,4 +4,4 @@
 : ;CODE JMPn, 0x1a ( next ) RPCn, ;
 VARIABLE lblchkPS
 : chkPS, ( sz -- )
-    CX SWAP 2 * MOVxI, CALLn, lblchkPS @ RPCn, ;
+    CX SWAP 2 * MOVxI, CALL, lblchkPS @ RPCn, ;

@@ -11,6 +11,6 @@ CODE OVER ( a b -- a b a ) 2 chkPS,
     DI SP MOVxx, AX [DI] 2 MOVx[]+, AX PUSHx, ;CODE
 CODE PICK
     DI POPx, DI SHLx1, ( x2 )
-    CX DI MOVxx, CX 2 ADDxi, CALLn, lblchkPS @ RPCn,
+    CX DI MOVxx, CX 2 ADDxi, CALL, lblchkPS @ RPCn,
     DI SP ADDxx, DI [DI] MOVx[], DI PUSHx,
 ;CODE

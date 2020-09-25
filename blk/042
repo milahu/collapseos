@@ -8,4 +8,4 @@
 : RPCn, PC - 2- A,, ;
 : AGAIN, ( BREAK?, ) RPCs, ;
 ( Use RPCx with appropriate JMP/CALL op. Example:
-  JMPs, 0x42 RPCs, or CALLn, 0x1234 RPCn, )
+  JMPs, 0x42 RPCs, or CALL, 0x1234 RPCn, )
