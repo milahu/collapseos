@@ -1,5 +1,5 @@
 EXTOBJS = ../../emul.o ../../libz80/libz80.o
-OBJS = acia.o sdc.o classic.o 
+OBJS = sio.o acia.o sdc.o classic.o 
 TARGET = classic
 
 .PHONY: all
