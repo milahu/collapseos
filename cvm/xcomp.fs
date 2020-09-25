@@ -17,11 +17,11 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x01 CODE (br)
 0x02 CODE (?br)
 0x03 CODE (loop)
-0x05 CODE (n)
-0x06 CODE (s)
-0x04 CODE 2>R
-0x07 CODE >R
-0x08 CODE R>
+0x04 CODE (n)
+0x05 CODE (s)
+0x06 CODE >R
+0x07 CODE R>
+0x08 CODE 2>R
 0x09 CODE 2R>
 0x0a CODE EXECUTE
 0x0b CODE ROT
@@ -68,6 +68,7 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x34 CODE 2-
 0x35 CODE RSHIFT
 0x36 CODE LSHIFT
+0x37 CODE TICKS
 353 LOAD  ( xcomp core low )
 : (emit) 0 PC! ;
 : (key) 0 PC@ ;

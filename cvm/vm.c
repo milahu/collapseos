@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <unistd.h>
 #include "vm.h"
 
 // Port for block reads. Each read or write has to be done in 5 IO writes:
@@ -263,6 +264,7 @@ static void MINUS2() { push(pop()-2); }
 static void PLUS2() { push(pop()+2); }
 static void RSHIFT() { word u = pop(); push(pop()>>u); }
 static void LSHIFT() { word u = pop(); push(pop()<<u); }
+static void TICKS() { usleep(pop()); }
 
 static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
@@ -316,11 +318,11 @@ VM* VM_init(char *blkfs_path) {
     native(_br_);
     native(_cbr_);
     native(_loop_);
-    native(SP_to_R_2);
     native(nlit);
     native(slit);
     native(SP_to_R);
     native(R_to_SP);
+    native(SP_to_R_2);
     native(R_to_SP_2);
     native(EXECUTE);
     native(ROT);
@@ -367,6 +369,7 @@ VM* VM_init(char *blkfs_path) {
     native(MINUS2);
     native(RSHIFT);
     native(LSHIFT);
+    native(TICKS);
     vm.IP = gw(0x04) + 1; // BOOT
     sw(SYSVARS+0x02, gw(0x08)); // CURRENT
     sw(SYSVARS+0x04, gw(0x08)); // HERE

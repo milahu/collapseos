@@ -1,0 +1,9 @@
+( See comment in B321. TODO: test on real hardware. in qemu,
+  the resulting delay is more than 10x too long. )
+CODE TICKS 1 chkPS, ( n=100us )
+    SI DX MOVxx, ( protect IP )
+    AX POPx, BX 100 MOVxI, BX MULx,
+    CX DX MOVxx, ( high ) DX AX MOVxx, ( low )
+    AX 0x8600 MOVxI, ( 86h, WAIT ) 0x15 INT,
+    DX SI MOVxx, ( restore IP )
+;CODE

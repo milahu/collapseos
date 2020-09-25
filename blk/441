@@ -10,4 +10,4 @@ size of stack. This allows for some interesting optimization.
 For example, in SWAP, no need to pop, chkPS, then push, we can
 chkPS and then proceed to optimized swapping in PS.
 
-To assemble, load blocks 445 through 460
+To assemble, load blocks 445 through 461

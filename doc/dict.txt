@@ -242,9 +242,6 @@ S=      a1 a2 -- f Returns whether string a1 == a2.
                call to (print).
 C<?     -- f   Returns whether there's a char waiting in buf.
 C<      -- c   Read one char from buffered input.
-DUMP    n a -- Prints n bytes at addr a in a hexdump format.
-               Prints in chunks of 8 bytes. Doesn't do partial
-               lines. Output is designed to fit in 32 columns.
 EMIT    c --   Spit char c to output stream
 IN>     -- a   Address of variable containing current pos in
                input buffer.
@@ -270,7 +267,6 @@ BLK(   -- a      Beginning addr of blk buf.
 BLK)   -- a      Ending addr of blk buf.
 COPY   s d --    Copy contents of s block to d block.
 FLUSH  --        Write current block to disk if dirty.
-FREEBLKS? a b -- List free blocks between blocks a and b.
 LIST   n --      Prints the contents of the block n on screen
                  in the form of 16 lines of 64 columns.
 LOAD   n --      Interprets Forth code from block n
@@ -279,3 +275,11 @@ LOADR  n1 n2 --  Load block range between n1 and n2, inclusive.
 LOADR+ n1 n2 --  Relative ranged load.
 WIPE   --        Empties current block
 WIPED? -- f      Whether current block is empty
+
+# Other
+
+DUMP    n a -- Prints n bytes at addr a in a hexdump format.
+               Prints in chunks of 8 bytes. Doesn't do partial
+               lines. Output is designed to fit in 32 columns.
+TICKS   n --   Wait for approximately 0.1 millisecond. Don't
+               use with n=0.
