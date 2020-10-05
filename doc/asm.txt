@@ -217,6 +217,22 @@ words expecting branching wordref as an argument. Examples:
 L2 ' BRTS FLBL! ( branch forward to L2 )
 L1 ' RJMP LBL, ( branch backward to L1 )
 
+# Model-specific constants
+
+Model-specific constants must be loaded separately. Here is a
+list of units:
+
+- ATMega328P: B65-B66
+
+Those units contain register constants such as PORTB, DDRB, etc.
+Unlike many moder assemblers, they do not include bit constants.
+Here's an example use:
+
+DDRB 5 SBI,
+PORTB 5 CBI,
+R16 TIFR0 IN,
+R16 0 ( TOV0 ) SBRS,
+
 # AVR instructions list
 
 OPRd (B53)
