@@ -11,10 +11,25 @@ tem clock will be too fast for most AVR chips, which are usually
 running at 1MHz. Because the SPI clock needs to be a 4th of
 that, a safe frequency for SPI communication would be 250kHz.
 
+# The programmer device
+
 The AVR programmer device is really simple: Wire SPI connections
 to proper AVR pins as described in the MCU's datasheet. Note
 that this device will be the same as the one you'll use for any
 modern SPI-based AVR programmer, with RESET replacing SS.
+
+This device should have an on/off switch that controls the
+chip's power for a very simple reason: Because we can't control
+what's on the chip, it could mess up your whole SPI bus when
+RESET is not held low. This means that as long as it's connected
+and powered, it is likely to mess up your other devices, such as
+the SD card.
+
+You could put the AVR chip behind a buffer to avoid this, but
+an on/off switch also does the trick and satisfies the low-tech
+lover in you.
+
+# Programming software
 
 The AVR programming code is at B160.
 
@@ -27,6 +42,40 @@ your commands.
 Each command will verify that it's in sync, that is, that its
 3rd exchange echoes the byte that was sent in the 2nd exchange.
 If it doesn't, the command aborts with "AVR err".
+
+# Ensuring reliability
+
+The reliability of your communication depends a lot on the
+soundness of your SPI relay design. If it's good, you will sel-
+dom see those "AVR err".
+
+However, there are worse things than "AVR err": wrong data. Sync
+checks ensure communication reliability at every command, but
+in the case of commands getting data, you might be out-of-sync
+when you receive your result without knowing it! To ensure that
+you're still in sync, you need to issue a command, which might
+spit "AVR err". If it does, your previous result is unreliable.
+
+Here's an example word that reliably prints the high fuse value
+from SPI devid 1:
+
+: get 1 asp$ asprdy aspfh@ asprdy .x 0 (spie) ;
+
+Another very important matter is clock speed. As mentioned
+above, the safe clock speed is 250kHz. If you use the SPI design
+in rc2014/sdcard recipe, this means that your input clock speed
+can theoretically be 500kHz because the '161 divides it by 2.
+
+In practice, however, you can't really do that because depending
+on the timing of your SPI write, the first "bump" of the SPI
+clock might end up being nearly 500kHz, which will result in oc-
+casional communication errors.
+
+The simplest and safest way to avoid this is to reduce your
+raw input clock by 2, which will reduce your effective communi-
+cation speed by 2. There certainly are options allowing you to
+keep optimal speed, but they're significantly more complex than
+accepting slower speed.
 
 # Access fuses
 
