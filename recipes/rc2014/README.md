@@ -28,6 +28,7 @@ are other recipes related to the RC2014:
 * [Self-hosting](selfhost.md)
 * [Interfacing a PS/2 keyboard](ps2.md)
 * [Using Zilog's SIO as a console](sio.md)
+* [Making an ATmega328P blink](avr.md)
 
 ## Recipe
 
