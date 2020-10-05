@@ -27,8 +27,8 @@ the "no division" position, and when I communicate with the
 AVR chip, I move the switch to increase the divisor.
 
 Once you've done this, you can test that you can communicate
-with your AVR chip by doing `160 162 LOADR` (turn off your
-programmer or alse it might mess up the SPI bus and prevent you
+with your AVR chip by doing `160 163 LOADR` (turn off your
+programmer or else it might mess up the SPI bus and prevent you
 from using your SD card) and then running:
 
     1 asp$ aspfl@ .x 0 (spie)

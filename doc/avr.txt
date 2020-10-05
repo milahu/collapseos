@@ -103,3 +103,10 @@ aspfb! that divides dst addr by 2 because AMOVEW use byte-based
 addresses but aspfb! uses word-based ones. You also have to make
 sure that A@* points to @ (or another word-based fetcher)
 instead of its default value of C@.
+
+# Access EEPROM
+
+Accessing EEPROM is simple and is done byte-by-byte with words
+aspe@ and aspe!. Example:
+
+0x42 0 aspe! 0 aspe@ .x ( prints 42 )
