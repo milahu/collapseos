@@ -3,13 +3,13 @@ CODE _status
     PAD_CTLPORT OUTiA,
     PAD_D1PORT INAi,
     0x3f ANDi, ( low 6 bits are good )
-    B A LDrr,  ( let's store them )
+    H A LDrr,  ( let's store them )
 ( Start and A are returned when TH is selected, in bits 5 and
   4. Well get them, left-shift them and integrate them to B. )
     A 0b11011101 LDri, ( TH output, selected )
     PAD_CTLPORT OUTiA,
     PAD_D1PORT INAi,
     0b00110000 ANDi,
-    A SLA, A SLA, B ORr,
+    A SLA, A SLA, H ORr,
     PUSHA,
 ;CODE
