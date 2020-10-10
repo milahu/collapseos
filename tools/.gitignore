@@ -1,13 +1,10 @@
 /memdump
 /blkdump
 /upload
-/fontcompile
 /ttysafe
 /pingpong
-/slatest
-/stripfc
-/bin2c
 /exec
 /blkpack
 /blkunpack
 /blkup
+/smsrom

@@ -2,6 +2,7 @@ TARGET = os.bin
 BASE = ../../
 STAGE = $(BASE)/cvm/stage
 BLKPACK = $(BASE)/tools/blkpack
+SMSROM = $(BASE)/tools/smsrom
 EMUL = $(BASE)/emul/hw/sms/sms
 
 .PHONY: all
@@ -9,6 +10,7 @@ all: $(TARGET)
 $(TARGET): xcomp.fs $(STAGE) blkfs
 	cat xcomp.fs | $(STAGE) blkfs > $@
 
+$(SMSROM):
 $(BLKPACK):
 	$(MAKE) -C ../tools
 
@@ -18,8 +20,8 @@ blkfs: $(BLKPACK)
 $(STAGE):
 	$(MAKE) -C $(BASE)/cvm stage
 
-os.sms: $(TARGET) $(STAGE)
-	dd if=$(TARGET) bs=32752 conv=sync | cat - sega.bin > $@
+os.sms: $(TARGET) $(STAGE) $(SMSROM)
+	$(SMSROM) $(TARGET) > $@
 
 $(EMUL):
 	$(MAKE) -C ${@:%/sms=%}
