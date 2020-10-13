@@ -61,7 +61,8 @@ uint8_t vdp_pixel(VDP *vdp, uint16_t x, uint16_t y)
         return 0;
     }
     // name table offset
-    uint16_t offset = 0x3800 + ((y/8) << 6) + ((x/8) << 1);
+    uint16_t offset = (vdp->regs[2] & 0xe) << 10;
+    offset += ((y/8) << 6) + ((x/8) << 1);
     uint16_t tableval = vdp->vram[offset] + (vdp->vram[offset+1] << 8);
     uint16_t tilenum = tableval & 0x1ff;
     // is palette select bit on? if yes, use sprite palette instead

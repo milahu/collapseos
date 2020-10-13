@@ -1,7 +1,7 @@
 CREATE _idat
 0b00000100 C, 0x80 C, ( Bit 2: Select mode 4 )
 0b00000000 C, 0x81 C,
-0b11111111 C, 0x82 C, ( Name table: 0x3800 )
+0b00001110 C, 0x82 C, ( Name table: 0x3800 )
 0b11111111 C, 0x85 C, ( Sprite table: 0x3f00 )
 0b11111111 C, 0x86 C, ( sprite use tiles from 0x2000 )
 0b11111111 C, 0x87 C, ( Border uses palette 0xf )
