@@ -21,18 +21,41 @@ are other recipes related to the SMS:
 
 ## Gathering parts
 
-* [zasm][zasm]
-* A Sega Master System or a MegaDrive (Genesis). (I have only tested on a
-  MegaDrive so far)
+* A Sega Master System or a MegaDrive (Genesis).
 * A Megadrive D-pad controller.
 * A way to get an arbitrary ROM to run on the SMS. Either through a writable
-  ROM card or an [Everdrive][everdrive].
+  ROM cartridge or an [Everdrive][everdrive].
+
+## Hacking up a ROM cart
+
+SMS Power has instructions to transform a ROM cartrige into a battery-backed
+SRAM one, which allows you to write to it through another device you'll have
+to build. This is all well and good, but if you happen to have an AT28 EEPROM,
+things are much simpler!
+
+Because AT28 EEPROM are SRAM compatible, they are an almost-drop-in replacement
+to the ROM you'll pop off your cartridge. AT28 are a bit expensive, but they're
+so handy! For SMS-related stuff, I recommend the 32K version instead of the 8K
+one because fitting Collapse OS with fonts in 8K is really tight.
+
+
+1. De-solder the ROM
+2. Take a 28 pins IC socket
+3. Cut off its WE pin (the one just under VCC), leaving a tiny bit of metal.
+4. Hard-wire it to VCC so that WE is never enabled.
+5. Solder your socket where the ROM was.
+6. Insert Collapse OS-filled EEPROM in socket.
+
+As simple as this! (Note that this has only been tested on a SMS so far. I
+haven't explored whether this can run on a megadrive).
 
 ## Build the ROM
 
-Running `make` will produce a `os.sms` ROM that can be put as is on a SD card
-to the everdrive or flashed as is on a writable ROM cart. Then, just run the
-thing!
+Running `make os.sms` will produce a `os.sms` ROM that can be put as is on a SD
+card to the everdrive or flashed as is on a writable ROM cart. Then, just run
+the thing!
+
+To run Collapse OS in a SMS emulator, run `make emul`.
 
 ## Usage
 
@@ -64,4 +87,3 @@ seconds. It's the emulator's fault. On real hardware, it's not as slow.
 
 [smspower]: http://www.smspower.org
 [everdrive]: https://krikzz.com
-[zasm]: ../../tools/emul
