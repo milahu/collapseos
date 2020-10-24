@@ -3,7 +3,7 @@ BASE = ../..
 CDIR = $(BASE)/cvm
 STAGE = $(CDIR)/stage
 BLKPACK = $(BASE)/tools/blkpack
-EMUL = $(BASE)/emul/ti/ti84
+EMUL = $(BASE)/emul/z80/ti/ti84
 MKTIUPGRADE = mktiupgrade
 
 .PHONY: all

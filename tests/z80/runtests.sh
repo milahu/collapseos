@@ -1,7 +1,7 @@
 #!/bin/sh -e
 
 BASE=../..
-EXEC="${BASE}/emul/forth"
+EXEC="${BASE}/emul/z80/forth"
 TMP=$(mktemp)
 
 chk() {

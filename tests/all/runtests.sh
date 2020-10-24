@@ -2,7 +2,7 @@
 
 BASE=../..
 CVM="${BASE}/cvm/forth"
-Z80="${BASE}/emul/forth"
+Z80="${BASE}/emul/z80/forth"
 TMP=$(mktemp)
 
 chk() {

@@ -1,6 +1,6 @@
 TARGETS = forth 
 OBJS = emul.o z80.o
-CDIR = ../cvm
+CDIR = ../../cvm
 STAGE = $(CDIR)/stage
 BLKFS = $(CDIR)/blkfs
 
