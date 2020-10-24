@@ -11,6 +11,8 @@
 #include <stdbool.h>
 
 #include <xcb/xcb.h>
+#define XK_MISCELLANY
+#include <X11/keysymdef.h>
 
 #include "../../emul.h"
 #include "t6a04.h"
@@ -83,64 +85,72 @@ static void iowr_interrupt(uint8_t val)
     }
 }
 
-// TIL: XCB doesn't have a builtin way to translate a keycode to an ASCII char.
-// Using Xlib looks complicated. This will probably not work in many cases (non
-// query keyboards and all...), but for now, let's go with this.
 static uint8_t keycode_to_tikbd(xcb_keycode_t kc)
 {
-    switch (kc) {
-    case 0x0a: return 0x41; // 1
-    case 0x0b: return 0x31; // 2
-    case 0x0c: return 0x21; // 3
-    case 0x0d: return 0x42; // 4
-    case 0x0e: return 0x32; // 5
-    case 0x0f: return 0x22; // 6
-    case 0x10: return 0x43; // 7
-    case 0x11: return 0x33; // 8
-    case 0x12: return 0x23; // 9
-    case 0x13: return 0x40; // 0
-    case 0x14: return 0x12; // -
-    case 0x15: return 0x11; // +
-    case 0x16: return 0x67; // DEL
-    case 0x18: return 0x23; // Q
-    case 0x19: return 0x12; // W
-    case 0x1a: return 0x45; // E
-    case 0x1b: return 0x13; // R
-    case 0x1c: return 0x42; // T
-    case 0x1d: return 0x41; // Y
-    case 0x1e: return 0x32; // U
-    case 0x1f: return 0x54; // I
-    case 0x20: return 0x43; // O
-    case 0x21: return 0x33; // P
-    case 0x22: return 0x34; // (
-    case 0x23: return 0x24; // )
-    case 0x24: return 0x10; // Return
-    case 0x25: return KBD_ALPHA; // LCTRL
-    case 0x26: return 0x56; // A
-    case 0x27: return 0x52; // S
-    case 0x28: return 0x55; // D
-    case 0x29: return 0x35; // F
-    case 0x2a: return 0x25; // G
-    case 0x2b: return 0x15; // H
-    case 0x2c: return 0x44; // J
-    case 0x2d: return 0x34; // K
-    case 0x2e: return 0x24; // L
-    case 0x2f: return 0x30; // :
-    case 0x30: return 0x11; // "
-    case 0x32: return KBD_2ND; // Lshift
-    case 0x34: return 0x31; // Z
-    case 0x35: return 0x51; // X
-    case 0x36: return 0x36; // C
-    case 0x37: return 0x22; // V
-    case 0x38: return 0x46; // B
-    case 0x39: return 0x53; // N
-    case 0x3a: return 0x14; // M
-    case 0x3b: return 0x44; // ,
-    case 0x3c: return 0x30; // .
-    case 0x3d: return 0x20; // ?
-    case 0x41: return 0x40; // Space
-    default: return 0;
+    // First, change keycode into symbol
+    xcb_get_keyboard_mapping_reply_t* km = xcb_get_keyboard_mapping_reply(
+        conn, xcb_get_keyboard_mapping(conn, kc, 1), NULL);
+    xcb_keysym_t* keysyms = (xcb_keysym_t*)(km + 1);
+    uint8_t res = 0;
+    for (int i=0; i<km->length; i++) {
+        switch (keysyms[0]) {
+        case XK_Shift_L: res = KBD_2ND; break;
+        case XK_Control_L: res = KBD_ALPHA; break;
+        case XK_Return: res = 0x10; break;
+        case XK_Delete: res = 0x67; break;
+        case ' ': res = 0x40; break;
+        case '1': res = 0x41; break;
+        case '2': res = 0x31; break;
+        case '3': res = 0x21; break;
+        case '4': res = 0x42; break;
+        case '5': res = 0x32; break;
+        case '6': res = 0x22; break;
+        case '7': res = 0x43; break;
+        case '8': res = 0x33; break;
+        case '9': res = 0x23; break;
+        case '0': res = 0x40; break;
+        case '-': res = 0x12; break;
+        case '+': res = 0x11; break;
+        case 'q': res = 0x23; break;
+        case 'w': res = 0x12; break;
+        case 'e': res = 0x45; break;
+        case 'r': res = 0x13; break;
+        case 't': res = 0x42; break;
+        case 'y': res = 0x41; break;
+        case 'u': res = 0x32; break;
+        case 'i': res = 0x54; break;
+        case 'o': res = 0x43; break;
+        case 'p': res = 0x33; break;
+        case '(': res = 0x34; break;
+        case ')': res = 0x24; break;
+        case 'a': res = 0x56; break;
+        case 's': res = 0x52; break;
+        case 'd': res = 0x55; break;
+        case 'f': res = 0x35; break;
+        case 'g': res = 0x25; break;
+        case 'h': res = 0x15; break;
+        case 'j': res = 0x44; break;
+        case 'k': res = 0x34; break;
+        case 'l': res = 0x24; break;
+        case ':': res = 0x30; break;
+        case '"': res = 0x11; break;
+        case 'z': res = 0x31; break;
+        case 'x': res = 0x51; break;
+        case 'c': res = 0x36; break;
+        case 'v': res = 0x22; break;
+        case 'b': res = 0x46; break;
+        case 'n': res = 0x53; break;
+        case 'm': res = 0x14; break;
+        case ',': res = 0x44; break;
+        case '.': res = 0x30; break;
+        case '?': res = 0x20; break;
+        }
+        if (res) {
+            break;
+        }
     }
+    free(km);
+    return res;
 }
 
 void create_window()

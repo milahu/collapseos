@@ -4,6 +4,8 @@
 #include <unistd.h>
 
 #include <xcb/xcb.h>
+#define XK_MISCELLANY
+#include <X11/keysymdef.h>
 
 #include "../../emul.h"
 #include "vdp.h"
@@ -153,6 +155,48 @@ void draw_pixels()
     xcb_flush(conn);
 }
 
+// Returns true to exist event loop
+static bool _handle_keypress(xcb_generic_event_t *e)
+{
+    xcb_key_press_event_t *ev = (xcb_key_press_event_t *)e;
+    bool ispressed = e->response_type == XCB_KEY_PRESS;
+    // change keycode into symbol
+    xcb_get_keyboard_mapping_reply_t* km = xcb_get_keyboard_mapping_reply(
+        conn, xcb_get_keyboard_mapping(conn, ev->detail, 1), NULL);
+    if (km->length) {
+        xcb_keysym_t* keysyms = (xcb_keysym_t*)(km + 1);
+        switch (keysyms[0]) {
+            case XK_Escape: free(km); return true;
+            case 'w':
+                pad_setbtn(&pad, PAD_BTN_UP, ispressed);
+                break;
+            case 'a':
+                pad_setbtn(&pad, PAD_BTN_LEFT, ispressed);
+                break;
+            case 's':
+                pad_setbtn(&pad, PAD_BTN_DOWN, ispressed);
+                break;
+            case 'd':
+                pad_setbtn(&pad, PAD_BTN_RIGHT, ispressed);
+                break;
+            case 'h':
+                pad_setbtn(&pad, PAD_BTN_A, ispressed);
+                break;
+            case 'j':
+                pad_setbtn(&pad, PAD_BTN_B, ispressed);
+                break;
+            case 'k':
+                pad_setbtn(&pad, PAD_BTN_C, ispressed);
+                break;
+            case 'l':
+                pad_setbtn(&pad, PAD_BTN_START, ispressed);
+                break;
+        }
+    }
+    free(km);
+    return false;
+}
+
 void event_loop()
 {
     while (1) {
@@ -183,38 +227,9 @@ void event_loop()
         switch (e->response_type & ~0x80) {
         /* ESC to exit */
         case XCB_KEY_RELEASE:
-        case XCB_KEY_PRESS: {
-            xcb_key_press_event_t *ev = (xcb_key_press_event_t *)e;
-            bool ispressed = e->response_type == XCB_KEY_PRESS;
-            switch (ev->detail) {
-                case 0x09: return; // ESC
-                case 0x19: // W
-                    pad_setbtn(&pad, PAD_BTN_UP, ispressed);
-                    break;
-                case 0x26: // A
-                    pad_setbtn(&pad, PAD_BTN_LEFT, ispressed);
-                    break;
-                case 0x27: // S
-                    pad_setbtn(&pad, PAD_BTN_DOWN, ispressed);
-                    break;
-                case 0x28: // D
-                    pad_setbtn(&pad, PAD_BTN_RIGHT, ispressed);
-                    break;
-                case 0x2b:  // H
-                    pad_setbtn(&pad, PAD_BTN_A, ispressed);
-                    break;
-                case 0x2c:  // J
-                    pad_setbtn(&pad, PAD_BTN_B, ispressed);
-                    break;
-                case 0x2d:  // K
-                    pad_setbtn(&pad, PAD_BTN_C, ispressed);
-                    break;
-                case 0x2e:  // L
-                    pad_setbtn(&pad, PAD_BTN_START, ispressed);
-                    break;
-            }
+        case XCB_KEY_PRESS:
+            if (_handle_keypress(e)) return;
             break;
-        }
         case XCB_EXPOSE: {
             draw_pixels();
             break;
