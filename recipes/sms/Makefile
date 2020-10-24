@@ -1,9 +1,9 @@
 TARGET = os.bin
-BASE = ../../
+BASE = ../..
 STAGE = $(BASE)/cvm/stage
 BLKPACK = $(BASE)/tools/blkpack
 SMSROM = $(BASE)/tools/smsrom
-EMUL = $(BASE)/emul/hw/sms/sms
+EMUL = $(BASE)/emul/sms/sms
 
 .PHONY: all
 all: $(TARGET) 

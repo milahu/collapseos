@@ -11,7 +11,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
-#include "../../emul.h"
+#include "../emul.h"
 #include "acia.h"
 #include "sio.h"
 #include "sdc.h"

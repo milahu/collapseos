@@ -4,7 +4,7 @@ CDIR = $(BASE)/cvm
 EDIR = $(BASE)/emul
 STAGE = $(CDIR)/stage
 BLKPACK = $(BASE)/tools/blkpack
-EMUL = $(EDIR)/hw/rc2014/classic
+EMUL = $(EDIR)/rc2014/classic
 
 .PHONY: all
 all: $(TARGET) 

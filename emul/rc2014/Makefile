@@ -1,12 +1,12 @@
-EXTOBJS = ../../emul.o ../../libz80/libz80.o
+EXTOBJS = ../emul.o ../libz80/libz80.o
 OBJS = sio.o acia.o sdc.o classic.o 
 TARGET = classic
 
 .PHONY: all
 all: $(TARGET)
 
-../../emul.o:
-	make -C ../..
+../emul.o:
+	make -C ..
 
 $(TARGET): $(OBJS) $(EXTOBJS)
 	$(CC) $(OBJS) $(EXTOBJS) -o $@

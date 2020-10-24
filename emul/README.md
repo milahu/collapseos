@@ -28,7 +28,6 @@ because the goal here is to facilitate "high level" development.
 
 These apps run on imaginary hardware and use many cheats to simplify I/Os.
 
-For real hardware emulation (which helps developing drivers), see the `hw`
-folder.
+For real hardware emulation (which helps developing drivers), see subfolders.
 
 [libz80]: https://github.com/ggambetta/libz80

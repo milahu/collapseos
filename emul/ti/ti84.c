@@ -14,7 +14,7 @@
 #define XK_MISCELLANY
 #include <X11/keysymdef.h>
 
-#include "../../emul.h"
+#include "../emul.h"
 #include "t6a04.h"
 #include "kbd.h"
 

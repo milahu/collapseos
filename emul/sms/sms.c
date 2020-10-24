@@ -7,7 +7,7 @@
 #define XK_MISCELLANY
 #include <X11/keysymdef.h>
 
-#include "../../emul.h"
+#include "../emul.h"
 #include "vdp.h"
 #include "port.h"
 #include "pad.h"
