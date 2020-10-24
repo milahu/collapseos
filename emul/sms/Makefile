@@ -1,4 +1,4 @@
-EXTOBJS = ../emul.o ../libz80/libz80.o
+EXTOBJS = ../emul.o ../z80.o
 OBJS = sms.o vdp.o port.o pad.o kbd.o
 TARGET = sms
 CFLAGS += `pkg-config --cflags xcb`

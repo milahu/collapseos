@@ -10,10 +10,7 @@ it's `libncurses5-dev`.
 
 ## Build
 
-First, make sure that the `libz80` git submodule is checked out. If not, run
-`git submodule init && git submodule update`.
-
-After that, you can run `make` and it builds the `forth` interpreter.
+Run `make` and it builds the `forth` interpreter.
 
 ## Usage
 

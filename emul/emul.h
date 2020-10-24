@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stdbool.h>
-#include "libz80/z80.h"
+#include "z80.h"
 
 typedef byte (*IORD) ();
 typedef void (*IOWR) (byte data);

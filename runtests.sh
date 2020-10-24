@@ -1,7 +1,5 @@
 #!/bin/sh -e
 
-git submodule init
-git submodule update
 git clean -fxd
 
 make -C tests

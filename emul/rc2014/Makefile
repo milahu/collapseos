@@ -1,4 +1,4 @@
-EXTOBJS = ../emul.o ../libz80/libz80.o
+EXTOBJS = ../emul.o ../z80.o
 OBJS = sio.o acia.o sdc.o classic.o 
 TARGET = classic
 
