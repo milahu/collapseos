@@ -25,4 +25,9 @@ pad are:
 * K --> C
 * L --> Start
 
+If your ROM is configured with PS/2 keyboard input, run this emulator with the
+`-k` flag to replace SMS pad emulation with keyboard emulation.
+
+In both cases (pad or keyboard), only port A emulation is supported.
+
 Press ESC to quit.

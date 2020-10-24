@@ -37,3 +37,6 @@ void emul_trace(ushort addr);
 void emul_memdump();
 void emul_debugstr(char *s);
 void emul_printdebug();
+// use when a port is a NOOP, but it's not an error to access it.
+byte iord_noop();
+void iowr_noop(byte val);

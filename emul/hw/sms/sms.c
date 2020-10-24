@@ -11,6 +11,7 @@
 #include "vdp.h"
 #include "port.h"
 #include "pad.h"
+#include "kbd.h"
 
 #define RAMSTART 0xc000
 #define VDP_CMD_PORT 0xbf
@@ -36,6 +37,8 @@ static VDP vdp;
 static bool vdp_changed;
 static Ports ports;
 static Pad pad;
+static Kbd kbd;
+static bool use_kbd = false;
 
 static uint8_t iord_vdp_cmd()
 {
@@ -60,6 +63,11 @@ static uint8_t iord_ports_io2()
 static uint8_t iord_pad()
 {
     return pad_rd(&pad);
+}
+
+static uint8_t iord_kbd()
+{
+    return kbd_rd(&kbd);
 }
 
 static void iowr_vdp_cmd(uint8_t val)
@@ -159,38 +167,49 @@ void draw_pixels()
 static bool _handle_keypress(xcb_generic_event_t *e)
 {
     xcb_key_press_event_t *ev = (xcb_key_press_event_t *)e;
+    if (ev->detail == 0x09) { // ESC
+        return true;
+    }
     bool ispressed = e->response_type == XCB_KEY_PRESS;
     // change keycode into symbol
     xcb_get_keyboard_mapping_reply_t* km = xcb_get_keyboard_mapping_reply(
         conn, xcb_get_keyboard_mapping(conn, ev->detail, 1), NULL);
     if (km->length) {
         xcb_keysym_t* keysyms = (xcb_keysym_t*)(km + 1);
-        switch (keysyms[0]) {
-            case XK_Escape: free(km); return true;
-            case 'w':
-                pad_setbtn(&pad, PAD_BTN_UP, ispressed);
-                break;
-            case 'a':
-                pad_setbtn(&pad, PAD_BTN_LEFT, ispressed);
-                break;
-            case 's':
-                pad_setbtn(&pad, PAD_BTN_DOWN, ispressed);
-                break;
-            case 'd':
-                pad_setbtn(&pad, PAD_BTN_RIGHT, ispressed);
-                break;
-            case 'h':
-                pad_setbtn(&pad, PAD_BTN_A, ispressed);
-                break;
-            case 'j':
-                pad_setbtn(&pad, PAD_BTN_B, ispressed);
-                break;
-            case 'k':
-                pad_setbtn(&pad, PAD_BTN_C, ispressed);
-                break;
-            case 'l':
-                pad_setbtn(&pad, PAD_BTN_START, ispressed);
-                break;
+        if (use_kbd) {
+            if ((keysyms[0] == XK_Shift_L) || (keysyms[0] == XK_Shift_R)) {
+                kbd_pressshift(&kbd, ispressed);
+            } else if (ispressed) {
+                fprintf(stderr, "pressing %x\n", keysyms[0]);
+                kbd_presskey(&kbd, keysyms[0]);
+            }
+        } else { // pad
+            switch (keysyms[0]) {
+                case 'w':
+                    pad_setbtn(&pad, PAD_BTN_UP, ispressed);
+                    break;
+                case 'a':
+                    pad_setbtn(&pad, PAD_BTN_LEFT, ispressed);
+                    break;
+                case 's':
+                    pad_setbtn(&pad, PAD_BTN_DOWN, ispressed);
+                    break;
+                case 'd':
+                    pad_setbtn(&pad, PAD_BTN_RIGHT, ispressed);
+                    break;
+                case 'h':
+                    pad_setbtn(&pad, PAD_BTN_A, ispressed);
+                    break;
+                case 'j':
+                    pad_setbtn(&pad, PAD_BTN_B, ispressed);
+                    break;
+                case 'k':
+                    pad_setbtn(&pad, PAD_BTN_C, ispressed);
+                    break;
+                case 'l':
+                    pad_setbtn(&pad, PAD_BTN_START, ispressed);
+                    break;
+            }
         }
     }
     free(km);
@@ -242,13 +261,30 @@ void event_loop()
     }
 }
 
+static void usage()
+{
+    fprintf(stderr, "Usage: ./sms [-k] /path/to/rom\n");
+}
+
 int main(int argc, char *argv[])
 {
-    if (argc != 2) {
-        fprintf(stderr, "Usage: ./sms /path/to/rom\n");
+    if (argc < 2) {
+        usage();
         return 1;
     }
-    FILE *fp = fopen(argv[1], "r");
+    int ch;
+    while ((ch = getopt(argc, argv, "k")) != -1) {
+        switch (ch) {
+            case 'k':
+                use_kbd = true;
+                break;
+        }
+    }
+    if (optind != argc-1) {
+        usage();
+        return 1;
+    }
+    FILE *fp = fopen(argv[optind], "r");
     if (fp == NULL) {
         fprintf(stderr, "Can't open %s\n", argv[1]);
         return 1;
@@ -268,12 +304,18 @@ int main(int argc, char *argv[])
     vdp_init(&vdp);
     vdp_changed = false;
     ports_init(&ports);
-    ports.portA_rd = iord_pad;
     pad_init(&pad, &ports.THA);
+    kbd_init(&kbd, &ports.THA);
+    if (use_kbd) {
+        ports.portA_rd = iord_kbd;
+    } else {
+        ports.portA_rd = iord_pad;
+    }
     m->iord[VDP_CMD_PORT] = iord_vdp_cmd;
     m->iord[VDP_DATA_PORT] = iord_vdp_data;
     m->iord[PORTS_IO1_PORT] = iord_ports_io1;
     m->iord[PORTS_IO2_PORT] = iord_ports_io2;
+    m->iord[PORTS_CTL_PORT] = iord_noop;
     m->iowr[VDP_CMD_PORT] = iowr_vdp_cmd;
     m->iowr[VDP_DATA_PORT] = iowr_vdp_data;
     m->iowr[PORTS_CTL_PORT] = iowr_ports_ctl;

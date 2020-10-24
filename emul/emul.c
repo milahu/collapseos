@@ -193,3 +193,6 @@ void emul_printdebug()
     fprintf(stderr, "Min SP: %04x\n", m.minsp);
     fprintf(stderr, "Max IX: %04x\n", m.maxix);
 }
+
+byte iord_noop() { return 0; }
+void iowr_noop(byte val) {}
