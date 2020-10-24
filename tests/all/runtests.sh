@@ -1,13 +1,18 @@
 #!/bin/sh -e
 
 BASE=../..
-EXEC="${BASE}/cvm/forth"
+CVM="${BASE}/cvm/forth"
+Z80="${BASE}/emul/forth"
 TMP=$(mktemp)
 
 chk() {
-    echo "Running test $1"
     cat ../harness.fs $1 > ${TMP}
-    if ! ${EXEC} ${TMP}; then
+    echo "Running test $1 under CVM"
+    if ! ${CVM} ${TMP}; then
+        exit 1
+    fi
+    echo "Running test $1 under Z80"
+    if ! ${Z80} ${TMP}; then
         exit 1
     fi
 }
