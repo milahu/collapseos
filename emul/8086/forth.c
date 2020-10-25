@@ -28,6 +28,7 @@ INT 2: KEY. AL = char read
 INT 3: AT-XY. AL = x, BL = y
 INT 4: BLKREAD. AX = blkid, BX = dest addr
 INT 5: BLKWRITE. AX = blkid, BX = src addr
+INT 6: RETCODE. AX = retcode.
 */
 
 void int1() {
@@ -45,7 +46,17 @@ void int1() {
 }
 
 void int2() {
-    regs.byteregs[regal] = getchar();
+    int c;
+    if (fp != NULL) {
+        c = getc(fp);
+    } else {
+        // debug_panel();
+        c = wgetch(w);
+    }
+    if (c == EOF) {
+        c = 4; // ASCII EOT
+    }
+    regs.byteregs[regal] = c;
 }
 
 void int3() {
@@ -70,6 +81,10 @@ void int5() {
     }
 }
 
+void int6() {
+    retcode = getreg16(regax);
+}
+
 int main(int argc, char *argv[])
 {
     INTHOOKS[1] = int1;
@@ -77,6 +92,7 @@ int main(int argc, char *argv[])
     INTHOOKS[3] = int3;
     INTHOOKS[4] = int4;
     INTHOOKS[5] = int5;
+    INTHOOKS[6] = int6;
     reset86();
     fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
     blkfp = fopen(BLKFS_PATH, "r+");
@@ -131,5 +147,5 @@ int main(int argc, char *argv[])
         //emul_printdebug();
     }
 
-    return 0;
+    return retcode;
 }

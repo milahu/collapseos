@@ -3,6 +3,7 @@
 BASE=../..
 CVM="${BASE}/cvm/forth"
 Z80="${BASE}/emul/z80/forth"
+I8086="${BASE}/emul/8086/forth"
 TMP=$(mktemp)
 
 chk() {
@@ -13,6 +14,10 @@ chk() {
     fi
     echo "Running test $1 under Z80"
     if ! ${Z80} ${TMP}; then
+        exit 1
+    fi
+    echo "Running test $1 under 8086"
+    if ! ${I8086} ${TMP}; then
         exit 1
     fi
 }
