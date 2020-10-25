@@ -23,7 +23,7 @@ static void int10() {
     uint16_t dx = regs.wordregs[regdx];
     switch (cmd) {
         case 0x02: // at-xy
-            wmove(w, dx&0xff, dx>>8);
+            wmove(w, dx>>8, dx&0xff);
             break;
         case 0x0e: // emit
         if (al >= 0x20 || al == '\n') {
