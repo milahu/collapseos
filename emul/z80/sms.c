@@ -12,6 +12,7 @@
 #include "sms_ports.h"
 #include "sms_pad.h"
 #include "ps2_kbd.h"
+#include "sdc.h"
 
 #define RAMSTART 0xc000
 #define VDP_CMD_PORT 0xbf
@@ -19,6 +20,8 @@
 #define PORTS_CTL_PORT 0x3f
 #define PORTS_IO1_PORT 0xdc
 #define PORTS_IO2_PORT 0xdd
+#define SDC_CTL 0x05
+#define SDC_SPI 0x04
 #define MAX_ROMSIZE 0x8000
 
 static xcb_connection_t    *conn;
@@ -39,6 +42,7 @@ static Ports ports;
 static Pad pad;
 static Kbd kbd;
 static bool use_kbd = false;
+static SDC sdc;
 
 static uint8_t iord_vdp_cmd()
 {
@@ -84,6 +88,28 @@ static void iowr_vdp_data(uint8_t val)
 static void iowr_ports_ctl(uint8_t val)
 {
     ports_ctl_wr(&ports, val);
+}
+
+static uint8_t iord_sdc_spi()
+{
+    return sdc_spi_rd(&sdc);
+}
+
+static void iowr_sdc_spi(uint8_t val)
+{
+    sdc_spi_wr(&sdc, val);
+}
+
+// in emulation, exchanges are always instantaneous, so we
+// always report as ready.
+static uint8_t iord_sdc_ctl()
+{
+    return 0;
+}
+
+static void iowr_sdc_ctl(uint8_t val)
+{
+    sdc_ctl_wr(&sdc, val);
 }
 
 void create_window()
@@ -227,7 +253,7 @@ void event_loop()
         if (vdp_changed) {
             // To avoid overdrawing, we'll let the CPU run a bit to finish its
             // drawing operation.
-            emul_steps(100);
+            emul_steps(10000);
             draw_pixels();
         }
         // A low tech way of checking when the window was closed. The proper way
@@ -263,7 +289,7 @@ void event_loop()
 
 static void usage()
 {
-    fprintf(stderr, "Usage: ./sms [-k] /path/to/rom\n");
+    fprintf(stderr, "Usage: ./sms [-k] [-c sdcard.img] /path/to/rom\n");
 }
 
 int main(int argc, char *argv[])
@@ -272,11 +298,26 @@ int main(int argc, char *argv[])
         usage();
         return 1;
     }
+    vdp_init(&vdp);
+    vdp_changed = false;
+    ports_init(&ports);
+    pad_init(&pad, &ports.THA);
+    kbd_init(&kbd, &ports.THA);
+    sdc_init(&sdc);
+
     int ch;
-    while ((ch = getopt(argc, argv, "k")) != -1) {
+    while ((ch = getopt(argc, argv, "kc:")) != -1) {
         switch (ch) {
             case 'k':
                 use_kbd = true;
+                break;
+            case 'c':
+                fprintf(stderr, "Setting up SD card image with %s\n", optarg);
+                sdc.fp = fopen(optarg, "r+");
+                if (sdc.fp == NULL) {
+                    fprintf(stderr, "Can't open file\n");
+                    return 1;
+                }
                 break;
         }
     }
@@ -301,16 +342,12 @@ int main(int argc, char *argv[])
         fprintf(stderr, "ROM image too large.\n");
         return 1;
     }
-    vdp_init(&vdp);
-    vdp_changed = false;
-    ports_init(&ports);
-    pad_init(&pad, &ports.THA);
-    kbd_init(&kbd, &ports.THA);
     if (use_kbd) {
         ports.portA_rd = iord_kbd;
     } else {
         ports.portA_rd = iord_pad;
     }
+
     m->iord[VDP_CMD_PORT] = iord_vdp_cmd;
     m->iord[VDP_DATA_PORT] = iord_vdp_data;
     m->iord[PORTS_IO1_PORT] = iord_ports_io1;
@@ -319,11 +356,19 @@ int main(int argc, char *argv[])
     m->iowr[VDP_CMD_PORT] = iowr_vdp_cmd;
     m->iowr[VDP_DATA_PORT] = iowr_vdp_data;
     m->iowr[PORTS_CTL_PORT] = iowr_ports_ctl;
+    m->iord[SDC_SPI] = iord_sdc_spi;
+    m->iowr[SDC_SPI] = iowr_sdc_spi;
+    m->iord[SDC_CTL] = iord_sdc_ctl;
+    m->iowr[SDC_CTL] = iowr_sdc_ctl;
+
     conn = xcb_connect(NULL, NULL);
     screen = xcb_setup_roots_iterator(xcb_get_setup(conn)).data;
     create_window();
     draw_pixels();
     event_loop();
     emul_printdebug();
+    if (sdc.fp) {
+        fclose(sdc.fp);
+    }
     return 0;
 }

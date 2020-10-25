@@ -143,6 +143,10 @@ int main(int argc, char *argv[])
             case 'c':
                 fprintf(stderr, "Setting up SD card image with %s\n", optarg);
                 sdc.fp = fopen(optarg, "r+");
+                if (sdc.fp == NULL) {
+                    fprintf(stderr, "Can't open file\n");
+                    return 1;
+                }
                 break;
         }
     }

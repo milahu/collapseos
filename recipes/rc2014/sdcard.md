@@ -84,7 +84,7 @@ and `SPI_CTL`,  which are respectively `4` and `5` in our relay design.
 You also need to tell the SDC subsystem which SPI device to activate by defining
 the `SDC_DEVID` (1, 2, 4, 8 for device 0, 1, 2 or 3)
 
-You can then load the driver with `616 LOAD`. This driver provides
+You can then load the driver with `419 LOAD`. This driver provides
 `(spix)` and `(spie)` which are then used in the SDC driver.
 
 The SDC driver is at B420. It gives you a load range. This means that what

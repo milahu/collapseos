@@ -7,4 +7,4 @@ to SPI_CTL, we expect a bitmask of the device to select, with
 returns 0 if the device is ready or 1 if it's still running an
 exchange. Writing to SPI_DATA initiates an exchange.
 
-Provides the SPI relay protocol. Load driver with "596 LOAD".
+Provides the SPI relay protocol. Load driver with "419 LOAD".
