@@ -6,8 +6,8 @@
 
 #define WCOLS 80
 #define WLINES 25
-#define SEC_PER_TRK 0x3f
-#define TRK_PER_HEAD 0xff
+#define SEC_PER_TRK 0x24
+#define HEADCNT 2
 
 extern uint8_t byteregtable[8];
 extern union _bytewordregs_ regs;
@@ -49,7 +49,7 @@ static void int13() {
         // CL = sector number (1-based), AL = sector count
         // DH = head number, CH = track number
         // ES:BX = dest addr
-        fseek(fp, ((((dh*TRK_PER_HEAD)+ch)*SEC_PER_TRK)+cl-1)*512, SEEK_SET);
+        fseek(fp, (((ch*HEADCNT*SEC_PER_TRK)+(dh*SEC_PER_TRK))+cl-1)*512, SEEK_SET);
         for (int i=0; i<(al*512); i++) {
             if (cmd == 0x03) { // write
                 fputc(getmem8(segregs[reges], bx+i), fp);
@@ -62,7 +62,7 @@ static void int13() {
         case 0x08: // poll sectors per track / per head
         // we just report a lot of them
         regs.wordregs[regcx] = SEC_PER_TRK;
-        regs.byteregs[regdh] = TRK_PER_HEAD-1;
+        regs.byteregs[regdh] = HEADCNT-1;
         break;
     }
 }
