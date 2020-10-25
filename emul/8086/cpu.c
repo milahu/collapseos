@@ -55,6 +55,9 @@
 #define signext32(value)	(int32_t)(int16_t)(value)
 #define getsegreg(regid)	segregs[regid]
 #define putsegreg(regid, writeval)	segregs[regid] = writeval
+// Warning: those macros below *can't* be called with reg*l and reg*h
+#define getreg8(regid)	regs.byteregs[byteregtable[regid]]
+#define putreg8(regid, writeval)	regs.byteregs[byteregtable[regid]] = writeval
 
 #define makeflagsword() \
 	( \

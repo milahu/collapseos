@@ -38,9 +38,7 @@
 #define putmem8(x, y, z)	write86(segbase(x) + y, z)
 #define putmem16(x, y, z)	writew86(segbase(x) + y, z)
 #define getreg16(regid)	regs.wordregs[regid]
-#define getreg8(regid)	regs.byteregs[byteregtable[regid]]
 #define putreg16(regid, writeval)	regs.wordregs[regid] = writeval
-#define putreg8(regid, writeval)	regs.byteregs[byteregtable[regid]] = writeval
 
 typedef void (*INTHOOK) ();
 union _bytewordregs_ {

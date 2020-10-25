@@ -7,6 +7,8 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 353 LOAD  ( xcomp core low )
 CODE (emit) AX POPx, 1 INT, ;CODE
 CODE (key) 2 INT, AH 0 MOVri, AX PUSHx, ;CODE
+: COLS 80 ; : LINES 25 ;
+CODE AT-XY ( x y ) BX POPx, AX POPx, 3 INT, ;CODE
 380 LOAD  ( xcomp core high )
 (entry) _ ( Update LATEST ) PC ORG @ 8 + !
 EOT,
