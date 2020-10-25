@@ -9,8 +9,15 @@ CODE (emit) AX POPx, 1 INT, ;CODE
 CODE (key) 2 INT, AH 0 MOVri, AX PUSHx, ;CODE
 : COLS 80 ; : LINES 25 ;
 CODE AT-XY ( x y ) BX POPx, AX POPx, 3 INT, ;CODE
+CODE _ BX POPx, AX POPx, 4 INT, ;CODE
+: EFS@ BLK( _ ;
+CODE _ BX POPx, AX POPx, 5 INT, ;CODE
+: EFS! BLK( _ ;
 380 LOAD  ( xcomp core high )
 (entry) _ ( Update LATEST ) PC ORG @ 8 + !
+," BLK$ "
+," ' EFS@ BLK@* ! "
+," ' EFS! BLK!* ! "
 EOT,
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!

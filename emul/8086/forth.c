@@ -9,12 +9,16 @@
 #ifndef FBIN_PATH
 #error FBIN_PATH needed
 #endif
+#ifndef BLKFS_PATH
+#error BLKFS_PATH needed
+#endif
 
 extern uint8_t byteregtable[8];
 extern union _bytewordregs_ regs;
 extern INTHOOK INTHOOKS[0x100];
 
 static FILE *fp;
+static FILE *blkfp;
 static int retcode = 0;
 WINDOW *bw, *dw, *w;
 
@@ -22,6 +26,8 @@ WINDOW *bw, *dw, *w;
 INT 1: EMIT. AL = char to spit
 INT 2: KEY. AL = char read
 INT 3: AT-XY. AL = x, BL = y
+INT 4: BLKREAD. AX = blkid, BX = dest addr
+INT 5: BLKWRITE. AX = blkid, BX = src addr
 */
 
 void int1() {
@@ -46,12 +52,45 @@ void int3() {
     wmove(w, regs.byteregs[regbl], regs.byteregs[regal]);
 }
 
+void int4() {
+    uint16_t blkid = getreg16(regax);
+    uint16_t dest = getreg16(regbx);
+    fseek(blkfp, blkid*1024, SEEK_SET);
+    for (int i=0; i<1024; i++) {
+        write86(dest+i, getc(blkfp));
+    }
+}
+
+void int5() {
+    uint16_t blkid = getreg16(regax);
+    uint16_t dest = getreg16(regbx);
+    fseek(blkfp, blkid*1024, SEEK_SET);
+    for (int i=0; i<1024; i++) {
+        putc(read86(dest+i), blkfp);
+    }
+}
+
 int main(int argc, char *argv[])
 {
     INTHOOKS[1] = int1;
     INTHOOKS[2] = int2;
     INTHOOKS[3] = int3;
+    INTHOOKS[4] = int4;
+    INTHOOKS[5] = int5;
     reset86();
+    fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
+    blkfp = fopen(BLKFS_PATH, "r+");
+    if (!blkfp) {
+        fprintf(stderr, "Can't open\n");
+        return 1;
+    }
+    fseek(blkfp, 0, SEEK_END);
+    if (ftell(blkfp) < 100 * 1024) {
+        fclose(blkfp);
+        fprintf(stderr, "emul/blkfs too small, something's wrong, aborting.\n");
+        return 1;
+    }
+    fseek(blkfp, 0, SEEK_SET);
     // initialize memory
     FILE *bfp = fopen(FBIN_PATH, "r");
     if (!bfp) {
