@@ -33,64 +33,6 @@
 #define getreg8(regid)	regs.byteregs[byteregtable[regid]]
 #define putreg8(regid, writeval)	regs.byteregs[byteregtable[regid]] = writeval
 
-#define makeflagsword() \
-	( \
-	2 | (uint16_t) cf | ((uint16_t) pf << 2) | ((uint16_t) af << 4) | ((uint16_t) zf << 6) | ((uint16_t) sf << 7) | \
-	((uint16_t) tf << 8) | ((uint16_t) ifl << 9) | ((uint16_t) df << 10) | ((uint16_t) of << 11) \
-	)
-
-#define decodeflagsword(x) { \
-	temp16 = x; \
-	cf = temp16 & 1; \
-	pf = (temp16 >> 2) & 1; \
-	af = (temp16 >> 4) & 1; \
-	zf = (temp16 >> 6) & 1; \
-	sf = (temp16 >> 7) & 1; \
-	tf = (temp16 >> 8) & 1; \
-	ifl = (temp16 >> 9) & 1; \
-	df = (temp16 >> 10) & 1; \
-	of = (temp16 >> 11) & 1; \
-	}
-
-#define modregrm() { \
-	addrbyte = getmem8(segregs[regcs], ip); \
-	StepIP(1); \
-	mode = addrbyte >> 6; \
-	reg = (addrbyte >> 3) & 7; \
-	rm = addrbyte & 7; \
-	switch(mode) \
-	{ \
-	case 0: \
-	if(rm == 6) { \
-	disp16 = getmem16(segregs[regcs], ip); \
-	StepIP(2); \
-	} \
-	if(((rm == 2) || (rm == 3)) && !segoverride) { \
-	useseg = segregs[regss]; \
-	} \
-	break; \
- \
-	case 1: \
-	disp16 = signext(getmem8(segregs[regcs], ip)); \
-	StepIP(1); \
-	if(((rm == 2) || (rm == 3) || (rm == 6)) && !segoverride) { \
-	useseg = segregs[regss]; \
-	} \
-	break; \
- \
-	case 2: \
-	disp16 = getmem16(segregs[regcs], ip); \
-	StepIP(2); \
-	if(((rm == 2) || (rm == 3) || (rm == 6)) && !segoverride) { \
-	useseg = segregs[regss]; \
-	} \
-	break; \
- \
-	default: \
-	disp8 = 0; \
-	disp16 = 0; \
-	} \
-}
 uint8_t byteregtable[8] = { regal, regcl, regdl, regbl, regah, regch, regdh, regbh };
 
 static const uint8_t parity[0x100] = {
@@ -107,12 +49,11 @@ static const uint8_t parity[0x100] = {
 uint8_t	RAM[0x100000];
 INTHOOK INTHOOKS[0x100] = {0};
 uint8_t	opcode, segoverride, reptype, hltstate = 0;
-uint16_t segregs[4], savecs, saveip, ip, useseg, oldsp;
-uint8_t	tempcf, oldcf, cf, pf, af, zf, sf, tf, ifl, df, of, mode, reg, rm;
-uint16_t oper1, oper2, res16, disp16, temp16, dummy, stacksize, frametemp;
-uint8_t	oper1b, oper2b, res8, disp8, temp8, nestlev, addrbyte;
-uint32_t temp1, temp2, temp3, temp4, temp5, temp32, tempaddr32, ea;
-uint64_t totalexec;
+uint16_t segregs[4], ip, useseg, oldsp;
+uint8_t	tempcf, cf, pf, af, zf, sf, tf, ifl, df, of, mode, reg, rm;
+uint16_t oper1, oper2, res16, disp16, temp16, stacksize, frametemp;
+uint8_t	oper1b, oper2b, res8, disp8, nestlev, addrbyte;
+uint32_t temp1, temp2, temp3, ea;
 
 union _bytewordregs_ regs;
 
@@ -126,8 +67,7 @@ static uint8_t	portin (uint16_t portnum) { return 0; }
 static uint16_t portin16 (uint16_t portnum) { return 0; }
 
 void write86 (uint32_t addr32, uint8_t value) {
-	tempaddr32 = addr32 & 0xFFFFF;
-    RAM[tempaddr32] = value;
+    RAM[addr32 & 0xFFFFF] = value;
 }
 
 void writew86 (uint32_t addr32, uint16_t value) {
@@ -1169,19 +1109,71 @@ void intcall86(uint8_t intnum) {
         return;
     }
     fprintf(stderr, "Unknown INT called: %x\n", intnum);
-	/*push (makeflagsword() );
-	push (segregs[regcs]);
-	push (ip);
-	segregs[regcs] = getmem16 (0, (uint16_t) intnum * 4 + 2);
-	ip = getmem16 (0, (uint16_t) intnum * 4);
-	ifl = 0;
-	tf = 0;*/
+}
+
+uint16_t makeflagsword() {
+	return 2 | (uint16_t) cf | ((uint16_t) pf << 2) | ((uint16_t) af << 4) | \
+        ((uint16_t) zf << 6) | ((uint16_t) sf << 7) | ((uint16_t) tf << 8) | \
+        ((uint16_t) ifl << 9) | ((uint16_t) df << 10) | ((uint16_t) of << 11);
+}
+
+void decodeflagsword(uint16_t x) {
+	cf = x & 1;
+	pf = (x >> 2) & 1;
+	af = (x >> 4) & 1;
+	zf = (x >> 6) & 1;
+	sf = (x >> 7) & 1;
+	tf = (x >> 8) & 1;
+	ifl = (x >> 9) & 1;
+	df = (x >> 10) & 1;
+	of = (x >> 11) & 1;
+}
+
+static void modregrm() {
+	addrbyte = getmem8(segregs[regcs], ip);
+	StepIP(1);
+	mode = addrbyte >> 6;
+	reg = (addrbyte >> 3) & 7;
+	rm = addrbyte & 7;
+	switch(mode)
+	{
+        case 0:
+        if (rm == 6) {
+            disp16 = getmem16(segregs[regcs], ip);
+            StepIP(2);
+        }
+        if (((rm == 2) || (rm == 3)) && !segoverride) {
+            useseg = segregs[regss];
+        }
+        break;
+
+        case 1:
+        disp16 = signext(getmem8(segregs[regcs], ip));
+        StepIP(1);
+        if (((rm == 2) || (rm == 3) || (rm == 6)) && !segoverride) {
+            useseg = segregs[regss];
+        }
+        break;
+
+        case 2:
+        disp16 = getmem16(segregs[regcs], ip);
+        StepIP(2);
+        if (((rm == 2) || (rm == 3) || (rm == 6)) && !segoverride) {
+            useseg = segregs[regss];
+        }
+        break;
+
+        default:
+        disp8 = 0;
+        disp16 = 0;
+	}
 }
 
 int exec86(int execloops) {
 	int loopcount;
 	uint8_t docontinue;
 	static uint16_t firstip;
+	uint16_t oldcf;
 
 	for (loopcount = 0; loopcount < execloops; loopcount++) {
         if (hltstate) return 0;
@@ -1195,8 +1187,6 @@ int exec86(int execloops) {
         while (!docontinue) {
             segregs[regcs] = segregs[regcs] & 0xFFFF;
             ip = ip & 0xFFFF;
-            savecs = segregs[regcs];
-            saveip = ip;
             opcode = getmem8 (segregs[regcs], ip);
             StepIP (1);
 
@@ -1236,8 +1226,6 @@ int exec86(int execloops) {
                         break;
                 }
         }
-
-        totalexec++;
 
         switch (opcode) {
             case 0x0:	/* 00 ADD Eb Gb */
@@ -1962,7 +1950,7 @@ int exec86(int execloops) {
                 regs.wordregs[regdi] = pop();
                 regs.wordregs[regsi] = pop();
                 regs.wordregs[regbp] = pop();
-                dummy = pop();
+                pop();
                 regs.wordregs[regbx] = pop();
                 regs.wordregs[regdx] = pop();
                 regs.wordregs[regcx] = pop();
@@ -2062,7 +2050,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2090,7 +2077,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2118,7 +2104,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2146,7 +2131,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2522,8 +2506,7 @@ int exec86(int execloops) {
                 break;
 
             case 0x9D:	/* 9D POPF */
-                temp16 = pop();
-                decodeflagsword (temp16);
+                decodeflagsword (pop());
                 break;
 
             case 0x9E:	/* 9E SAHF */
@@ -2574,7 +2557,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2602,7 +2584,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2639,7 +2620,6 @@ int exec86(int execloops) {
                         break;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2677,7 +2657,6 @@ int exec86(int execloops) {
                         break;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2717,7 +2696,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2743,7 +2721,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2769,7 +2746,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2796,7 +2772,6 @@ int exec86(int execloops) {
                         regs.wordregs[regcx] = regs.wordregs[regcx] - 1;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2831,7 +2806,6 @@ int exec86(int execloops) {
                         break;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
@@ -2866,7 +2840,6 @@ int exec86(int execloops) {
                         break;
                     }
 
-                totalexec++;
                 loopcount++;
                 if (!reptype) {
                         break;
