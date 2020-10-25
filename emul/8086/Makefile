@@ -13,10 +13,8 @@ forth: forth.c forth.bin $(OBJS)
 emul.o: emul.c $(BLKFS)
 	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" -c -o emul.o emul.c
 
-forth.bin: foo.asm
-	nasm -o $@ foo.asm
-#forth.bin: xcomp.fs $(STAGE) $(BLKFS)
-#	$(CDIR)/stage < xcomp.fs > $@
+forth.bin: xcomp.fs $(STAGE)
+	$(CDIR)/stage < xcomp.fs > $@
 
 $(BLKFS): $(STAGE)
 

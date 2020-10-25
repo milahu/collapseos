@@ -53,5 +53,5 @@ void write86 (uint32_t addr32, uint8_t value);
 void writew86 (uint32_t addr32, uint16_t value);
 uint8_t read86 (uint32_t addr32);
 uint16_t readw86 (uint32_t addr32);
-void exec86(int execloops);
+int exec86(int execloops); // returns 0 if halted
 void reset86();

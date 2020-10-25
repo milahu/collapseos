@@ -1217,13 +1217,13 @@ void intcall86(uint8_t intnum) {
 	tf = 0;*/
 }
 
-void exec86(int execloops) {
+int exec86(int execloops) {
 	int loopcount;
 	uint8_t docontinue;
 	static uint16_t firstip;
 
 	for (loopcount = 0; loopcount < execloops; loopcount++) {
-        if (hltstate) return;
+        if (hltstate) return 0;
 
         reptype = 0;
         segoverride = 0;
@@ -3393,6 +3393,7 @@ void exec86(int execloops) {
                 break;
         }
     }
+    return 1;
 }
 
 void reset86() {

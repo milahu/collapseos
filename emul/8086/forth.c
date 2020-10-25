@@ -19,9 +19,14 @@ void int1() {
     putchar(getreg8(regal));
 }
 
+void int2() {
+    putreg8(regal, getchar());
+}
+
 int main(int argc, char *argv[])
 {
     INTHOOKS[1] = int1;
+    INTHOOKS[2] = int2;
     reset86();
     // initialize memory
     FILE *bfp = fopen(FBIN_PATH, "r");
@@ -36,6 +41,6 @@ int main(int argc, char *argv[])
         c = getc(bfp);
     }
     fclose(bfp);
-    exec86(100);
+    while (exec86(100));
     return 0;
 }
