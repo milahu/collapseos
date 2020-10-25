@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include "port.h"
+#include "emul.h"
 
 #define KBD_BUFSZ 0x10
 

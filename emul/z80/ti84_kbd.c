@@ -1,7 +1,7 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "kbd.h"
+#include "ti84_kbd.h"
 
 void kbd_init(KBD *kbd)
 {

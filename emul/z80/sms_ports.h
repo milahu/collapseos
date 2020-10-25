@@ -1,5 +1,5 @@
 #pragma once
-#include "../emul.h"
+#include "emul.h"
 
 // Each port is a bitmask of each pin's status. 1 means high.
 // From Bit 0 to 6: up, down, left, right, TL, TR, TH

@@ -1,6 +1,6 @@
 #include <stdint.h>
 #include <stdbool.h>
-#include "port.h"
+#include "emul.h"
 
 typedef enum {
     PAD_BTN_UP = 0,

@@ -1,4 +1,4 @@
-#include "pad.h"
+#include "sms_pad.h"
 
 void pad_init(Pad *pad, Tristate *TH)
 {

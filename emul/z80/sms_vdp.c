@@ -1,5 +1,5 @@
 #include <string.h>
-#include "vdp.h"
+#include "sms_vdp.h"
 
 void vdp_init(VDP *vdp)
 {

@@ -3,7 +3,7 @@ BASE = ../..
 CDIR = $(BASE)/cvm
 STAGE = $(CDIR)/stage
 BLKPACK = $(BASE)/tools/blkpack
-EMUL = $(BASE)/emul/z80/ti/ti84
+EMUL = $(BASE)/emul/z80/ti84
 MKTIUPGRADE = mktiupgrade
 
 .PHONY: all
@@ -26,7 +26,7 @@ $(EMUL):
 .PHONY: emul
 emul: $(EMUL) $(TARGET)
 	$(EMUL) $(TARGET)
-	
+
 os.rom: $(TARGET)
 	dd if=$(TARGET) bs=1M of=$@ conv=sync
 

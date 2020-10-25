@@ -1,4 +1,4 @@
-#include "port.h"
+#include "sms_ports.h"
 
 void ports_init(Ports *ports)
 {

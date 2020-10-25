@@ -7,11 +7,11 @@
 #define XK_MISCELLANY
 #include <X11/keysymdef.h>
 
-#include "../emul.h"
-#include "vdp.h"
-#include "port.h"
-#include "pad.h"
-#include "kbd.h"
+#include "emul.h"
+#include "sms_vdp.h"
+#include "sms_ports.h"
+#include "sms_pad.h"
+#include "ps2_kbd.h"
 
 #define RAMSTART 0xc000
 #define VDP_CMD_PORT 0xbf

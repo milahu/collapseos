@@ -3,7 +3,7 @@ BASE = ../..
 STAGE = $(BASE)/cvm/stage
 BLKPACK = $(BASE)/tools/blkpack
 SMSROM = $(BASE)/tools/smsrom
-EMUL = $(BASE)/emul/z80/sms/sms
+EMUL = $(BASE)/emul/z80/sms
 
 .PHONY: all
 all: $(TARGET) 

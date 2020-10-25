@@ -1,4 +1,4 @@
-#include "kbd.h"
+#include "ps2_kbd.h"
 
 void kbd_init(Kbd *kbd, Tristate *TH)
 {
