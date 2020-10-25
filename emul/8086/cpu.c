@@ -3399,8 +3399,8 @@ int exec86(int execloops) {
     return 1;
 }
 
-void reset86() {
+void reset86(uint16_t startip) {
 	segregs[regcs] = 0;
-	ip = 0;
+	ip = startip;
 	hltstate = 0;
 }

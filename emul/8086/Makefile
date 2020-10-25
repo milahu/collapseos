@@ -1,4 +1,4 @@
-TARGETS = forth 
+TARGETS = forth pcat
 OBJS = cpu.o
 CDIR = ../../cvm
 STAGE = $(CDIR)/stage
@@ -12,6 +12,9 @@ forth: forth.c forth.bin $(OBJS) $(BLKFS)
 
 forth.bin: xcomp.fs $(STAGE)
 	$(CDIR)/stage < xcomp.fs > $@
+
+pcat: pcat.c $(OBJS) $(BLKFS)
+	$(CC) -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" pcat.c $(OBJS) -lncurses -o $@
 
 $(BLKFS): $(STAGE)
 

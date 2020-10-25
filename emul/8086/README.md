@@ -1,8 +1,28 @@
 # 8086 emulator
 
-This is a work in progress. The goal is to have something lighter than QEMU to
-run Collapse OS on and also something that is easier to plug with my stuff.
-Something I could run without BIOS (have my own studs for INT 10 and INT 13).
+This folder contains emulator for 8086 binaries of Collapse OS. The bulk of
+it is a fork of Fake86 by Mike Chambers.
 
-My first try was with 8086tiny, but this code is messy. Fake86 is a bit bigger,
-but also cleaner.
+`forth` is an imaginary hardware used for userspace development and testing.
+This machine has an imaginary interrupt API and does not conform to PC/AT.
+
+`pcat` is a very simple PC/AT emulator. The BIOS interrupt hooks implemented in
+it only cover Collapse OS' own needs.
+
+## Requirements
+
+You need `ncurses` to build the `forth` executable. In debian-based distros,
+it's `libncurses5-dev`.
+
+## Build
+
+Run `make` and it builds the `forth` and `pcat` interpreters.
+
+## Usage
+
+The `./forth` executable here works like the one in `/cvm`, except that it runs
+under an emulated 8086 machine instead of running natively. Refer to
+`/cvm/README.md` for details.
+
+`pcat` needs to be suppied a path to a floppy disk image with a proper MBR.
+`disk.bin` provided by the `pcat` recipe is sufficient.

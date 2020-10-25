@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
     INTHOOKS[4] = int4;
     INTHOOKS[5] = int5;
     INTHOOKS[6] = int6;
-    reset86();
+    reset86(0);
     fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
     blkfp = fopen(BLKFS_PATH, "r+");
     if (!blkfp) {

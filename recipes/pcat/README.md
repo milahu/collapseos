@@ -12,7 +12,6 @@ is bootable on a modern PC-compatible machine.
 
 * A modern PC-compatible machine that can boot from a USB drive.
 * A USB drive
-* qemu for emulation
 
 ## Build the binary
 
@@ -30,7 +29,12 @@ can run `VE`.
 
 ## Emulation
 
-You can run the built binary in qemu using `make emul`.
+You can run the built binary in Collapse OS' 8086 emulator using `make emul`.
+
+The 8086 emulator is barbone. If you prefer to use it on a more realistic
+setting, use QEMU. The command is:
+
+    qemu-system-i386 -drive file=disk.bin,if=floppy,format=raw
 
 ## Running on a modern PC
 

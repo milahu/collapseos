@@ -52,4 +52,4 @@ void writew86 (uint32_t addr32, uint16_t value);
 uint8_t read86 (uint32_t addr32);
 uint16_t readw86 (uint32_t addr32);
 int exec86(int execloops); // returns 0 if halted
-void reset86();
+void reset86(uint16_t startip);
