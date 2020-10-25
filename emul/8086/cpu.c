@@ -24,32 +24,6 @@
 #include <stdio.h>
 #include "cpu.h"
 
-// Defines below are from config.h
-//be sure to only define ONE of the CPU_* options at any given time, or
-//you will likely get some unexpected/bad results!
-//#define CPU_8086
-//#define CPU_186
-#define CPU_V20
-//#define CPU_286
-
-#if defined(CPU_8086)
-	#define CPU_CLEAR_ZF_ON_MUL
-	#define CPU_ALLOW_POP_CS
-#else
-	#define CPU_ALLOW_ILLEGAL_OP_EXCEPTION
-	#define CPU_LIMIT_SHIFT_COUNT
-#endif
-
-#if defined(CPU_V20)
-	#define CPU_NO_SALC
-#endif
-
-#if defined(CPU_286) || defined(CPU_386)
-	#define CPU_286_STYLE_PUSH_SP
-#else
-	#define CPU_SET_HIGH_FLAGS
-#endif
-
 #define StepIP(x)	ip += x
 #define signext(value)	(int16_t)(int8_t)(value)
 #define signext32(value)	(int32_t)(int16_t)(value)
@@ -651,9 +625,7 @@ static uint8_t op_grp2_8 (uint8_t cnt) {
 
 	s = oper1b;
 	oldcf = cf;
-#ifdef CPU_LIMIT_SHIFT_COUNT
 	cnt &= 0x1F;
-#endif
 	switch (reg) {
 			case 0: /* ROL r/m8 */
 				for (shift = 1; shift <= cnt; shift++) {
@@ -779,9 +751,7 @@ static uint16_t op_grp2_16 (uint8_t cnt) {
 
 	s = oper1;
 	oldcf = cf;
-#ifdef CPU_LIMIT_SHIFT_COUNT
 	cnt &= 0x1F;
-#endif
 	switch (reg) {
 			case 0: /* ROL r/m8 */
 				for (shift = 1; shift <= cnt; shift++) {
@@ -983,9 +953,6 @@ static void op_grp3_8() {
 						cf = 0;
 						of = 0;
 					}
-#ifdef CPU_CLEAR_ZF_ON_MUL
-				zf = 0;
-#endif
 				break;
 
 			case 5: /* IMUL */
@@ -1010,9 +977,6 @@ static void op_grp3_8() {
 						cf = 0;
 						of = 0;
 					}
-#ifdef CPU_CLEAR_ZF_ON_MUL
-				zf = 0;
-#endif
 				break;
 
 			case 6: /* DIV */
@@ -1111,9 +1075,6 @@ static void op_grp3_16() {
 						cf = 0;
 						of = 0;
 					}
-#ifdef CPU_CLEAR_ZF_ON_MUL
-				zf = 0;
-#endif
 				break;
 
 			case 5: /* IMUL */
@@ -1138,9 +1099,6 @@ static void op_grp3_16() {
 						cf = 0;
 						of = 0;
 					}
-#ifdef CPU_CLEAR_ZF_ON_MUL
-				zf = 0;
-#endif
 				break;
 
 			case 6: /* DIV */
@@ -1367,10 +1325,6 @@ int exec86(int execloops) {
                 oper1 = getreg16 (reg);
                 oper2 = readrm16 (rm);
                 op_or16();
-                if ( (oper1 == 0xF802) && (oper2 == 0xF802) ) {
-                        sf = 0;	/* cheap hack to make Wolf 3D think we're a 286 so it plays */
-                    }
-
                 putreg16 (reg, res16);
                 break;
 
@@ -1393,12 +1347,6 @@ int exec86(int execloops) {
             case 0xE:	/* 0E PUSH segregs[regcs] */
                 push (segregs[regcs]);
                 break;
-
-#ifdef CPU_ALLOW_POP_CS //only the 8086/8088 does this.
-            case 0xF: //0F POP CS
-                segregs[regcs] = pop();
-                break;
-#endif
 
             case 0x10:	/* 10 ADC Eb Gb */
                 modregrm();
@@ -2570,11 +2518,7 @@ int exec86(int execloops) {
                 break;
 
             case 0x9C:	/* 9C PUSHF */
-#ifdef CPU_SET_HIGH_FLAGS
                 push (makeflagsword() | 0xF800);
-#else
-                push (makeflagsword() | 0x0800);
-#endif
                 break;
 
             case 0x9D:	/* 9D POPF */
@@ -3178,11 +3122,6 @@ int exec86(int execloops) {
                 break;
 
             case 0xD6:	/* D6 XLAT on V20/V30, SALC on 8086/8088 */
-#ifndef CPU_NO_SALC
-                regs.byteregs[regal] = cf ? 0xFF : 0x00;
-                break;
-#endif
-
             case 0xD7:	/* D7 XLAT */
                 regs.byteregs[regal] = read86(useseg * 16 + (regs.wordregs[regbx]) + regs.byteregs[regal]);
                 break;
@@ -3389,10 +3328,8 @@ int exec86(int execloops) {
                 break;
 
             default:
-#ifdef CPU_ALLOW_ILLEGAL_OP_EXCEPTION
                 intcall86 (6); /* trip invalid opcode exception (this occurs on the 80186+, 8086/8088 CPUs treat them as NOPs. */
                                /* technically they aren't exactly like NOPs in most cases, but for our pursoses, that's accurate enough. */
-#endif
                 break;
         }
     }
