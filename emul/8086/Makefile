@@ -7,14 +7,16 @@ BLKFS = $(CDIR)/blkfs
 .PHONY: all
 all: $(TARGETS)
 
-forth: forth.c $(OBJS)
-	$(CC) forth.c $(OBJS) -lncurses -o $@
+forth: forth.c forth.bin $(OBJS)
+	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" forth.c $(OBJS) -lncurses -o $@
 
-emul.o: emul.c forth.bin $(BLKFS)
+emul.o: emul.c $(BLKFS)
 	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" -c -o emul.o emul.c
 
-forth.bin: xcomp.fs $(STAGE) $(BLKFS)
-	$(CDIR)/stage < xcomp.fs > $@
+forth.bin: foo.asm
+	nasm -o $@ foo.asm
+#forth.bin: xcomp.fs $(STAGE) $(BLKFS)
+#	$(CDIR)/stage < xcomp.fs > $@
 
 $(BLKFS): $(STAGE)
 

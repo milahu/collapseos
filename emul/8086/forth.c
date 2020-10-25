@@ -2,21 +2,40 @@
 #include <stdio.h>
 #include "cpu.h"
 
-extern uint8_t	RAM[0x100000];
+#ifndef FBIN_PATH
+#error FBIN_PATH needed
+#endif
+
+extern uint8_t byteregtable[8];
+extern union _bytewordregs_ regs;
+extern INTHOOK INTHOOKS[0x100];
+
+/* we have a fake INT API:
+INT 1: EMIT. AL = char to spit
+INT 2: KEY. AL = char read
+*/
+
+void int1() {
+    putchar(getreg8(regal));
+}
 
 int main(int argc, char *argv[])
 {
-    int i = 0;
-    int ch = 0;
-
+    INTHOOKS[1] = int1;
     reset86();
-    ch = getchar();
-    while (ch != EOF) {
-        RAM[i++] = ch;
-        ch = getchar();
+    // initialize memory
+    FILE *bfp = fopen(FBIN_PATH, "r");
+    if (!bfp) {
+        fprintf(stderr, "Can't open forth.bin\n");
+        return 1;
     }
-    printregs();
-    exec86(1);
-    printregs();
+    int i = 0;
+    int c = getc(bfp);
+    while (c != EOF) {
+        write86(i++, c);
+        c = getc(bfp);
+    }
+    fclose(bfp);
+    exec86(100);
     return 0;
 }
