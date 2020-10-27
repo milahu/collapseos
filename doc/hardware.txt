@@ -1,0 +1,30 @@
+# Running Collapse OS on real hardware
+
+Collapse OS is designed to run on ad-hoc post-collapse hardware
+build from scavenged parts. These machines don't exist yet.
+
+To make Collapse OS as likely as possible to be useful in a
+post-collapse world, we try to give as many examples as possible
+of deployment on hacked-up hardware.
+
+For example, we include a recipe for running a Sega Master
+System with a PS/2 keyboard plugged to a hacked up controller
+cord with an AVR MCU interfacing between the PS/2 connector and
+the controller port.
+
+This setup, for which drivers are included in Collapse OS, exist
+in only one copy, the copy the author of the recipe made.
+
+However, the idea is that this recipe, which contains schematics
+and precise instructions, could help a post-collapse engineer
+to hack her way around and achieve something similar. She would
+then have a good example of schematics and drivers that are
+known to work.
+
+If you want to run Collape OS on real hardware, take a look at
+arch-specific documentation in /recipes and see if some of the
+supported hardware is close to something you have.
+
+Easy pickings are PC/AT (which run on modern PCs supporting
+legacy BIOS), Sega Genesis w/ Everdrive and TI-84+. Those
+options don't require any soldering.

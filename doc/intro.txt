@@ -13,7 +13,7 @@ improved in a world without modern computers.
 # Forth
 
 This OS is a Forth. It doesn't adhere to any pre-collapse stand-
-ard, but is pretty close to the Forth described by Starting
+ard, but is pretty close to the Forth described in Starting
 Forth by Leo Brodie. It is therefore the recommended introduct-
 ory material to learn Forth in the context of Collapse OS.
 
@@ -31,3 +31,23 @@ it should.
 
 This documentation is expected to be printed before the last
 modern computer of your community dies.
+
+# Where to begin?
+
+If you're reading this and don't know where to begin, you're 
+likely to have access to a modern computer. The best place to
+begin is to build the C VM of Collapse OS in /cvm. You can then
+begin playing with it with the help of usage.txt and impl.txt.
+
+When you're ready to move to real hardware, read hardware.txt.
+
+# Other topics in this documentation
+
+* Dictionary of core Forth words (dict.txt)
+* Editing text (ed.txt)
+* Assembling binaries (asm.txt)
+* Programming AVR chips (avr.txt)
+* Bootstrap Collapse OS to a new system (bootstrap.txt)
+* Cross-compilation mechanisms (cross.txt)
+* Protocols (protocol.txt)
+
