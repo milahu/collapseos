@@ -66,7 +66,7 @@ CURRENT @ XCURRENT !
 CREATE ~FNT CPFNT3x5
 605 610 LOADR ( LCD low )
 616 620 LOADR ( KBD low )
-380 LOAD  ( xcomp core high )
+390 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

@@ -11,4 +11,4 @@
     (resRS) 0 0x08 RAM+ ! ( C<* override ) (infl)
     LIT" (main)" FIND DROP EXECUTE
 ;
-1 25 LOADR+ ( xcomp core low )
+1 33 LOADR+

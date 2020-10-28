@@ -1,13 +1,9 @@
-: DOES>
-    ( Overwrite cellWord in CURRENT )
-    3 ( does ) CURRENT @ C!
-    ( When we have a DOES>, we forcefully place HERE to 4
-      bytes after CURRENT. This allows a DOES word to use ","
-      and "C," without messing everything up. )
-    CURRENT @ 3 + HERE !
-    ( HERE points to where we should write R> )
-    R> ,
-    ( We're done. Because we've popped RS, we'll exit parent
-      definition )
+: BLK$
+    H@ 0x3c ( BLK(* ) RAM+ !
+    1024 ALLOT
+    ( LOAD detects end of block with ASCII EOT. This is why
+      we write it there. )
+    EOT,
+    0 BLKDTY !
+    -1 BLK> !
 ;
-: CONSTANT CREATE , DOES> @ ;

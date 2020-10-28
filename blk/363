@@ -1,8 +1,11 @@
-: (parse)           ( a -- n )
-    _pc IF EXIT THEN
-    _ph IF EXIT THEN
-    _pb IF EXIT THEN
-    _pd IF EXIT THEN
-    ( nothing works )
-    (wnf)
-;
+: C<? 0x06 RAM+ @ ;
+SYSVARS 0x0c + :** C<*
+: C<
+    0x08 RAM+ ( C<* override ) @
+    ?DUP NOT IF C<* ELSE EXECUTE THEN ;
+: , H@ ! H@ 2+ HERE ! ;
+: C, H@ C! H@ 1+ HERE ! ;
+: ,"
+    BEGIN
+        C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
+    AGAIN ;

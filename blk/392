@@ -1,15 +1,14 @@
-: INTERPRET
+: _bchk DUP 0x7f + 0xff > IF LIT" br ovfl" (print) ABORT THEN ;
+: DO COMPILE 2>R H@ ; IMMEDIATE
+: LOOP COMPILE (loop) H@ - _bchk C, ; IMMEDIATE
+( LEAVE is implemented in low xcomp )
+: LITN COMPILE (n) , ;
+( gets its name at the very end. can't comment afterwards )
+: _ BEGIN LIT" )" WORD S= UNTIL ; IMMEDIATE
+: _ ( : will get its name almost at the very end )
+    (entry) 1 ( compiled ) C,
     BEGIN
-    WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
-    FIND NOT IF (parse) ELSE EXECUTE THEN
-    C<? NOT IF SPC LIT" ok" (print) NL THEN
+        WORD DUP LIT" ;" S= IF DROP COMPILE EXIT EXIT THEN
+        FIND IF ( is word ) DUP IMMED? IF EXECUTE ELSE , THEN
+        ELSE ( maybe number ) (parse) LITN THEN
     AGAIN ;
-( Read from BOOT C< PTR and inc it. )
-: (boot<)
-    ( 2e == BOOT C< PTR )
-    0x2e ( BOOT C< PTR ) RAM+ @ DUP C@ ( a c )
-    SWAP 1 + 0x2e RAM+ ! ( c ) ;
-( pre-comment for tight LOAD: The 0x08==I check after INTERPRET
-  is to check whether we're restoring to "_", the word above.
-  if yes, then we're in a nested load. Also, the 1 in 0x06 is
-  to avoid tons of "ok" displays. )

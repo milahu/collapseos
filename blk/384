@@ -1,16 +1,16 @@
-: ? @ . ;
-: _
-    DUP 9 > IF 10 - 'a' +
-    ELSE '0' + THEN
-;
-( For hex display, there are no negatives )
-: .x
-    256 MOD     ( ensure < 0x100 )
-    16 /MOD     ( l h )
-    _ EMIT      ( l )
-    _ EMIT
-;
-: .X
-    256 /MOD    ( l h )
-    .x .x
-;
+: LOAD
+    BLK> @ >R ( save restorable variables to RSP )
+    0x08 RAM+ @ >R  ( 08 == C<* override )
+    0x06 RAM+ @ >R  ( C<? )
+    0x2e RAM+ @ >R  ( boot ptr )
+    BLK@
+    BLK( 0x2e RAM+ ! ( Point to beginning of BLK )
+    ['] (boot<) 0x08 RAM+ !
+    1 0x06 RAM+ !  ( 06 == C<? )
+    INTERPRET
+    R> 0x2e RAM+ ! R> 0x06 RAM+ !
+    I 0x08 RAM+ @ = IF ( nested load )
+        R> DROP ( C<* ) R> BLK@
+    ELSE ( not nested )
+        R> 0x08 RAM+ ! R> DROP ( BLK> )
+    THEN ;

@@ -1,14 +1,14 @@
-( r c -- r f )
-( Parse digit c and accumulate into result r.
-  Flag f is 0 when c was a valid digit, 1 when c was WS,
-  -1 when c was an invalid digit. )
-: _pdacc
-    DUP 0x21 < IF DROP 1 EXIT THEN
-    ( parse char )
-    ( if bad, return "r -1" )
-    '0' -
-    DUP 10 < NOT IF DROP -1 EXIT THEN
-    ( good, add to running result )
-    SWAP 10 * +                    ( r*10+n )
-    0                              ( good )
-;
+: _pd ( a -- n f, parse decimal )
+( We read the first char outside of the loop because it *has*
+  to be nonzero, which means _pdacc *has* to return 0. )
+    C@+ OVER C@ 0 ( a len firstchar startat )
+( if we have '-', we only advance. more processing later. )
+    SWAP '-' = IF 1+ THEN ( a len startat )
+( We loop until _pdacc is nonzero, which means either WS or
+  non-digit. 1 means WS, which means parsing was a success.
+  -1 means non-digit, which means we have a non-decimal. )
+    0 ROT ROT ( len ) ( startat ) DO ( a r )
+        OVER I + C@ ( a r c ) _pdacc ( a r f )
+        IF DROP 1- 0 UNLOOP EXIT THEN LOOP ( a r )
+( if we had '-', we need to invert result. )
+    SWAP C@ '-' = IF 0 -^ THEN 1 ( r 1 ) ;

@@ -1,0 +1,10 @@
+: [entry] ( w -- )
+    C@+ ( w+1 len ) TUCK MOVE, ( len )
+    ( write prev value )
+    H@ CURRENT @ - ,
+    C, ( write size )
+    H@ CURRENT !
+;
+: (entry) WORD [entry] ;
+: CREATE (entry) 2 ( cellWord ) C, ;
+: VARIABLE CREATE 2 ALLOT ;

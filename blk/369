@@ -1,13 +1,14 @@
-: IMMEDIATE
-    CURRENT @ 1-
-    DUP C@ 128 OR SWAP C! ;
-: IMMED? 1- C@ 0x80 AND ;
-: '? WORD FIND ;
-: ' '? NOT IF (wnf) THEN ;
-: ROLL
-    ?DUP NOT IF EXIT THEN
-    1+ DUP PICK          ( n val )
-    SWAP 2 * (roll)      ( val )
-    NIP ;
-: 2OVER 3 PICK 3 PICK ;
-: 2SWAP 3 ROLL 3 ROLL ;
+: WORD(
+    DUP 1- C@   ( name len field )
+    127 AND     ( 0x7f. remove IMMEDIATE flag )
+    3 +         ( fixed header len )
+    -
+;
+: FORGET
+    ' DUP               ( w w )
+    ( HERE must be at the end of prev's word, that is, at the
+      beginning of w. )
+    WORD( HERE !  ( w )
+    PREV CURRENT !
+;
+: EMPTY LIT" _sys" FIND IF DUP HERE ! CURRENT ! THEN ;

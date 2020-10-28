@@ -23,7 +23,7 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 : COLS 80 ; : LINES 32 ;
 : AT-XY 6 PC! ( y ) 5 PC! ( x ) ;
 
-380 LOAD  ( xcomp core high )
+390 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

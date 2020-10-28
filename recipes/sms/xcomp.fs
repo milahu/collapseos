@@ -29,7 +29,7 @@ CURRENT @ XCURRENT !
 CREATE ~FNT CPFNT7x7
 603 608 LOADR ( VDP )
 612 617 LOADR ( PAD )
-380 LOAD  ( xcomp core high )
+390 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

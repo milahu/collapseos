@@ -6,7 +6,7 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 262 LOAD  ( xcomp )            282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )  283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )   603 605 LOADR ( acia )
-380 LOAD  ( xcomp core high )
+390 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

@@ -1,13 +1,13 @@
-( Read word from C<, copy to WORDBUF, null-terminate, and
-  return WORDBUF. )
-: _wb 0x0e RAM+ ;
-: _eot 0x0401 _wb ! _wb ;
-: WORD
-    _wb 1+ TOWORD ( a c )
-    DUP EOT? IF 2DROP _eot EXIT THEN
-    BEGIN
-        OVER C! 1+ C< ( a c )
-        OVER 0x2e RAM+ = OVER WS? OR
-    UNTIL ( a c )
-    SWAP _wb - 1- ( ws len ) _wb C!
-    EOT? IF _eot ELSE _wb THEN ;
+: IMMEDIATE
+    CURRENT @ 1-
+    DUP C@ 128 OR SWAP C! ;
+: IMMED? 1- C@ 0x80 AND ;
+: '? WORD FIND ;
+: ' '? NOT IF (wnf) THEN ;
+: ROLL
+    ?DUP NOT IF EXIT THEN
+    1+ DUP PICK          ( n val )
+    SWAP 2 * (roll)      ( val )
+    NIP ;
+: 2OVER 3 PICK 3 PICK ;
+: 2SWAP 3 ROLL 3 ROLL ;

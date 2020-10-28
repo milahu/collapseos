@@ -1,16 +1,15 @@
-: _
-    999 SWAP        ( stop indicator )
+: INTERPRET
     BEGIN
-        ?DUP NOT IF EXIT THEN
-        10 /MOD         ( r q )
-        SWAP '0' + SWAP ( d q )
+    WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
+    FIND NOT IF (parse) ELSE EXECUTE THEN
+    C<? NOT IF SPC LIT" ok" (print) NL THEN
     AGAIN ;
-: . ( n -- )
-    ?DUP NOT IF '0' EMIT EXIT THEN ( 0 is a special case )
-    ( handle negative )
-    DUP 0< IF '-' EMIT -1 * THEN
-    _
-    BEGIN
-        DUP '9' > IF DROP EXIT THEN  ( stop indicator )
-        EMIT
-    AGAIN ;
+( Read from BOOT C< PTR and inc it. )
+: (boot<)
+    ( 2e == BOOT C< PTR )
+    0x2e ( BOOT C< PTR ) RAM+ @ DUP C@ ( a c )
+    SWAP 1 + 0x2e RAM+ ! ( c ) ;
+( pre-comment for tight LOAD: The 0x08==I check after INTERPRET
+  is to check whether we're restoring to "_", the word above.
+  if yes, then we're in a nested load. Also, the 1 in 0x06 is
+  to avoid tons of "ok" displays. )

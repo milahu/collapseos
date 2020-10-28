@@ -1,8 +1,13 @@
-: WS? 33 < ;
-: EOT? 4 = ; ( 4 == ASCII EOT, CTRL+D )
-: EOT, 4 C, ;
-
-: TOWORD
-    0 ( dummy ) BEGIN
-        DROP C< DUP WS? NOT OVER EOT? OR
-    UNTIL ;
+( Read word from C<, copy to WORDBUF, null-terminate, and
+  return WORDBUF. )
+: _wb 0x0e RAM+ ;
+: _eot 0x0401 _wb ! _wb ;
+: WORD
+    _wb 1+ TOWORD ( a c )
+    DUP EOT? IF 2DROP _eot EXIT THEN
+    BEGIN
+        OVER C! 1+ C< ( a c )
+        OVER 0x2e RAM+ = OVER WS? OR
+    UNTIL ( a c )
+    SWAP _wb - 1- ( ws len ) _wb C!
+    EOT? IF _eot ELSE _wb THEN ;

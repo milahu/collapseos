@@ -8,6 +8,6 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 604 LOAD  ( KEY/EMIT drivers )
 606 608 LOADR  ( BLK drivers )
 610 LOAD  ( AT-XY drivers )
-380 LOAD  ( xcomp core high )
+390 LOAD  ( xcomp core high )
 (entry) _ ( Update LATEST ) PC ORG @ 8 + !
 ," BLK$ FD$ ' FD@ BLK@* ! ' FD! BLK!* ! " EOT,

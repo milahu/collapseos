@@ -1,4 +1,14 @@
-: [IF]
-    IF EXIT THEN
-    LIT" [THEN]" BEGIN DUP WORD S= UNTIL DROP ;
-: [THEN] ;
+: BLK! ( -- )
+    BLK> @ BLK!* @ EXECUTE
+    0 BLKDTY ! ;
+: FLUSH BLKDTY @ IF BLK! THEN ;
+: BLK@ ( n -- )
+    DUP BLK> @ = IF DROP EXIT THEN
+    FLUSH DUP BLK> ! BLK@* @ EXECUTE ;
+: BLK!! 1 BLKDTY ! ;
+: WIPE BLK( 1024 0 FILL BLK!! ;
+: WIPED? ( -- f )
+    1 ( f ) BLK) BLK( DO
+        I C@ IF DROP 0 ( f ) LEAVE THEN LOOP ;
+: COPY ( src dst -- )
+    FLUSH SWAP BLK@ BLK> ! BLK! ;

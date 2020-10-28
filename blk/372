@@ -1,14 +1,10 @@
-: WORD(
-    DUP 1- C@   ( name len field )
-    127 AND     ( 0x7f. remove IMMEDIATE flag )
-    3 +         ( fixed header len )
-    -
-;
-: FORGET
-    ' DUP               ( w w )
-    ( HERE must be at the end of prev's word, that is, at the
-      beginning of w. )
-    WORD( HERE !  ( w )
-    PREV CURRENT !
-;
-: EMPTY LIT" _sys" FIND IF DUP HERE ! CURRENT ! THEN ;
+( n -- Fetches block n and write it to BLK( )
+: BLK@* 0x34 RAM+ ;
+( n -- Write back BLK( to storage at block n )
+: BLK!* 0x36 RAM+ ;
+( Current blk pointer in ( )
+: BLK> 0x38 RAM+ ;
+( Whether buffer is dirty )
+: BLKDTY 0x3a RAM+ ;
+: BLK( 0x3c RAM+ @ ;
+: BLK) BLK( 1024 + ;

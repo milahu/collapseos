@@ -1,11 +1,4 @@
-: .2 DUP 10 < IF SPC THEN . ;
-: LIST
-    BLK@
-    16 0 DO
-        I 1+ .2 SPC
-        64 I * BLK( + DUP 64 + SWAP DO
-            I C@ 0x20 MAX EMIT
-        LOOP
-        NL
-    LOOP
-;
+( Now we have "as late as possible" stuff. See bootstrap doc. )
+: :* ( addr -- ) (entry) 4 ( alias ) C, , ;
+: :** ( addr -- ) (entry) 5 ( switch ) C, , ;
+

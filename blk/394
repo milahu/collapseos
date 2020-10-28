@@ -1,15 +1,13 @@
-: LOAD+ BLK> @ + LOAD ;
-( b1 b2 -- )
-: LOADR 1+ SWAP DO I DUP . NL LOAD LOOP ;
-: LOADR+ BLK> @ + SWAP BLK> @ + SWAP LOADR ;
-( Now, adev stuff )
-SYSVARS 0x3e + :** A@
-SYSVARS 0x40 + :** A!
-
-( src dst u -- )
-: AMOVE
-    ( u ) 0 DO
-        SWAP DUP I + A@   ( dst src x )
-        ROT TUCK I +      ( src dst x dst )
-        A!                ( src dst )
-    LOOP 2DROP ;
+( We don't use ." and ABORT in core, they're not xcomp-ed )
+: ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
+: ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
+: BEGIN H@ ; IMMEDIATE
+: AGAIN COMPILE (br) H@ - _bchk C, ; IMMEDIATE
+: UNTIL COMPILE (?br) H@ - _bchk C, ; IMMEDIATE
+: [ INTERPRET ; IMMEDIATE
+: ] R> DROP ;
+: COMPILE ' LITN ['] , , ; IMMEDIATE
+: [COMPILE] ' , ; IMMEDIATE
+: ['] ' LITN ; IMMEDIATE
+':' X' _ 4 - C! ( give : its name )
+'(' X' _ 4 - C!

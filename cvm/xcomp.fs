@@ -69,7 +69,7 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x35 CODE RSHIFT
 0x36 CODE LSHIFT
 0x37 CODE TICKS
-353 LOAD  ( xcomp core low )
+353 LOAD ( xcomp core )
 : (emit) 0 PC! ;
 : (key) 0 PC@ ;
 : EFS@
@@ -85,7 +85,7 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 : COLS 80 ; : LINES 32 ;
 : AT-XY 6 PC! ( y ) 5 PC! ( x ) ;
 
-380 LOAD  ( xcomp core high )
+390 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !

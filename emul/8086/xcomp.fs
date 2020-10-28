@@ -16,7 +16,7 @@ CODE _ BX POPx, AX POPx, 5 INT, ;CODE
 ( 8086 port doesn't define PC@ and PC!, but test harness uses
   it. Our forth binary uses INT 6 for retcode. )
 CODE PC! AX POPx, ( discard ) AX POPx, 6 INT, ;CODE
-380 LOAD  ( xcomp core high )
+390 LOAD  ( xcomp core high )
 (entry) _ ( Update LATEST ) PC ORG @ 8 + !
 ," BLK$ "
 ," ' EFS@ BLK@* ! "
