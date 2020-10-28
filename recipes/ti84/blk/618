@@ -7,7 +7,7 @@ CREATE _atbl
     0x20 C, 'Y' C, 'T' C, 'O' C, 'J' C, 'E' C, 'B' C, 0 C,
     0 C, 'X' C, 'S' C, 'N' C, 'I' C, 'D' C, 'A' C, 0x80 C,
     0 C, 0 C, 0 C, 0 C, 0 C, 0x81 ( 2nd ) C, 0 C, 0x7f C,
-: _2nd@ 0 [ KBD_MEM LITN ] BIT@ ;
-: _2nd! 0 [ KBD_MEM LITN ] BIT! ;
-: _alock@ 1 [ KBD_MEM LITN ] BIT@ ;
-: _alock^ _alock@ NOT 1 [ KBD_MEM LITN ] BIT! ;
+: _2nd@ [ KBD_MEM LITN ] C@ 1 AND ;
+: _2nd! [ KBD_MEM LITN ] C@ 0xfe AND + [ KBD_MEM LITN ] C! ;
+: _alock@ [ KBD_MEM LITN ] C@ 2 AND ;
+: _alock^ [ KBD_MEM LITN ] C@ 2 XOR [ KBD_MEM LITN ] C! ;

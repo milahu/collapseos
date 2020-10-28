@@ -6,9 +6,3 @@
 ;
 : , H@ ! H@ 2+ HERE ! ;
 : C, H@ C! H@ 1+ HERE ! ;
-: BIT@ ( bit addr -- f ) C@ SWAP RSHIFT 0x01 AND ;
-: BIT! ( f bit addr -- )
-    SWAP 0x01 SWAP LSHIFT ROT ( addr mask f )
-    IF OVER C@ OR
-    ELSE 0xff XOR OVER C@ AND THEN ( addr flg )
-    SWAP C! ;
