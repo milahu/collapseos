@@ -1,5 +1,4 @@
 : ABORT (resSP) QUIT ;
-: ERR LIT" (print)" FIND IF EXECUTE THEN ABORT ;
 : = CMP NOT ; : < CMP -1 = ; : > CMP 1 = ;
 : 0< 32767 > ; : >= < NOT ; : <= > NOT ; : 0>= 0< NOT ;
 : >< ( n l h -- f ) 2 PICK > ( n l f ) ROT ROT > AND ;
