@@ -1,8 +1,7 @@
 : C<? 0x06 RAM+ @ ;
+SYSVARS 0x0c + :** C<*
 : C<
-    0x08 RAM+ @  ( 08 == C<* override )
-    ?DUP NOT IF 0x0c RAM+ @ THEN  ( 0c == C<* )
-    EXECUTE
-;
+    0x08 RAM+ ( C<* override ) @
+    ?DUP NOT IF C<* ELSE EXECUTE THEN ;
 : , H@ ! H@ 2+ HERE ! ;
 : C, H@ C! H@ 1+ HERE ! ;

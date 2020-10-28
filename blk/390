@@ -5,6 +5,6 @@
       the last typed 0x0a and one for the following NULL. )
     IN) IN( - ALLOT
     (infl)
-    ['] RDLN< 0x0c RAM+ !
+    ['] RDLN< ['] C<* **!
     1 0x06 RAM+ !  ( 06 == C<? )
 ;
