@@ -8,9 +8,6 @@
 ;
 ( del is same as backspace )
 : BS? DUP 0x7f = SWAP 0x8 = OR ;
-
-: KEY
-    0x55 RAM+ @ ( (key) override )
-    ?DUP IF EXECUTE ELSE (key) THEN ;
+SYSVARS 0x55 + :** KEY
 ( cont.: read one char into input buffer and returns whether we
   should continue, that is, whether CR was not met. )

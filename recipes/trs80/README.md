@@ -233,14 +233,14 @@ blocks per disk.
 You'll need to send those blocks through RS-232. Begin by taking over the
 prompt:
 
-    ' *CL> 0x53 RAM+ !
-    ' *CL< 0x55 RAM+ !
+    ' *CL> ' EMIT **!
+    ' *CL< ' KEY **!
 
 See B80 for details about those RAM offsets. Your serial link now has the
 prompt. You will also have to make your newlines CRLF. The TRS-80 wants CR
 only, but serial communications (and `blkup`) expect CRLF:
 
-    ' CRLF 0x0a RAM+ !
+    ' CRLF ' NL **!
 
 Now, you can use `/tools/blkup` to send a disk's contents. First, 
 extract the first 100 blocks from blkfs:
@@ -264,9 +264,9 @@ own Collapse OS floppy set. See Usage guide (B3) for details.
 
 Once you're done, you will want to go back to local control:
 
-    ' CR 0x0a RAM+ !
-    0 0x55 RAM+ !
-    0 0x53 RAM+ !
+    ' CR ' NL **!
+    ' (emit) ' EMIT **!
+    ' (key) ' KEY **!
 
 ## Self-hosting
 

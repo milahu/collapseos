@@ -3,8 +3,8 @@
     0x02 RAM+ CURRENT* !
     CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR )
     0 0x08 RAM+ !  ( 08 == C<* override )
-    0 0x53 RAM+ !  ( 53 == (emit) override )
-    0 0x55 RAM+ !  ( 55 == (key) override )
+    ['] (emit) ['] EMIT **!
+    ['] (key) ['] KEY **!
     ['] CRLF ['] NL **!
     ( 0c == C<* )
     ['] (boot<) 0x0c RAM+ !
