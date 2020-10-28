@@ -1,4 +1,0 @@
-: ,"
-    BEGIN
-        C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
-    AGAIN ;

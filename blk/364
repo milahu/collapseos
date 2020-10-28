@@ -5,3 +5,7 @@ SYSVARS 0x0c + :** C<*
     ?DUP NOT IF C<* ELSE EXECUTE THEN ;
 : , H@ ! H@ 2+ HERE ! ;
 : C, H@ C! H@ 1+ HERE ! ;
+: ,"
+    BEGIN
+        C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
+    AGAIN ;

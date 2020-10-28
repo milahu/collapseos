@@ -1,5 +1,3 @@
-: (wnf) LIT" (print)" FIND DROP EXECUTE
-    LIT"  word not found" ERR ;
 : (parse)           ( a -- n )
     _pc IF EXIT THEN
     _ph IF EXIT THEN
