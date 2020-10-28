@@ -5,7 +5,7 @@
     0 0x08 RAM+ !  ( 08 == C<* override )
     0 0x53 RAM+ !  ( 53 == (emit) override )
     0 0x55 RAM+ !  ( 55 == (key) override )
-    0 0x0a RAM+ !  ( NLPTR )
+    ['] CRLF 0x0a RAM+ ! ( NLPTR )
     ( 0c == C<* )
     ['] (boot<) 0x0c RAM+ !
     ['] C@ A@* ! ['] C! A!* !
