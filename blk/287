@@ -1,8 +1,9 @@
 lblexec BSET L1 FSET ( B284 ) L2 FSET ( B286 )
     ( DE -> wordref )
-    LDA(DE), DE INCd,
-    A ORr, IFZ, EXDEHL, JP(HL), THEN,
-    A DECr, JRZ, L1 FWR ( compiled B289 )
-    ( cell or does. push PFA ) DE PUSH,
+    LDA(DE), DE INCd, EXDEHL, ( HL points to PFA )
+    A ORr, IFZ, JP(HL), THEN,
+    A DECr, ( compiled? ) IFNZ, ( no )
+    ( cell or does. push PFA ) HL PUSH,
     A DECr, JRZ, lblnext BWR ( cell )
-    ( continue to does )
+    HL INCd, HL INCd, LDDE(HL), EXDEHL, ( does )
+    THEN, ( continue to compiledWord )

@@ -1,13 +1,11 @@
-( compiled word ) L1 FSET ( execute B301 )
 ( 1. Push current IP to RS
   2. Set new IP to the second atom of the list
   3. Execute the first atom of the list. )
     IX INCd, IX INCd,
     0 IX+ C LDIXYr,
     1 IX+ B LDIXYr,
-    EXDEHL,          ( HL points to PFA )
 ( While we inc, dereference into DE for execute call later. )
     LDDE(HL),
     HL INCd,
     B H LDrr, C L LDrr, ( --> IP )
-    JR, lblexec BWR      ( execute-B287 )
+    JR, lblexec BWR ( execute-B287 )
