@@ -1,4 +1,6 @@
 : +! TUCK @ + SWAP ! ;
+: *! ( addr alias -- ) 1+ ! ;
+: **! ( addr switch -- ) 1+ @ ! ;
 : / /MOD NIP ;
 : MOD /MOD DROP ;
 : ALLOT HERE +! ;

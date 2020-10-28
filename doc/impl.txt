@@ -82,8 +82,8 @@ below.
 
 # Word types
 
-There are 4 word types in Collapse OS. Whenever you have a
-wordref, it's pointing to a byte with numbers 0 to 3. This
+There are 6 word types in Collapse OS. Whenever you have a
+wordref, it's pointing to a byte with numbers 0 to 5. This
 number is the word type and the word's behavior depends on it.
 
 0: native. This words PFA contains native binary code and is
@@ -101,6 +101,11 @@ compiled. At that address is an wordref list exactly like in a
 compiled word. Upon execution, after having pushed its cell
 addr to PSP, it executes its reference exactly like a
 compiled word.
+
+4: alias. See usage.txt. PFA is like a cell, but instead of
+pushing it to PS, we execute it.
+
+5: switch. Same as alias, but with an added indirection.
 
 # System variables
 

@@ -109,19 +109,36 @@ static void pushRS(word val) {
 // dictionary (doc/dict.txt)
 static void execute(word wordref) {
     byte wtype = vm.mem[wordref];
-    if (wtype == 0) { // native
+    switch (wtype) {
+        case 0: // native
         vm.nativew[vm.mem[wordref+1]]();
-    } else if (wtype == 1) { // compiled
+        break;
+
+        case 1: // compiled
         pushRS(vm.IP);
         vm.IP = wordref+1;
-    } else { // cell or does
+        break;
+
+        case 2: // cell
         push(wordref+1);
-        if (wtype == 3) {
-            pushRS(vm.IP);
-            vm.IP = gw(wordref+3);
-        }
+        break;
+
+        case 3: // does
+        push(wordref+1);
+        pushRS(vm.IP);
+        vm.IP = gw(wordref+3);
+        break;
+
+        case 4: // alias
+        execute(gw(wordref+1));
+        break;
+
+        case 5: // switch
+        execute(gw(gw(wordref+1)));
+        break;
     }
 }
+
 static word find(word daddr, word waddr) {
     byte len = vm.mem[waddr];
     while (1) {

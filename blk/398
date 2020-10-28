@@ -1,16 +1,14 @@
-: IF ( -- a | a: br cell addr )
-    COMPILE (?br) H@ 1 ALLOT ( br cell allot )
-; IMMEDIATE
-: THEN ( a -- | a: br cell addr )
-    DUP H@ -^ _bchk SWAP ( a-H a ) C!
-; IMMEDIATE
-: ELSE ( a1 -- a2 | a1: IF cell a2: ELSE cell )
-    COMPILE (br)
-    1 ALLOT
-    [COMPILE] THEN
-    H@ 1- ( push a. 1- for allot offset )
-; IMMEDIATE
-: LIT"
-    COMPILE (s) H@ 0 C, ,"
-    DUP H@ -^ 1- ( a len ) SWAP C!
-; IMMEDIATE
+: _bchk DUP 0x7f + 0xff > IF LIT" br ovfl" (print) ABORT THEN ;
+: DO COMPILE 2>R H@ ; IMMEDIATE
+: LOOP COMPILE (loop) H@ - _bchk C, ; IMMEDIATE
+( LEAVE is implemented in low xcomp )
+: LITN COMPILE (n) , ;
+( gets its name at the very end. can't comment afterwards )
+: _ BEGIN LIT" )" WORD S= UNTIL ; IMMEDIATE
+: _ ( : will get its name almost at the very end )
+    (entry) 1 ( compiled ) C,
+    BEGIN
+        WORD DUP LIT" ;" S= IF DROP COMPILE EXIT EXIT THEN
+        FIND IF ( is word ) DUP IMMED? IF EXECUTE ELSE , THEN
+        ELSE ( maybe number ) (parse) LITN THEN
+    AGAIN ;

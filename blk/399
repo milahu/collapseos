@@ -1,13 +1,16 @@
-( We don't use ." and ABORT in core, they're not xcomp-ed )
-: ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
-: ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
-: BEGIN H@ ; IMMEDIATE
-: AGAIN COMPILE (br) H@ - _bchk C, ; IMMEDIATE
-: UNTIL COMPILE (?br) H@ - _bchk C, ; IMMEDIATE
-: [ INTERPRET ; IMMEDIATE
-: ] R> DROP ;
-: COMPILE ' LITN ['] , , ; IMMEDIATE
-: [COMPILE] ' , ; IMMEDIATE
-: ['] ' LITN ; IMMEDIATE
-':' X' _ 4 - C! ( give : its name )
-'(' X' _ 4 - C!
+: IF ( -- a | a: br cell addr )
+    COMPILE (?br) H@ 1 ALLOT ( br cell allot )
+; IMMEDIATE
+: THEN ( a -- | a: br cell addr )
+    DUP H@ -^ _bchk SWAP ( a-H a ) C!
+; IMMEDIATE
+: ELSE ( a1 -- a2 | a1: IF cell a2: ELSE cell )
+    COMPILE (br)
+    1 ALLOT
+    [COMPILE] THEN
+    H@ 1- ( push a. 1- for allot offset )
+; IMMEDIATE
+: LIT"
+    COMPILE (s) H@ 0 C, ,"
+    DUP H@ -^ 1- ( a len ) SWAP C!
+; IMMEDIATE

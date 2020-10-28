@@ -64,6 +64,8 @@ WORD(    a -- a   Get wordref's beginning addr.
 # Defining words
 
 : x ... ;   --     Define a new word
+:* x        a --   Define a new alias
+:** x       a --   Define a new switch
 CREATE x    --     Create cell named x. Doesn't allocate a PF.
 [COMPILE] x --     *I* Compile word x and write it to HERE.
                    IMMEDIATE words are *not* executed.
@@ -157,6 +159,8 @@ C@-      a -- a-1 c      Fetch c from a and dec a.
 C!       c a --          Store byte c in address a
 C!+      c a -- a+1      Store byte c in a and inc a.
 C!-      c a -- a-1      Store byte c in a and dec a.
+*!       a al --         Change alias al's addr to a.
+**!      a sw --         Change switch sw's addr to a.
 CURRENT  -- a            Set a to wordref of last added entry.
 CURRENT* -- a            A pointer to active CURRENT*. Useful
                          when we have multiple active dicts.

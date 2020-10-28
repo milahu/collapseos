@@ -139,6 +139,11 @@ CALL       RST         DJNZ
 DI         EI          EXDEHL      EXX         HALT
 NOP        RET [,c]    RETI        RETN        SCF
 
+Macros:
+
+SUBHLd     PUSH [0,1,Z,A]          HLZ         DEZ
+LDDE(HL)   OUT [HL,DE]
+
 # 8086 assembler
 
 Load with "30 LOAD". As with the Z80 assembler, it is incom-

@@ -7,8 +7,7 @@
 : AGAIN XAGAIN ; IMMEDIATE : UNTIL XUNTIL ; IMMEDIATE
 : LIT" XLIT" ; IMMEDIATE : LITN XLITN ;
 : IMMEDIATE XIMM ;
-: (entry) (xentry) ;
-: CREATE XCREATE ;
+: (entry) (xentry) ; : CREATE XCREATE ; : :** X:** ;
 : : [ ' X: , ] ;
 
 CURRENT @ XCURRENT !

@@ -1,4 +1,5 @@
-( 1. Push current IP to RS
+( compiled word
+  1. Push current IP to RS
   2. Set new IP to the second atom of the list
   3. Execute the first atom of the list. )
     IX INCd, IX INCd,

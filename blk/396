@@ -5,10 +5,10 @@
     0 0x08 RAM+ !  ( 08 == C<* override )
     0 0x53 RAM+ !  ( 53 == (emit) override )
     0 0x55 RAM+ !  ( 55 == (key) override )
-    ['] CRLF 0x0a RAM+ ! ( NLPTR )
+    ['] CRLF ['] NL **!
     ( 0c == C<* )
     ['] (boot<) 0x0c RAM+ !
-    ['] C@ A@* ! ['] C! A!* !
+    ['] C@ ['] A@ ! ['] C! ['] A! **!
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
     RDLN$ LIT" _sys" [entry]

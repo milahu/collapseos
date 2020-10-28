@@ -1,14 +1,15 @@
 lblexec BSET ( DI -> wordref )
     AL [DI] MOVr[], DI INCx, ( PFA )
     AL AL ORrr, IFZ, DI JMPr, THEN, ( native )
-    AL DECr, IFNZ, ( cell or does )
-        DI PUSHx, ( push PFA )
-        AL DECr, IFZ, ( cell ) JMPs, lblnext @ RPCs, THEN,
-        ( does, see B302 )
-        DI INCx, DI INCx, DI [DI] MOVx[],
+    AL DECr, IFNZ, ( not compiled )
+        AL DECr, IFZ, ( cell )
+            DI PUSHx, JMPs, lblnext @ RPCs, THEN,
+        AL DECr, IFZ, ( does )
+            DI PUSHx, DI INCx, DI INCx, DI [DI] MOVx[], THEN,
+        ( alias or switch ) DI [DI] MOVx[],
+        AL DECr, IFNZ, ( switch ) DI [DI] MOVx[], THEN,
+        JMPs, lblexec @ RPCs,
     THEN, ( continue to compiled )
-    ( compiled )
     BP INCx, BP INCx, [BP] 0 DX MOV[]+x, ( pushRS )
     DX DI MOVxx, DX INCx, DX INCx, ( --> IP )
-    DI [DI] MOVx[],
-    JMPs, lblexec @ RPCs,
+    DI [DI] MOVx[], JMPs, lblexec @ RPCs,
