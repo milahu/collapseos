@@ -3,8 +3,8 @@
 : LOADR 1+ SWAP DO I DUP . NL LOAD LOOP ;
 : LOADR+ BLK> @ + SWAP BLK> @ + SWAP LOADR ;
 ( Now, adev stuff )
-0x3e RAM+ :** A@
-0x40 RAM+ :** A!
+SYSVARS 0x3e + :** A@
+SYSVARS 0x40 + :** A!
 
 ( src dst u -- )
 : AMOVE

@@ -4,7 +4,7 @@
 : (print) C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
 : BS 8 EMIT ; : LF 10 EMIT ; : CR 13 EMIT ;
 : CRLF CR LF ; : SPC 32 EMIT ;
-0x0a RAM+ :** NL
+SYSVARS 0x0a + :** NL
 : (uflw) LIT" stack underflow" ERR ;
 XCURRENT @ _xapply ORG @ 0x06 ( stable ABI uflw ) + !
 : (oflw) LIT" stack overflow" ERR ;
