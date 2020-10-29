@@ -11,6 +11,7 @@
 #include "sms_vdp.h"
 #include "sms_ports.h"
 #include "sms_pad.h"
+#include "sms_spi.h"
 #include "ps2_kbd.h"
 #include "sdc.h"
 
@@ -43,6 +44,7 @@ static Pad pad;
 static Kbd kbd;
 static bool use_kbd = false;
 static SDC sdc;
+static SPI spi;
 
 static uint8_t iord_vdp_cmd()
 {
@@ -90,28 +92,12 @@ static void iowr_ports_ctl(uint8_t val)
     ports_ctl_wr(&ports, val);
 }
 
-// TODO: re-add as controller-based SPI
-/* static uint8_t iord_sdc_spi()
+static byte iord_spi()
 {
-    return sdc_spi_rd(&sdc);
+    return spi_rd(&spi);
 }
 
-static void iowr_sdc_spi(uint8_t val)
-{
-    sdc_spi_wr(&sdc, val);
-}
-
-// in emulation, exchanges are always instantaneous, so we
-// always report as ready.
-static uint8_t iord_sdc_ctl()
-{
-    return 0;
-}
-
-static void iowr_sdc_ctl(uint8_t val)
-{
-    sdc_ctl_wr(&sdc, val);
-}*/
+static byte spix_sdc(byte val) { return sdc_spix(&sdc, val); }
 
 void create_window()
 {
@@ -246,15 +232,25 @@ static bool _handle_keypress(xcb_generic_event_t *e)
 void event_loop()
 {
     while (1) {
-        if (!emul_step()) {
-            fprintf(stderr, "CPU halted, quitting\n");
-            usleep(1000 * 1000);
-            break;
+        for (int i=0; i<100; i++) {
+            if (!emul_step()) {
+                fprintf(stderr, "CPU halted, quitting\n");
+                usleep(1000 * 1000);
+                break;
+            }
+            spi_pulse(&spi);
         }
         if (vdp_changed) {
             // To avoid overdrawing, we'll let the CPU run a bit to finish its
             // drawing operation.
-            emul_steps(10000);
+            for (int i=0; i<10000; i++) {
+                if (!emul_step()) {
+                    fprintf(stderr, "CPU halted, quitting\n");
+                    usleep(1000 * 1000);
+                    break;
+                }
+                spi_pulse(&spi);
+            }
             draw_pixels();
         }
         // A low tech way of checking when the window was closed. The proper way
@@ -293,6 +289,12 @@ static void usage()
     fprintf(stderr, "Usage: ./sms [-k] [-c sdcard.img] /path/to/rom\n");
 }
 
+static byte spi_dbg(byte val)
+{
+    fprintf(stderr, "SPI XCH: %x\n", val);
+    return val+1;
+}
+
 int main(int argc, char *argv[])
 {
     if (argc < 2) {
@@ -305,6 +307,7 @@ int main(int argc, char *argv[])
     pad_init(&pad, &ports.THA);
     kbd_init(&kbd, &ports.THA);
     sdc_init(&sdc);
+    spi_init(&spi, &ports.THB, &ports.TRB, spix_sdc);
 
     int ch;
     while ((ch = getopt(argc, argv, "kc:")) != -1) {
@@ -348,6 +351,7 @@ int main(int argc, char *argv[])
     } else {
         ports.portA_rd = iord_pad;
     }
+    ports.portB_rd = iord_spi;
 
     m->iord[VDP_CMD_PORT] = iord_vdp_cmd;
     m->iord[VDP_DATA_PORT] = iord_vdp_data;
@@ -357,12 +361,6 @@ int main(int argc, char *argv[])
     m->iowr[VDP_CMD_PORT] = iowr_vdp_cmd;
     m->iowr[VDP_DATA_PORT] = iowr_vdp_data;
     m->iowr[PORTS_CTL_PORT] = iowr_ports_ctl;
-    /* TODO: re-add
-    m->iord[SDC_SPI] = iord_sdc_spi;
-    m->iowr[SDC_SPI] = iowr_sdc_spi;
-    m->iord[SDC_CTL] = iord_sdc_ctl;
-    m->iowr[SDC_CTL] = iowr_sdc_ctl;
-    */
 
     conn = xcb_connect(NULL, NULL);
     screen = xcb_setup_roots_iterator(xcb_get_setup(conn)).data;

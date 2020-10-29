@@ -1,0 +1,12 @@
+: (spie) DROP ; ( always enabled )
+: (spix) ( x -- x, for port B )
+    0 SWAP ( rx tx ) 8 0 DO
+        ( send bit 7 to bit 6, TR's output bit )
+        DUP 1 RSHIFT 0x40 AND ( rx tx bits ) 0x80 OR ( CLK hi )
+        0x3f PC@ OR 0xf3 AND ( TH and TR output )
+        DUP 0x3f PC! ( rx tx bits )
+        ( CLK low ) 0x7f AND 0x3f PC! ( rx tx )
+        ( shift tx ) 1 LSHIFT ( rx tx<< )
+        ( read into rx ) SWAP 1 LSHIFT 0xdc PC@ ( tx<< rx<< x )
+        ( out bit is the 6th ) 6 RSHIFT 1 AND OR
+    SWAP LOOP ( rx tx ) DROP ;

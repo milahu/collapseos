@@ -1,7 +1,7 @@
 TARGETS = forth rc2014 sms ti84
 OBJS = emul.o z80.o
 RC2014_OBJS = $(OBJS) sio.o acia.o sdc.o rc2014_spi.o
-SMS_OBJS = $(OBJS) sms_vdp.o sms_ports.o sms_pad.o ps2_kbd.o sdc.o
+SMS_OBJS = $(OBJS) sms_vdp.o sms_ports.o sms_pad.o ps2_kbd.o sdc.o sms_spi.o
 TI84_OBJS = $(OBJS) t6a04.o ti84_kbd.o 
 CDIR = ../../cvm
 STAGE = $(CDIR)/stage
