@@ -6,5 +6,5 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 ( We divide by 2 because each PC represents a word. )
 : PC H@ ORG @ - 1 RSHIFT ;
 ( A, spits an assembled byte, A,, spits an assembled word
-  Both increase PC. To debug, change C, to .X )
-: A, C, ; : A,, SPLITB A, A, ;
+  Both increase PC. )
+: A,, SPLITB A, A, ;

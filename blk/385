@@ -5,6 +5,7 @@
 ( Now, adev stuff )
 SYSVARS 0x3e + :** A@
 SYSVARS 0x40 + :** A!
+SYSVARS 0x42 + :** A,
 
 ( src dst u -- )
 : AMOVE

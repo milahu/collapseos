@@ -3,5 +3,4 @@
     256 /MOD SWAP
 ;
 : PC H@ ORG @ - BIN( @ + ;
-: A, C, ;
 : A,, SPLITB A, A, ;

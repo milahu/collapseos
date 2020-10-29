@@ -7,7 +7,7 @@
     ['] (emit) ['] EMIT **! ['] (key) ['] KEY **!
     ['] CRLF ['] NL **!
     ['] (boot<) ['] C<* **!
-    ['] C@ ['] A@ **! ['] C! ['] A! **!
+    ['] C@ ['] A@ **! ['] C! ['] A! **! ['] C, ['] A, **!
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
     RDLN$ LIT" _sys" [entry]
