@@ -5,6 +5,7 @@
 
 typedef byte (*IORD) ();
 typedef void (*IOWR) (byte data);
+typedef byte (*EXCH) (byte data);
 
 typedef struct {
     Z80Context cpu;

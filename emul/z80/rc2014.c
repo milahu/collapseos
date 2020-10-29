@@ -15,6 +15,7 @@
 #include "acia.h"
 #include "sio.h"
 #include "sdc.h"
+#include "rc2014_spi.h"
 
 #define RAMSTART 0x8000
 #define ACIA_CTL_PORT 0x80
@@ -29,6 +30,7 @@ bool use_sio = false;
 static ACIA acia;
 static SIO sio;
 static SDC sdc;
+static SPI spi;
 
 static uint8_t iord_acia_ctl()
 {
@@ -70,26 +72,28 @@ static void iowr_sio_data(uint8_t val)
     sio_adata_wr(&sio, val);
 }
 
-static uint8_t iord_sdc_spi()
+static uint8_t iord_spi()
 {
-    return sdc_spi_rd(&sdc);
+    return spi_rd(&spi);
 }
 
-static void iowr_sdc_spi(uint8_t val)
+static void iowr_spi(uint8_t val)
 {
-    sdc_spi_wr(&sdc, val);
+    spi_wr(&spi, val);
 }
+
+byte spix_sdc(byte val) { return sdc_spix(&sdc, val); }
 
 // in emulation, exchanges are always instantaneous, so we
 // always report as ready.
-static uint8_t iord_sdc_ctl()
+static uint8_t iord_spi_ctl()
 {
     return 0;
 }
 
-static void iowr_sdc_ctl(uint8_t val)
+static void iowr_spi_ctl(uint8_t val)
 {
-    sdc_ctl_wr(&sdc, val);
+    spi_ctl_wr(&spi, val);
 }
 
 static bool has_irq()
@@ -134,6 +138,7 @@ int main(int argc, char *argv[])
     acia_init(&acia);
     sio_init(&sio);
     sdc_init(&sdc);
+    spi_init(&spi, spix_sdc);
 
     while ((ch = getopt(argc, argv, "sc:")) != -1) {
         switch (ch) {
@@ -198,10 +203,10 @@ int main(int argc, char *argv[])
         m->iowr[ACIA_CTL_PORT] = iowr_acia_ctl;
         m->iowr[ACIA_DATA_PORT] = iowr_acia_data;
     }
-    m->iord[SDC_SPI] = iord_sdc_spi;
-    m->iowr[SDC_SPI] = iowr_sdc_spi;
-    m->iord[SDC_CTL] = iord_sdc_ctl;
-    m->iowr[SDC_CTL] = iowr_sdc_ctl;
+    m->iord[SDC_SPI] = iord_spi;
+    m->iowr[SDC_SPI] = iowr_spi;
+    m->iord[SDC_CTL] = iord_spi_ctl;
+    m->iowr[SDC_CTL] = iowr_spi_ctl;
 
     char tosend = 0;
     while (emul_step()) {

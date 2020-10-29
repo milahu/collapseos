@@ -13,47 +13,34 @@ static uint16_t crc16(uint16_t crc, uint8_t data)
 
 void sdc_init(SDC *sdc)
 {
-    sdc->selected = false;
     sdc->initstat = 0;
     sdc->recvidx = 0;
     sdc->sendidx = -1;
-    sdc->resp = 0xff;
     sdc->fp = NULL;
     sdc->cmd17bytes = -1;
     sdc->cmd24bytes = -2;
 }
 
-// TODO: for now, any nonzero value enables the SDC. To allow
-// emulation of systems with multi-devices SPI relay, change
-// this.
-void sdc_ctl_wr(SDC *sdc, uint8_t val)
+byte sdc_spix(SDC *sdc, byte val)
 {
-    sdc->selected = val;
-}
-
-void sdc_spi_wr(SDC *sdc, uint8_t val)
-{
-    if (!sdc->selected) {
-        return;
-    }
-    sdc->resp = 0xff;
+    byte resp = 0xff;
     if (sdc->initstat < 8) {
         // not woken yet.
         sdc->initstat++;
-        return;
+        return resp;
     }
     if (sdc->sendidx >= 0) {
-        sdc->resp = sdc->sendbuf[sdc->sendidx++];
+        resp = sdc->sendbuf[sdc->sendidx++];
         if (sdc->sendidx == 5) {
             sdc->sendidx = -1;
         }
-        return;
+        return resp;
     }
     if (sdc->cmd17bytes >= 0) {
         if (sdc->fp) {
-            sdc->resp = getc(sdc->fp);
+            resp = getc(sdc->fp);
         }
-        sdc->crc16 = crc16(sdc->crc16, sdc->resp);
+        sdc->crc16 = crc16(sdc->crc16, resp);
         sdc->cmd17bytes++;
         if (sdc->cmd17bytes == 512) {
             sdc->sendbuf[3] = sdc->crc16 >> 8;
@@ -61,12 +48,12 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
             sdc->sendidx = 3;
             sdc->cmd17bytes = -1;
         }
-        return;
+        return resp;
     }
     if (sdc->cmd24bytes == -1) {
         if (val == 0xff) {
             // it's ok to receive idle bytes before the data token.
-            return;
+            return resp;
         }
         if (val == 0xfe) {
             // data token, good
@@ -75,7 +62,7 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
             // something is wrong, cancel cmd24
             sdc->cmd24bytes = -2;
         }
-        return;
+        return resp;
     }
     if (sdc->cmd24bytes >= 0) {
         if (sdc->cmd24bytes < 512) {
@@ -102,16 +89,16 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
             sdc->cmd24bytes = -3;
         }
         sdc->cmd24bytes++;
-        return;
+        return resp;
     }
     if ((sdc->recvidx == 0) && ((val > 0x7f) || (val < 0x40))) {
         // not a command
-        return;
+        return resp;
     }
     sdc->recvbuf[sdc->recvidx++] = val;
     if (sdc->recvidx < 6) {
         // incomplete command
-        return;
+        return resp;
     }
     // Command complete
     val &= 0x3f;
@@ -128,7 +115,7 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
             sdc->sendbuf[4] = 0x01;
             sdc->sendidx = 4;
         }
-        return;
+        return resp;
     }
     if (sdc->initstat == 9) {
         // At this stage, we're expecting CMD8 with 0x1aa arg2
@@ -143,7 +130,7 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
         } else {
             sdc-> initstat = 8;
         }
-        return;
+        return resp;
     }
     if (sdc->initstat == 10) {
         // At this stage, we're expecting CMD55
@@ -154,7 +141,7 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
         } else {
             sdc->initstat = 8;
         }
-        return;
+        return resp;
     }
     if (sdc->initstat == 11) {
         // At this stage, we're expecting CMD41
@@ -165,7 +152,7 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
         } else {
             sdc->initstat = 8;
         }
-        return;
+        return resp;
     }
     // We have a fully initialized card.
     if (cmd == 17) {
@@ -178,7 +165,7 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
         sdc->sendidx = 3;
         sdc->cmd17bytes = 0;
         sdc->crc16 = 0;
-        return;
+        return resp;
     }
     if (cmd == 24) {
         if (sdc->fp) {
@@ -188,17 +175,10 @@ void sdc_spi_wr(SDC *sdc, uint8_t val)
         sdc->sendidx = 4;
         sdc->cmd24bytes = -1;
         sdc->crc16 = 0;
-        return;
+        return resp;
     }
     // Simulate success for any unknown command.
     sdc->sendbuf[4] = 0x00;
     sdc->sendidx = 4;
-}
-
-uint8_t sdc_spi_rd(SDC *sdc)
-{
-    if (!sdc->selected) {
-        return 0xff;
-    }
-    return sdc->resp;
+    return resp;
 }

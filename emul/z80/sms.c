@@ -90,7 +90,8 @@ static void iowr_ports_ctl(uint8_t val)
     ports_ctl_wr(&ports, val);
 }
 
-static uint8_t iord_sdc_spi()
+// TODO: re-add as controller-based SPI
+/* static uint8_t iord_sdc_spi()
 {
     return sdc_spi_rd(&sdc);
 }
@@ -110,7 +111,7 @@ static uint8_t iord_sdc_ctl()
 static void iowr_sdc_ctl(uint8_t val)
 {
     sdc_ctl_wr(&sdc, val);
-}
+}*/
 
 void create_window()
 {
@@ -356,10 +357,12 @@ int main(int argc, char *argv[])
     m->iowr[VDP_CMD_PORT] = iowr_vdp_cmd;
     m->iowr[VDP_DATA_PORT] = iowr_vdp_data;
     m->iowr[PORTS_CTL_PORT] = iowr_ports_ctl;
+    /* TODO: re-add
     m->iord[SDC_SPI] = iord_sdc_spi;
     m->iowr[SDC_SPI] = iowr_sdc_spi;
     m->iord[SDC_CTL] = iord_sdc_ctl;
     m->iowr[SDC_CTL] = iowr_sdc_ctl;
+    */
 
     conn = xcb_connect(NULL, NULL);
     screen = xcb_setup_roots_iterator(xcb_get_setup(conn)).data;
