@@ -1,7 +1,7 @@
 CREATE CMD 2 C, '$' C, 0 C,
 CREATE PREVPOS 0 , CREATE PREVBLK 0 ,
 : acc@ ACC @ 1 MAX ;
-: num ACC @ SWAP _pdacc IF DROP ELSE ACC ! THEN ;
+: num ACC @ SWAP _pdacc IF ACC ! ELSE DROP THEN ;
 : nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
 : aty 0 SWAP AT-XY ;
 : clrscr LINES 0 DO I aty COLS nspcs LOOP ;
