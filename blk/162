@@ -8,6 +8,6 @@
     0x4c _cmd DROP asprdy ;
 : aspf@ ( page a -- n, read word from flash )
     SWAP aspfpgsz @ * OR ( addr ) 256 /MOD ( lsb msb )
-    2DUP 0 ROT ROT ( lsb msb 0 lsb msb )
+    2DUP 0 ROT> ( lsb msb 0 lsb msb )
     0x20 _cmd ( lsb msb low )
-    ROT ROT 0 ROT ROT ( low 0 lsb msb ) 0x28 _cmd 8 LSHIFT OR ;
+    ROT> 0 ROT> ( low 0 lsb msb ) 0x28 _cmd 8 LSHIFT OR ;

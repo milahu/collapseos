@@ -69,6 +69,7 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x35 CODE RSHIFT
 0x36 CODE LSHIFT
 0x37 CODE TICKS
+0x38 CODE ROT>
 353 LOAD ( xcomp core )
 : (emit) 0 PC! ;
 : (key) 0 PC@ ;

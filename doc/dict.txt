@@ -123,6 +123,7 @@ DUP         a -- a a
 NIP         a b -- b
 OVER        a b -- a b a
 ROT         a b c -- b c a
+ROT>        a b c -- c a b
 SWAP        a b -- b a
 TUCK        a b -- b a b
 2DROP       a a --

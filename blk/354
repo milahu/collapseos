@@ -1,8 +1,8 @@
 : ABORT (resSP) QUIT ;
 : = CMP NOT ; : < CMP -1 = ; : > CMP 1 = ;
 : 0< 32767 > ; : >= < NOT ; : <= > NOT ; : 0>= 0< NOT ;
-: >< ( n l h -- f ) 2 PICK > ( n l f ) ROT ROT > AND ;
-: =><= 2 PICK >= ( n l f ) ROT ROT >= AND ;
+: >< ( n l h -- f ) 2 PICK > ( n l f ) ROT> > AND ;
+: =><= 2 PICK >= ( n l f ) ROT> >= AND ;
 : MIN ( n n - n ) 2DUP > IF SWAP THEN DROP ;
 : MAX ( n n - n ) 2DUP < IF SWAP THEN DROP ;
 : NIP SWAP DROP ; : TUCK SWAP OVER ;

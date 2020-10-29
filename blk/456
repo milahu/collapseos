@@ -1,9 +1,10 @@
+CODE OR 2 chkPS,
+    AX POPx, BX POPx, AX BX ORxx, AX PUSHx, ;CODE
 CODE XOR 2 chkPS,
     AX POPx, BX POPx, AX BX XORxx, AX PUSHx, ;CODE
 CODE NOT 1 chkPS,
     AX POPx, AX AX ORxx,
-    IFNZ, AX -1 MOVxI, THEN, AX INCx, AX PUSHx,
-;CODE
+    IFNZ, AX -1 MOVxI, THEN, AX INCx, AX PUSHx, ;CODE
 CODE + 2 chkPS,
     AX POPx, BX POPx, AX BX ADDxx, AX PUSHx, ;CODE
 CODE - 2 chkPS,
@@ -11,5 +12,4 @@ CODE - 2 chkPS,
 CODE * 2 chkPS,
     AX POPx, BX POPx,
     DX PUSHx, ( protect from MUL ) BX MULx, DX POPx,
-    AX PUSHx,
-;CODE
+    AX PUSHx, ;CODE

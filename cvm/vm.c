@@ -184,6 +184,10 @@ static void ROT() { // a b c -- b c a
     word c = pop(); word b = pop(); word a = pop();
     push(b); push(c); push(a);
 }
+static void ROTR() { // a b c -- c a b
+    word c = pop(); word b = pop(); word a = pop();
+    push(c); push(a); push(b);
+}
 static void DUP() { // a -- a a
     word a = pop(); push(a); push(a);
 }
@@ -387,6 +391,7 @@ VM* VM_init(char *blkfs_path) {
     native(RSHIFT);
     native(LSHIFT);
     native(TICKS);
+    native(ROTR);
     vm.IP = gw(0x04) + 1; // BOOT
     sw(SYSVARS+0x02, gw(0x08)); // CURRENT
     sw(SYSVARS+0x04, gw(0x08)); // HERE
