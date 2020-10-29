@@ -2,15 +2,3 @@
 ( b1 b2 -- )
 : LOADR 1+ SWAP DO I DUP . NL LOAD LOOP ;
 : LOADR+ BLK> @ + SWAP BLK> @ + SWAP LOADR ;
-( Now, adev stuff )
-SYSVARS 0x3e + :** A@
-SYSVARS 0x40 + :** A!
-SYSVARS 0x42 + :** A,
-
-( src dst u -- )
-: AMOVE
-    ( u ) 0 DO
-        SWAP DUP I + A@   ( dst src x )
-        ROT TUCK I +      ( src dst x dst )
-        A!                ( src dst )
-    LOOP 2DROP ;

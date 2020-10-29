@@ -1,6 +1,0 @@
-: AMOVEW ( src dst u -- )
-    ( u ) 0 DO
-        SWAP DUP I 1 LSHIFT + A@   ( dst src x )
-        ROT TUCK I 1 LSHIFT +      ( src dst x dst )
-        A!                         ( src dst )
-    LOOP 2DROP ;

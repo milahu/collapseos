@@ -97,9 +97,9 @@ Example to write 0x1234 to the first byte of the first page:
 asperase 0x1234 0 aspfb! 0 aspfp!
 
 Please note that aspfb! deals with *words*, not bytes. If, for
-example, you want to hook it to A!*, make sure you use AMOVEW
-instead of AMOVE. You will need to create a wrapper word around
-aspfb! that divides dst addr by 2 because AMOVEW use byte-based
+example, you want to hook it to A!*, make sure you use MOVEW
+instead of MOVE. You will need to create a wrapper word around
+aspfb! that divides dst addr by 2 because MOVEW use byte-based
 addresses but aspfb! uses word-based ones. You also have to make
 sure that A@* points to @ (or another word-based fetcher)
 instead of its default value of C@.

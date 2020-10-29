@@ -1,10 +1,16 @@
+: MOVEW ( src dst u -- )
+    ( u ) 0 DO
+        SWAP DUP I 1 LSHIFT + A@   ( dst src x )
+        ROT TUCK I 1 LSHIFT +      ( src dst x dst )
+        A!                         ( src dst )
+    LOOP 2DROP ;
+: PREV 3 - DUP @ - ;
 : [entry] ( w -- )
     C@+ ( w+1 len ) TUCK MOVE, ( len )
     ( write prev value )
     H@ CURRENT @ - ,
     C, ( write size )
-    H@ CURRENT !
-;
+    H@ CURRENT ! ;
 : (entry) WORD [entry] ;
 : CREATE (entry) 2 ( cellWord ) C, ;
 : VARIABLE CREATE 2 ALLOT ;

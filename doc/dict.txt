@@ -52,6 +52,7 @@ $ - Initialize
                   literal. If not found, aborts.
 ,        n --     Write n in HERE and advance it.
 ALLOT    n --     Move HERE by n bytes
+A,       b --     Indirect C,
 C,       b --     Write byte b in HERE and advance it.
 FIND     w -- a f Like '?, but for w.
 EMPTY    --       Rewind HERE and CURRENT where they were at
@@ -153,6 +154,8 @@ J           -- n            Copy RS third item to PS
 !        n a --          Store n in address a
 ?        a --            Print value of addr a
 +!       n a --          Increase value of addr a by n
+A@       a -- c          Indirect C@
+A!       c a --          Indirect C!
 C@       a -- c          Set c to byte at address a
 C@+      a -- a+1 c      Fetch c from a and inc a.
 C@-      a -- a-1 c      Fetch c from a and dec a.
@@ -172,23 +175,16 @@ MOVE     a1 a2 u --      Copy u bytes from a1 to a2, starting
 MOVE-    a1 a2 u --      Copy u bytes from a1 to a2, starting
                          with a1+u, going down.
 MOVE,    a u --          Copy u bytes from a to HERE.
+MOVEW    src dst u --    Same as MOVE, but with words
 
-# Addressed devices
+Important note: MOVE* use A@ and A! instead of C@ and C! See
+"Addressed devices" in usage.txt.
 
-ADEV$       --              Initialize adev subsystem
-A@          a -- c          Indirect C@
-A!          c a --          Indirect C!
-A@*         -- a            Address for A@ word
-A!*         -- a            Address for A! word
-AMOVE       src dst u --    Same as MOVE, but with A@ and A!
-AMOVEW      src dst u --    Same as AMOVE, but with words
-
-AMOVEW notes: this word's purpose is to interface with word-
+MOVEW notes: this word's purpose is to interface with word-
 based systems. src and dst are addressed as *bytes* but u is a
-*word* count. Every iteration increases src and dst by 2. When
-you use it, be aware that default values for A!* and A@* are C!
-and C@. If you don't adjust before using AMOVEW, you will get
-weird results.
+*word* count. Every iteration increases src and dst by 2. This
+shouldn't be used on regular memory, it will yield weird
+results. Use it with A! switch pointing to a word-based target.
 
 # Arithmetic / Bits
 

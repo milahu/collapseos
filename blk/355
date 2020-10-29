@@ -9,3 +9,6 @@
         DUP I C!
     LOOP DROP ;
 : ALLOT0 ( n -- ) H@ OVER 0 FILL ALLOT ;
+SYSVARS 0x3e + :** A@
+SYSVARS 0x40 + :** A!
+SYSVARS 0x42 + :** A,

@@ -85,11 +85,15 @@ need switches in regular code.
 # Addressed devices
 
 A@, A! and A, are the indirect versions of C@, C! and C,. They
-are switch words and initially point to C@, C! and C,. There is
-also a AMOVE word that is the same as MOVE but using A@ and A!.
+are switch words and initially point to C@, C! and C,.
 
 Addressed device words can be useful to "pipe" processing to
 places outside of regular memory.
+
+All MOVE words use A@ and A! instead of C@ and C!. This gives a
+lot of flexibility to those words, allowing for complex data
+transfers. The cost of the indirection is small because of the
+optimized ways aliases are built.
 
 # Disk blocks
 
