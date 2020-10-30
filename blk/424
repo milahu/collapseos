@@ -5,11 +5,6 @@
 ( spix 0xff until the response is something else than 0xff
   for a maximum of 20 times. Returns 0xff if no response. )
 : _wait
-    0  ( cnt )
-    BEGIN
-        _idle
-        DUP 0xff = IF DROP ELSE NIP EXIT THEN
-        1+
-    DUP 20 = UNTIL
-    DROP 0xff
-;
+    0 ( dummy ) 20 0 DO
+        DROP _idle DUP 0xff = NOT IF LEAVE THEN
+    LOOP ;

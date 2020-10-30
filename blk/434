@@ -1,4 +1,4 @@
-: _sdc!  ( srcaddr blkno -- )
+: _  ( srcaddr blkno -- )
     [ SDC_DEVID LITN ] (spie)
     0x58 ( CMD24 ) 0 ROT ( a cmd 0 blkno ) _cmd
     IF _err THEN

@@ -10,7 +10,7 @@
     _s+crc _s+crc     ( a2 crc )
     SWAP 256 /MOD ROT ( h l crc )
     _s+crc _s+crc     ( crc )
-    0x01 OR           ( ensure stop bit )
+    1 OR              ( ensure stop bit )
     (spix) DROP       ( send CRC )
     _wait  ( wait for a valid response... )
 ;
