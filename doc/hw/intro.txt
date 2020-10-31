@@ -1,0 +1,65 @@
+# Running Collapse OS on real hardware
+
+Collapse OS is designed to run on ad-hoc post-collapse hardware
+build from scavenged parts. These machines don't exist yet.
+
+To make Collapse OS as likely as possible to be useful in a
+post-collapse world, we try to give as many examples as possible
+of deployment on hacked-up hardware.
+
+For example, we include a recipe for running a Sega Master
+System with a PS/2 keyboard plugged to a hacked up controller
+cord with an AVR MCU interfacing between the PS/2 connector and
+the controller port.
+
+This setup, for which drivers are included in Collapse OS, exist
+in only one copy, the copy the author of the recipe made.
+
+However, the idea is that this recipe, which contains schematics
+and precise instructions, could help a post-collapse engineer
+to hack her way around and achieve something similar. She would
+then have a good example of schematics and drivers that are
+known to work.
+
+# Organisation of this folder
+
+While /doc's top folder contain documentation about software,
+this folder contains instructions and schematics about ways to
+get Collapse OS running on actual hardware.
+
+Each CPU architecture has its own subfolder with recipes about
+specific machines of that arch, while /doc/hw's top folder
+contain instructions on broader topics, such as SD cards,
+floppies, EEPROM, etc.
+
+Most instructions have companion code in /arch that is conve-
+niently wrapped in Makefiles for easy building.
+
+# How to use
+
+If you want to run Collape OS on real hardware, browse this
+folder's contents until you find something that closely matches
+your own hardware (or hardware-to-be).
+
+If you live in a pre-collapse world and are looking for an easy
+platform to try Collapse OS on, easy pickings are PC/AT (which
+run on modern PCs supporting legacy BIOS), Sega Genesis w/
+Everdrive and TI-84+. Those options don't require any soldering.
+
+# Drivers
+
+Most instructions in this subfolder tell you to add drivers to
+your Collapse OS. What is meant by this is that you need to
+rebuild your binary with an augmented xcomp unit. See
+doc/bootstrap.txt for details, but the short version is:
+
+When instructions tell you to declare constant XXX, then load
+drivers from block BYYY and then add word ZZZ to the initial-
+ization string, what is meant is that:
+
+1. At the top of your xcomp unit, add constant XXX next to other
+   declarations.
+2. Between "xcomp core low" and "xcomp core high" loading,
+   insert the loading of BYYY. Order may matter.
+3. At the end, in the ,"" string just before EOT, insert the
+   ZZZ word. Order may matter.

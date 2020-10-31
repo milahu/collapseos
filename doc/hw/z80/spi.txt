@@ -1,0 +1,74 @@
+# Building a SPI relay for the z80
+
+In this recipe, we build a SPI relay (see /doc/hw/spi.txt) for
+a RC2014.
+
+# Gathering parts
+
+* A RC2014 Classic
+* A proto board + header pins with 39 positions so we can make
+  a RC2014 card.
+* Diodes, resistors and stuff
+* 40106 (Inverter gates)
+* 74xx138 (Decoder)
+* 74xx375 (Latches)
+* 74xx125 (Buffer)
+* 74xx161 (Binary counter)
+* 74xx165 (Parallel input shift register)
+* 74xx595 (Shift register)
+
+# Building the SPI relay
+
+The schematic (img/spirelay.jpg) works well with the SD Card
+subsystem (B420). Of course, it's not the only possible design
+that works, but I think it's one of the most straighforwards.
+
+This relay communicates through the z80 bus with 2 ports, DATA
+and CTL and allows up to 4 devices to be connected to it at
+once, although only one device can ever be active at once. This
+schema only has 2 (and the real prototype I've built from it),
+but the '375 has room for 4. In this schema, DATA is port 4, CTL
+is port 5.
+
+We activate a device by sending a bitmask to CTL, this will end
+up in the '375 latches and activate the SS pin of one of the
+device, or deactivate them all if 0 is sent.
+
+You then initiate a SPI exchange by sending a byte to send to
+the DATA port. This byte will end up in the '165 and the '161
+counter will be activated, triggering a clock for the SPI
+exchange. At each clock, a bit is sent to MOSI from the '161 and
+received from MISO into the '595, which is the byte sent to the
+z80 bus when we read from DATA.
+
+When the '161 is wired to the system clock, as it is in the
+schema, two NOPs are a sufficient delay between your DATA write
+and subsequent DATA read.
+
+However, if you build yourself some kind of clock override and
+run the '161 at something slower than the system clock, those 2
+NOPs will be too quick. That's where that '125 comes into play.
+When reading CTL, it spits RUNNING into D0. This allows you to
+know when the result of the SPI exchange is ready to be fetched.
+Make sure you AND away other bits, because they'll be garbage.
+
+The '138 is to determine our current IORQ mode (DATA/CTL and
+WR/RO), the '106 is to provide for those NOTs sprinkled around.
+
+Please note that this design is inspired by
+https://www.ecstaticlyrics.com/electronics/SPI/fast_z80_interface.html
+
+Advice 1: Make SCK polarity configurable at all 3 endpoints (the
+595, the 165 and SPI connector). Those jumpers will be useful
+when you need to mess with polarity in your many tinkering
+sessions to come.
+
+Advice 2: Make input CLK override-able. SD cards are plenty fast
+enough for us to use the system clock, but you might want to
+interact with devices that require a slower clock.
+
+# Driving the relay
+
+There is a provider for the SPI protocol (doc/protocol.txt) that
+work with this device in B418. It needs SPI_DATA and SPI_CTL
+constants which in this case are 4 and 5 respectively.

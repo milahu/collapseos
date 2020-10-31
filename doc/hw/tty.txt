@@ -1,0 +1,11 @@
+# Remote access to Collapse OS
+
+If you interface to your machine through a serial communication
+device and that you have a POSIX environment on the other side,
+Collapse OS provides tools in /tools which can be very useful
+to you.
+
+Uploading data to Collapse OS' memory is a frequent need
+and /tools/upload can help you there.
+
+See details in the /tools folder directly.

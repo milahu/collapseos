@@ -6,7 +6,7 @@ MASTER INDEX
 160 AVR SPI programmer
 170-259 unused                260 Cross compilation
 280 Z80 boot code             350 Core words
-400-410 unused
+400 AT28 EEPROM driver        401-410 unused
 410 PS/2 keyboard subsystem   418 Z80 SPI Relay driver
 420 SD Card subsystem         440 8086 boot code
 470-519 unused                520 Fonts

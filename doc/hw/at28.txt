@@ -1,0 +1,42 @@
+# Writing to a AT28 from Collapse OS
+
+# Gathering parts
+
+* A RC2014 Classic
+* An extra AT28C64B
+* 1x 40106 inverter gates
+* Proto board, RC2014 header pins, wires, IC sockets, etc.
+
+# Building the EEPROM holder
+
+The AT28 is SRAM compatible so you could use a RAM module for
+it. However, there is only one RAM module with the Classic
+version of the RC2014 and we need it to run Collapse OS.
+
+You could probably use the 64K RAM module for this purpose, but
+I don't have one and I haven't tried it. For this recipe, I
+built my own module which is the same as the regular ROM module
+but with WR wired and geared for address range 0x2000-0x3fff.
+
+If you're tempted by the idea of hacking your existing RC2014
+ROM module by wiring WR and write directly to the range
+0x0000-0x1fff while running it, be aware that it's not that
+easy. I was also tempted by this idea, tried it, but on bootup,
+it seems that some random WR triggers happen and it corrupts the
+EEPROM contents. Theoretically, we could go around that by
+putting the AT28 in write protection mode, but I preferred
+building my own module.
+
+I don't think you need a schematic. It's really simple.
+
+# Writing contents to the AT28
+
+There is an AT28! writer word in B400 which is A!-compatible
+(see "Addressed devices" in doc/usage.txt) and and waits until
+the write is complete before returning. If you use C! directly,
+bytes you write might not have the time to completely write
+themselves before you write another one.
+
+To use, set A! with "' AT28! ' A! **!". Once this is done, you
+can use MOVE, or /tools/upload, both will call A! and do the
+right thing. Unset A! with "' C! ' A! **!" afterwards.

@@ -12,8 +12,7 @@ microcontrollers with low-tech tools. We accept only contributions advancing
 the project towards that goal.
 
 Although Collapse OS is mostly a software product, it's also a documentation
-repository. Improving documentation and recipes make the project advance
-towards its goal.
+repository. Improving documentation make the project advance towards its goal.
 
 That Collapse OS has such a narrow goal might disappoint many people who are
 enthusiastic about the technological achievement. Sorry for that.

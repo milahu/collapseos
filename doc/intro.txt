@@ -39,10 +39,11 @@ likely to have access to a modern computer. The best place to
 begin is to build the C VM of Collapse OS in /cvm. You can then
 begin playing with it with the help of usage.txt and impl.txt.
 
-When you're ready to move to real hardware, read hardware.txt.
+When you're ready to move to real hardware, read hw/intro.txt.
 
 # Other topics in this documentation
 
+* Frequently asked questions (faq.txt)
 * Dictionary of core Forth words (dict.txt)
 * Editing text (ed.txt)
 * Assembling binaries (asm.txt)

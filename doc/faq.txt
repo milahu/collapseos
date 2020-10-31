@@ -1,0 +1,28 @@
+# Frequently asked questions
+
+# What is the easiest way to run Collapse OS on a modern
+  computer?
+
+Run the C VM in folder "/cvm". Run "make", then "./forth".
+See doc/usage.txt for the rest.
+
+# How do I use the different emulators?
+
+Ah, you've noticed that /emul contains quite a few emulators.
+Code in this folder only build emulators, not the binary to run
+under it. It's the /arch folder that contains the makefiles to
+build Collapse OS binaries to run under those.
+
+When a binary built in /arch has a corresponding emulator, the
+makefile has a "emul" target that you can use.
+
+For example, "cd arch/z80/rc2014 && make emul" builds RC2014's
+Collapse OS, the RC2014 emulator and then invokes the emulator.
+
+# How do I fill my SD card with Collapse OS' FS?
+
+Very easy. You see that "/cvm/blkfs" file? You dump it to your
+raw device.  For example, if the device you get when you insert
+your SD card is "/dev/sdb", then you type "cat emul/blkfs | sudo
+tee /dev/sdb > /dev/null".
+

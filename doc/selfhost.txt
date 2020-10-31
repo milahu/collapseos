@@ -1,0 +1,79 @@
+# Assembling Collapse OS from within it
+
+This is where we tie lose ends, complete the circle, loop the
+loop: we assemble a new Collapse OS *entirely* from within
+Collapse OS.
+
+Build Collapse OS' from within Collapse OS is very similar to
+how we do it from the makefiles in /arch. If you take
+the time to look one, you'll see something that look like "cat
+xcomp.fs | $(STAGE)". That's the thing.  Open "xcomp.fs" in a
+text editor and take a look at it. Some xcomp units are simple
+proxy to a block, which you'll find in the blk/ subfolder for
+this recipe.
+
+To assemble Collapse OS from within it, all you need to do is
+execute the content of this unit, minus the 2 lines of "spitting
+to port 2" at the end of the unit, which is a special signal for
+the stage binary.
+
+The rest can be executed on any Collapse OS system with enough
+memory. It will yield a binary in memory. To know the start/end
+offset of the binary, you'll type the same two commands at the
+end of xcomp.fs, but replace the "/MOD 2 PC! 2 PC!" words with
+".X". Then, write that binary between those offsets on your
+target media. That binary should be the exact same as what you
+get in "os.bin" when you run "make". You now have a new Collapse
+OS deployment.
+
+Is that it? Yes. But for your own enlightenment, let's look at
+the xcomp unit in more details. Full details are at
+doc/bootstrap.txt.
+
+The first part is configuration of your new system. When RAM
+starts, where RSP and PSP start, what ports to use for what
+device, etc. These configuration declarations are expected in
+the boot code and driver code.
+
+Then, we load the proper assembler and the cross compiler (xcomp
+for short), which we'll of course need for the task ahead.
+
+Then come xcomp overrides, which are needed for xcomp to be
+effective.
+
+At this point, we're about to begin spitting binary content,
+this will be our starting offset. "ORG" will soon be set to your
+current "H@".
+
+Then, we assemble the boot binary, drivers' native words, then
+inner core, close the binary with a hook word. We're finished
+with cross-compiling.
+
+We're at the offset that will be "CURRENT" on boot, so we update
+"LATEST".
+
+Then, we spit the init source code that will be interpreted on
+boot.  And... that's it!
+
+# What to do on SDerr?
+
+If you self host from a machine with a SD card and you get
+"SDerr" in the middle of a LOAD operation, something went wrong
+with the SD card. The bad news is that it left your xcomp
+operation in an inconsistent state. The easiest thing to do it
+to restart the operation from scratch. Those error are not
+frequent unless hardware is faulty.
+
+# Verifying
+
+You can use "/tools/memdump" to dump the memory between your
+begin/end offsets so that you can compare against your reference
+stage 1. Before you do, you have to take yourself out of xcomp
+mode. First, run XCOFF to go back to your regular dict. Then,
+run "FORGET CODE" to undo the xcomp overrides you've added
+before. That will rewind HERE. You don't want that. Put HERE
+back to after your ending offset so that you don't overwrite
+your binary.
+
+Then, you can run "/tools/memdump".
+

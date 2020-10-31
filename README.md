@@ -40,8 +40,8 @@ it's not a z80 emulator, but a *javascript port of Collapse OS*!
 * `cvm`: A C implementation of Collapse OS, allowing it to run natively on any
          POSIX platform.
 * `doc`: Documentation.
-* `recipes`: collection of recipes that assemble Collapse OS on a specific
-             machine.
+* `arch`: collection of makefiles that assemble Collapse OS on different
+          machines.
 * `tools`: Tools for working with Collapse OS from "modern" environments. For
            example, tools for facilitating data upload to a Collapse OS machine
            through a serial port.
