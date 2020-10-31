@@ -16,7 +16,7 @@ This binary can be separated in 5 distinct layers:
 2. Arch-specific boot words (B305 for Z80)
 3. Arch-independant core words (low) (B350)
 4. Drivers, might contain arch-specific code
-5. Arch-independant core words (high) (B380)
+5. Arch-independant core words (high) (B390)
 
 # Boot code
 
@@ -28,9 +28,7 @@ It also of course does core initialization: set RSP/PSP, HERE
 CURRENT, then call BOOT.
 
 It also contains what we call the "stable ABI" in its first
-0x100 bytes. The beginning of the dict is intertwined in this
-layer because EXIT, (br), (?br) and (loop) are part of the
-stable ABI.
+few (<0x20) bytes.
 
 # Boot words
 
@@ -53,25 +51,26 @@ See B260 for details.
 
 # Drivers
 
-Up until now, we haven't implemented EMIT or KEY yet: those
-words are defined in the "high" part of core words because we
-generally need machine-specific drivers to implement (emit) and
-(key).
+Core words don't include (key) and (emit) implementations be-
+cause that's hardware-dependant. This is where we need to load
+code that implement it, as well as any other code we want to
+include in the binary.
 
-Well, now is their time to shine. We split core in two
-precisely to fit drivers in there. This way, they have access
-to a pretty good vocabulary and they're also give the oppor-
-tunity to provide (emit) and (key).
+We do it now because if we wait until the high layer of core
+words is loaded, we'll have messed up immediates and ":" will
+be broken. If we load our code before, we won't have access to
+a wide vocabulary.
 
 # Core words (high)
 
-Then come EMIT, KEY and everything that depend on it, until
-we have a full Forth interpreter. At the very end, we define
-tricky IMMEDIATEs that, if defined earlier, would break cross
-compilation.
+The final layer of core words contains the BOOT word as well
+as tricky immediates which, if they're defined sooner, mess
+cross compilation up. Once this layer is loaded, we become
+severly limited in the words we can use without messing up.
 
-We end that with a hook words which is also where CURRENT will
-be on boot.
+After having loaded that last layer, we end that with a hook
+word which is also where CURRENT will be on boot, which is then
+followed by the initialization string (see below).
 
 So that's the anatomy of a Collapse OS binary. How do you build
 one? If your machine is already covered by a recipe, you're in
@@ -109,5 +108,10 @@ After the last word of the dictionary comes the "source init"
 part. The boot sequence is designed to interpret whatever comes
 after LATEST as Forth source, and this, until it reads ASCII
 EOT character (4). This is generally used for driver init.
+
+To produce a Collapse OS binary, you run that xcomp unit and
+then observe the values of "ORG @" and "H@". That will give you
+the start and stop offset of your binary, which you can then
+copy to your target media.
 
 Good luck!
