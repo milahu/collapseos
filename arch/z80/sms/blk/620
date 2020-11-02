@@ -4,10 +4,9 @@
 is something to read. When the adapter is finished filling its
 '164 up, it resets the latch, which output's is connected to
 TL. When the '164 is full, TL is low. Port A TL is bit 4 )
-    0xdc PC@ 0x10 AND IF 0 EXIT ( nothing ) THEN
-    0x3f PC@ DROP 0b11011101 ( Port A TH output, low ) 0x3f PC!
-    0xdc PC@ ( bit 3:0 go in 3:0 ) 0x0f AND ( n )
-    0b11111101 ( Port A TH output, high ) 0x3f PC!
-    0xdc PC@ ( bit 3:0 go in 7:4 ) 0x0f AND 4 LSHIFT OR ( n )
-	( Port A/B reset ) 0xff 0x3f PC!
-;
+    _D1@ 0x10 AND IF 0 EXIT ( nothing ) THEN
+    0 _THA! ( Port A TH output, low )
+    _D1@ ( bit 3:0 go in 3:0 ) 0x0f AND ( n )
+    1 _THA! ( Port A TH output, high )
+    _D1@ ( bit 3:0 go in 7:4 ) 0x0f AND 4 LSHIFT OR ( n )
+	2 _THA! ( TH input ) ;

@@ -1,15 +1,7 @@
-CODE _status
-    A 0b11111101 LDri, ( TH output, unselected )
-    PAD_CTLPORT OUTiA,
-    PAD_D1PORT INAi,
-    0x3f ANDi, ( low 6 bits are good )
-    H A LDrr,  ( let's store them )
+: _status
+    1 _THA! ( output, high/unselected )
+    _D1@ 0x3f AND ( low 6 bits are good )
 ( Start and A are returned when TH is selected, in bits 5 and
   4. Well get them, left-shift them and integrate them to B. )
-    A 0b11011101 LDri, ( TH output, selected )
-    PAD_CTLPORT OUTiA,
-    PAD_D1PORT INAi,
-    0b00110000 ANDi,
-    A SLA, A SLA, H ORr,
-    PUSHA,
-;CODE
+    0 _THA! ( output, low/selected )
+    _D1@ 0x30 AND 2 LSHIFT OR ;

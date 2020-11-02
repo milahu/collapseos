@@ -76,6 +76,11 @@ static uint8_t iord_kbd()
     return kbd_rd(&kbd);
 }
 
+static uint8_t iord_ports_ctl()
+{
+    return ports_ctl_rd(&ports);
+}
+
 static void iowr_vdp_cmd(uint8_t val)
 {
     vdp_cmd_wr(&vdp, val);
@@ -357,7 +362,7 @@ int main(int argc, char *argv[])
     m->iord[VDP_DATA_PORT] = iord_vdp_data;
     m->iord[PORTS_IO1_PORT] = iord_ports_io1;
     m->iord[PORTS_IO2_PORT] = iord_ports_io2;
-    m->iord[PORTS_CTL_PORT] = iord_noop;
+    m->iord[PORTS_CTL_PORT] = iord_ports_ctl;
     m->iowr[VDP_CMD_PORT] = iowr_vdp_cmd;
     m->iowr[VDP_DATA_PORT] = iowr_vdp_data;
     m->iowr[PORTS_CTL_PORT] = iowr_ports_ctl;
