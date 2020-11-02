@@ -1,9 +1,9 @@
 : SDC$
     10 0 DO _idle DROP LOOP
-    10 0 DO  ( r )
-        0x40 0 0 SDCMDR1  ( CMD0 )
-        DUP 1 = IF LEAVE ELSE DROP THEN
-    LOOP 1 = NOT IF _err THEN
+    0 ( dummy ) 10 0 DO  ( r )
+        DROP 0x40 0 0 SDCMDR1  ( CMD0 )
+        1 = DUP IF LEAVE THEN
+    LOOP NOT IF _err THEN
     0x48 0 0x1aa ( CMD8 ) SDCMDR7 ( r arg1 arg2 )
     ( expected 1 0 0x1aa )
     0x1aa = ROT ( arg1 f r ) 1 = AND SWAP ( f&f arg1 )
