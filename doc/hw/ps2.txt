@@ -9,8 +9,8 @@ We explain here how to interface a PS/2 keyboard with a RC2014.
 # Gathering parts
 
 * A RC2014 Classic that could install the base recipe
-* A PS/2 keyboard. A USB keyboard + PS/2 adapter should work,
-  but I haven't tried it yet.
+* A PS/2 keyboard. A USB keyboard + adapter also works, if it's
+  not too recent (if it still speaks PS/2).
 * A PS/2 female connector.
 * ATtiny85/45/25 (main MCU for the device)
 * 74xx595 (shift register)

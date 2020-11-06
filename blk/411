@@ -9,6 +9,8 @@ CREATE PS2_CODES
 ( 00 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,
 ( 08 ) 0 C, 0 C, 0 C, 0 C, 0 C, 9 C, '`' C, 0 C,
 ( 10 ) 0 C, 0 C, 0 C, 0 C, 0 C, 'q' C, '1' C, 0 C,
-( 18 ) 0 C, 0 C, 'z' C, 's' C, 'a' C, 'w' C, '2' C, 0 C,
+( I don't know why, but the key 2 is sent as 0x1f by 2 of my
+  keyboards. Is it a timing problem on the ATtiny? TODO )
+( 18 ) 0 C, 0 C, 'z' C, 's' C, 'a' C, 'w' C, '2' C, '2' C,
 ( 20 ) 0 C, 'c' C, 'x' C, 'd' C, 'e' C, '4' C, '3' C, 0 C,
 ( 28 ) 0 C, 32 C, 'v' C, 'f' C, 't' C, 'r' C, '5' C, 0 C,
