@@ -11,7 +11,7 @@ BLKFS = $(CDIR)/blkfs
 all: $(TARGETS)
 
 forth: forth.c $(OBJS) $(BLKFS)
-	$(CC) forth.c $(OBJS) -lncurses -o $@
+	$(CC) forth.c $(OBJS) -lcurses -o $@
 
 rc2014: rc2014.c $(RC2014_OBJS)
 	$(CC) rc2014.c $(RC2014_OBJS) -o $@

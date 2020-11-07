@@ -8,13 +8,13 @@ BLKFS = $(CDIR)/blkfs
 all: $(TARGETS)
 
 forth: forth.c forth.bin $(OBJS) $(BLKFS)
-	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" forth.c $(OBJS) -lncurses -o $@
+	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" forth.c $(OBJS) -lcurses -o $@
 
 forth.bin: xcomp.fs $(STAGE)
 	$(CDIR)/stage < xcomp.fs > $@
 
 pcat: pcat.c $(OBJS) $(BLKFS)
-	$(CC) -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" pcat.c $(OBJS) -lncurses -o $@
+	$(CC) -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" pcat.c $(OBJS) -lcurses -o $@
 
 $(BLKFS): $(STAGE)
 

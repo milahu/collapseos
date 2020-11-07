@@ -19,7 +19,7 @@ blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
 forth: forth.c $(OBJS)
-	$(CC) -DBLKFS_PATH=\"`pwd`/blkfs\" forth.c $(OBJS) -lncurses -o $@
+	$(CC) -DBLKFS_PATH=\"`pwd`/blkfs\" forth.c $(OBJS) -lcurses -o $@
 
 vm.o: vm.c blkfs
 	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -c -o vm.o vm.c

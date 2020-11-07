@@ -5,8 +5,7 @@ to run natively on any POSIX environment.
 
 ## Requirements
 
-You need `ncurses` to build the `forth` executable. In debian-based distros,
-it's `libncurses5-dev`.
+You need `curses` to build the `forth` executable.
 
 ## Build
 

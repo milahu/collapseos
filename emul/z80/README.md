@@ -5,8 +5,7 @@ emulator.
 
 ## Requirements
 
-You need `ncurses` to build the `forth` executable. In debian-based distros,
-it's `libncurses5-dev`.
+You need `curses` to build the `forth` executable.
 
 For `sms` and `ti84` emulators, you need XCB and pkg-config.
 
