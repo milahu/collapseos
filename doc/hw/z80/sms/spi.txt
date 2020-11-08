@@ -1,0 +1,41 @@
+# Building a SPI relay for the SMS
+
+The I/O space on the SMS is, sadly, entirely taken. If you had
+the idea of somehow plugging a SPI relay that is similar the one
+on the RC2014, you can forget about it. Only A7, A6 and A0 are
+considered by the 8 builtin peripherals on the SMS and trying to
+do an IN or OUT to any address is going to end up conflicting
+with one of them.
+
+What we can do to achieve SPI communication with the SMS is to
+use the B controller port. It can already do bit banging. It's
+slow, but it works.
+
+One problem we have, however, is that only 2 pins can be set as
+output. We need 3. What I did, and it works with SD cards, is
+to hard-wire CS to GND so that it's always turned on. The
+downside of this is that if you go out-of-sync with the SPI
+device, you have to physically disconnect it and reconnect it
+to solve the sync problem.
+
+The advantage of using port B is that the connector is really
+simple, you don't even need a schematic:
+
+* CLK to TH
+* DI to TR
+* DO to Up
+* CS to GND
+
+Add pull-downs to CLK and DI to avoid messing up with your
+device (it's always on, remember).
+
+# Building the binary
+
+The SPI driver is in B622, which depends on controller port
+routines at B625-B626. A ready-to-use xcomp unit is at
+arch/z80/sms/xcompsdc.fs.
+
+The SMS emulator has support for a SPI relay based on the B
+controller port and can emulate a SD card plugged in it with the
+"-c" argument. If it works in the emulator, it has good chances
+of running on the real thing.
