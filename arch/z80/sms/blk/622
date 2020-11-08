@@ -4,7 +4,7 @@
         ( send current bit to TRB, TR's output bit )
         DUP 7 I - RSHIFT 1 AND _TRB!
         1 _THB! ( CLK hi )
-        0 _THB! ( CLK lo )
         ( read into rx ) SWAP 1 LSHIFT _D1@ ( tx rx<< x )
+        0 _THB! ( CLK lo )
         ( out bit is the 6th ) 6 RSHIFT 1 AND OR
     SWAP LOOP ( rx tx ) DROP ;
