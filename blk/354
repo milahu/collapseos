@@ -3,8 +3,6 @@
 : 0< 32767 > ; : >= < NOT ; : <= > NOT ; : 0>= 0< NOT ;
 : >< ( n l h -- f ) 2 PICK > ( n l f ) ROT> > AND ;
 : =><= 2 PICK >= ( n l f ) ROT> >= AND ;
-: MIN ( n n - n ) 2DUP > IF SWAP THEN DROP ;
-: MAX ( n n - n ) 2DUP < IF SWAP THEN DROP ;
 : NIP SWAP DROP ; : TUCK SWAP OVER ;
 : -^ SWAP - ;
 : C@+ ( a -- a+1 c ) DUP C@ SWAP 1+ SWAP ;

@@ -1,5 +1,7 @@
 CREATE CMD 2 C, '$' C, 0 C,
 CREATE PREVPOS 0 , CREATE PREVBLK 0 ,
+: MIN ( n n - n ) 2DUP > IF SWAP THEN DROP ;
+: MAX ( n n - n ) 2DUP < IF SWAP THEN DROP ;
 : acc@ ACC @ 1 MAX ;
 : num ACC @ SWAP _pdacc IF ACC ! ELSE DROP THEN ;
 : nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
