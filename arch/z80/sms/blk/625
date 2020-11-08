@@ -1,15 +1,16 @@
 ( Routines for interacting with SMS controller ports.
-  Requires CPORT_CTL, CPORT_D1 and CPORT_D2 to be defined.
-  Will usually be 0x3f, 0xdc, 0xdd. )
+  Requires CPORT_MEM, CPORT_CTL, CPORT_D1 and CPORT_D2 to be
+  defined. CPORT_MEM is a 1 byte buffer for CPORT_CTL. The last
+  3 consts will usually be 0x3f, 0xdc, 0xdd. )
 ( mode -- set TR pin on mode a on:
 0= output low 1=output high 2=input )
 CODE _TRA! HL POP, chkPS, ( B0 -> B4, B1 -> B0 )
     L RR, RLA, RLA, RLA, RLA, L RR, RLA,
-    0x11 ANDi, L A LDrr, CPORT_CTL INAi,
-    0xee ANDi, L ORr, CPORT_CTL OUTiA,
+    0x11 ANDi, L A LDrr, CPORT_MEM LDA(i),
+    0xee ANDi, L ORr, CPORT_CTL OUTiA, CPORT_MEM LD(i)A,
 ;CODE
 CODE _THA! HL POP, chkPS, ( B0 -> B5, B1 -> B1 )
     L RR, RLA, RLA, RLA, RLA, L RR, RLA, RLA,
-    0x22 ANDi, L A LDrr, CPORT_CTL INAi,
-    0xdd ANDi, L ORr, CPORT_CTL OUTiA,
+    0x22 ANDi, L A LDrr, CPORT_MEM LDA(i),
+    0xdd ANDi, L ORr, CPORT_CTL OUTiA, CPORT_MEM LD(i)A,
 ;CODE

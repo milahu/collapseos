@@ -15,7 +15,6 @@ typedef struct {
 } Ports;
 
 void ports_init(Ports *ports);
-uint8_t ports_ctl_rd(Ports *ports);
 void ports_ctl_wr(Ports *ports, uint8_t val);
 uint8_t ports_A_rd(Ports *ports);
 uint8_t ports_B_rd(Ports *ports);
