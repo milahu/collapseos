@@ -1,3 +1,10 @@
+: (emit)
+    DUP 0x08 = IF DROP _bs EXIT THEN
+    DUP 0x0d = IF DROP _lf EXIT THEN
+    0x20 - DUP 0< IF DROP EXIT THEN
+    0x5e MIN ( tilenum ) XYPOS @ _cell!
+    XYPOS @ 1+ DUP [ VDP_COLS VDP_ROWS * LITN ]
+    = IF DROP 0 THEN XYPOS ! ;
 : VDP$
     9 0 DO _idat I 2 * + @ _ctl LOOP _blank
     ( palettes )
@@ -6,5 +13,4 @@
     ( sprite, inverted colors ) 0x3f _data 15 _zero
     0x4000 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont LOOP
     0 XYPOS !
-    ( bit 6, enable display, bit 7, ?? ) 0x81c0 _ctl
-;
+    ( bit 6, enable display, bit 7, ?? ) 0x81c0 _ctl ;
