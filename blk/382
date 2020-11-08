@@ -1,11 +1,9 @@
-: .2 DUP 10 < IF SPC THEN . ;
 : LIST
     BLK@
     16 0 DO
-        I 1+ .2 SPC
+        I 1+ DUP 10 < IF SPC THEN . SPC
         64 I * BLK( + DUP 64 + SWAP DO
-            I C@ 0x20 MAX EMIT
+            I C@ DUP 0x1f > IF EMIT ELSE LEAVE THEN
         LOOP
         NL
-    LOOP
-;
+    LOOP ;
