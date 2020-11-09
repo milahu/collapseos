@@ -2,7 +2,7 @@
     DUP 0x08 = IF DROP _bs EXIT THEN
     DUP 0x0d = IF DROP _lf EXIT THEN
     0x20 - DUP 0< IF DROP EXIT THEN
-    0x5e MIN ( tilenum ) XYPOS @ _cell!
+    DUP 0x5e > IF DROP 0x5e THEN ( tilenum ) XYPOS @ _cell!
     XYPOS @ 1+ DUP [ VDP_COLS VDP_ROWS * LITN ]
     = IF DROP 0 THEN XYPOS ! ;
 : VDP$
