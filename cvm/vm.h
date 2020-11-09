@@ -4,6 +4,7 @@
 #define SP_ADDR 0xffff
 #define RS_ADDR 0xff00
 #define SYSVARS RS_ADDR-0x80
+#define MEMSIZE 0x10000
 
 typedef uint8_t byte;
 typedef uint16_t word;
@@ -15,7 +16,7 @@ typedef byte (*IORD) ();
 typedef void (*IOWR) (byte data);
 
 typedef struct {
-    byte mem[0x10000];
+    byte mem[MEMSIZE];
     word SP; // parameter Stack Pointer
     word RS; // Return Stack pointer
     word IP; // Interpreter Pointer

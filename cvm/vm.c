@@ -67,10 +67,10 @@ static void iowr_blk(byte val)
 }
 
 // get/set word from/to memory
-static word gw(word addr) { return vm.mem[addr+1] << 8 | vm.mem[addr]; }
+static word gw(word addr) { return vm.mem[addr+(word)1] << 8 | vm.mem[addr]; }
 static void sw(word addr, word val) {
     vm.mem[addr] = val;
-    vm.mem[addr+1] = val >> 8;
+    vm.mem[addr+(word)1] = val >> 8;
 }
 // pop word from SP
 static word pop() {
@@ -111,7 +111,7 @@ static void execute(word wordref) {
     byte wtype = vm.mem[wordref];
     switch (wtype) {
         case 0: // native
-        vm.nativew[vm.mem[wordref+1]]();
+        vm.nativew[vm.mem[wordref+(word)1]]();
         break;
 
         case 1: // compiled
@@ -141,9 +141,13 @@ static void execute(word wordref) {
 
 static word find(word daddr, word waddr) {
     byte len = vm.mem[waddr];
+    waddr++;
     while (1) {
-        if ((vm.mem[daddr-1] & 0x7f) == len) {
-            if (strncmp(&vm.mem[waddr+1], &vm.mem[daddr-3-len], len) == 0) {
+        if ((vm.mem[daddr-(word)1] & 0x7f) == len) {
+            word d = daddr-3-len;
+            // Sanity check
+            if ((waddr+len >= MEMSIZE) || (d+len) >= MEMSIZE) return 0;
+            if (strncmp(&vm.mem[waddr], &vm.mem[d], len) == 0) {
                 return daddr;
             }
         }
@@ -209,7 +213,7 @@ static void PICK() {
 }
 static void _roll_() { //   "1 2 3 4 4 (roll)" --> "1 3 4 4"
     word x = pop();
-    while (x) { vm.mem[vm.SP+x+2] = vm.mem[vm.SP+x]; x--; }
+    while (x) { vm.mem[vm.SP+x+(word)2] = vm.mem[vm.SP+x]; x--; }
 }
 static void DROP2() { pop(); pop(); }
 static void DUP2() { // a b -- a b a b
