@@ -1,0 +1,11 @@
+Grid subsystem
+
+Given a device driver following the Grid protocol, implement
+AT-XY and (emit). (emit) makes the grid behave like a regular
+terminal, honoring line feeds and backspaces, wrapping at the
+end of a line.
+
+2 bytes of system memory at GRID_MEM are needed for cursor
+position.
+
+Load range: B402-B403

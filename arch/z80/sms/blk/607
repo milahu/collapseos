@@ -1,9 +1,3 @@
-: _cell! ( tilenum pos )
-    2 * 0x7800 OR _ctl ( tilenum ) _data 1 _zero ;
-: _lf
-    XYPOS @ BEGIN ( pos )
-        0 ( blank ) SWAP TUCK _cell!
-        1+ DUP [ VDP_COLS LITN ] MOD NOT UNTIL
-    [ VDP_COLS VDP_ROWS * LITN ] MOD XYPOS ! ;
-: _bs 0 ( blank ) XYPOS @ TUCK _cell! ( pos ) 1-
-    [ VDP_COLS VDP_ROWS * LITN ] MOD XYPOS ! ;
+: CELL! ( tilenum pos )
+    2 * 0x7800 OR _ctl ( tilenum )
+    0x5e MOD _data 1 _zero ;

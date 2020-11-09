@@ -1,0 +1,10 @@
+: XYPOS [ GRID_MEM LITN ] ;
+: AT-XY ( x y -- ) [ ROWS LITN ] * +
+    [ COLS ROWS * LITN ] MOD XYPOS ! ;
+: _lf
+    XYPOS @ BEGIN ( pos )
+        0 ( blank ) SWAP TUCK CELL!
+        1+ DUP [ COLS LITN ] MOD NOT UNTIL
+    [ COLS ROWS * LITN ] MOD XYPOS ! ;
+: _bs 0 ( blank ) XYPOS @ TUCK CELL! ( pos ) 1-
+    [ COLS ROWS * LITN ] MOD XYPOS ! ;
