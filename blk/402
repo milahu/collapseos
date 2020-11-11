@@ -1,10 +1,11 @@
 : XYPOS [ GRID_MEM LITN ] ;
 : _cl* COLS LINES * ;
 : AT-XY ( x y -- ) LINES * + _cl* MOD XYPOS ! ;
+'? CLRLN NIP NOT [IF]
+: CLRLN ( ln -- ) COLS * DUP COLS + SWAP DO 0 I CELL! LOOP ;
+[THEN]
 : _lf
-    XYPOS @ BEGIN ( pos )
-        0 ( blank ) SWAP TUCK CELL!
-        1+ DUP COLS MOD NOT UNTIL
-    _cl* MOD XYPOS ! ;
+    XYPOS @ COLS / 1+ DUP CLRLN
+    COLS * _cl* MOD XYPOS ! ;
 : _bs 0 ( blank ) XYPOS @ TUCK CELL! ( pos ) 1-
     _cl* MOD XYPOS ! ;

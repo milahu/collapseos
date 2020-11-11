@@ -46,6 +46,9 @@ COLS      -- n     Number of columns in the device
 LINES     -- n     Number of lines in the device
 CELL!     g pos -- Set glyph at pos
 
+Optional:
+CLRLN     ln --    Clear line number ln.
+
 "pos" is a simple number (y * cols) + x. For example, if we
 have 40 columns per line, the position (x, y) (12, 10) is 412.
 
@@ -53,3 +56,7 @@ A glyph is ASCII-0x20. If the resulting glyph number exceeds the
 number of glyphs in the font, it's up to CELL! to ignore it.
 
 Glyph 0 is always blank.
+
+If CLRLN is not defined, the grid system uses multiple CELL!
+calls to clear it. On some devices, this is highly inefficient.
+Drivers for those devices should define CLRLN.

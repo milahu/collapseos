@@ -3,4 +3,4 @@
     DUP 0x0d = IF DROP _lf EXIT THEN
     0x20 - DUP 0< IF DROP EXIT THEN
     XYPOS @ CELL!
-    XYPOS @ 1+ _cl* MOD XYPOS ! ;
+    XYPOS @ 1+ DUP COLS MOD IF XYPOS ! ELSE _lf THEN ;
