@@ -7,7 +7,8 @@ CREATE XCURRENT 0 ,
     DUP ORG @ > IF ORG @ - BIN( @ + THEN ;
 : XFIND XCURRENT @ SWAP _find DROP _xapply ;
 : XLITN LIT" (n)" XFIND , , ;
-: X' XCON ' XCOFF ; : X['] XCON ' _xapply XLITN XCOFF ;
+: X' XCON ' XCOFF ; : X'? XCON '? XCOFF ;
+: X['] XCON ' _xapply XLITN XCOFF ;
 : XCOMPILE XCON ' _xapply XLITN
     LIT" ," FIND DROP _xapply , XCOFF ;
 : X[COMPILE] XCON ' _xapply , XCOFF ;

@@ -3,7 +3,7 @@
 : _col! ( col -- ) 0x20 + _cmd ;
 : _row! ( row -- ) 0x80 + _cmd ;
 : LCD$
-    H@ [ LCD_MEM LITN ] ! FNTH 2 * 2+ ALLOT
+    H@ [ LCD_MEM LITN ] ! FNTH 2 * ALLOT
     LCDON 0x01 ( 8-bit mode ) _cmd
     FNTH 1+ _zoff!
 ;

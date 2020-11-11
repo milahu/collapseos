@@ -47,7 +47,7 @@ LINES     -- n     Number of lines in the device
 CELL!     g pos -- Set glyph at pos
 
 Optional:
-CLRLN     ln --    Clear line number ln.
+NEWLN     ln --    "Enter" line ln
 
 "pos" is a simple number (y * cols) + x. For example, if we
 have 40 columns per line, the position (x, y) (12, 10) is 412.
@@ -57,6 +57,15 @@ number of glyphs in the font, it's up to CELL! to ignore it.
 
 Glyph 0 is always blank.
 
-If CLRLN is not defined, the grid system uses multiple CELL!
+NEWLN is called when we "enter" a new line, that is, when we
+overflow from previous line or when 0x0d ( ASCII CR ) is emit-
+ted.
+
+When this is called, the line being entered should be cleared
+of its contents. On some systems, some kinf of screen offset
+might be have to be set to give a "scrolling" effect. Now's the
+time.
+
+If it's not defined, the grid system uses multiple CELL!
 calls to clear it. On some devices, this is highly inefficient.
-Drivers for those devices should define CLRLN.
+Drivers for those devices should define NEWLINE.

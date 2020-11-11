@@ -1,11 +1,7 @@
-( Current Y position on the LCD, that is, where we're going to
-  spit our next glyph. )
-: LCD_CURY 0 _mem+ ;
-: LCD_CURX 1 _mem+ ;
 ( two pixel buffers that are 8 pixels wide (1b) by FNTH
   pixels high. This is where we compose our resulting pixels
   blocks when spitting a glyph. )
-: LCD_BUF 2 _mem+ ;
+: LCD_BUF 0 _mem+ ;
 : _cmd 0x10 ( CMD ) PC! _wait ;
 : _data! 0x11 ( DATA ) PC! _wait ;
 : _data@ 0x11 ( DATA ) PC@ _wait ;

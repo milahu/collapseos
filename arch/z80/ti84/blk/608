@@ -5,10 +5,7 @@
         11 0 DO 0 _data! LOOP
         _xinc 0 _data!
     LOOP ;
-: _clrln ( n ) FNTH 1+ _clrrows ;
+: NEWLN ( ln -- )
+    DUP 1+ FNTH 1+ * _zoff!
+    FNTH 1+ * FNTH 1+ _clrrows ;
 : LCDCLR 0 64 _clrrows ;
-( Changes the current line and go back to leftmost column )
-: _lf
-    LCD_CURY C@ FNTH 1+ + DUP 63 > IF DROP 0 THEN
-    DUP _clrln DUP FNTH 1+ + _zoff!
-    LCD_CURY C! 0 LCD_CURX C! ;
