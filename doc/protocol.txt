@@ -43,11 +43,11 @@ A grid is a device that shows as a grid of ASCII characters and
 allows random access to it.
 
 COLS      -- n     Number of columns in the device
-ROWS      -- n     Number of rows in the device
+LINES     -- n     Number of lines in the device
 CELL!     g pos -- Set glyph at pos
 
 "pos" is a simple number (y * cols) + x. For example, if we
-have 40 columns per row, the position (x, y) (12, 10) is 412.
+have 40 columns per line, the position (x, y) (12, 10) is 412.
 
 A glyph is ASCII-0x20. If the resulting glyph number exceeds the
 number of glyphs in the font, it's up to CELL! to ignore it.
