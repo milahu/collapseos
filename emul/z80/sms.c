@@ -48,7 +48,7 @@ static SPI spi;
 
 static uint8_t iord_vdp_cmd()
 {
-    return vdp_cmd_rd(&vdp);
+    return tms_cmd_rd(&vdp.tms);
 }
 
 static uint8_t iord_vdp_data()
