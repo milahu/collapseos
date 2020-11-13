@@ -11,6 +11,4 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 ,
 : status 0 aty ." BLK" SPC BLK> ? SPC ACC ?
     SPC EDPOS @ 64 /MOD . ',' EMIT . SPC
     BLKDTY @ IF '*' EMIT THEN 10 nspcs ;
-: contents 3 aty BLK> @ LIST 3 16 gutter ;
-: selblk BLK> @ PREVBLK ! BLK@ contents ;
-: mode! ( c -- ) 63 0 AT-XY ;
+: nums 17 1 DO 2 I + aty I . SPC SPC LOOP ;

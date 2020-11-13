@@ -9,6 +9,6 @@
     1 aty ." I: " IBUF bufp
     2 aty ." F: " FBUF bufp 0 3 gutter ;
 : VE
-    clrscr 0 ACC ! 0 PREVPOS ! contents
+    clrscr 0 ACC ! 0 PREVPOS ! nums contents
     BEGIN status bufs setpos KEY handle UNTIL
     19 aty (infl) ;
