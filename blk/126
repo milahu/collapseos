@@ -2,6 +2,7 @@ CREATE CMD 2 C, '$' C, 0 C,
 CREATE PREVPOS 0 , CREATE PREVBLK 0 ,
 : MIN ( n n - n ) 2DUP > IF SWAP THEN DROP ;
 : MAX ( n n - n ) 2DUP < IF SWAP THEN DROP ;
+: large? COLS 67 > ; : col- 67 COLS MIN -^ ;
 : acc@ ACC @ 1 MAX ;
 : num ACC @ SWAP _pdacc IF ACC ! ELSE DROP THEN ;
 : nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
@@ -12,3 +13,4 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 ,
     SPC EDPOS @ 64 /MOD . ',' EMIT . SPC
     BLKDTY @ IF '*' EMIT THEN 10 nspcs ;
 : nums 17 1 DO 2 I + aty I . SPC SPC LOOP ;
+: mode! ( c -- ) 4 col- 0 AT-XY ;
