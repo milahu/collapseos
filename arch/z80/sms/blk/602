@@ -1,16 +1,11 @@
-VDP Driver
-
-Implement (emit) on the console. Characters start at the top
-left. Every (emit) call converts the ASCII char received to its
-internal font, then put that char on screen, advancing the
-cursor by one. When reaching the end of the line (33rd char),
-wrap to the next.
-
-In the future, there's going to be a scrolling mechanism when
-we reach the bottom of the screen, but for now, when the end of
-the screen is reached, we wrap up to the top.
-
-When reaching a new line, we clear that line and the next to
-help readability.
-
-Load range: 623-628
+( VDP Driver. requires TMS9918 driver. Load range B602-B604. )
+CREATE _idat
+0b00000100 C, 0x80 C, ( Bit 2: Select mode 4 )
+0b00000000 C, 0x81 C,
+0b00001111 C, 0x82 C, ( Name table: 0x3800, *B0 must be 1* )
+0b11111111 C, 0x85 C, ( Sprite table: 0x3f00 )
+0b11111111 C, 0x86 C, ( sprite use tiles from 0x2000 )
+0b11111111 C, 0x87 C, ( Border uses palette 0xf )
+0b00000000 C, 0x88 C, ( BG X scroll )
+0b00000000 C, 0x89 C, ( BG Y scroll )
+0b11111111 C, 0x8a C, ( Line counter (why have this?) )

@@ -13,6 +13,8 @@ typedef struct {
     uint8_t cmdlsb;
     bool has_cmdlsb;
     uint16_t curaddr;
+    uint16_t width; // in pixels
+    uint16_t height; // in pixels
 } TMS9918;
 
 void tms_init(TMS9918 *tms);

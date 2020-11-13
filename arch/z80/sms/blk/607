@@ -1,3 +1,0 @@
-: CELL! ( tilenum pos )
-    2 * 0x7800 OR _ctl ( tilenum )
-    0x5e MOD _data 1 _zero ;

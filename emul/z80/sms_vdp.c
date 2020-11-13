@@ -1,6 +1,11 @@
 #include <string.h>
 #include "sms_vdp.h"
 
+static bool _is_mode4(VDP *vdp)
+{
+    return (vdp->tms.regs[0]&0x4);
+}
+
 void vdp_init(VDP *vdp)
 {
     tms_init(&vdp->tms);
@@ -18,6 +23,7 @@ void vdp_cmd_wr(VDP *vdp, uint8_t val)
             vdp->tms.curaddr = TMS_VRAM_SIZE + (vdp->tms.cmdlsb&0x1f);
         } else {
             tms_cmd_wr(&vdp->tms, val);
+            vdp->tms.width = _is_mode4(vdp) ? 32*8 : 40*6;
         }
     }
 }
@@ -46,13 +52,16 @@ void vdp_data_wr(VDP *vdp, uint8_t val)
 
 uint8_t vdp_pixel(VDP *vdp, uint16_t x, uint16_t y)
 {
-    if (x >= VDP_SCREENW) {
-        return 0;
-    }
-    if (y >= VDP_SCREENH) {
-        return 0;
-    }
     TMS9918 *tms = &vdp->tms;
+    if (!_is_mode4(vdp)) {
+        return tms_pixel(tms, x, y);
+    }
+    if (x >= tms->width) {
+        return 0;
+    }
+    if (y >= tms->height) {
+        return 0;
+    }
     // name table offset
     uint16_t offset = (tms->regs[2] & 0xe) << 10;
     offset += ((y/8) << 6) + ((x/8) << 1);

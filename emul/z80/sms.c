@@ -34,7 +34,7 @@ static xcb_gcontext_t       fg;
 static xcb_drawable_t       win;
 
 // pixels to draw. We draw them in one shot.
-static xcb_rectangle_t rectangles[VDP_SCREENW*VDP_SCREENH];
+static xcb_rectangle_t rectangles[(32*8)*(24*8)];
 
 static Machine *m;
 static VDP vdp;
@@ -144,19 +144,19 @@ void draw_pixels()
     xcb_clear_area(
         conn, 0, win, 0, 0, geom->width, geom->height);
     // Figure out inner size to maximize our screen's aspect ratio
-    int psize = geom->height / VDP_SCREENH;
-    if (geom->width / VDP_SCREENW < psize) {
+    int psize = geom->height / vdp.tms.height;
+    if (geom->width / vdp.tms.width < psize) {
         // width is the constraint
-        psize = geom->width / VDP_SCREENW;
+        psize = geom->width / vdp.tms.width;
     }
-    int innerw = psize * VDP_SCREENW;
-    int innerh = psize * VDP_SCREENH;
+    int innerw = psize * vdp.tms.width;
+    int innerh = psize * vdp.tms.height;
     int innerx = (geom->width - innerw) / 2;
     int innery = (geom->height - innerh) / 2;
     free(geom);
     int drawcnt = 0;
-    for (int i=0; i<VDP_SCREENW; i++) {
-        for (int j=0; j<VDP_SCREENH; j++) {
+    for (int i=0; i<vdp.tms.width; i++) {
+        for (int j=0; j<vdp.tms.height; j++) {
             if (vdp_pixel(&vdp, i, j)) {
                 int x = innerx + (i*psize);
                 int y = innery + (j*psize);

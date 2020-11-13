@@ -1,0 +1,9 @@
+CODE _blank ( this is way too slow in Forth )
+    A XORr, TMS_CTLPORT OUTiA,
+    A 0x40 LDri, TMS_CTLPORT OUTiA,
+    HL 0x4000 LDdi,
+    BEGIN,
+        A XORr, TMS_DATAPORT OUTiA,
+        HL DECd, HLZ,
+    JRNZ, AGAIN,
+;CODE

@@ -1,8 +1,6 @@
 #include "tms9918.h"
 
 #define VDP_CRAM_SIZE 0x20
-#define VDP_SCREENW (32*8)
-#define VDP_SCREENH (24*8)
 
 typedef struct {
     TMS9918 tms;
