@@ -1,0 +1,15 @@
+: UPPER DUP 'a' 'z' =><= IF 32 - THEN ;
+: handle ( c -- f )
+    DUP '0' '9' =><= IF num 0 EXIT THEN
+    DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
+    0 ACC ! UPPER 'Q' = ;
+: bufp ( buf -- )
+    DUP 3 col- + SWAP DO I C@ 0x20 MAX EMIT LOOP ;
+: bufs
+    1 aty ." I: " IBUF bufp
+    2 aty ." F: " FBUF bufp
+    large? IF 0 3 gutter THEN ;
+: VE
+    clrscr 0 ACC ! 0 PREVPOS ! nums contents
+    BEGIN xoff? status bufs setpos KEY handle UNTIL
+    19 aty (infl) ;

@@ -1,16 +1,16 @@
-: contents 16 0 DO large? IF 3 ELSE 0 THEN I 3 + AT-XY
-    64 I * BLK( + DUP 3 col- + SWAP DO
-        I C@ 0x20 MAX EMIT LOOP LOOP
+: mode! ( c -- ) 4 col- 0 AT-XY ;
+: contents
+    16 0 DO
+        large? IF 3 ELSE 0 THEN I 3 + AT-XY
+        64 I * BLK( + ( lineaddr ) xoff @ + DUP width + SWAP
+        DO I C@ 0x20 MAX EMIT LOOP LOOP
     large? IF 3 16 gutter THEN ;
 : selblk BLK> @ PREVBLK ! BLK@ contents ;
 : pos! ( newpos -- ) EDPOS @ PREVPOS !
     DUP 0< IF DROP 0 THEN 1023 MIN EDPOS ! ;
-: setpos ( -- ) EDPOS @ 64 /MOD
-    3 + ( header ) SWAP large? IF 3 + ( gutter ) THEN
-    SWAP AT-XY ;
+: xoff? pos@ DROP ( x )
+    xoff @ ?DUP IF < IF 0 xoff ! contents THEN ELSE
+        width >= IF 64 COLS - xoff ! contents THEN THEN ;
+: setpos ( -- ) pos@ 3 + ( header ) SWAP ( y x ) xoff @ -
+    large? IF 3 + ( gutter ) THEN SWAP AT-XY ;
 : cmv ( n -- , char movement ) acc@ * EDPOS @ + pos! ;
-: buftype ( buf ln -- )
-    3 OVER AT-XY KEY DUP EMIT
-    DUP 0x20 < IF 2DROP DROP EXIT THEN
-    ( buf ln c ) 4 col- nspcs SWAP 4 SWAP AT-XY ( buf c )
-    SWAP C!+ IN( _zbuf (rdln) IN( SWAP 63 MOVE ;

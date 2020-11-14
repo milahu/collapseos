@@ -1,15 +1,12 @@
-: $f EDPOS @ PREVPOS @ 2DUP = IF 2DROP EXIT THEN
-    2DUP > IF DUP pos! SWAP THEN
-    ( p1 p2, p1 < p2 ) OVER - 64 MIN ( pos len ) FBUF _zbuf
-    SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
-: $R ( replace mode )
-    mode! 'R' EMIT
-    BEGIN setpos KEY DUP BS? IF -1 EDPOS +! DROP 0 THEN
-        DUP 0x20 >= IF
-        DUP EMIT EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
-    THEN UNTIL mode! SPC contents ;
-: $O _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
-: $o EDPOS @ 0x3c0 < IF EDPOS @ 64 + EDPOS ! $O THEN ;
-: $D $H 64 icpy
-    acc@ 0 DO 16 EDPOS @ 64 / DO I _mvln- LOOP LOOP
-    BLK!! contents ;
+: $w EDPOS @ BLK( + acc@ 0 DO
+    BEGIN C@+ WS? UNTIL BEGIN C@+ WS? NOT UNTIL LOOP
+    1- BLK( - pos! ;
+: $W EDPOS @ BLK( + acc@ 0 DO
+    1+ BEGIN C@+ WS? NOT UNTIL BEGIN C@+ WS? UNTIL LOOP
+    2- BLK( - pos! ;
+: $b EDPOS @ BLK( + acc@ 0 DO
+    1- BEGIN C@- WS? NOT UNTIL BEGIN C@- WS? UNTIL LOOP
+    2+ BLK( - pos! ;
+: $B EDPOS @ BLK( + acc@ 0 DO
+    BEGIN C@- WS? UNTIL BEGIN C@- WS? NOT UNTIL LOOP
+    1+ BLK( - pos! ;

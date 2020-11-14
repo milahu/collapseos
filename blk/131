@@ -1,15 +1,15 @@
-: UPPER DUP 'a' 'z' =><= IF 32 - THEN ;
-: handle ( c -- f )
-    DUP '0' '9' =><= IF num 0 EXIT THEN
-    DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
-    0 ACC ! UPPER 'Q' = ;
-: bufp ( buf -- )
-    DUP 3 col- + SWAP DO I C@ 0x20 MAX EMIT LOOP ;
-: bufs
-    1 aty ." I: " IBUF bufp
-    2 aty ." F: " FBUF bufp
-    large? IF 0 3 gutter THEN ;
-: VE
-    clrscr 0 ACC ! 0 PREVPOS ! nums contents
-    BEGIN status bufs setpos KEY handle UNTIL
-    19 aty (infl) ;
+: $f EDPOS @ PREVPOS @ 2DUP = IF 2DROP EXIT THEN
+    2DUP > IF DUP pos! SWAP THEN
+    ( p1 p2, p1 < p2 ) OVER - 64 MIN ( pos len ) FBUF _zbuf
+    SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
+: $R ( replace mode )
+    mode! 'R' EMIT
+    BEGIN setpos KEY DUP BS? IF -1 EDPOS +! DROP 0 THEN
+        DUP 0x20 >= IF
+        DUP EMIT EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
+    THEN UNTIL mode! SPC contents ;
+: $O _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
+: $o EDPOS @ 0x3c0 < IF EDPOS @ 64 + EDPOS ! $O THEN ;
+: $D $H 64 icpy
+    acc@ 0 DO 16 EDPOS @ 64 / DO I _mvln- LOOP LOOP
+    BLK!! contents ;
