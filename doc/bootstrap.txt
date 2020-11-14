@@ -68,9 +68,33 @@ as tricky immediates which, if they're defined sooner, mess
 cross compilation up. Once this layer is loaded, we become
 severly limited in the words we can use without messing up.
 
-After having loaded that last layer, we end that with a hook
-word which is also where CURRENT will be on boot, which is then
-followed by the initialization string (see below).
+# Hook word
+
+After having loaded that last core words layer, we end that
+with a hook word, the "(entry) _" line. A hook word is an empty
+word at the end of the dictionary which serves 3 purposes:
+
+1. After having created that word, PC conveniently holds the
+   value that should go in the LATEST field in stable ABI. Had
+   the word been non-empty, getting that value would be less
+   straightforward.
+2. Because LATEST points to an empty word, it means that it also
+   points to the initialization string, which directly follows.
+   If it was non-empty, we would need to know the word's length
+   to get to that string.
+3. If, for some reason, you want to "graft" another dictionary
+   on top of this one, having it end with an empty word makes
+   grafting convenient: you already know what your "prev field"
+   offset should be for the grafting to be correct.
+
+# Initialization string
+
+After the last word of the dictionary comes the "source init"
+part. The boot sequence is designed to interpret whatever comes
+after LATEST as Forth source, and this, until it reads ASCII
+EOT character (4). This is generally used for driver init.
+
+# Building it
 
 So that's the anatomy of a Collapse OS binary. How do you build
 one? If your machine is already covered by a recipe, you're in
@@ -99,15 +123,7 @@ same way. Drivers are a bit tricker and machine specific. I
 can't help you there, you'll have to use your wits.
 
 After we've loaded the high part of the core words, we're at
-the "wrapping up" part. We add what we call a "hook word", an
-empty word with a single letter name. This allows us to boot
-with CURRENT pointing to "source init" content rather than being
-an actual wordref.
-
-After the last word of the dictionary comes the "source init"
-part. The boot sequence is designed to interpret whatever comes
-after LATEST as Forth source, and this, until it reads ASCII
-EOT character (4). This is generally used for driver init.
+the "wrapping up" part. We add the hook word and init string.
 
 To produce a Collapse OS binary, you run that xcomp unit and
 then observe the values of "ORG @" and "H@". That will give you
