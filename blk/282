@@ -1,5 +1,0 @@
-VARIABLE lbluflw VARIABLE lblexec
-( see comment at TICKS' definition )
-( 7.373MHz target: 737t. outer: 37t inner: 16t )
-( tickfactor = (737 - 37) / 16 )
-CREATE tickfactor 44 ,

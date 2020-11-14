@@ -1,9 +1,0 @@
-: _ ( AX BX sec )
-    ( AH=read sectors, AL=1 sector, BX=dest,
-      CH=trackno CL=secno DH=head DL=drive )
-    FDSPT C@ /MOD ( AX BX sec trk )
-    FDHEADS C@ /MOD ( AX BX sec head trk )
-    8 LSHIFT ROT OR 1+ ( AX BX head CX )
-    SWAP 8 LSHIFT 0x03 C@ ( boot drive ) OR ( AX BX CX DX )
-    13H 2DROP 2DROP
-;

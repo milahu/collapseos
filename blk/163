@@ -1,6 +1,0 @@
-: aspe@ ( addr -- byte, read from EEPROM )
-    0 SWAP 256 /MOD ( 0 lsb msb ) SWAP
-    0xa0 ( 0 msb lsb 0xa0 ) _cmd ;
-: aspe! ( byte addr --, write to EEPROM )
-    256 /MOD ( b lsb msb ) SWAP
-    0xc0 ( b msb lsb 0xc0 ) _cmd DROP asprdy ;

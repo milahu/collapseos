@@ -1,5 +1,0 @@
-PC/AT recipe
-
-602 MBR bootloader             604 KEY/EMIT drivers
-606-608 BLK drivers            610 AT-XY drivers
-612 xcomp unit

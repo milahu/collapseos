@@ -1,9 +1,0 @@
-VARIABLE lblexec VARIABLE lblnext
-H@ ORG !
-JMPn, 0 A,, ( 00, main ) 0 A, ( 03, boot driveno )
-0 A,, ( 04, BOOT )
-0 A,, ( 06, uflw ) 0 A,, ( 08, LATEST ) 0 A,, ( unused )
-0 A, 0 A,, ( 0b, EXIT )
-0 A,, 0 A,, ( unused ) 0 A,, ( 13, oflw )
-0 A,, 0 A,, 0 A, ( unused )
-JMPn, 0 A,, ( 1a, next )

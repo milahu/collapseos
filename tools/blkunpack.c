@@ -1,25 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
 #include <sys/stat.h>
 
 void usage()
 {
-    fprintf(stderr, "Usage: blkunpack dirname\n");
+    fprintf(stderr, "Usage: blkunpack < blkfs > blk.fs\n");
 }
 
 int main(int argc, char *argv[])
 {
     char buf[1024];
     int blkid = 0;
-    if (argc != 2) {
+    if (argc != 1) {
         usage();
         return 1;
     }
     while (fread(buf, 1024, 1, stdin) == 1) {
-        char fullpath[0x200];
-        sprintf(fullpath, "%s/%03d", argv[1], blkid);
         int linecnt = 0 ;
         for (int i=1023; i>=0; i--) {
             if (buf[i]) {
@@ -29,7 +25,7 @@ int main(int argc, char *argv[])
         }
         if (linecnt) {
             // not an empty block
-            FILE *fp = fopen(fullpath, "w");
+            printf("( ----- %03d )\n", blkid);
             for (int i=0; i<linecnt; i++) {
                 char *line = &buf[i*64];
                 // line length is *not* strlen()! it's the
@@ -49,14 +45,10 @@ int main(int argc, char *argv[])
                             line[j] = ' ';
                         }
                     }
-                    fwrite(line, len, 1, fp);
+                    fwrite(line, len, 1, stdout);
                 }
-                fputc('\n', fp);
+                fputc('\n', stdout);
             }
-            fclose(fp);
-        } else {
-            // empty block, delete
-            unlink(fullpath);
         }
         blkid++;
     }

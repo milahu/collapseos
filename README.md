@@ -35,8 +35,7 @@ it's not a z80 emulator, but a *javascript port of Collapse OS*!
 
 ## Organisation of this repository
 
-* `blk`: Collapse OS filesystem's content. That's actually where Collapse OS'
-         source code is located. Everything else is peripheral.
+* `blk.fs`: Collapse OS filesystem's content. See below.
 * `cvm`: A C implementation of Collapse OS, allowing it to run natively on any
          POSIX platform.
 * `doc`: Documentation.
@@ -47,6 +46,24 @@ it's not a z80 emulator, but a *javascript port of Collapse OS*!
            through a serial port.
 * `emul`: Tools for running Collapse OS in an emulated environment.
 * `tests`: Automated test suite for the whole project.
+
+## blk.fs
+
+This file is a big text file containing the "real deal", that is, the contents
+of Collapse OS' filesystem. That filesystem contains everything that a
+post-collapse computer would manage, that is, all Forth and assembler source
+code for the tools it needs to fulfill its goals.
+
+The Collapse OS filesystem is a simple sequence of 1024 bytes blocks. That is
+not very workable in the text editor of a modern system. `blk.fs` represents an
+"unpacked" view of that block system. Each block (16 lines max per block, 64
+chars max per line) begins with a marker indicating the block number of the
+contents that follow.
+
+Blocks must be in ascending order.
+
+That file can be "packed" to a real blkfs with `/tools/blkpack`. A real blkfs
+can be "unpacked" to its text file form with `/tools/blkunpack`.
 
 ## Status
 

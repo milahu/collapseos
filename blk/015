@@ -1,9 +1,0 @@
-: OP2 CREATE , DOES> @ 256 /MOD A, A, ;
-0xeda1 OP2 CPI,                0xedb1 OP2 CPIR,
-0xeda9 OP2 CPD,                0xedb9 OP2 CPDR,
-0xed46 OP2 IM0,                0xed56 OP2 IM1,
-0xed5e OP2 IM2,
-0xeda0 OP2 LDI,                0xedb0 OP2 LDIR,
-0xeda8 OP2 LDD,                0xedb8 OP2 LDDR,
-0xed44 OP2 NEG,
-0xed4d OP2 RETI,               0xed45 OP2 RETN,

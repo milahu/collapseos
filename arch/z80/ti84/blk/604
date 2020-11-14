@@ -1,3 +1,0 @@
-That being said, it's important to define clearly what CURX and
-CURY variable mean. Those variable keep track of the current
-position *in pixels*, in both axes.

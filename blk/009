@@ -1,9 +1,0 @@
-( Relative jumps are a bit special. They're supposed to take
-  an argument, but they don't take it so they can work with
-  the label system. Therefore, relative jumps are an OP1 but
-  when you use them, you're expected to write the offset
-  afterwards yourself. )
-
-0x18 OP1 JR,                   0x10 OP1 DJNZ,
-0x38 OP1 JRC,                  0x30 OP1 JRNC,
-0x28 OP1 JRZ,                  0x20 OP1 JRNZ,

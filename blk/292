@@ -1,8 +1,0 @@
-    BEGIN, ( loop )
-    ( DE is a wordref, first step, do our len correspond? )
-        HL PUSH, ( --> lvl 3 )
-        DE PUSH, ( --> lvl 4 )
-        DE DECd,
-        LDA(DE),
-        0x7f ANDi, ( remove IMMEDIATE flag )
-        C CPr,                                        ( cont. )

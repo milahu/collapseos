@@ -6,81 +6,92 @@
 #include <string.h>
 #include <sys/stat.h>
 
-static char *buf;
-static int blkcnt;
+static int lineno;
+
+static void emptylines(int n)
+{
+    for (int i=0; i<64*n; i++) putchar(0);
+}
+
+static int getmarker(char *line) // returns -1 on error, blkid otherwise
+{
+    int blkid;
+    int r = sscanf(line, "( ----- %d )\n", &blkid);
+    if (r == 1) {
+        return blkid;
+    } else {
+        return -1;
+    }
+}
+
+static int expectmarker(char *line)
+{
+    int blkid = getmarker(line);
+    if (blkid < 0) { // could not scan
+        fprintf(
+            stderr, "Error at line %d: expecting block marker\n", lineno);
+    }
+    return blkid;
+}
 
 static void usage()
 {
-    fprintf(stderr, "Usage: blkpack dirname [dirname ...]\n");
-}
-
-static int spit(char *dirname)
-{
-    DIR *dp;
-    struct dirent *ep;
-
-    dp = opendir(dirname);
-    if (dp == NULL) {
-        fprintf(stderr, "Couldn't open directory %s.\n", dirname);
-        return 1;
-    }
-    while ((ep = readdir(dp))) {
-        if ((strcmp(ep->d_name, ".") == 0) || strcmp(ep->d_name, "..") == 0) {
-            continue;
-        }
-        int blkid = atoi(ep->d_name);
-        if (blkid >= blkcnt) {
-            int newcnt = blkid+1;
-            buf = realloc(buf, newcnt*1024);
-            memset(buf+(blkcnt*1024), 0, (newcnt-blkcnt)*1024);
-            blkcnt = newcnt;
-        }
-        char *fullpath = malloc(strlen(dirname) + MAXNAMLEN + 2);
-        strcpy(fullpath, dirname);
-        strcat(fullpath, "/");
-        strcat(fullpath, ep->d_name);
-        FILE *fp = fopen(fullpath, "r");
-        free(fullpath);
-        if (fp == NULL) {
-            fprintf(stderr, "Could not open %s: %s\n", ep->d_name, strerror(errno));
-            continue;
-        }
-        char *line = NULL;
-        size_t n = 0;
-        for (int i=0; i<16; i++) {
-            ssize_t cnt = getline(&line, &n, fp);
-            if (cnt < 0) break;
-            if (cnt > 65) {
-                fprintf(stderr, "Line %d too long in blk %s\n", i+1, ep->d_name);
-            }
-            strncpy(buf+(blkid*1024)+(i*64), line, cnt-1);
-        }
-        ssize_t cnt = getline(&line, &n, fp);
-        if (cnt > 0) {
-            fprintf(stderr, "blk %s has more than 16 lines\n", ep->d_name);
-        }
-        free(line);
-        fclose(fp);
-    }
-    closedir(dp);
-    return 0;
+    fprintf(stderr, "Usage: blkpack < blk.fs > blkfs\n");
 }
 
 int main(int argc, char *argv[])
 {
-    if (argc < 2) {
+    int prevblkid = -1;
+    int blkid;
+    char *line = NULL;
+    if (argc != 1) {
         usage();
         return 1;
     }
-    buf = NULL;
-    blkcnt = 0;
-    for (int i=1; i<argc; i++) {
-        if (spit(argv[i]) != 0) {
+    lineno = 1;
+    size_t n = 0;
+    ssize_t cnt = getline(&line, &n, stdin);
+    if (cnt <= 0) {
+        fprintf(stderr, "No input\n");
+        return 1;
+    }
+    while (1) {
+        blkid = expectmarker(line);
+        if (blkid < 0) return 1;
+        if (blkid <= prevblkid) {
+            fprintf(
+                stderr,
+                "Wrong blkid (%d) at line %d: blocks must be ordered\n",
+                blkid, lineno);
             return 1;
         }
+        emptylines((blkid-prevblkid-1)*16);
+        int blkline;
+        for (blkline=0; blkline<16; blkline++) {
+            lineno++;
+            cnt = getline(&line, &n, stdin);
+            if (cnt <= 0) break; // EOF
+            if (cnt > 65) {
+                fprintf(stderr, "Line %d too long (blk %d)\n", lineno, blkid);
+                return 1;
+            }
+            if (getmarker(line) >= 0) break; // we have a marker early
+            line[cnt-1] = '\0'; // remove newline
+            printf("%s", line);
+            // pad line to 64 chars
+            for (int i=cnt-1; i<64; i++) putchar(0);
+        }
+        if (blkline == 16) {
+            lineno++;
+            cnt = getline(&line, &n, stdin);
+        } else {
+            // fill to 16 lines
+            emptylines(16-blkline);
+        }
+        if (cnt <= 0) break; // EOF
+        prevblkid = blkid;
     }
-    fwrite(buf, 1024, blkcnt, stdout);
-    free(buf);
+    free(line);
     return 0;
 }
 

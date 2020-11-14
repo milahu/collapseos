@@ -1,7 +1,0 @@
-( native words )
-CODE EXECUTE 1 chkPS,
-    DI POPx, JMPn, lblexec @ RPCn,
-CODE EXIT
-    DX [BP] 0 MOVx[]+, BP DECx, BP DECx, ( popRS )
-;CODE
-

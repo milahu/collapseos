@@ -1,7 +1,0 @@
-: _status
-    1 _THA! ( output, high/unselected )
-    _D1@ 0x3f AND ( low 6 bits are good )
-( Start and A are returned when TH is selected, in bits 5 and
-  4. Well get them, left-shift them and integrate them to B. )
-    0 _THA! ( output, low/selected )
-    _D1@ 0x30 AND 2 LSHIFT OR ;

@@ -1,8 +1,0 @@
-: (parse)           ( a -- n )
-    _pc IF EXIT THEN
-    _ph IF EXIT THEN
-    _pb IF EXIT THEN
-    _pd IF EXIT THEN
-    ( nothing works )
-    (wnf)
-;

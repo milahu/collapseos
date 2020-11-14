@@ -1,7 +1,0 @@
-( a -- k12, absolute addr a, relative to PC in a k12 addr )
-: _r7ffc DUP 0x7ff > IF _oor THEN ;
-: _raddr12
-    PC - DUP 0< IF 0x800 + _r7ffc 0x800 OR ELSE _r7ffc THEN ;
-: RJMP _raddr12 0xc000 OR ;
-: RCALL _raddr12 0xd000 OR ;
-: RJMP, RJMP A,, ; : RCALL, RCALL A,, ;

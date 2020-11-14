@@ -1,7 +1,0 @@
-( r c -- r f )
-( Parse digit c and accumulate into result r.
-  Flag f is true when c was a valid digit )
-: _pdacc
-    '0' - DUP 10 < IF ( good, add to running result )
-        SWAP 10 * + 1 ( r*10+n f )
-        ELSE ( bad ) DROP 0 THEN ;

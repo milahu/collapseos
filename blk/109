@@ -1,6 +1,0 @@
-: _U ( U without P, used in VE )
-    15 EDPOS @ 64 / - ?DUP IF
-    0 DO
-        14 I - _mvln+
-    LOOP THEN ;
-: U _U P ;

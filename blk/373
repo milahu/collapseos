@@ -1,9 +1,0 @@
-: BLK$
-    H@ 0x3c ( BLK(* ) RAM+ !
-    1024 ALLOT
-    ( LOAD detects end of block with ASCII EOT. This is why
-      we write it there. )
-    EOT,
-    0 BLKDTY !
-    -1 BLK> !
-;

@@ -1,9 +1,0 @@
-: OP2ri ( r i -- )
-    CREATE C,
-    DOES>
-    C@              ( r i op )
-    ROT             ( i op r )
-    <<3             ( i op r<<3 )
-    OR A, A,
-;
-0x06 OP2ri LDri,

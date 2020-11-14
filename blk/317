@@ -1,6 +1,0 @@
-CODE NOT
-    HL POP,
-    chkPS,
-    HLZ,
-    PUSHZ,
-;CODE

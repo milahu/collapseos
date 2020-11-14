@@ -1,9 +1,0 @@
-CODE (n) ( number literal )
-    DI DX MOVxx, DI [DI] MOVx[], DI PUSHx,
-    DX INCx, DX INCx,
-;CODE
-CODE (s) ( string literal, see B287 )
-    DI DX MOVxx, ( IP )
-    AH AH XORrr, AL [DI] MOVr[], ( slen )
-    DX PUSHx, DX INCx, DX AX ADDxx,
-;CODE

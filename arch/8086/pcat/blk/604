@@ -1,6 +1,0 @@
-CODE (emit) 1 chkPS,
-    AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
-;CODE
-CODE (key)
-    AH AH XORrr, 0x16 INT, AH AH XORrr, AX PUSHx,
-;CODE

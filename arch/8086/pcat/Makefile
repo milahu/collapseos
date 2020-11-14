@@ -15,7 +15,7 @@ $(BLKPACK):
 	$(MAKE) -C $(BASE)/tools
 
 blkfs: $(BLKPACK)
-	$(BLKPACK) $(BASE)/blk blk > $@
+	cat $(BASE)/blk.fs blk.fs | $(BLKPACK) > $@
 
 $(STAGE):
 	$(MAKE) -C $(CDIR) stage

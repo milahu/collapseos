@@ -1,9 +1,0 @@
-: LIST
-    BLK@
-    16 0 DO
-        I 1+ DUP 10 < IF SPC THEN . SPC
-        64 I * BLK( + DUP 64 + SWAP DO
-            I C@ DUP 0x1f > IF EMIT ELSE DROP LEAVE THEN
-        LOOP
-        NL
-    LOOP ;

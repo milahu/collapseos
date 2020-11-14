@@ -1,4 +1,0 @@
-( Now we have "as late as possible" stuff. See bootstrap doc. )
-: :* ( addr -- ) (entry) 4 ( alias ) C, , ;
-: :** ( addr -- ) (entry) 5 ( switch ) C, , ;
-

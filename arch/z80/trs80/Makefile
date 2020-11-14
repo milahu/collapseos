@@ -13,7 +13,7 @@ $(BLKPACK):
 	$(MAKE) -C ../tools
 
 blkfs: $(BLKPACK)
-	$(BLKPACK) $(BASE)/blk blk > $@
+	cat $(BASE)/blk.fs blk.fs | $(BLKPACK) > $@
 
 $(STAGE):
 	$(MAKE) -C $(BASE)/cvm stage

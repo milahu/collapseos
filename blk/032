@@ -1,6 +1,0 @@
-( Splits word into msb/lsb, lsb being on TOS )
-: SPLITB
-    256 /MOD SWAP
-;
-: PC H@ ORG @ - BIN( @ + ;
-: A,, SPLITB A, A, ;

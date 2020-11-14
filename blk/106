@@ -1,5 +1,0 @@
-CREATE ACC 0 ,
-: _LIST ." Block " DUP . NL LIST ;
-: L BLK> @ _LIST ;
-: B BLK> @ 1- BLK@ L ;
-: N BLK> @ 1+ BLK@ L ;

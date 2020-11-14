@@ -1,3 +1,0 @@
-( send-and-crc7 )
-( n c -- c )
-: _s+crc SWAP DUP (spix) DROP _crc7 ;

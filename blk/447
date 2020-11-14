@@ -1,8 +1,0 @@
-CODE (loop)
-    [BP] 0 INC[w]+, ( I++ )
-    ( Jump if I <> I' )
-    AX [BP] 0 MOVx[]+, AX [BP] -2 CMPx[]+,
-    JNZ, L1 @ RPCs, ( branch )
-    ( don't branch )
-    BP 4 SUBxi, DX INCx,
-;CODE
