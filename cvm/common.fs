@@ -1,3 +1,5 @@
+( This is xcomp code that is common to both stage and forth
+  binaries. )
 0xff00 CONSTANT RS_ADDR
 0xfffa CONSTANT PS_ADDR
 RS_ADDR 0x80 - CONSTANT SYSVARS
@@ -71,7 +73,6 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x37 CODE TICKS
 0x38 CODE ROT>
 353 LOAD ( xcomp core )
-: (emit) 0 PC! ;
 : (key) 0 PC@ ;
 : EFS@
     1 3 PC! ( read )
@@ -83,16 +84,4 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
     256 /MOD 3 PC! 3 PC! ( blkid )
     BLK( 256 /MOD 3 PC! 3 PC! ( dest )
 ;
-: COLS 80 ; : LINES 32 ;
-: AT-XY 6 PC! ( y ) 5 PC! ( x ) ;
-
-390 LOAD  ( xcomp core high )
-(entry) _
-( Update LATEST )
-PC ORG @ 8 + !
-," BLK$ "
-," ' EFS@ BLK@* ! "
-," ' EFS! BLK!* ! "
-EOT,
-ORG @ 256 /MOD 2 PC! 2 PC!
-H@ 256 /MOD 2 PC! 2 PC!
+( fork between stage and forth begins here )

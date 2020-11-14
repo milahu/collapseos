@@ -4,8 +4,8 @@ git clean -fxd
 
 make -C tests
 
-# verify that forth.bin is stable
-cp cvm/forth.bin ref.bin
+# verify that stage.bin is stable
+cp cvm/stage.bin ref.bin
 make -C cvm updatebootstrap
-cmp cvm/forth.bin ref.bin
+cmp cvm/stage.bin ref.bin
 rm ref.bin

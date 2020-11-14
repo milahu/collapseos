@@ -12,10 +12,6 @@
 // 5 - dest addr LSB
 #define BLK_PORT 0x03
 
-#ifndef FBIN_PATH
-#error FBIN_PATH needed
-#endif
-
 static VM vm;
 static uint64_t blkop = 0; // 5 bytes
 static FILE *blkfp;
@@ -295,7 +291,8 @@ static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
 }
 
-VM* VM_init(char *blkfs_path) {
+VM* VM_init(char *bin_path, char *blkfs_path)
+{
     fprintf(stderr, "Using blkfs %s\n", blkfs_path);
     blkfp = fopen(blkfs_path, "r+");
     if (!blkfp) {
@@ -309,7 +306,7 @@ VM* VM_init(char *blkfs_path) {
         return NULL;
     }
     fseek(blkfp, 0, SEEK_SET);
-    FILE *bfp = fopen(FBIN_PATH, "r");
+    FILE *bfp = fopen(bin_path, "r");
     if (!bfp) {
         fprintf(stderr, "Can't open forth.bin\n");
         return NULL;

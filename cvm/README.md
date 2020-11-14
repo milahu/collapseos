@@ -13,11 +13,12 @@ Running `make` will yield `forth` and `stage` executables.
 
 ## Usage
 
-To play around Collapse OS, you'll want to run `./forth`. Type `0 LIST` for
-help.
+To play around Collapse OS, you'll want to run `./forth`. Refer to
+`doc/intro.txt` for help.
 
 The program is a curses interface with a limited, fixed size so that it can
-provide a AT-XY interface.
+provide a AT-XY interface. If you wish to change the size of that screen, you
+need to modify COLS and LINES in both `forth.c` and `forth.fs`.
 
 You can get a REPL by launching the program with [`rlwrap(1)`][rlwrap] like
 this:
@@ -29,7 +30,7 @@ this:
 If the `forth` executable works badly (hangs, spew garbage, etc.),
 it's probably because you've broken your bootstrap binary. It's easy to
 mistakenly break. To verify if you've done that, look at your git status. If
-`forth.bin` is modified, try resetting it and then run `make clean all`. Things
+`stage.bin` is modified, try resetting it and then run `make clean all`. Things
 should go better afterwards.
 
 A modified `blkfs` can also break things (although even with a completely broken
@@ -40,7 +41,6 @@ If that doesn't work, there's also the nuclear option of `git reset --hard`
 and `git clean -fxd`.
 
 If that still doesn't work, it might be because the current commit you're on
-is broken, but that is rather rare: the repo on Github is plugged on Travis
-and it checks that everything is smooth.
+is broken, but that is rather rare.
 
 [rlwrap]: https://linux.die.net/man/1/rlwrap

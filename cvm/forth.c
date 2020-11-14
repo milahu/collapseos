@@ -8,6 +8,9 @@
 #ifndef BLKFS_PATH
 #error BLKFS_PATH needed
 #endif
+#ifndef FBIN_PATH
+#error FBIN_PATH needed
+#endif
 #define WCOLS 80
 #define WLINES 32
 #define STDIO_PORT 0x00
@@ -77,7 +80,7 @@ static void iowr_sety(uint8_t val)
 
 int main(int argc, char *argv[])
 {
-    VM *vm = VM_init(BLKFS_PATH);
+    VM *vm = VM_init(FBIN_PATH, BLKFS_PATH);
     if (!vm) {
         return 1;
     }

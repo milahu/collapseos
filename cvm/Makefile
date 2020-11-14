@@ -13,22 +13,25 @@ $(BLKPACK):
 $(BLKUNPACK): $(BLKPACK)
 
 stage: stage.c $(OBJS) blkfs
-	$(CC) -DBLKFS_PATH=\"`pwd`/blkfs\" stage.c $(OBJS) -o $@
+	$(CC) -DFBIN_PATH=\"`pwd`/stage.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" stage.c $(OBJS) -o $@
 
 blkfs: $(BLKPACK)
 	$(BLKPACK) ../blk > $@
 
-forth: forth.c $(OBJS)
-	$(CC) -DBLKFS_PATH=\"`pwd`/blkfs\" forth.c $(OBJS) -lcurses -o $@
+forth.bin: stage common.fs forth.fs blkfs
+	cat common.fs forth.fs | ./stage > $@
+
+forth: forth.c $(OBJS) forth.bin
+	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" forth.c $(OBJS) -lcurses -o $@
 
 vm.o: vm.c blkfs
-	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -c -o vm.o vm.c
+	$(CC) -c -o vm.o vm.c
 
 
 .PHONY: updatebootstrap
-updatebootstrap: stage xcomp.fs pack
-	./stage < xcomp.fs > new.bin
-	mv new.bin forth.bin
+updatebootstrap: stage common.fs stage.fs pack
+	cat common.fs stage.fs | ./stage > new.bin
+	mv new.bin stage.bin
 
 .PHONY: pack
 pack:
@@ -40,4 +43,4 @@ unpack:
 
 .PHONY: clean
 clean:
-	rm -f $(TARGETS) *.o blkfs
+	rm -f $(TARGETS) *.o forth.bin blkfs
