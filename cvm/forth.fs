@@ -1,15 +1,15 @@
-: (emit) 0 PC! ;
 : COLS 80 ; : LINES 32 ;
-: AT-XY 6 PC! ( y ) 5 PC! ( x ) ;
+: CELL! ( g pos -- )
+    COLS /MOD 6 PC! ( y ) 5 PC! ( x ) 0x20 + 0 PC! ;
+: NEWLN ( ln -- ) DROP 0xa 0 PC! ;
 
+SYSVARS 0x70 + CONSTANT GRID_MEM
+402 403 LOADR ( Grid )
 390 LOAD  ( xcomp core high )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," BLK$ "
-," ' EFS@ BLK@* ! "
-," ' EFS! BLK!* ! "
-EOT,
+," BLK$ ' EFS@ BLK@* ! ' EFS! BLK!* ! 0 0 AT-XY " EOT,
 ORG @ 256 /MOD 2 PC! 2 PC!
 H@ 256 /MOD 2 PC! 2 PC!
 

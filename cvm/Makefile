@@ -15,7 +15,7 @@ $(BLKUNPACK): $(BLKPACK)
 stage: stage.c $(OBJS) blkfs
 	$(CC) -DFBIN_PATH=\"`pwd`/stage.bin\" -DBLKFS_PATH=\"`pwd`/blkfs\" stage.c $(OBJS) -o $@
 
-blkfs: $(BLKPACK)
+blkfs: ../blk.fs $(BLKPACK)
 	$(BLKPACK) < ../blk.fs > $@
 
 forth.bin: stage common.fs forth.fs blkfs

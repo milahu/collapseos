@@ -776,7 +776,7 @@ block. Any change made to the previously selected block is
 saved beforehand.
 
 '[' and ']' advances the selected block by "modifier". 't' opens
-the previously opened block. 
+the previously opened block.
                                                         (cont.)
 ( ----- 123 )
 'h' and 'l' move the cursor by "modifier" characters. 'j' and
@@ -806,7 +806,7 @@ be sure, then press 'E'.
 Following keystrokes replace current character and advance
 cursor. Press return to return to normal mode.
 
-'@' re-reads current block even if it's dirty, thus undoing     
+'@' re-reads current block even if it's dirty, thus undoing
 recent changes.
 ( ----- 125 )
 -20 LOAD+ ( B105, block editor )
@@ -855,7 +855,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : $G ACC @ selblk ;
 : $[ BLK> @ acc@ - selblk ;
 : $] BLK> @ acc@ + selblk ;
-: $t PREVBLK @ selblk ;   
+: $t PREVBLK @ selblk ;
 : $I mode! 'I' EMIT IBUF 1 buftype _i contents mode! SPC ;
 : $F mode! 'F' EMIT FBUF 2 buftype _F setpos mode! SPC ;
 : $Y Y ;
@@ -2221,7 +2221,7 @@ Load range: B402-B403
 ( ----- 402 )
 : XYPOS [ GRID_MEM LITN ] ;
 : _cl* COLS LINES * ;
-: AT-XY ( x y -- ) LINES * + _cl* MOD XYPOS ! ;
+: AT-XY ( x y -- ) COLS * + _cl* MOD XYPOS ! ;
 '? NEWLN NIP NOT [IF]
 : NEWLN ( ln -- ) COLS * DUP COLS + SWAP DO 0 I CELL! LOOP ;
 [THEN]
