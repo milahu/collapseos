@@ -902,15 +902,15 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
     0 ACC ! UPPER 'Q' = ;
 : bufp ( buf -- )
-    DUP 3 col- + SWAP DO I C@ 0x20 MAX EMIT LOOP ;
+    DUP 3 col- + SWAP DO I C@ EMIT LOOP ;
 : bufs
     1 aty ." I: " IBUF bufp
     2 aty ." F: " FBUF bufp
     large? IF 0 3 gutter THEN ;
 : VE
-    clrscr 0 ACC ! 0 PREVPOS ! nums contents
+    1 XYMODE C! clrscr 0 ACC ! 0 PREVPOS ! nums contents
     BEGIN xoff? status bufs setpos KEY handle UNTIL
-    19 aty (infl) ;
+    0 XYMODE C! 19 aty (infl) ;
 ( ----- 160 )
 ( AVR Programmer, load range 160-163. doc/avr.txt )
 ( page size in words, 64 is default on atmega328P )
@@ -2209,23 +2209,17 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 ( ----- 401 )
 Grid subsystem
 
-Given a device driver following the Grid protocol, implement
-AT-XY and (emit). (emit) makes the grid behave like a regular
-terminal, honoring line feeds and backspaces, wrapping at the
-end of a line.
-
-2 bytes of system memory at GRID_MEM are needed for cursor
-position.
+See doc/grid.txt.
 
 Load range: B402-B403
 ( ----- 402 )
-: XYPOS [ GRID_MEM LITN ] ;
+: XYPOS [ GRID_MEM LITN ] ; : XYMODE [ GRID_MEM LITN ] 2+ ;
 : _cl* COLS LINES * ;
 : AT-XY ( x y -- ) COLS * + _cl* MOD XYPOS ! ;
 '? NEWLN NIP NOT [IF]
 : NEWLN ( ln -- ) COLS * DUP COLS + SWAP DO 0 I CELL! LOOP ;
 [THEN]
-: _lf
+: _lf XYMODE C@ IF EXIT THEN
     XYPOS @ COLS / 1+ LINES MOD DUP NEWLN
     COLS * XYPOS ! ;
 : _bs 0 ( blank ) XYPOS @ TUCK CELL! ( pos ) 1-
@@ -2237,6 +2231,7 @@ Load range: B402-B403
     0x20 - DUP 0< IF DROP EXIT THEN
     XYPOS @ CELL!
     XYPOS @ 1+ DUP COLS MOD IF XYPOS ! ELSE _lf THEN ;
+: GRID$ 0 XYPOS ! 0 XYMODE C! ;
 ( ----- 410 )
 PS/2 keyboard subsystem
 

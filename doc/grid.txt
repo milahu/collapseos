@@ -1,0 +1,40 @@
+# The Grid subsystem
+
+The grid subsystem at B401 supplies a set of words on top of
+the Grid protocol (see doc/protocol.txt) that facilitates the
+development of programs presenting a complex text interface,
+for example, the Visual Editor.
+
+It create the concept of a cursor, always being a some position
+on screen. That position is in the variable XYPOS, which is a
+simple integer following the same "pos" logic as in the Grid
+protocol.
+
+It implements (emit), which sets the cell under the cursor to
+the specified character, then moves the cursor right. If the
+cursor is at the last column of the screen, it overflows to the
+next line. If it's on the last line, it overflows to the first
+line.
+
+Grid's (emit) handles 0xd by moving the cursor to the next line
+and 0x8 by moving the cursor left.
+
+AT-XY ( x y -- ) moves the cursor to the specified position. It
+is equivalent to setting XYPOS directly, but uses separate X
+and y numbers.
+
+When the grid's cursor enters a new line, it clears its
+contents through a repeated call to CELL!. That implementation
+is in its world named NEWLN ( ln -- ). This word can be over-
+ridden. If it exists when the grid subsystem is loaded, the ex-
+isting NEWLN will be used.
+
+The clearing of the newly entered line is usually only desirable
+when in "shell" mode. In "graphical" mode, we usually don't
+want this to happen. XYMODE is a flag to indicate whether the
+grid system is in "graphical" mode. When its value is nonzero,
+NEWLN is not called when entering a new line.
+
+At build time, the Grid subsystem needs 3 bytes of system me-
+mory through the GRID_MEM constant. At run time, GRID$ needs to
+be called to initialize the system.
