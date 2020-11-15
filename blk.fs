@@ -2533,19 +2533,14 @@ sure it goes back to its previous level before next is called.
 
                                                         (cont.)
 ( ----- 441 )
-STABLE ABI: As a compatible binary, this binary follows the
-same stable ABI as its z80 counterpart.
+PS CHECKS: chkPS, is a bit different than in z80: it is para-
+metrizable. The idea is that we always call chkPS, before pop-
+ping, telling the expected size of stack. This allows for some
+interesting optimization. For example, in SWAP, no need to pop,
+chkPS, then push, we can chkPS and then proceed to optimized
+swapping in PS.
 
-PS CHECKS: Unlike z80 boot code, we don't check PS at each next
-call (we do check RS though). It is the responsibility of every
-native PSP-modifying word to call chkPS, . Also, chkPS, is a
-bit different than in z80: it is parametrizable. The idea is
-that we always call chkPS, before popping, telling the expected
-size of stack. This allows for some interesting optimization.
-For example, in SWAP, no need to pop, chkPS, then push, we can
-chkPS and then proceed to optimized swapping in PS.
-
-To assemble, load blocks 445 through 461
+Load range: B445-B461
 ( ----- 445 )
 VARIABLE lblexec VARIABLE lblnext
 H@ ORG !

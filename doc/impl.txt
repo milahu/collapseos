@@ -51,6 +51,10 @@ Stack underflow and overflow: In each native word involving
 PS popping, we check whether the stack is big enough. If it's
 not we go in "uflw" (underflow) error condition, then abort.
 
+This means that if you implement a native word that involves
+popping from PS, you are expected to call chkPS, for under-
+flow situations.
+
 We don't check RS for underflow because the cost of the check
 is significant and its usefulness is dubious: if RS isn't
 tightly in control, we're screwed anyways, and that, well
