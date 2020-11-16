@@ -16,8 +16,6 @@ CREATE _idat
 0b00000000 C, 0x89 C, ( BG Y scroll )
 0b11111111 C, 0x8a C, ( Line counter (why have this?) )
 ( ----- 603 )
-: _zero ( x -- send 0 _data x times )
-    ( x ) 0 DO 0 _data LOOP ;
 ( Each row in ~FNT is a row of the glyph and there is 7 of
 them.  We insert a blank one at the end of those 7. For each
 row we set, we need to send 3 zero-bytes because each pixel in
@@ -37,7 +35,8 @@ always stay zero. )
     ( set palette bit for at specified pos )
     2 * 1+ 0x7800 OR _ctl 0x8 _data ;
 : VDP$
-    9 0 DO _idat I 2 * + @ _ctl LOOP _blank
+    9 0 DO _idat I 2 * + @ _ctl LOOP
+    ( blank screen ) 0x7800 _ctl COLS LINES * 2 * _zero
     ( palettes )
     0xc000 _ctl
     ( BG ) 1 _zero 0x3f _data 14 _zero

@@ -2780,28 +2780,31 @@ CODE _data
     A L LDrr, TMS_DATAPORT OUTiA,
 ;CODE
 ( ----- 471 )
-CODE _blank ( this is way too slow in Forth )
-    A XORr, TMS_CTLPORT OUTiA,
-    A 0x40 LDri, TMS_CTLPORT OUTiA,
-    HL 0x4000 LDdi,
-    BEGIN,
-        A XORr, TMS_DATAPORT OUTiA,
-        HL DECd, HLZ,
-    JRNZ, AGAIN,
-;CODE
-( ----- 472 )
+: _zero ( x -- send 0 _data x times )
+    ( x ) 0 DO 0 _data LOOP ;
 ( Each row in ~FNT is a row of the glyph and there is 7 of
 them.  We insert a blank one at the end of those 7. )
 : _sfont ( a -- Send font to TMS )
     7 0 DO C@+ _data LOOP DROP
     ( blank row ) 0 _data ;
+: _sfont^ ( a -- Send inverted font to TMS )
+    7 0 DO C@+ 0xff XOR _data LOOP DROP
+    ( blank row ) 0xff _data ;
 : CELL! ( c pos )
     0x7800 OR _ctl ( tilenum )
     0x20 - ( glyph ) 0x5e MOD _data ;
+( ----- 472 )
+: CURSOR! ( new old -- )
+    0x7800 OR DUP _ctl [ TMS_DATAPORT LITN ] PC@
+        0x7f AND ( new cmd glyph ) SWAP _ctl _data
+    0x7800 OR DUP _ctl [ TMS_DATAPORT LITN ] PC@
+        0x80 OR ( cmd glyph ) SWAP _ctl _data ;
 : COLS 40 ; : LINES 24 ;
 : TMS$
-    0x8100 _ctl ( blank screen ) _blank
+    0x8100 _ctl ( blank screen )
+    0x7800 _ctl COLS LINES * _zero
     0x4000 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont LOOP
+    0x4400 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont^ LOOP
     0x820e _ctl ( name table 0x3800 )
     0x8400 _ctl ( pattern table 0x0000 )
     0x87f0 _ctl ( colors 0 and 1 )
