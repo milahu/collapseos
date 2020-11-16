@@ -27,9 +27,9 @@ always stay zero. )
 : _sfont ( a -- Send font to VDP )
     7 0 DO C@+ _data 3 _zero LOOP DROP
     ( blank row ) 4 _zero ;
-: CELL! ( tilenum pos )
-    2 * 0x7800 OR _ctl ( tilenum )
-    0x5e MOD _data 1 _zero ;
+: CELL! ( c pos )
+    2 * 0x7800 OR _ctl ( c )
+    0x20 - ( glyph ) 0x5e MOD _data 0 _data ;
 ( ----- 604 )
 : VDP$
     9 0 DO _idat I 2 * + @ _ctl LOOP _blank

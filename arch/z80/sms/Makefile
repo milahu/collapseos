@@ -15,7 +15,7 @@ $(SMSROM):
 $(BLKPACK):
 	$(MAKE) -C ../tools
 
-blkfs: $(BLKPACK)
+blkfs: $(BLKPACK) $(BASE)/blk.fs blk.fs
 	cat $(BASE)/blk.fs blk.fs | $(BLKPACK) > $@
 
 $(STAGE):

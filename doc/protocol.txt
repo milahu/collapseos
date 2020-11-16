@@ -44,7 +44,7 @@ allows random access to it.
 
 COLS      -- n     Number of columns in the device
 LINES     -- n     Number of lines in the device
-CELL!     g pos -- Set glyph at pos
+CELL!     c pos -- Set character at pos
 
 Optional:
 NEWLN     ln --    "Enter" line ln
@@ -53,10 +53,10 @@ CURSOR!   pos --   Set cursor's position
 "pos" is a simple number (y * cols) + x. For example, if we
 have 40 columns per line, the position (x, y) (12, 10) is 412.
 
-A glyph is ASCII-0x20. If the resulting glyph number exceeds the
-number of glyphs in the font, it's up to CELL! to ignore it.
-
-Glyph 0 is always blank.
+CELL! is not expected to be called with an out-of-range char-
+acter. For example, glyphs are often mapped starting at 0x20
+(space). On most systems, CELL! should not be called with c <
+0x20.If it is, CELL! should do nothing.
 
 NEWLN is called when we "enter" a new line, that is, when we
 overflow from previous line or when 0x0d ( ASCII CR ) is emit-

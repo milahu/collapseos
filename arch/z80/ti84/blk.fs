@@ -110,9 +110,9 @@ CODE _wait
 ( ----- 609 )
 : _atrow! ( pos -- ) COLS / FNTH 1+ * _row! ;
 : _tocol ( pos -- col off ) COLS MOD FNTW 1+ * 8 /MOD ;
-: CELL! ( g pos -- )
-    DUP _atrow! DUP _tocol _col! ROT ( pos coff g )
-    FNTH * ~FNT + ( pos coff a )
+: CELL! ( c pos -- )
+    DUP _atrow! DUP _tocol _col! ROT ( pos coff c )
+    0x20 - FNTH * ~FNT + ( pos coff a )
     _xinc _data@ DROP
     FNTH 0 DO ( pos coff a )
         C@+ 2 PICK 8 -^ LSHIFT

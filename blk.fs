@@ -2218,7 +2218,7 @@ Load range: B402-B403
 : XYPOS! COLS LINES * MOD DUP CURSOR! XYPOS ! ;
 : AT-XY ( x y -- ) COLS * + XYPOS! ;
 '? NEWLN NIP NOT [IF]
-: NEWLN ( ln -- ) COLS * DUP COLS + SWAP DO 0 I CELL! LOOP ;
+: NEWLN ( ln -- ) COLS * DUP COLS + SWAP DO 0x20 I CELL! LOOP ;
 [THEN]
 : _lf XYMODE C@ IF EXIT THEN
     XYPOS @ COLS / 1+ LINES MOD DUP NEWLN
@@ -2228,7 +2228,7 @@ Load range: B402-B403
 : (emit)
     DUP 0x08 = IF DROP _bs EXIT THEN
     DUP 0x0d = IF DROP _lf EXIT THEN
-    0x20 - DUP 0< IF DROP EXIT THEN
+    DUP 0x20 < IF DROP EXIT THEN
     XYPOS @ CELL!
     XYPOS @ 1+ DUP COLS MOD IF XYPOS! ELSE _lf THEN ;
 : GRID$ 0 XYPOS! 0 XYMODE C! ;
@@ -2795,15 +2795,15 @@ them.  We insert a blank one at the end of those 7. )
 : _sfont ( a -- Send font to TMS )
     7 0 DO C@+ _data LOOP DROP
     ( blank row ) 0 _data ;
-: CELL! ( tilenum pos )
+: CELL! ( c pos )
     0x7800 OR _ctl ( tilenum )
-    0x5e MOD _data ;
+    0x20 - ( glyph ) 0x5e MOD _data ;
 : COLS 40 ; : LINES 24 ;
 : TMS$
     0x8100 _ctl ( blank screen ) _blank
     0x4000 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont LOOP
     0x820e _ctl ( name table 0x3800 )
-    0x8400 _ctl ( patter table 0x0000 )
+    0x8400 _ctl ( pattern table 0x0000 )
     0x87f0 _ctl ( colors 0 and 1 )
     0x8000 _ctl 0x81d0 _ctl ( text mode, display on ) ;
 ( ----- 520 )
