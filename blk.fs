@@ -2214,8 +2214,8 @@ See doc/grid.txt.
 Load range: B402-B403
 ( ----- 402 )
 : XYPOS [ GRID_MEM LITN ] ; : XYMODE [ GRID_MEM LITN ] 2+ ;
-'? CURSOR! NIP NOT [IF] : CURSOR! DROP ; [THEN]
-: XYPOS! COLS LINES * MOD DUP CURSOR! XYPOS ! ;
+'? CURSOR! NIP NOT [IF] : CURSOR! 2DROP ; [THEN]
+: XYPOS! COLS LINES * MOD DUP XYPOS @ CURSOR! XYPOS ! ;
 : AT-XY ( x y -- ) COLS * + XYPOS! ;
 '? NEWLN NIP NOT [IF]
 : NEWLN ( ln -- ) COLS * DUP COLS + SWAP DO 0x20 I CELL! LOOP ;
@@ -2223,7 +2223,7 @@ Load range: B402-B403
 : _lf XYMODE C@ IF EXIT THEN
     XYPOS @ COLS / 1+ LINES MOD DUP NEWLN
     COLS * XYPOS! ;
-: _bs 0 ( blank ) XYPOS @ TUCK CELL! ( pos ) 1- XYPOS! ;
+: _bs 0x20 ( blank ) XYPOS @ TUCK CELL! ( pos ) 1- XYPOS! ;
 ( ----- 403 )
 : (emit)
     DUP 0x08 = IF DROP _bs EXIT THEN
@@ -2231,7 +2231,7 @@ Load range: B402-B403
     DUP 0x20 < IF DROP EXIT THEN
     XYPOS @ CELL!
     XYPOS @ 1+ DUP COLS MOD IF XYPOS! ELSE _lf THEN ;
-: GRID$ 0 XYPOS! 0 XYMODE C! ;
+: GRID$ 0 XYPOS ! 0 XYMODE C! ;
 ( ----- 410 )
 PS/2 keyboard subsystem
 

@@ -42,13 +42,13 @@ previously enabled one.
 A grid is a device that shows as a grid of ASCII characters and
 allows random access to it.
 
-COLS      -- n     Number of columns in the device
-LINES     -- n     Number of lines in the device
-CELL!     c pos -- Set character at pos
+COLS      -- n       Number of columns in the device
+LINES     -- n       Number of lines in the device
+CELL!     c pos --   Set character at pos
 
 Optional:
-NEWLN     ln --    "Enter" line ln
-CURSOR!   pos --   Set cursor's position
+NEWLN     ln --      "Enter" line ln
+CURSOR!   new old -- Move cursor from old pos to new pos
 
 "pos" is a simple number (y * cols) + x. For example, if we
 have 40 columns per line, the position (x, y) (12, 10) is 412.

@@ -29,8 +29,13 @@ always stay zero. )
     ( blank row ) 4 _zero ;
 : CELL! ( c pos )
     2 * 0x7800 OR _ctl ( c )
-    0x20 - ( glyph ) 0x5e MOD _data 0 _data ;
+    0x20 - ( glyph ) 0x5e MOD _data ;
 ( ----- 604 )
+: CURSOR! ( new old -- )
+    ( unset palette bit in old tile )
+    2 * 1+ 0x7800 OR _ctl 0 _data
+    ( set palette bit for at specified pos )
+    2 * 1+ 0x7800 OR _ctl 0x8 _data ;
 : VDP$
     9 0 DO _idat I 2 * + @ _ctl LOOP _blank
     ( palettes )
@@ -40,8 +45,7 @@ always stay zero. )
     0x4000 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont LOOP
     ( bit 6, enable display, bit 7, ?? ) 0x81c0 _ctl ;
 
-: COLS 32 ;
-: LINES 24 ;
+: COLS 32 ; : LINES 24 ;
 ( ----- 610 )
 Pad driver - read input from MD controller
 
