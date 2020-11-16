@@ -105,7 +105,7 @@ CREATE _ '0' C, ':' C, 'A' C, '[' C, 'a' C, 0xff C,
     0x08 ( RIGHT ) OVER AND NOT IF 5 _sel +! THEN
     0x10 ( BUTB ) OVER AND NOT IF _nxtcls THEN
     ( update sel in VDP )
-    _chk _sel C@ (emit) -1 XYPOS +!
+    _chk _sel C@ XYPOS @ CELL!
     ( return whether any of the high 3 bits is low )
     0xe0 AND 0xe0 <
 ;
