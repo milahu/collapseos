@@ -2769,7 +2769,8 @@ CODE TICKS 1 chkPS, ( n=100us )
 ( ----- 470 )
 ( Z80 driver for TMS9918. Implements grid protocol. Requires
 TMS_CTLPORT, TMS_DATAPORT and ~FNT from the Font compiler at
-B520. Load range B470-472 )
+B520. Patterns are at addr 0x0000, Names are at 0x3800.
+Load range B470-472 )
 CODE _ctl ( a -- sends LSB then MSB )
     HL POP, chkPS,
     A L LDrr, TMS_CTLPORT OUTiA,
@@ -2795,10 +2796,10 @@ them.  We insert a blank one at the end of those 7. )
     0x20 - ( glyph ) 0x5e MOD _data ;
 ( ----- 472 )
 : CURSOR! ( new old -- )
-    0x7800 OR DUP _ctl [ TMS_DATAPORT LITN ] PC@
-        0x7f AND ( new cmd glyph ) SWAP _ctl _data
-    0x7800 OR DUP _ctl [ TMS_DATAPORT LITN ] PC@
-        0x80 OR ( cmd glyph ) SWAP _ctl _data ;
+    DUP 0x3800 OR _ctl [ TMS_DATAPORT LITN ] PC@
+    0x7f AND ( new old glyph ) SWAP 0x7800 OR _ctl _data
+    DUP 0x3800 OR _ctl [ TMS_DATAPORT LITN ] PC@
+    0x80 OR ( new glyph ) SWAP 0x7800 OR _ctl _data ;
 : COLS 40 ; : LINES 24 ;
 : TMS$
     0x8100 _ctl ( blank screen )

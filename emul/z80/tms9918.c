@@ -27,6 +27,7 @@ void tms_init(TMS9918 *tms)
     memset(tms->regs, 0, 0x10);
     tms->has_cmdlsb = false;
     tms->curaddr = 0;
+    tms->databuf = 0;
     tms->width = 40*6;
     tms->height = 24*8;
 }
@@ -50,20 +51,20 @@ void tms_cmd_wr(TMS9918 *tms, uint8_t val)
     } else {
         // VRAM
         tms->curaddr = ((val&0x3f) << 8) + tms->cmdlsb;
+        if ((val & 0x40) == 0) { // reading VRAM
+            tms->databuf = tms->vram[tms->curaddr];
+        }
     }
 }
 
 uint8_t tms_data_rd(TMS9918 *tms)
 {
-    if (tms->curaddr < TMS_VRAM_SIZE) {
-        return tms->vram[tms->curaddr++];
-    } else {
-        return 0;
-    }
+    return tms->databuf;
 }
 
 void tms_data_wr(TMS9918 *tms, uint8_t val)
 {
+    tms->databuf = val;
     if (tms->curaddr < TMS_VRAM_SIZE) {
         tms->vram[tms->curaddr++] = val;
     }
