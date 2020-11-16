@@ -48,6 +48,7 @@ CELL!     g pos -- Set glyph at pos
 
 Optional:
 NEWLN     ln --    "Enter" line ln
+CURSOR!   pos --   Set cursor's position
 
 "pos" is a simple number (y * cols) + x. For example, if we
 have 40 columns per line, the position (x, y) (12, 10) is 412.
@@ -69,3 +70,7 @@ time.
 If it's not defined, the grid system uses multiple CELL!
 calls to clear it. On some devices, this is highly inefficient.
 Drivers for those devices should define NEWLINE.
+
+CURSOR! is called whenever we change the cursor's position. If
+not implemented, it will be a noop. It is never called with an
+out of range "pos" (greater than COLS*LINES).
