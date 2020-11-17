@@ -2230,7 +2230,7 @@ Load range: B402-B403
     DUP 0x0d = IF DROP _lf EXIT THEN
     DUP 0x20 < IF DROP EXIT THEN
     XYPOS @ CELL!
-    XYPOS @ 1+ DUP COLS MOD IF XYPOS! ELSE _lf THEN ;
+    XYPOS @ 1+ DUP COLS MOD IF XYPOS! ELSE DROP _lf THEN ;
 : GRID$ 0 XYPOS ! 0 XYMODE C! ;
 ( ----- 410 )
 PS/2 keyboard subsystem
