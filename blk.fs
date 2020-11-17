@@ -822,14 +822,14 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : num ACC @ SWAP _pdacc IF ACC ! ELSE DROP THEN ;
 : nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
 : aty 0 SWAP AT-XY ;
-: clrscr LINES 0 DO I aty COLS nspcs LOOP ;
+: clrscr COLS LINES * 0 DO 0x20 I CELL! LOOP ;
 : gutter ( ln n ) OVER + SWAP DO 67 I AT-XY '|' EMIT LOOP ;
 : status 0 aty ." BLK" SPC BLK> ? SPC ACC ?
     SPC pos@ . ',' EMIT . xoff @ IF '>' EMIT THEN SPC
     BLKDTY @ IF '*' EMIT THEN 4 nspcs ;
 : nums 17 1 DO 2 I + aty I . SPC SPC LOOP ;
 ( ----- 127 )
-: mode! ( c -- ) 4 col- 0 AT-XY ;
+: mode! ( c -- ) 4 col- CELL! ;
 : contents
     16 0 DO
         large? IF 3 ELSE 0 THEN I 3 + AT-XY
@@ -856,8 +856,8 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : $[ BLK> @ acc@ - selblk ;
 : $] BLK> @ acc@ + selblk ;
 : $t PREVBLK @ selblk ;
-: $I mode! 'I' EMIT IBUF 1 buftype _i contents mode! SPC ;
-: $F mode! 'F' EMIT FBUF 2 buftype _F setpos mode! SPC ;
+: $I 'I' mode! IBUF 1 buftype _i contents 0x20 mode! ;
+: $F 'F' mode! FBUF 2 buftype _F setpos 0x20 mode! ;
 : $Y Y ;
 : $E _E contents ;
 : $X acc@ _X contents ;
@@ -885,11 +885,11 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     ( p1 p2, p1 < p2 ) OVER - 64 MIN ( pos len ) FBUF _zbuf
     SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
 : $R ( replace mode )
-    mode! 'R' EMIT
+    'R' mode!
     BEGIN setpos KEY DUP BS? IF -1 EDPOS +! DROP 0 THEN
         DUP 0x20 >= IF
         DUP EMIT EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
-    THEN UNTIL mode! SPC contents ;
+    THEN UNTIL 0x20 mode! contents ;
 : $O _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
 : $o EDPOS @ 0x3c0 < IF EDPOS @ 64 + EDPOS ! $O THEN ;
 : $D $H 64 icpy
