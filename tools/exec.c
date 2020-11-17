@@ -19,6 +19,10 @@ int main(int argc, char **argv)
     FILE *fp = stdin;
     if (strcmp(argv[2], "-") != 0) {
         fp = fopen(argv[2], "r");
+        if (fp == NULL) {
+            fprintf(stderr, "Could not open %s\n", argv[2]);
+            return 1;
+        }
     }
     int fd = ttyopen(argv[1]);
     if (fd < 0) {
