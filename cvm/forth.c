@@ -105,7 +105,7 @@ int main(int argc, char *argv[])
         // debug panel
         dw = newwin(1, 30, LINES-1, COLS-30);
         w = newwin(WLINES, WCOLS, 1, 1);
-        scrollok(w, 1);
+        scrollok(w, 0);
         while (VM_steps(1000)) {
             debug_panel();
         }
