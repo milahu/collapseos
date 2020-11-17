@@ -151,15 +151,20 @@ TL. When the '164 is full, TL is low. Port A TL is bit 4 )
 	2 _THB! ( TH input ) ;
 ( ----- 622 )
 : (spie) DROP ; ( always enabled )
-: (spix) ( x -- x, for port B )
-    0 SWAP ( rx tx ) 8 0 DO
-        ( send current bit to TRB, TR's output bit )
-        DUP 7 I - RSHIFT 1 AND _TRB!
-        1 _THB! ( CLK hi )
-        ( read into rx ) SWAP 1 LSHIFT _D1@ ( tx rx<< x )
-        0 _THB! ( CLK lo )
-        ( out bit is the 6th ) 6 RSHIFT 1 AND OR
-    SWAP LOOP ( rx tx ) DROP ;
+CODE (spix) ( x -- x, for port B ) HL POP, chkPS,
+    ( TR = DATA TH = CLK )
+    CPORT_MEM LDA(i), 0xf3 ANDi, ( TR/TH output )
+    H 8 LDri, BEGIN,
+        0xbf ANDi, ( TR lo ) L RL, ( --> C )
+        IFC, 0x40 ORi, ( TR hi ) THEN,
+        CPORT_CTL OUTiA, ( clic! ) 0x80 ORi, ( TH hi )
+        CPORT_CTL OUTiA, ( clac! )
+        EXAFAF', CPORT_D1 INAi, ( Up Btn is B6 ) RLA, RLA,
+            E RL, EXAFAF',
+        0x7f ANDi, ( TH lo ) CPORT_CTL OUTiA, ( cloc! )
+    H DECr, JRNZ, AGAIN, CPORT_MEM LD(i)A,
+    L E LDrr, HL PUSH,
+;CODE
 ( ----- 625 )
 ( Routines for interacting with SMS controller ports.
   Requires CPORT_MEM, CPORT_CTL, CPORT_D1 and CPORT_D2 to be
