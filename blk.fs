@@ -21,7 +21,7 @@ MASTER INDEX
 005 Z80 assembler             030 8086 assembler
 050 AVR assembler             70-99 unused
 100 Block editor              120 Visual Editor
-160 AVR SPI programmer
+160 AVR SPI programmer        165 Sega ROM signer
 170-259 unused                260 Cross compilation
 280 Z80 boot code             350 Core words
 400 AT28 EEPROM driver        401 Grid subsystem
@@ -957,6 +957,18 @@ VARIABLE aspprevx
 : aspe! ( byte addr --, write to EEPROM )
     256 /MOD ( b lsb msb ) SWAP
     0xc0 ( b msb lsb 0xc0 ) _cmd DROP asprdy ;
+( ----- 165 )
+( Sega ROM signer. See doc/sega.txt )
+: A!+^ ( a c -- a+1 ) OVER A! 1+ ;
+: segasig ( addr size -- )
+    0x2000 OVER LSHIFT ( a sz bytesz )
+    ROT TUCK + 0x10 - ( sz a end )
+    TUCK SWAP 0 ROT> ( sz end sum end a ) DO ( sz end sum )
+        I A@ + LOOP ( sz end sum ) SWAP ( sz sum end )
+    'T' A!+^ 'M' A!+^ 'R' A!+^ 0x20 A!+^ 'S' A!+^ 'E' A!+^
+    'G' A!+^ 'A' A!+^ 0 A!+^ 0 A!+^
+    ( sum's LSB ) OVER A!+^ ( MSB ) SWAP 8 RSHIFT OVER A! 1+
+    ( sz end ) 0 A!+^ 0 A!+^ 0 A!+^ SWAP 0x4a + SWAP A! ;
 ( ----- 260 )
 Cross compilation program
 

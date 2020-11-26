@@ -18,6 +18,7 @@ SYSVARS 0x74 + CONSTANT PS2_MEM
 : ZFILL, ( u ) 0 DO 0 A, LOOP ;
 262 LOAD  ( xcomp )
 523 LOAD  ( font compiler )
+165 LOAD  ( Sega ROM signer )
 282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )
 
@@ -40,5 +41,6 @@ CREATE ~FNT CPFNT5x7
 ( Update LATEST )
 PC ORG @ 8 + !
 ," TMS$ GRID$ PS2$ BLK$ ' SDC@ BLK@* ! (im1) " EOT,
-ORG @ 0x100 - 256 /MOD 2 PC! 2 PC!
-H@ 256 /MOD 2 PC! 2 PC!
+ORG @ 0x100 - DUP 256 /MOD 2 PC! 2 PC!
+DUP 1 ( 16K ) segasig
+0x4000 + 256 /MOD 2 PC! 2 PC!

@@ -57,7 +57,7 @@ so far. I haven't explored whether this can run on a megadrive).
 
 # Build the ROM
 
-Running "make os.sms" in /arch/z80/sms will produce a "os.sms"
+Running "make" in /arch/z80/sms will produce a "os.sms"
 ROM that can be put as is on a SD card to the everdrive or
 flashed as is on a writable ROM cart. Then, just run the thing!
 
