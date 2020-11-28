@@ -127,13 +127,13 @@ offsets, but thankfully, there aren't many system variables.
 Here's a list of them:
 
 SYSVARS   FUTURE USES          +3c       BLK(*
-+02       CURRENT              +3e       A@*
-+04       HERE                 +40       A!*
-+06       C<?                  +42       A,*
++02       CURRENT              +3e       A@ ialias
++04       HERE                 +40       A! ialias
++06       C<?                  +42       A, ialias
 +08       C<* override         +44       FUTURE USES
-+0a       NLPTR                +51       CURRENTPTR
-+0c       C<*                  +53       (emit) override
-+0e       WORDBUF              +55       (key) override
++0a       NL ialias            +51       CURRENTPTR
++0c       C<*                  +53       EMIT ialias
++0e       WORDBUF              +55       KEY ialias
 +2e       BOOT C< PTR          +57       FUTURE USES
 +30       IN>
 +32       IN(*                 +70       DRIVERS
@@ -186,8 +186,17 @@ very few things.
 In a normal system, BOOT is in core words at B396 and does a
 few things:
 
-1. Initialize all overrides to 0.
-2. Write LATEST in BOOT C< PTR ( see below ).
+1. Initialize a few core variables:
+    CURRENT*     -> CURRENT (RAM+02)
+    BOOT C< PTR  -> LATEST
+    C<* override -> 0
+2. Initialized ialiases in this way:
+     EMIT -> (emit)
+     KEY  -> (key)
+     NL   -> CRLF
+     A@   -> C@
+     A!   -> C!
+     A,   -> C,
 3. Set "C<*", the word that C< calls, to (boot<).
 4. Call INTERPRET which interprets boot source code until
    ASCII EOT (4) is met. This usually initializes drivers.
@@ -195,6 +204,10 @@ few things:
    "CollapseOS" and then calls (main).
 6. (main) interprets from rdln input (usually from KEY) until
    EOT is met, then calls BYE.
+
+If, for some reason, you need to override an ialias at some
+point, you de-override it by re-setting it to the address of
+the word specified at step 2.
 
 # Stable ABI
 
