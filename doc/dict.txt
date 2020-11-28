@@ -217,6 +217,9 @@ NOT  f -- f     Push the logical opposite of f
 
 # Strings
 
+Strings in Collapse OS begin with a one byte length, followed
+by the contents of the string.
+
 LIT" x" --         Read following characters and write to HERE
                    as a string literal.
 S=      a1 a2 -- f Returns whether string a1 == a2.
@@ -227,7 +230,7 @@ S=      a1 a2 -- f Returns whether string a1 == a2.
                   result in n as well as whether parsing was a
                   success in f (false = failure, true =
                   success)
-(print)  a --     Print string at addr a. Stops at 0x0 or 0xd.
+STYPE    a --     EMIT all chars of string at at addr a.
 .        n --     Print n in its decimal form
 .x       n --     Print n's LSB in hex form. Always 2
                   characters.
@@ -236,7 +239,7 @@ S=      a1 a2 -- f Returns whether string a1 == a2.
                   "-1 .X" --> ffff
 ," xxx" --     Write xxx to HERE
 ." xxx" --     *I* Compiles string literal xxx followed by a
-               call to (print).
+               call to STYPE.
 C<?     -- f   Returns whether there's a char waiting in buf.
 C<      -- c   Read one char from buffered input.
 EMIT    c --   Spit char c to output stream

@@ -1753,16 +1753,16 @@ SYSVARS 0x40 + :** A!
 SYSVARS 0x42 + :** A,
 ( ----- 356 )
 SYSVARS 0x53 + :** EMIT
-: (print) C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
+: STYPE C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
 : BS 8 EMIT ; : LF 10 EMIT ; : CR 13 EMIT ;
 : CRLF CR LF ; : SPC 32 EMIT ;
 SYSVARS 0x0a + :** NL
-: ERR (print) ABORT ;
+: ERR STYPE ABORT ;
 : (uflw) LIT" stack underflow" ERR ;
 XCURRENT @ _xapply ORG @ 0x06 ( stable ABI uflw ) + !
 : (oflw) LIT" stack overflow" ERR ;
 XCURRENT @ _xapply ORG @ 0x13 ( stable ABI oflw ) + !
-: (wnf) (print) LIT"  word not found" ERR ;
+: (wnf) STYPE LIT"  word not found" ERR ;
 ( ----- 357 )
 ( r c -- r f )
 ( Parse digit c and accumulate into result r.
@@ -2102,7 +2102,7 @@ SYSVARS 0x55 + :** KEY
     BEGIN
     WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
     FIND NOT IF (parse) ELSE EXECUTE THEN
-    C<? NOT IF SPC LIT" ok" (print) NL THEN
+    C<? NOT IF SPC LIT" ok" STYPE NL THEN
     AGAIN ;
 ( Read from BOOT C< PTR and inc it. )
 : (boot<)
@@ -2149,7 +2149,7 @@ SYSVARS 0x55 + :** KEY
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
     RDLN$ LIT" _sys" [entry]
-    LIT" Collapse OS" (print) NL (main) ;
+    LIT" Collapse OS" STYPE NL (main) ;
 XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 1 4 LOADR+
 ( ----- 391 )
@@ -2157,7 +2157,7 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 : :* ( addr -- ) (entry) 4 ( alias ) C, , ;
 : :** ( addr -- ) (entry) 5 ( ialias ) C, , ;
 ( ----- 392 )
-: _bchk DUP 0x7f + 0xff > IF LIT" br ovfl" (print) ABORT THEN ;
+: _bchk DUP 0x7f + 0xff > IF LIT" br ovfl" STYPE ABORT THEN ;
 : DO COMPILE 2>R H@ ; IMMEDIATE
 : LOOP COMPILE (loop) H@ - _bchk C, ; IMMEDIATE
 ( LEAVE is implemented in low xcomp )
@@ -2190,7 +2190,7 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 ; IMMEDIATE
 ( ----- 394 )
 ( We don't use ." and ABORT in core, they're not xcomp-ed )
-: ." [COMPILE] LIT" COMPILE (print) ; IMMEDIATE
+: ." [COMPILE] LIT" COMPILE STYPE ; IMMEDIATE
 : ABORT" [COMPILE] ." COMPILE ABORT ; IMMEDIATE
 : BEGIN H@ ; IMMEDIATE
 : AGAIN COMPILE (br) H@ - _bchk C, ; IMMEDIATE
