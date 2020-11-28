@@ -52,7 +52,7 @@ Interpreter output is unbuffered and only has EMIT. This
 word can also be overriden, mostly as a companion to the
 raison d'etre of your KEY override.
 
-# Aliases and Switches
+# Aliases
 
 A common pattern in Forth is to add an indirection layer with
 a pointer word. For example, if you have a word "FOO" for
@@ -65,7 +65,7 @@ verbose, which make us want to avoid this pattern for words
 that are often used.
 
 For this purpose, Collapse OS has two special word types:
-alias and switches.
+alias and ialiases (indirect alias).
 
 An alias is a variable that contains a pointer to another word.
 When invoked, we invoke the specified pointer with minimal over-
@@ -74,18 +74,18 @@ with "' _FOO :* FOO". Invoking FOO will then invoke "_FOO". You
 can change the alias' pointer with "*!" like this:
 "' BAR ' FOO *!". FOO now invokes BAR.
 
-A switch is like an alias, but with a second level of indi-
+A ialias is like an alias, but with a second level of indi-
 rection. The variable points to a cell pointing to our word.
 It works like an alias, except you have to use ":**" and "**!".
-Switches are used by core code which point to hardcoded
+Ialiases are used by core code which point to hardcoded
 addresses in RAM (because the core code is designed to run from
 ROM, we can't have regular variables). You are unlikely to
-need switches in regular code.
+need ialiases in regular code.
 
 # Addressed devices
 
 A@, A! and A, are the indirect versions of C@, C! and C,. They
-are switch words and initially point to C@, C! and C,.
+are ialias words and initially point to C@, C! and C,.
 
 Addressed device words can be useful to "pipe" processing to
 places outside of regular memory.

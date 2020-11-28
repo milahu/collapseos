@@ -66,7 +66,7 @@ WORD(    a -- a   Get wordref's beginning addr.
 
 : x ... ;   --     Define a new word
 :* x        a --   Define a new alias
-:** x       a --   Define a new switch
+:** x       a --   Define a new ialias
 CREATE x    --     Create cell named x. Doesn't allocate a PF.
 [COMPILE] x --     *I* Compile word x and write it to HERE.
                    IMMEDIATE words are *not* executed.
@@ -164,7 +164,7 @@ C!       c a --          Store byte c in address a
 C!+      c a -- a+1      Store byte c in a and inc a.
 C!-      c a -- a-1      Store byte c in a and dec a.
 *!       a al --         Change alias al's addr to a.
-**!      a sw --         Change switch sw's addr to a.
+**!      a sw --         Change ialias sw's addr to a.
 CURRENT  -- a            Set a to wordref of last added entry.
 CURRENT* -- a            A pointer to active CURRENT*. Useful
                          when we have multiple active dicts.
@@ -185,7 +185,7 @@ MOVEW notes: this word's purpose is to interface with word-
 based systems. src and dst are addressed as *bytes* but u is a
 *word* count. Every iteration increases src and dst by 2. This
 shouldn't be used on regular memory, it will yield weird
-results. Use it with A! switch pointing to a word-based target.
+results. Use it with A! ialias pointing to a word-based target.
 
 # Arithmetic / Bits
 

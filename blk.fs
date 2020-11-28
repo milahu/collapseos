@@ -1123,7 +1123,7 @@ lblexec BSET L1 FSET ( B284 ) L2 FSET ( B286 )
     A ORr, IFZ, JP(HL), THEN,
     A DECr, ( compiled? ) IFNZ, ( no )
     3 CPi, IFZ, ( alias ) LDDE(HL), JR, lblexec BWR THEN,
-    IFNC, ( switch )
+    IFNC, ( ialias )
         LDDE(HL), EXDEHL, LDDE(HL), JR, lblexec BWR THEN,
     ( cell or does. push PFA ) HL PUSH,
     A DECr, JRZ, lblnext BWR ( cell )
@@ -1739,7 +1739,7 @@ with "390 LOAD"
 ( ----- 355 )
 : +! TUCK @ + SWAP ! ;
 : *! ( addr alias -- ) 1+ ! ;
-: **! ( addr switch -- ) 1+ @ ! ;
+: **! ( addr ialias -- ) 1+ @ ! ;
 : / /MOD NIP ;
 : MOD /MOD DROP ;
 : ALLOT HERE +! ;
@@ -2155,7 +2155,7 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 ( ----- 391 )
 ( Now we have "as late as possible" stuff. See bootstrap doc. )
 : :* ( addr -- ) (entry) 4 ( alias ) C, , ;
-: :** ( addr -- ) (entry) 5 ( switch ) C, , ;
+: :** ( addr -- ) (entry) 5 ( ialias ) C, , ;
 ( ----- 392 )
 : _bchk DUP 0x7f + 0xff > IF LIT" br ovfl" (print) ABORT THEN ;
 : DO COMPILE 2>R H@ ; IMMEDIATE
@@ -2599,8 +2599,8 @@ lblexec BSET ( DI -> wordref )
             DI PUSHx, JMPs, lblnext @ RPCs, THEN,
         AL DECr, IFZ, ( does )
             DI PUSHx, DI INCx, DI INCx, DI [DI] MOVx[], THEN,
-        ( alias or switch ) DI [DI] MOVx[],
-        AL DECr, IFNZ, ( switch ) DI [DI] MOVx[], THEN,
+        ( alias or ialias ) DI [DI] MOVx[],
+        AL DECr, IFNZ, ( ialias ) DI [DI] MOVx[], THEN,
         JMPs, lblexec @ RPCs,
     THEN, ( continue to compiled )
     BP INCx, BP INCx, [BP] 0 DX MOV[]+x, ( pushRS )

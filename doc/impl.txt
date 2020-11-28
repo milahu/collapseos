@@ -109,7 +109,7 @@ compiled word.
 4: alias. See usage.txt. PFA is like a cell, but instead of
 pushing it to PS, we execute it.
 
-5: switch. Same as alias, but with an added indirection.
+5: ialias. Same as alias, but with an added indirection.
 
 # System variables
 
