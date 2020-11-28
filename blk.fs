@@ -1130,16 +1130,17 @@ lblexec BSET L1 FSET ( B284 ) L2 FSET ( B286 )
     HL INCd, HL INCd, LDDE(HL), EXDEHL, ( does )
     THEN, ( continue to compiledWord )
 ( ----- 289 )
-( compiled word
+( compiled word. HL points to its first wordref, which we'll
+  execute now.
   1. Push current IP to RS
-  2. Set new IP to the second atom of the list
-  3. Execute the first atom of the list. )
+  2. Set new IP to PFA+2
+  3. Execute wordref )
     IX INCd, IX INCd,
     0 IX+ C LDIXYr,
     1 IX+ B LDIXYr,
 ( While we inc, dereference into DE for execute call later. )
-    LDDE(HL),
-    HL INCd,
+    LDDE(HL), ( DE is new wordref )
+    HL INCd, ( HL is new PFA+2 )
     B H LDrr, C L LDrr, ( --> IP )
     JR, lblexec BWR ( execute-B287 )
 ( ----- 290 )

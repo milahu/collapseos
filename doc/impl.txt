@@ -12,29 +12,12 @@ it. As a general rule, we go like this:
 5. If yes, push that number to PS, goto 1
 6. Error: undefined word.
 
-# Executing a word
+# What is a word?
 
-At its core, executing a word is pushing the wordref on PS and
-calling EXECUTE. Then, we let the word do its things. Some
-words are special, but most of them are of the "compiled"
-type (regular nonnative word), and that's their execution that
-we describe here.
-
-First of all, at all time during execution, the Interpreter
-Pointer (IP) points to the wordref we're executing next.
-
-When we execute a compiled word, the first thing we do is push
-IP to the Return Stack (RS). Therefore, RS' top of stack will
-contain a wordref to execute next, after we EXIT.
-
-At the end of every compiled word is an EXIT. This pops RS, sets
-IP to it, and continues.
-
-A compiled word is simply a list of wordrefs, but not all those
-wordrefs are 2 bytes in length. Some wordrefs are special. For
-example, a reference to (n) will be followed by an extra 2 bytes
-number. It's the responsibility of the (n) word to advance IP
-by 2 extra bytes.
+A word is a place in memory having a particular structure. Its
+first byte is a "word type" byte (see below), followed by a
+structure that depends on the word type. This structure is
+generally refered to as the Parameter Field (PF).
 
 # Stack management
 
@@ -84,6 +67,10 @@ The entry type is simply a number corresponding to a type which
 will determine how the word will be executed. See "Word types"
 below.
 
+The vast majority of the time, a dictionary entry refers to a
+word. However, sometimes, it refers to something else. A "hook
+word" (see bootstrap.txt) is such an example.
+
 # Word types
 
 There are 6 word types in Collapse OS. Whenever you have a
@@ -94,7 +81,7 @@ number is the word type and the word's behavior depends on it.
 jumped to directly.
 
 1: compiled. This word's PFA contains a list of wordrefs and its
-execution is described in "Execution model" above.
+execution is described in "Executing a compiled word" below.
 
 2: cell. This word is usually followed by a 2-byte value in its
 PFA. Upon execution, the address of the PFA is pushed to PS.
@@ -110,6 +97,51 @@ compiled word.
 pushing it to PS, we execute it.
 
 5: ialias. Same as alias, but with an added indirection.
+
+# Executing a compiled word
+
+At its core, executing a word is pushing the wordref on PS and
+calling EXECUTE. Then, we let the word do its things. Some
+words are special, but most of them are of the "compiled"
+type, and that's their execution that we describe here.
+
+First of all, at all time during execution, the Interpreter
+Pointer (IP) points to the wordref we're executing next.
+
+When we execute a compiled word, the first thing we do is push
+IP to the Return Stack (RS). Therefore, RS' top of stack will
+contain a wordref to execute next, after we EXIT.
+
+At the end of every compiled word is an EXIT. This pops RS, sets
+IP to it, and continues.
+
+A compiled word is simply a list of wordrefs, but not all those
+wordrefs are 2 bytes in length. Some wordrefs are special. For
+example, a reference to (n) will be followed by an extra 2 bytes
+number. It's the responsibility of the (n) word to advance IP
+by 2 extra bytes.
+
+To be clear: It's not (n)'s word type that is special, it's a
+regular "native" word. It's the compilation of the (n) type,
+done in LITN, that is special. We manually compile a number
+constant at compilation time, which is what is expected in (n)'s
+implementation. Similar special things happen in (s), (br),
+(?br) and (loop).
+
+For example, the word defined by ": FOO 42 EMIT ;" would have
+an 8 bytes PF: a 2b ref to (n), 2b with 0x002a, a 2b ref to EMIT
+and then a 2b ref to EXIT.
+
+When executing this word, we first set IP to PF+2, then exec
+PF+0, that is, the (n) reference. (n), when executing, reads IP,
+pushes that value to PS, then advances IP by 2. This means that
+when we return to the "next" routine, IP points to PF+4, which
+next will execute. Before executing, IP is increased by 2, but
+it's the "not-increased" value (PF+4) that is executed, that is,
+EMIT. EMIT does its thing, doesn't touch IP, then returns to
+"next". We're still at PF+6, which then points to EXIT. EXIT
+pops RS into IP, which is the value that IP had before FOO was
+called. The "next" dance continues...
 
 # System variables
 
