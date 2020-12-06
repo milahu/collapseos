@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <unistd.h>
 #include <termios.h>
+#define MAX_ROMSIZE 0x2000
 #include "emul.h"
 #include "acia.h"
 #include "sio.h"
@@ -24,7 +25,6 @@
 #define SIO_ADATA_PORT 0x81
 #define SDC_CTL 0x05
 #define SDC_SPI 0x04
-#define MAX_ROMSIZE 0x2000
 
 bool use_sio = false;
 static ACIA acia;
@@ -123,7 +123,7 @@ static void _write(uint8_t val)
 
 static void usage()
 {
-    fprintf(stderr, "Usage: ./classic [-s] [-c sdcard.img] /path/to/rom\n");
+    fprintf(stderr, "Usage: ./rc2014 [-s] [-c sdcard.img] /path/to/rom\n");
 }
 
 int main(int argc, char *argv[])
@@ -159,23 +159,9 @@ int main(int argc, char *argv[])
         usage();
         return 1;
     }
-    fp = fopen(argv[optind], "r");
-    if (fp == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[1]);
-        return 1;
-    }
-    Machine *m = emul_init();
+    Machine *m = emul_init(argv[optind], 0);
+    if (m == NULL) return 1;
     m->ramstart = RAMSTART;
-    int i = 0;
-    int c;
-    while ((c = fgetc(fp)) != EOF && i < MAX_ROMSIZE) {
-        m->mem[i++] = c & 0xff;
-    }
-    pclose(fp);
-    if (i == MAX_ROMSIZE) {
-        fprintf(stderr, "ROM image too large.\n");
-        return 1;
-    }
     bool tty = isatty(fileno(stdin));
     struct termios term, saved_term;
     if (tty) {

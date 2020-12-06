@@ -76,7 +76,7 @@ static void iowr_sety(uint8_t val)
 
 int main(int argc, char *argv[])
 {
-    Machine *m = emul_init();
+    Machine *m = emul_init(NULL, 0);
     if (m == NULL) {
         return 1;
     }

@@ -14,6 +14,7 @@
 #define XK_MISCELLANY
 #include <X11/keysymdef.h>
 
+#define MAX_ROMSIZE 0x4000
 #include "emul.h"
 #include "t6a04.h"
 #include "ti84_kbd.h"
@@ -23,7 +24,6 @@
 #define INTERRUPT_PORT 0x03
 #define LCD_CMD_PORT 0x10
 #define LCD_DATA_PORT 0x11
-#define MAX_ROMSIZE 0x4000
 
 static xcb_connection_t    *conn;
 static xcb_screen_t        *screen;
@@ -288,23 +288,9 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Usage: ./ti84 /path/to/rom\n");
         return 1;
     }
-    FILE *fp = fopen(argv[1], "r");
-    if (fp == NULL) {
-        fprintf(stderr, "Can't open %s\n", argv[1]);
-        return 1;
-    }
-    m = emul_init();
+    m = emul_init(argv[1], 0);
+    if (m == NULL) return 1;
     m->ramstart = RAMSTART;
-    int i = 0;
-    int c;
-    while ((c = fgetc(fp)) != EOF && i < MAX_ROMSIZE) {
-        m->mem[i++] = c & 0xff;
-    }
-    pclose(fp);
-    if (i == MAX_ROMSIZE) {
-        fprintf(stderr, "ROM image too large.\n");
-        return 1;
-    }
     t6a04_init(&lcd);
     kbd_init(&kbd);
     lcd_changed = false;

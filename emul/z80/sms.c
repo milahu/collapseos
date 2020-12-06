@@ -7,6 +7,7 @@
 #define XK_MISCELLANY
 #include <X11/keysymdef.h>
 
+#define MAX_ROMSIZE 0x8000
 #include "emul.h"
 #include "sms_vdp.h"
 #include "sms_ports.h"
@@ -23,7 +24,6 @@
 #define PORTS_IO2_PORT 0xdd
 #define SDC_CTL 0x05
 #define SDC_SPI 0x04
-#define MAX_ROMSIZE 0x8000
 
 static xcb_connection_t    *conn;
 static xcb_screen_t        *screen;
@@ -334,18 +334,9 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Can't open %s\n", argv[1]);
         return 1;
     }
-    m = emul_init();
+    m = emul_init(argv[optind], 0);
+    if (m == NULL) return 1;
     m->ramstart = RAMSTART;
-    int i = 0;
-    int c;
-    while ((c = fgetc(fp)) != EOF && i < MAX_ROMSIZE) {
-        m->mem[i++] = c & 0xff;
-    }
-    pclose(fp);
-    if (c != EOF) {
-        fprintf(stderr, "ROM image too large.\n");
-        return 1;
-    }
     if (use_kbd) {
         ports.portA_rd = iord_kbd;
     } else {

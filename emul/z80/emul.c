@@ -82,7 +82,7 @@ static void mem_write(int unused, uint16_t addr, uint8_t val)
     m.mem[addr] = val;
 }
 
-Machine* emul_init()
+Machine* emul_init(char *binpath, ushort binoffset)
 {
     fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
     blkfp = fopen(BLKFS_PATH, "r+");
@@ -99,14 +99,24 @@ Machine* emul_init()
     fseek(blkfp, 0, SEEK_SET);
     // initialize memory
     memset(m.mem, 0, 0x10000);
-    FILE *bfp = fopen(FBIN_PATH, "r");
+    if (binpath == NULL) {
+        binpath = FBIN_PATH;
+    }
+    FILE *bfp = fopen(binpath, "r");
     if (!bfp) {
-        fprintf(stderr, "Can't open forth.bin\n");
+        fprintf(stderr, "Can't open %s\n", binpath);
         return NULL;
     }
-    int i = 0;
+    int i = binoffset;
     int c = getc(bfp);
     while (c != EOF) {
+#ifdef MAX_ROMSIZE
+        if (i >= MAX_ROMSIZE) {
+            fprintf(stderr, "ROM image too large.\n");
+            fclose(fp);
+            return NULL;
+        }
+#endif
         m.mem[i++] = c;
         c = getc(bfp);
     }
@@ -118,6 +128,7 @@ Machine* emul_init()
         m.iord[i] = NULL;
         m.iowr[i] = NULL;
     }
+    m.pchooks_cnt = 0;
     Z80RESET(&m.cpu);
     m.cpu.memRead = mem_read;
     m.cpu.memWrite = mem_write;
@@ -142,6 +153,12 @@ bool emul_step()
         }
         if (m.cpu.R1.wr.IX > m.maxix) {
             m.maxix = m.cpu.R1.wr.IX;
+        }
+        for (int i=0; i<m.pchooks_cnt; i++) {
+            if (m.cpu.PC == m.pchooks[i]) {
+                m.pchookfunc(&m);
+                break;
+            }
         }
         return true;
     } else {
