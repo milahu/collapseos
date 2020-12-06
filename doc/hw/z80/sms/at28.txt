@@ -1,0 +1,26 @@
+# Writing to a AT28 from a SMS
+
+Writing on the EEPROM that is currently running Collapse OS is
+as easy as enabling the WE pin on your hacked up cartridge. How-
+ever, this is not practical: If you want to deploy Collapse OS
+(or something else) to another machine, or even if you want to
+upgrade your current Collapse OS, you will likely want to write
+to another EEPROM.
+
+The easiest way to do so is to build yourself a dual EEPROM
+cartridge. It's very similar to a simple cartridge, except it
+has two AT28 sockets and a '139 decoder to select between the
+two.
+
+The design proposed here sacrifices access to the upper 16K of 
+your AT28C256 for the sake of simplicity because it uses A14 as
+the chip selector. Therefore, addrs 0x0000-0x3fff belong to the
+first chip and 0x4000-0x7fff belong to the second.
+
+You can see the schematic in dual-at28.jpg.
+
+The schematic enables WE on both EEPROMs, but in my actual
+prototype, I hard-wired the first chip's WE to high because I
+never want to write to it, despite bugs I might introduce in
+hardware or software (I try a lot of dangerous stuff on my
+machines...).
