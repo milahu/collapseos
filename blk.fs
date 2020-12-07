@@ -2204,11 +2204,10 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 ':' X' _ 4 - C! ( give : its name )
 '(' X' _ 4 - C!
 ( ----- 400 )
-( With dst being assumed to be an AT28 EEPROM, perform !
+( With dst being assumed to be an AT28 EEPROM, perform C!
   operation while doing the right thing. Checks data integrity
   and ABORT on mismatch. )
-: AT28! ( n a -- )
-    2DUP C!
+: _ ( n a -- wait until addr is "stable", err on mismatch )
     ( as long as writing operation is running, IO/6 will toggle
       at each read attempt. We know that write is finished when
       we read the same value twice. )
@@ -2217,8 +2216,9 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
         OVER C@     ( n1 a n2 n3 )
     = UNTIL
     ( We're finished writing. do we have a mismatch? )
-    C@ = NOT IF ABORT" mismatch" THEN
-;
+    C@ SWAP 0xff AND = NOT IF ABORT" mismatch" THEN ;
+: AT28! ( n a -- ) 2DUP C! _ ;
+: AT28, ( n -- ) H@ 2DUP C! DUP 1+ HERE ! _ ;
 ( ----- 401 )
 Grid subsystem
 
