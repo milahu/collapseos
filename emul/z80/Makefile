@@ -13,7 +13,7 @@ BLKFS = $(CDIR)/blkfs
 all: $(TARGETS)
 
 forth: forth.c $(OBJS) $(BLKFS)
-	$(CC) forth.c $(OBJS) -lcurses -o $@
+	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" forth.c $(OBJS) -lcurses -o $@
 
 rc2014: rc2014.c $(RC2014_OBJS)
 	$(CC) rc2014.c $(RC2014_OBJS) -o $@
@@ -28,7 +28,7 @@ trs80: trs80.c $(TRS80_OBJS)
 	$(CC) trs80.c $(TRS80_OBJS) -lcurses -o $@
 
 emul.o: emul.c forth.bin $(BLKFS)
-	$(CC) -DFBIN_PATH=\"`pwd`/forth.bin\" -DBLKFS_PATH=\"`pwd`/$(BLKFS)\" -c -o emul.o emul.c
+	$(CC) -c -o emul.o emul.c
 
 forth.bin: xcomp.fs $(STAGE) $(BLKFS)
 	$(CDIR)/stage < xcomp.fs > $@

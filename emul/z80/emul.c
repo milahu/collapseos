@@ -1,29 +1,11 @@
-/* Common code between forth and stage binaries.
-
-They all run on the same kind of virtual machine: A z80 CPU, 64K of RAM/ROM.
+/* Common code between all z80 emulators
 */
 
 #include <string.h>
 #include "emul.h"
-// Port for block reads. Each read or write has to be done in 5 IO writes:
-// 1 - r/w. 1 for read, 2 for write.
-// 2 - blkid MSB
-// 3 - blkid LSB
-// 4 - dest addr MSB
-// 5 - dest addr LSB
-#define BLK_PORT 0x03
-
-#ifndef BLKFS_PATH
-#error BLKFS_PATH needed
-#endif
-#ifndef FBIN_PATH
-#error FBIN_PATH needed
-#endif
 
 static Machine m;
 static ushort traceval = 0;
-static uint64_t blkop = 0; // 5 bytes
-static FILE *blkfp;
 
 static uint8_t io_read(int unused, uint16_t addr)
 {
@@ -48,24 +30,6 @@ static void io_write(int unused, uint16_t addr, uint8_t val)
     }
 }
 
-static void iowr_blk(uint8_t val)
-{
-    blkop <<= 8;
-    blkop |= val;
-    uint8_t rw = blkop >> 32;
-    if (rw) {
-        uint16_t blkid = (blkop >> 16);
-        uint16_t dest = blkop & 0xffff;
-        blkop = 0;
-        fseek(blkfp, blkid*1024, SEEK_SET);
-        if (rw==2) { // write
-            fwrite(&m.mem[dest], 1024, 1, blkfp);
-        } else { // read
-            fread(&m.mem[dest], 1024, 1, blkfp);
-        }
-    }
-}
-
 static uint8_t mem_read(int unused, uint16_t addr)
 {
     return m.mem[addr];
@@ -84,24 +48,8 @@ static void mem_write(int unused, uint16_t addr, uint8_t val)
 
 Machine* emul_init(char *binpath, ushort binoffset)
 {
-    fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
-    blkfp = fopen(BLKFS_PATH, "r+");
-    if (!blkfp) {
-        fprintf(stderr, "Can't open\n");
-        return NULL;
-    }
-    fseek(blkfp, 0, SEEK_END);
-    if (ftell(blkfp) < 100 * 1024) {
-        fclose(blkfp);
-        fprintf(stderr, "emul/blkfs too small, something's wrong, aborting.\n");
-        return NULL;
-    }
-    fseek(blkfp, 0, SEEK_SET);
     // initialize memory
     memset(m.mem, 0, 0x10000);
-    if (binpath == NULL) {
-        binpath = FBIN_PATH;
-    }
     FILE *bfp = fopen(binpath, "r");
     if (!bfp) {
         fprintf(stderr, "Can't open %s\n", binpath);
@@ -134,13 +82,7 @@ Machine* emul_init(char *binpath, ushort binoffset)
     m.cpu.memWrite = mem_write;
     m.cpu.ioRead = io_read;
     m.cpu.ioWrite = io_write;
-    m.iowr[BLK_PORT] = iowr_blk;
     return &m;
-}
-
-void emul_deinit()
-{
-    fclose(blkfp);
 }
 
 bool emul_step()

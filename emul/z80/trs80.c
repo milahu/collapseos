@@ -11,6 +11,7 @@
 #define BINSTART 0x3000
 
 WINDOW *bw, *dw, *w;
+static FILE *blkfp = NULL;
 
 void debug_panel()
 {
@@ -40,22 +41,36 @@ static void pchookfunc(Machine *m)
             wmove(w, y, x-1);
         }
         break;
-    case 0x03: // @GET
-        break;
-    case 0x04: // @PUT
-        break;
     case 0x0f: // @VDCTL
         wmove(w, m->cpu.R1.br.H, m->cpu.R1.br.L);
         break;
     case 0x16: // @EXIT
-        break;
-    case 0x1a: // @ERROR
+        m->cpu.halted = true;
         break;
     case 0x28: // @DCSTAT
+        // set Z to indicate floppy presence
+        if (blkfp != NULL) {
+            m->cpu.R1.br.F |= F_Z;
+        } else {
+            m->cpu.R1.br.F &= ~F_Z;
+        }
         break;
+    // 0x100b per sector. 10 sector per cylinder, 40 cylinders per floppy.
+    // TODO: support swapping floppies. only 1 floppy for now.
     case 0x31: // @RDSEC
-        break;
     case 0x35: // @WRSEC
+        if (blkfp != NULL) {
+            fseek(
+                blkfp, /* D = cylinder, E = sector */
+                ((m->cpu.R1.br.D * 10) + m->cpu.R1.br.E) * 0x100,
+                SEEK_SET);
+            if (m->cpu.R1.br.A == 0x31) { // @RDSEC
+                fread(&m->mem[m->cpu.R1.wr.HL], 0x100, 1, blkfp);
+            } else {
+                fwrite(&m->mem[m->cpu.R1.wr.HL], 0x100, 1, blkfp);
+            }
+            m->cpu.R1.br.F |= F_Z;
+        }
         break;
     default:
         fprintf(stderr, "Unhandled RST28: %x\n", m->cpu.R1.br.A);
@@ -64,7 +79,7 @@ static void pchookfunc(Machine *m)
 
 static void usage()
 {
-    fprintf(stderr, "Usage: ./trs80 /path/to/rom\n");
+    fprintf(stderr, "Usage: ./trs80 [-f floppies.img] /path/to/rom\n");
 }
 
 int main(int argc, char *argv[])
@@ -73,7 +88,24 @@ int main(int argc, char *argv[])
         usage();
         return 1;
     }
-    Machine *m = emul_init(argv[1], BINSTART);
+    int ch;
+    while ((ch = getopt(argc, argv, "f:")) != -1) {
+        switch (ch) {
+            case 'f':
+                fprintf(stderr, "Setting up floppies image with %s\n", optarg);
+                blkfp = fopen(optarg, "r+");
+                if (blkfp == NULL) {
+                    fprintf(stderr, "Can't open file\n");
+                    return 1;
+                }
+                break;
+        }
+    }
+    if (optind != argc-1) {
+        usage();
+        return 1;
+    }
+    Machine *m = emul_init(argv[optind], BINSTART);
     if (m == NULL) return 1;
     m->ramstart = RAMSTART;
     m->pchookfunc = pchookfunc;
@@ -98,6 +130,5 @@ int main(int argc, char *argv[])
     printf("\nDone!\n");
     emul_printdebug();
     printf("PC: %x\n", m->cpu.PC);
-    emul_deinit();
     return 0;
 }

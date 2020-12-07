@@ -13,12 +13,22 @@
 // This binary is also used for automated tests and those tests, when
 // failing, send a non-zero value to RET_PORT to indicate failure
 #define RET_PORT 0x01
+// Port for block reads. Each read or write has to be done in 5 IO writes:
+// 1 - r/w. 1 for read, 2 for write.
+// 2 - blkid MSB
+// 3 - blkid LSB
+// 4 - dest addr MSB
+// 5 - dest addr LSB
+#define BLK_PORT 0x03
 #define SETX_PORT 0x05
 #define SETY_PORT 0x06
 
+static Machine *m;
 static FILE *fp;
 static int retcode = 0;
 WINDOW *bw, *dw, *w;
+static uint64_t blkop = 0; // 5 bytes
+static FILE *blkfp;
 
 void debug_panel()
 {
@@ -57,6 +67,24 @@ static void iowr_stdio(uint8_t val)
     }
 }
 
+static void iowr_blk(uint8_t val)
+{
+    blkop <<= 8;
+    blkop |= val;
+    uint8_t rw = blkop >> 32;
+    if (rw) {
+        uint16_t blkid = (blkop >> 16);
+        uint16_t dest = blkop & 0xffff;
+        blkop = 0;
+        fseek(blkfp, blkid*1024, SEEK_SET);
+        if (rw==2) { // write
+            fwrite(&m->mem[dest], 1024, 1, blkfp);
+        } else { // read
+            fread(&m->mem[dest], 1024, 1, blkfp);
+        }
+    }
+}
+
 static void iowr_ret(uint8_t val)
 {
     retcode = val;
@@ -76,7 +104,20 @@ static void iowr_sety(uint8_t val)
 
 int main(int argc, char *argv[])
 {
-    Machine *m = emul_init(NULL, 0);
+    fprintf(stderr, "Using blkfs %s\n", BLKFS_PATH);
+    blkfp = fopen(BLKFS_PATH, "r+");
+    if (!blkfp) {
+        fprintf(stderr, "Can't open\n");
+        return 1;
+    }
+    fseek(blkfp, 0, SEEK_END);
+    if (ftell(blkfp) < 100 * 1024) {
+        fclose(blkfp);
+        fprintf(stderr, "emul/blkfs too small, something's wrong, aborting.\n");
+        return 1;
+    }
+    fseek(blkfp, 0, SEEK_SET);
+    m = emul_init(FBIN_PATH, 0);
     if (m == NULL) {
         return 1;
     }
@@ -84,6 +125,7 @@ int main(int argc, char *argv[])
     m->iord[STDIO_PORT] = iord_stdio;
     m->iowr[STDIO_PORT] = iowr_stdio;
     m->iowr[RET_PORT] = iowr_ret;
+    m->iowr[BLK_PORT] = iowr_blk;
     m->iowr[SETX_PORT] = iowr_setx;
     m->iowr[SETY_PORT] = iowr_sety;
     w = NULL;
@@ -116,6 +158,6 @@ int main(int argc, char *argv[])
         fprintf(stderr, "Usage: ./forth [filename]\n");
         retcode = 1;
     }
-    emul_deinit();
+    fclose(blkfp);
     return retcode;
 }

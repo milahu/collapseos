@@ -25,4 +25,4 @@ $(EMUL):
 
 .PHONY: emul
 emul: $(EMUL) $(TARGET)
-	$(EMUL) $(TARGET)
+	$(EMUL) -f blkfs $(TARGET)

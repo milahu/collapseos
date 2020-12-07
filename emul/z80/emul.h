@@ -37,7 +37,6 @@ typedef enum {
 } Tristate;
 
 Machine* emul_init(char *binpath, ushort binoffset);
-void emul_deinit();
 bool emul_step();
 bool emul_steps(unsigned int steps);
 void emul_loop();
