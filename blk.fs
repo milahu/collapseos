@@ -315,7 +315,7 @@ CREATE lblnext 0 , ( stable ABI until set in B300 )
     -^ 1-           ( l off )
     ( warning: l is a PC offset, not a mem addr! )
     SWAP ORG @ + BIN( @ - ( off addr )
-    C! ;
+    A! ;
 ( ----- 027 )
 : FWR BSET 0 A, ;
 : FSET @ THEN, ;
@@ -457,14 +457,11 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     -^ 1-           ( l off )
     ( warning: l is a PC offset, not a mem addr! )
     SWAP ORG @ + BIN( @ - ( off addr )
-    C! ;
+    A! ;
 ( ----- 042 )
 : FWRs BSET 0 A, ;
 : FSET @ THEN, ;
-( : BREAK, FJR, 0x8000 OR ;
-: BREAK?, DUP 0x8000 AND IF
-        0x7fff AND 1 ALLOT THEN, -1 ALLOT
-    THEN ; )
+( TODO: add BREAK, )
 : RPCs, PC - 1- DUP 128 + 0xff > IF ABORT" PC ovfl" THEN A, ;
 : RPCn, PC - 2- A,, ;
 : AGAIN, ( BREAK?, ) RPCs, ;
@@ -597,7 +594,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : LBL! ( l -- ) PC SWAP ! ;
 : LBL, ( l op -- ) SWAP @ 1- SWAP EXECUTE A,, ;
 : SKIP, PC 0 A,, ;
-: TO, ( opw pc )
+: TO, ( opw pc ) ( TODO: use A! instead of ! )
     ( warning: pc is a PC offset, not a mem addr! )
     2 * ORG @ + PC 1- H@ ( opw addr tgt hbkp )
     ROT HERE ! ( opw tgt hbkp ) SWAP ROT EXECUTE H@ ! ( hbkp )
