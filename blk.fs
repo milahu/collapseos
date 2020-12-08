@@ -300,11 +300,10 @@ CREATE lblnext 0 , ( stable ABI until set in B300 )
 : IFC, JRNC, FJR, ;
 : IFNC, JRC, FJR, ;
 : THEN,
-    DUP PC          ( l l pc )
-    -^ 1-           ( l off )
+    DUP PC ( l l pc ) -^ 1- ( l off )
     ( warning: l is a PC offset, not a mem addr! )
-    SWAP ORG @ + BIN( @ - ( off addr )
-    C! ;
+    SWAP ORG @ + BIN( @ - ( off addr ) C! ;
+: ELSE, JR, FJR, SWAP THEN, ;
 ( ----- 027 )
 : FWR BSET 0 C, ;
 : FSET @ THEN, ;

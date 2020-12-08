@@ -87,6 +87,11 @@ the opposite condition is met, a relative jump is made to
 THEN,'s PC. For example, if you have IFZ, a jump is made when
 Z is unset.
 
+There can be an ELSE, in the middle of an IF, and THEN,. When
+present, IF, jumps to it when the condition is unmet. When the
+condition is met, upon reaching the ELSE, we unconditionally
+jump to the THEN,.
+
 On the BEGIN,..AGAIN, side, it's a bit different. You start
 with your BEGIN, instruction, and then later you issue a
 JRxx, instr followed by AGAIN,. Exactly like you would do
@@ -96,7 +101,7 @@ On top of that, you have the very nice BREAK, instruction,
 which must also be preceded by a JRxx, and will jump to the
 PC following the next AGAIN,. Examples:
 
-IFZ, NOP, THEN,
+IFZ, NOP, ELSE, NOP, THEN,
 BEGIN, NOP, JR, AGAIN, ( unconditional )
 BEGIN, NOP, JRZ, AGAIN, ( conditional )
 BEGIN, NOP, JRZ, BREAK, JR, AGAIN, ( break off the loop )
