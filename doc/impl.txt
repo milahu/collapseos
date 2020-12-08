@@ -159,9 +159,9 @@ offsets, but thankfully, there aren't many system variables.
 Here's a list of them:
 
 SYSVARS   FUTURE USES          +3c       BLK(*
-+02       CURRENT              +3e       A@ ialias
-+04       HERE                 +40       A! ialias
-+06       C<?                  +42       A, ialias
++02       CURRENT              +3e       C@*
++04       HERE                 +40       C!*
++06       C<?                  +42       C,*
 +08       C<* override         +44       FUTURE USES
 +0a       NL ialias            +51       CURRENTPTR
 +0c       C<*                  +53       EMIT ialias
@@ -226,9 +226,9 @@ few things:
      EMIT -> (emit)
      KEY  -> (key)
      NL   -> CRLF
-     A@   -> C@
-     A!   -> C!
-     A,   -> C,
+     C@*  -> C@
+     C!*  -> C!
+     C,*  -> C,
 3. Set "C<*", the word that C< calls, to (boot<).
 4. Call INTERPRET which interprets boot source code until
    ASCII EOT (4) is met. This usually initializes drivers.

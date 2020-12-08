@@ -31,12 +31,14 @@ I don't think you need a schematic. It's really simple.
 
 # Writing contents to the AT28
 
-There is an AT28! writer word in B400 which is A!-compatible
-(see "Addressed devices" in doc/usage.txt) and and waits until
-the write is complete before returning. If you use C! directly,
-bytes you write might not have the time to completely write
-themselves before you write another one.
+There is an AT28! writer word in B400 which is C!*-compatible
+(see "Indirect memory access" in doc/usage.txt) and and waits
+until the write is complete before returning. If you use C!
+directly, bytes you write might not have the time to completely
+write themselves before you write another one.
 
-To use, set A! with "' AT28! ' A! **!". Once this is done, you
-can use MOVE, or /tools/upload, both will call A! and do the
-right thing. Unset A! with "' C! ' A! **!" afterwards.
+To use, set C!* with "' AT28! ' C!* **!". Once this is done, you
+can use MOVE, or /tools/upload, both will call C!* and do the
+right thing. Unset C!* with "' C! ' C!* **!" afterwards.
+
+B400 also has AT28, which is the same as AT28!, but for C,.

@@ -58,19 +58,19 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     256 /MOD SWAP
 ;
 : PC H@ ORG @ - BIN( @ + ;
-( A, spits an assembled byte, A,, spits an assembled word
+( C,* spits an assembled byte, A,, spits an assembled word
   Both increase PC. )
-: A,, SPLITB A, A, ;
+: A,, SPLITB C,* C,* ;
 : <<3 3 LSHIFT ;    : <<4 4 LSHIFT ;
 ( As a general rule, IX and IY are equivalent to spitting an
   extra 0xdd / 0xfd and then spit the equivalent of HL )
-: IX 0xdd A, HL ; : IY 0xfd A, HL ;
-: _ix+- 0xff AND 0xdd A, (HL) ;
-: _iy+- 0xff AND 0xfd A, (HL) ;
+: IX 0xdd C,* HL ; : IY 0xfd C,* HL ;
+: _ix+- 0xff AND 0xdd C,* (HL) ;
+: _iy+- 0xff AND 0xfd C,* (HL) ;
 : IX+ _ix+- ; : IX- 0 -^ _ix+- ;
 : IY+ _iy+- ; : IY- 0 -^ _iy+- ;
 ( ----- 008 )
-: OP1 CREATE C, DOES> C@ A, ;
+: OP1 CREATE C, DOES> C@ C,* ;
 0xf3 OP1 DI,                   0xfb OP1 EI,
 0xeb OP1 EXDEHL,               0xd9 OP1 EXX,
 0x08 OP1 EXAFAF',              0xe3 OP1 EX(SP)HL,
@@ -99,22 +99,22 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     C@              ( r op )
     SWAP            ( op r )
     <<3             ( op r<<3 )
-    OR A,
+    OR C,*
 ;
 0x04 OP1r INCr,                0x05 OP1r DECr,
-: INC(IXY+), INCr, A, ;
-: DEC(IXY+), DECr, A, ;
+: INC(IXY+), INCr, C,* ;
+: DEC(IXY+), DECr, C,* ;
 ( also works for c )
 0xc0 OP1r RETc,
 ( ----- 011 )
 : OP1r0 ( r -- )
     CREATE C, DOES>
-    C@ ( r op ) OR A, ;
+    C@ ( r op ) OR C,* ;
 0x80 OP1r0 ADDr,               0x88 OP1r0 ADCr,
 0xa0 OP1r0 ANDr,               0xb8 OP1r0 CPr,
 0xb0 OP1r0 ORr,                0x90 OP1r0 SUBr,
 0x98 OP1r0 SBCr,               0xa8 OP1r0 XORr,
-: CP(IXY+), CPr, A, ;
+: CP(IXY+), CPr, C,* ;
 ( ----- 012 )
 : OP1d
     CREATE C,
@@ -122,20 +122,20 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     C@              ( d op )
     SWAP            ( op d )
     <<4             ( op d<<4 )
-    OR A,
+    OR C,*
 ;
 0xc5 OP1d PUSH,                0xc1 OP1d POP,
 0x03 OP1d INCd,                0x0b OP1d DECd,
 0x09 OP1d ADDHLd,
 
-: ADDIXd, 0xdd A, ADDHLd, ;  : ADDIXIX, HL ADDIXd, ;
-: ADDIYd, 0xfd A, ADDHLd, ;  : ADDIYIY, HL ADDIYd, ;
+: ADDIXd, 0xdd C,* ADDHLd, ;  : ADDIXIX, HL ADDIXd, ;
+: ADDIYd, 0xfd C,* ADDHLd, ;  : ADDIYIY, HL ADDIYd, ;
 ( ----- 013 )
 : _1rr
     C@              ( rd rr op )
     ROT             ( rr op rd )
     <<3             ( rr op rd<<3 )
-    OR OR A,
+    OR OR C,*
 ;
 
 ( rd rr )
@@ -150,7 +150,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : LDIXYr,
     ( dd/fd has already been spit )
     LDrr,           ( ixy+- )
-    A,
+    C,*
 ;
 
 ( rd ixy+- HL )
@@ -160,7 +160,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     LDIXYr,
 ;
 ( ----- 015 )
-: OP2 CREATE , DOES> @ 256 /MOD A, A, ;
+: OP2 CREATE , DOES> @ 256 /MOD C,* C,* ;
 0xeda1 OP2 CPI,                0xedb1 OP2 CPIR,
 0xeda9 OP2 CPD,                0xedb9 OP2 CPDR,
 0xed46 OP2 IM0,                0xed56 OP2 IM1,
@@ -173,7 +173,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : OP2i ( i -- )
     CREATE C,
     DOES>
-    C@ A, A,
+    C@ C,* C,*
 ;
 0xd3 OP2i OUTiA,
 0xdb OP2i INAi,
@@ -190,7 +190,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     C@              ( r i op )
     ROT             ( i op r )
     <<3             ( i op r<<3 )
-    OR A, A,
+    OR C,* C,*
 ;
 0x06 OP2ri LDri,
 ( ----- 018 )
@@ -198,11 +198,11 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : OP2br
     CREATE C,
     DOES>
-    0xcb A,
+    0xcb C,*
     C@              ( b r op )
     ROT             ( r op b )
     <<3             ( r op b<<3 )
-    OR OR A,
+    OR OR C,*
 ;
 0xc0 OP2br SET,
 0x80 OP2br RES,
@@ -212,9 +212,9 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : OProt ( r -- )
     CREATE C,
     DOES>
-    0xcb A,
+    0xcb C,*
     C@              ( r op )
-    OR A,
+    OR C,*
 ;
 0x10 OProt RL,
 0x00 OProt RLC,
@@ -230,9 +230,9 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     CREATE ,
     DOES>
     @ SPLITB SWAP   ( r lsb msb )
-    A,              ( r lsb )
+    C,*             ( r lsb )
     SWAP <<3        ( lsb r<<3 )
-    OR A,
+    OR C,*
 ;
 0xed41 OP2r OUT(C)r,
 0xed40 OP2r INr(C),
@@ -240,10 +240,10 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : OP2d ( d -- )
     CREATE C,
     DOES>
-    0xed A,
+    0xed C,*
     C@ SWAP         ( op d )
     <<4             ( op d<< 4 )
-    OR A,
+    OR C,*
 ;
 0x4a OP2d ADCHLd,
 0x42 OP2d SBCHLd,
@@ -255,7 +255,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     C@              ( d n op )
     ROT             ( n op d )
     <<4             ( n op d<<4 )
-    OR A,
+    OR C,*
     A,,
 ;
 0x01 OP3di LDdi,
@@ -264,7 +264,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : OP3i
     CREATE C,
     DOES>
-    C@ A,
+    C@ C,*
     A,,
 ;
 0xcd OP3i CALL,
@@ -273,21 +273,21 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 0x32 OP3i LD(i)A,              0x3a OP3i LDA(i),
 ( ----- 024 )
 : LDd(i), ( d i -- )
-    0xed A,
-    SWAP <<4 0x4b OR A,
+    0xed C,*
+    SWAP <<4 0x4b OR C,*
     A,,
 ;
 : LD(i)d, ( i d -- )
-    0xed A,
-    <<4 0x43 OR A,
+    0xed C,*
+    <<4 0x43 OR C,*
     A,,
 ;
-: RST, 0xc7 OR A, ;
+: RST, 0xc7 OR C,* ;
 
 : JP(IX), IX DROP JP(HL), ;
 : JP(IY), IY DROP JP(HL), ;
 ( ----- 025 )
-: JPc, SWAP <<3 0xc2 OR A, A,, ;
+: JPc, SWAP <<3 0xc2 OR C,* A,, ;
 : BCALL, BIN( @ + CALL, ;
 : BJP, BIN( @ + JP, ;
 : BJPc, BIN( @ + JPc, ;
@@ -305,7 +305,7 @@ CREATE lblnext 0 , ( stable ABI until set in B300 )
 : BEGIN, PC ;
 : BSET PC SWAP ! ;
 ( same as BSET, but we need to write a placeholder )
-: FJR, PC 0 A, ;
+: FJR, PC 0 C,* ;
 : IFZ, JRNZ, FJR, ;
 : IFNZ, JRZ, FJR, ;
 : IFC, JRNC, FJR, ;
@@ -315,15 +315,15 @@ CREATE lblnext 0 , ( stable ABI until set in B300 )
     -^ 1-           ( l off )
     ( warning: l is a PC offset, not a mem addr! )
     SWAP ORG @ + BIN( @ - ( off addr )
-    A! ;
+    C!* ;
 ( ----- 027 )
-: FWR BSET 0 A, ;
+: FWR BSET 0 C,* ;
 : FSET @ THEN, ;
 : BREAK, FJR, 0x8000 OR ;
 : BREAK?, DUP 0x8000 AND IF
         0x7fff AND 1 ALLOT THEN, -1 ALLOT
     THEN ;
-: AGAIN, BREAK?, PC - 1- A, ;
+: AGAIN, BREAK?, PC - 1- C,* ;
 : BWR @ AGAIN, ;
 ( ----- 028 )
 ( Macros )
@@ -359,9 +359,9 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     256 /MOD SWAP
 ;
 : PC H@ ORG @ - BIN( @ + ;
-: A,, SPLITB A, A, ;
+: A,, SPLITB C,* C,* ;
 ( ----- 033 )
-: OP1 CREATE C, DOES> C@ A, ;
+: OP1 CREATE C, DOES> C@ C,* ;
 0xc3 OP1 RET,        0xfa OP1 CLI,       0xfb OP1 STI,
 0xf4 OP1 HLT,        0xfc OP1 CLD,       0xfd OP1 STD,
 0x90 OP1 NOP,        0x98 OP1 CBW,
@@ -374,12 +374,12 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 0x75 OP1 JNZ,        0x72 OP1 JC,        0x73 OP1 JNC,
 0xe8 OP1 CALL,
 
-: OP1r CREATE C, DOES> C@ + A, ;
+: OP1r CREATE C, DOES> C@ + C,* ;
 0x40 OP1r INCx,      0x48 OP1r DECx,
 0x58 OP1r POPx,      0x50 OP1r PUSHx,
 ( ----- 034 )
 : OPr0 ( reg op ) CREATE C, C, DOES>
-    C@+ A, C@ <<3 OR 0xc0 OR A, ;
+    C@+ C,* C@ <<3 OR 0xc0 OR C,* ;
 0 0xd0 OPr0 ROLr1,   0 0xd1 OPr0 ROLx1,  4 0xf6 OPr0 MULr,
 1 0xd0 OPr0 RORr1,   1 0xd1 OPr0 RORx1,  4 0xf7 OPr0 MULx,
 4 0xd0 OPr0 SHLr1,   4 0xd1 OPr0 SHLx1,  6 0xf6 OPr0 DIVr,
@@ -389,65 +389,65 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 4 0xd2 OPr0 SHLrCL,  4 0xd3 OPr0 SHLxCL,
 5 0xd2 OPr0 SHRrCL,  5 0xd3 OPr0 SHRxCL,
 ( ----- 035 )
-: OPrr CREATE C, DOES> C@ A, <<3 OR 0xc0 OR A, ;
+: OPrr CREATE C, DOES> C@ C,* <<3 OR 0xc0 OR C,* ;
 0x31 OPrr XORxx,     0x30 OPrr XORrr,
 0x88 OPrr MOVrr,     0x89 OPrr MOVxx,    0x28 OPrr SUBrr,
 0x29 OPrr SUBxx,     0x08 OPrr ORrr,     0x09 OPrr ORxx,
 0x38 OPrr CMPrr,     0x39 OPrr CMPxx,    0x00 OPrr ADDrr,
 0x01 OPrr ADDxx,     0x20 OPrr ANDrr,    0x21 OPrr ANDxx,
 ( ----- 036 )
-: OPm ( modrm op ) CREATE C, C, DOES> C@+ A, C@ OR A, ;
+: OPm ( modrm op ) CREATE C, C, DOES> C@+ C,* C@ OR C,* ;
 0 0xff OPm INC[w], 0 0xfe OPm INC[b],
 0x8 0xff OPm DEC[w], 0x8 0xfe OPm DEC[b],
 0x30 0xff OPm PUSH[w], 0 0x8f OPm POP[w],
 
 : OPm+ ( modrm op ) CREATE C, C, DOES>
-    ( m off ) C@+ A, C@ ROT OR A, A, ;
+    ( m off ) C@+ C,* C@ ROT OR C,* C,* ;
 0x40 0xff OPm+ INC[w]+, 0x40 0xfe OPm+ INC[b]+,
 0x48 0xff OPm+ DEC[w]+, 0x48 0xfe OPm+ DEC[b]+,
 0x70 0xff OPm+ PUSH[w]+, 0x40 0x8f OPm+ POP[w]+,
 ( ----- 037 )
-: OPrm CREATE C, DOES> C@ A, SWAP 3 LSHIFT OR A, ;
+: OPrm CREATE C, DOES> C@ C,* SWAP 3 LSHIFT OR C,* ;
 0x8a OPrm MOVr[],    0x8b OPrm MOVx[],
 0x3a OPrm CMPr[],    0x3b OPrm CMPx[],
 
-: OPmr CREATE C, DOES> C@ A, 3 LSHIFT OR A, ;
+: OPmr CREATE C, DOES> C@ C,* 3 LSHIFT OR C,* ;
 0x88 OPmr MOV[]r,    0x89 OPmr MOV[]x,
 
 : OPrm+ ( r m off ) CREATE C, DOES>
-    C@ A, ROT 3 LSHIFT ROT OR 0x40 OR A, A, ;
+    C@ C,* ROT 3 LSHIFT ROT OR 0x40 OR C,* C,* ;
 0x8a OPrm+ MOVr[]+,    0x8b OPrm+ MOVx[]+,
 0x3a OPrm+ CMPr[]+,    0x3b OPrm+ CMPx[]+,
 
 : OPm+r ( m off r ) CREATE C, DOES>
-    C@ A, 3 LSHIFT ROT OR 0x40 OR A, A, ;
+    C@ C,* 3 LSHIFT ROT OR 0x40 OR C,* C,* ;
 0x88 OPm+r MOV[]+r,    0x89 OPm+r MOV[]+x,
 ( ----- 038 )
-: OPi CREATE C, DOES> C@ A, A, ;
+: OPi CREATE C, DOES> C@ C,* C,* ;
 0x04 OPi ADDALi,     0x24 OPi ANDALi,    0x2c OPi SUBALi,
 0xcd OPi INT,
-: OPI CREATE C, DOES> C@ A, A,, ;
+: OPI CREATE C, DOES> C@ C,* A,, ;
 0x05 OPI ADDAXI,     0x25 OPI ANDAXI,    0x2d OPI SUBAXI,
 ( ----- 040 )
-: MOVri, SWAP 0xb0 OR A, A, ;
-: MOVxI, SWAP 0xb8 OR A, A,, ;
-: MOVsx, 0x8e A, SWAP <<3 OR 0xc0 OR A, ;
-: MOVrm, 0x8a A, SWAP <<3 0x6 OR A, A,, ;
-: MOVxm, 0x8b A, SWAP <<3 0x6 OR A, A,, ;
-: MOVmr, 0x88 A, <<3 0x6 OR A, A,, ;
-: MOVmx, 0x89 A, <<3 0x6 OR A, A,, ;
-: PUSHs, <<3 0x06 OR A, ; : POPs, <<3 0x07 OR A, ;
-: SUBxi, 0x83 A, SWAP 0xe8 OR A, A, ;
-: ADDxi, 0x83 A, SWAP 0xc0 OR A, A, ;
-: JMPr, 0xff A, 7 AND 0xe0 OR A, ;
-: JMPf, ( seg off ) 0xea A, SPLITB A, A, A,, ;
+: MOVri, SWAP 0xb0 OR C,* C,* ;
+: MOVxI, SWAP 0xb8 OR C,* A,, ;
+: MOVsx, 0x8e C,* SWAP <<3 OR 0xc0 OR C,* ;
+: MOVrm, 0x8a C,* SWAP <<3 0x6 OR C,* A,, ;
+: MOVxm, 0x8b C,* SWAP <<3 0x6 OR C,* A,, ;
+: MOVmr, 0x88 C,* <<3 0x6 OR C,* A,, ;
+: MOVmx, 0x89 C,* <<3 0x6 OR C,* A,, ;
+: PUSHs, <<3 0x06 OR C,* ; : POPs, <<3 0x07 OR C,* ;
+: SUBxi, 0x83 C,* SWAP 0xe8 OR C,* C,* ;
+: ADDxi, 0x83 C,* SWAP 0xc0 OR C,* C,* ;
+: JMPr, 0xff C,* 7 AND 0xe0 OR C,* ;
+: JMPf, ( seg off ) 0xea C,* SPLITB C,* C,* A,, ;
 ( ----- 041 )
 ( Place BEGIN, where you want to jump back and AGAIN after
   a relative jump operator. Just like BSET and BWR. )
 : BEGIN, PC ;
 : BSET PC SWAP ! ;
 ( same as BSET, but we need to write a placeholder )
-: FJR, PC 0 A, ;
+: FJR, PC 0 C,* ;
 : IFZ, JNZ, FJR, ;
 : IFNZ, JZ, FJR, ;
 : IFC, JNC, FJR, ;
@@ -457,12 +457,12 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     -^ 1-           ( l off )
     ( warning: l is a PC offset, not a mem addr! )
     SWAP ORG @ + BIN( @ - ( off addr )
-    A! ;
+    C!* ;
 ( ----- 042 )
-: FWRs BSET 0 A, ;
+: FWRs BSET 0 C,* ;
 : FSET @ THEN, ;
 ( TODO: add BREAK, )
-: RPCs, PC - 1- DUP 128 + 0xff > IF ABORT" PC ovfl" THEN A, ;
+: RPCs, PC - 1- DUP 128 + 0xff > IF ABORT" PC ovfl" THEN C,* ;
 : RPCn, PC - 2- A,, ;
 : AGAIN, ( BREAK?, ) RPCs, ;
 ( Use RPCx with appropriate JMP/CALL op. Example:
@@ -485,9 +485,9 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 ;
 ( We divide by 2 because each PC represents a word. )
 : PC H@ ORG @ - 1 RSHIFT ;
-( A, spits an assembled byte, A,, spits an assembled word
+( C,* spits an assembled byte, A,, spits an assembled word
   Both increase PC. )
-: A,, SPLITB A, A, ;
+: A,, SPLITB C,* C,* ;
 ( ----- 052 )
 : _oor ." arg out of range: " .X SPC ." PC: " PC .X NL ABORT ;
 : _r8c DUP 7 > IF _oor THEN ;
@@ -527,14 +527,14 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 ( 0000 KKKK dddd KKKK )
 : OPRdK CREATE C, DOES> C@ ( rd K op )
     OVER _r256c 0xf0 AND 4 RSHIFT OR ( rd K op' )
-    ROT _r16+c 4 LSHIFT ROT 0x0f AND OR ( op' rdK ) A, A, ;
+    ROT _r16+c 4 LSHIFT ROT 0x0f AND OR ( op' rdK ) C,* C,* ;
 0x70 OPRdK ANDI,   0x30 OPRdK CPI,     0xe0 OPRdK LDI,
 0x60 OPRdK ORI,    0x40 OPRdK SBCI,    0x60 OPRdK SBR,
 0x50 OPRdK SUBI,
 
 ( 0000 0000 AAAA Abbb )
 : OPAb CREATE C, DOES> C@ ( A b op )
-    ROT _r32c 3 LSHIFT ROT _r8c OR A, A, ;
+    ROT _r32c 3 LSHIFT ROT _r8c OR C,* C,* ;
 0x98 OPAb CBI,     0x9a OPAb SBI,      0x99 OPAb SBIC,
 0x9b OPAb SBIS,
 ( ----- 056 )
@@ -594,7 +594,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : LBL! ( l -- ) PC SWAP ! ;
 : LBL, ( l op -- ) SWAP @ 1- SWAP EXECUTE A,, ;
 : SKIP, PC 0 A,, ;
-: TO, ( opw pc ) ( TODO: use A! instead of ! )
+: TO, ( opw pc ) ( TODO: use !* instead of ! )
     ( warning: pc is a PC offset, not a mem addr! )
     2 * ORG @ + PC 1- H@ ( opw addr tgt hbkp )
     ROT HERE ! ( opw tgt hbkp ) SWAP ROT EXECUTE H@ ! ( hbkp )
@@ -956,16 +956,16 @@ VARIABLE aspprevx
     0xc0 ( b msb lsb 0xc0 ) _cmd DROP asprdy ;
 ( ----- 165 )
 ( Sega ROM signer. See doc/sega.txt )
-: A!+^ ( a c -- a+1 ) OVER A! 1+ ;
+: C!*+^ ( a c -- a+1 ) OVER C!* 1+ ;
 : segasig ( addr size -- )
     0x2000 OVER LSHIFT ( a sz bytesz )
     ROT TUCK + 0x10 - ( sz a end )
     TUCK SWAP 0 ROT> ( sz end sum end a ) DO ( sz end sum )
-        I A@ + LOOP ( sz end sum ) SWAP ( sz sum end )
-    'T' A!+^ 'M' A!+^ 'R' A!+^ 0x20 A!+^ 'S' A!+^ 'E' A!+^
-    'G' A!+^ 'A' A!+^ 0 A!+^ 0 A!+^
-    ( sum's LSB ) OVER A!+^ ( MSB ) SWAP 8 RSHIFT OVER A! 1+
-    ( sz end ) 0 A!+^ 0 A!+^ 0 A!+^ SWAP 0x4a + SWAP A! ;
+        I C@* + LOOP ( sz end sum ) SWAP ( sz sum end )
+    'T' C!*+^ 'M' C!*+^ 'R' C!*+^ 0x20 C!*+^ 'S' C!*+^
+    'E' C!*+^ 'G' C!*+^ 'A' C!*+^ 0 C!*+^ 0 C!*+^
+    ( sum's LSB ) OVER C!*+^ ( MSB ) SWAP 8 RSHIFT OVER C!* 1+
+    ( sz end ) 0 C!*+^ 0 C!*+^ 0 C!*+^ SWAP 0x4a + SWAP C!* ;
 ( ----- 260 )
 Cross compilation program
 
@@ -1079,9 +1079,9 @@ NOP, NOP, NOP, NOP, NOP, NOP, ( unused )
 0 JP, ( RST 10 )  NOP, NOP, ( 13, oflw )
 NOP, NOP, NOP, NOP, NOP, ( unused )
 0 JP, ( 1a, next ) NOP, NOP, NOP, ( unused )
-0 JP, ( RST 20 ) 0 A, 0 A, 0 A, 0 A, 0 A, ( unused )
-0 JP, ( RST 28 ) 0 A, 0 A, 0 A, 0 A, 0 A, ( unused )
-0 JP, ( RST 30 ) 0 A, 0 A, 0 A, 0 A, 0 A, ( unused )
+0 JP, ( RST 20 ) 0 C,* 0 C,* 0 C,* 0 C,* 0 C,* ( unused )
+0 JP, ( RST 28 ) 0 C,* 0 C,* 0 C,* 0 C,* 0 C,* ( unused )
+0 JP, ( RST 30 ) 0 C,* 0 C,* 0 C,* 0 C,* 0 C,* ( unused )
 0 JP, ( RST 38 )
 ( ----- 284 )
 PC ORG @ 1 + ! ( main )
@@ -1746,9 +1746,9 @@ with "390 LOAD"
         DUP I C!
     LOOP DROP ;
 : ALLOT0 ( n -- ) H@ OVER 0 FILL ALLOT ;
-SYSVARS 0x3e + :** A@
-SYSVARS 0x40 + :** A!
-SYSVARS 0x42 + :** A,
+SYSVARS 0x3e + :** C@*
+SYSVARS 0x40 + :** C!*
+SYSVARS 0x42 + :** C,*
 ( ----- 356 )
 SYSVARS 0x53 + :** EMIT
 : STYPE C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
@@ -1881,23 +1881,23 @@ SYSVARS 0x0c + :** C<*
 ( ----- 367 )
 : MOVE ( a1 a2 u -- )
     ?DUP IF ( u ) 0 DO ( a1 a2 )
-        OVER I + A@ ( src dst x )
+        OVER I + C@* ( src dst x )
         OVER I + ( src dst x dst )
-        A! ( src dst )
+        C!* ( src dst )
     LOOP THEN 2DROP ;
 : MOVE- ( a1 a2 u -- )
     ?DUP IF ( u ) 0 DO ( a1 a2 )
-        OVER I' + I - 1- A@ ( src dst x )
+        OVER I' + I - 1- C@* ( src dst x )
         OVER I' + I - 1- ( src dst x dst )
-        A! ( src dst )
+        C!* ( src dst )
     LOOP THEN 2DROP ;
 : MOVE, ( a u -- ) H@ OVER ALLOT SWAP MOVE ;
 ( ----- 368 )
 : MOVEW ( src dst u -- )
     ( u ) 0 DO
-        SWAP DUP I 1 LSHIFT + A@   ( dst src x )
+        SWAP DUP I 1 LSHIFT + C@*  ( dst src x )
         ROT TUCK I 1 LSHIFT +      ( src dst x dst )
-        A!                         ( src dst )
+        C!*                        ( src dst )
     LOOP 2DROP ;
 : PREV 3 - DUP @ - ;
 : [entry] ( w -- )
@@ -2143,7 +2143,7 @@ SYSVARS 0x55 + :** KEY
     ['] (emit) ['] EMIT **! ['] (key) ['] KEY **!
     ['] CRLF ['] NL **!
     ['] (boot<) ['] C<* **!
-    ['] C@ ['] A@ **! ['] C! ['] A! **! ['] C, ['] A, **!
+    ['] C@ ['] C@* **! ['] C! ['] C!* **! ['] C, ['] C,* **!
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
     RDLN$ LIT" _sys" [entry]
@@ -2549,12 +2549,12 @@ Load range: B445-B461
 ( ----- 445 )
 VARIABLE lblexec VARIABLE lblnext
 H@ ORG !
-JMPn, 0 A,, ( 00, main ) 0 A, ( 03, boot driveno )
+JMPn, 0 A,, ( 00, main ) 0 C,* ( 03, boot driveno )
 0 A,, ( 04, BOOT )
 0 A,, ( 06, uflw ) 0 A,, ( 08, LATEST ) 0 A,, ( unused )
-0 A, 0 A,, ( 0b, EXIT )
+0 C,* 0 A,, ( 0b, EXIT )
 0 A,, 0 A,, ( unused ) 0 A,, ( 13, oflw )
-0 A,, 0 A,, 0 A, ( unused )
+0 A,, 0 A,, 0 C,* ( unused )
 JMPn, 0 A,, ( 1a, next )
 ( ----- 446 )
 ( TODO: move these words with other native words. )

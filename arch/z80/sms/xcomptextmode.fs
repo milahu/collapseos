@@ -15,7 +15,7 @@ SYSVARS 0x73 + CONSTANT CPORT_MEM
 0xdd   CONSTANT CPORT_D2
 SYSVARS 0x74 + CONSTANT PS2_MEM
 5 LOAD  ( z80 assembler )
-: ZFILL, ( u ) 0 DO 0 A, LOOP ;
+: ZFILL, ( u ) 0 DO 0 C,* LOOP ;
 262 LOAD  ( xcomp )
 523 LOAD  ( font compiler )
 165 LOAD  ( Sega ROM signer )
