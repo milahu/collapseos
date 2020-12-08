@@ -14,15 +14,14 @@ SYSVARS 0x73 + CONSTANT CPORT_MEM
 0xdd   CONSTANT CPORT_D2
 SYSVARS 0x74 + CONSTANT PS2_MEM
 5 LOAD  ( z80 assembler )
-: ZFILL, ( u ) 0 DO 0 C,* LOOP ;
 262 LOAD  ( xcomp )
 524 LOAD  ( font compiler )
 165 LOAD  ( Sega ROM signer )
 282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )
 
-DI, 0x100 JP, 0x62 ZFILL, ( 0x66 )
-RETN, 0x98 ZFILL, ( 0x100 )
+DI, 0x100 JP, 0x62 ALLOT0 ( 0x66 )
+RETN, 0x98 ALLOT0 ( 0x100 )
 ( All set, carry on! )
 CURRENT @ XCURRENT !
 0x100 BIN( !

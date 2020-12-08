@@ -1741,14 +1741,13 @@ with "390 LOAD"
 : / /MOD NIP ;
 : MOD /MOD DROP ;
 : ALLOT HERE +! ;
-: FILL ( a n b -- )
-    SWAP 2 PICK + ( a b a+n ) ROT ( b a+n a ) DO ( b )
-        DUP I C!
-    LOOP DROP ;
-: ALLOT0 ( n -- ) H@ OVER 0 FILL ALLOT ;
 SYSVARS 0x3e + :** C@*
 SYSVARS 0x40 + :** C!*
 SYSVARS 0x42 + :** C,*
+: FILL ( a n b -- )
+    ROT> OVER ( b a n a ) + SWAP ( b a+n a ) DO ( b )
+        DUP I C!* LOOP DROP ;
+: ALLOT0 ( n -- ) H@ OVER 0 FILL ALLOT ;
 ( ----- 356 )
 SYSVARS 0x53 + :** EMIT
 : STYPE C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
