@@ -194,6 +194,8 @@ results. Use it with C!* ialias pointing to a word-based target.
 -^          a b -- c        b - a -> c
 *           a b -- c        a * b -> c
 /           a b -- c        a / b -> c
+|L          n -- msb lsb    Split n word in 2 bytes, LSB on TOS
+|M          n -- lsb msb    Split n word in 2 bytes, MSB on TOS
 MOD         a b -- c        a % b -> c
 /MOD        a b -- r q      r:remainder q:quotient
 AND         a b -- c        a & b -> c

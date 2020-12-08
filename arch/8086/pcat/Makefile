@@ -14,7 +14,7 @@ os.bin: xcomp.fs $(STAGE) blkfs
 $(BLKPACK):
 	$(MAKE) -C $(BASE)/tools
 
-blkfs: $(BLKPACK)
+blkfs: $(BLKPACK) blk.fs
 	cat $(BASE)/blk.fs blk.fs | $(BLKPACK) > $@
 
 $(STAGE):

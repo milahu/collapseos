@@ -39,5 +39,5 @@ CODE (key)
 ( Update LATEST )
 PC ORG @ 8 + !
 ," BLK$ FD$ ' FD@ BLK@* ! ' FD! BLK!* ! " EOT,
-ORG @ 256 /MOD 2 PC! 2 PC!
-H@ 256 /MOD 2 PC! 2 PC!
+ORG @ |M 2 PC! 2 PC!
+H@ |M 2 PC! 2 PC!

@@ -37,6 +37,6 @@ CREATE ~FNT CPFNT7x7
 ( Update LATEST )
 PC ORG @ 8 + !
 ," VDP$ GRID$ PAD$ (im1) " EOT,
-ORG @ 0x100 - DUP 256 /MOD 2 PC! 2 PC!
+ORG @ 0x100 - DUP |M 2 PC! 2 PC!
 DUP 1 ( 16K ) segasig
-0x4000 + 256 /MOD 2 PC! 2 PC!
+0x4000 + |M 2 PC! 2 PC!

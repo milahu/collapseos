@@ -7,5 +7,5 @@ PC ORG @ 8 + !
 ," ' EFS@ BLK@* ! "
 ," ' EFS! BLK!* ! "
 EOT,
-ORG @ 256 /MOD 2 PC! 2 PC!
-H@ 256 /MOD 2 PC! 2 PC!
+ORG @ |M 2 PC! 2 PC!
+H@ |M 2 PC! 2 PC!

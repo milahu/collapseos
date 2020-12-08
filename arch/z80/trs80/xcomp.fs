@@ -16,5 +16,5 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 PC ORG @ 8 + !
 ( TRS-80 wants CR-only newlines )
 ," ' CR ' NL **! BLK$ FD$ " EOT,
-ORG @ 256 /MOD 2 PC! 2 PC!
-H@ 256 /MOD 2 PC! 2 PC!
+ORG @ |M 2 PC! 2 PC!
+H@ |M 2 PC! 2 PC!

@@ -7,7 +7,6 @@ SYSVARS 0x72 + CONSTANT GRID_MEM
 SYSVARS 0x75 + CONSTANT KBD_MEM
 0x01 CONSTANT KBD_PORT
 5 LOAD  ( z80 assembler )
-: ZFILL, ( u ) 0 DO 0 A, LOOP ;
 262 LOAD  ( xcomp )
 522 LOAD  ( font compiler )
 282 LOAD  ( boot.z80.decl )
@@ -18,8 +17,8 @@ SYSVARS 0x75 + CONSTANT KBD_MEM
   offset the binary by 0x100, which is our minimum possible
   increment and fill the TI stuff with the code below. )
 
-0x5a JP, 0x15 ZFILL, ( 0x18 )
-0x5a JP, ( reboot ) 0x1d ZFILL, ( 0x38 )
+0x5a JP, 0x15 ALLOT0 ( 0x18 )
+0x5a JP, ( reboot ) 0x1d ALLOT0 ( 0x38 )
 ( handleInterrupt )
 DI,
 AF PUSH,
@@ -39,7 +38,7 @@ AF POP,
 EI,
 RETI,
 
-0x03 ZFILL, ( 0x53 )
+0x03 ALLOT0 ( 0x53 )
 0x5a JP, ( 0x56 ) 0xff A, 0xa5 A, 0xff A, ( 0x5a )
 ( boot )
 DI,
@@ -56,7 +55,7 @@ A 0x02 ( LCD_CMD_DISABLE ) LDri,
 0x10 ( LCD_PORT_CMD ) OUTiA,
 HALT,
 
-0x95 ZFILL, ( 0x100 )
+0x95 ALLOT0 ( 0x100 )
 ( All set, carry on! )
 
 CURRENT @ XCURRENT !
@@ -73,5 +72,5 @@ CREATE ~FNT CPFNT3x5
 ( Update LATEST )
 PC ORG @ 8 + !
 ," LCD$ KBD$ GRID$ " EOT,
-ORG @ 0x100 - 256 /MOD 2 PC! 2 PC!
-H@ 256 /MOD 2 PC! 2 PC!
+ORG @ 0x100 - |M 2 PC! 2 PC!
+H@ |M 2 PC! 2 PC!

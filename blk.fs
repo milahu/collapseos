@@ -53,14 +53,10 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : CNZ 0 ; : CZ 1 ; : CNC 2 ; : CC 3 ;
 : CPO 4 ; : CPE 5 ; : CP 6 ; : CM 7 ;
 ( ----- 007 )
-( Splits word into msb/lsb, lsb being on TOS )
-: SPLITB
-    256 /MOD SWAP
-;
 : PC H@ ORG @ - BIN( @ + ;
 ( C,* spits an assembled byte, A,, spits an assembled word
   Both increase PC. )
-: A,, SPLITB C,* C,* ;
+: A,, |L C,* C,* ;
 : <<3 3 LSHIFT ;    : <<4 4 LSHIFT ;
 ( As a general rule, IX and IY are equivalent to spitting an
   extra 0xdd / 0xfd and then spit the equivalent of HL )
@@ -160,7 +156,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
     LDIXYr,
 ;
 ( ----- 015 )
-: OP2 CREATE , DOES> @ 256 /MOD C,* C,* ;
+: OP2 CREATE , DOES> @ |M C,* C,* ;
 0xeda1 OP2 CPI,                0xedb1 OP2 CPIR,
 0xeda9 OP2 CPD,                0xedb9 OP2 CPDR,
 0xed46 OP2 IM0,                0xed56 OP2 IM1,
@@ -229,9 +225,9 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : OP2r
     CREATE ,
     DOES>
-    @ SPLITB SWAP   ( r lsb msb )
-    C,*             ( r lsb )
-    SWAP <<3        ( lsb r<<3 )
+    @ |M     ( r lsb msb )
+    C,*      ( r lsb )
+    SWAP <<3 ( lsb r<<3 )
     OR C,*
 ;
 0xed41 OP2r OUT(C)r,
@@ -354,12 +350,8 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : [SI] 4 ; : [DI] 5 ; : [BP] 6 ; : [BX] 7 ;
 : <<3 3 LSHIFT ;
 ( ----- 032 )
-( Splits word into msb/lsb, lsb being on TOS )
-: SPLITB
-    256 /MOD SWAP
-;
 : PC H@ ORG @ - BIN( @ + ;
-: A,, SPLITB C,* C,* ;
+: A,, |L C,* C,* ;
 ( ----- 033 )
 : OP1 CREATE C, DOES> C@ C,* ;
 0xc3 OP1 RET,        0xfa OP1 CLI,       0xfb OP1 STI,
@@ -440,7 +432,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 : SUBxi, 0x83 C,* SWAP 0xe8 OR C,* C,* ;
 : ADDxi, 0x83 C,* SWAP 0xc0 OR C,* C,* ;
 : JMPr, 0xff C,* 7 AND 0xe0 OR C,* ;
-: JMPf, ( seg off ) 0xea C,* SPLITB C,* C,* A,, ;
+: JMPf, ( seg off ) 0xea C,* |L C,* C,* A,, ;
 ( ----- 041 )
 ( Place BEGIN, where you want to jump back and AGAIN after
   a relative jump operator. Just like BSET and BWR. )
@@ -480,14 +472,11 @@ VARIABLE lblchkPS
 ( ----- 051 )
 VARIABLE ORG
 VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
-: SPLITB
-    256 /MOD SWAP
-;
 ( We divide by 2 because each PC represents a word. )
 : PC H@ ORG @ - 1 RSHIFT ;
 ( C,* spits an assembled byte, A,, spits an assembled word
   Both increase PC. )
-: A,, SPLITB C,* C,* ;
+: A,, |L C,* C,* ;
 ( ----- 052 )
 : _oor ." arg out of range: " .X SPC ." PC: " PC .X NL ABORT ;
 : _r8c DUP 7 > IF _oor THEN ;
@@ -935,24 +924,24 @@ VARIABLE aspprevx
 : aspfe! ( efuse -- ) 0 0xa4 0xac _cmd ;
 ( ----- 162 )
 : aspfb! ( n a --, write word n to flash buffer addr a )
-    SWAP 256 /MOD ( a lo hi ) SWAP ROT ( hi lo a )
+    SWAP |L ( a hi lo ) ROT ( hi lo a )
     DUP ROT ( hi a a lo ) SWAP ( hi a lo a )
     0 0x40 ( hi a lo a 0 0x40 ) _cmd DROP ( hi a )
     0 0x48 _cmd DROP ;
 : aspfp! ( page --, write buffer to page )
-    0 SWAP aspfpgsz @ * 256 /MOD ( 0 lsb msb )
+    0 SWAP aspfpgsz @ * |M ( 0 lsb msb )
     0x4c _cmd DROP asprdy ;
 : aspf@ ( page a -- n, read word from flash )
-    SWAP aspfpgsz @ * OR ( addr ) 256 /MOD ( lsb msb )
+    SWAP aspfpgsz @ * OR ( addr ) |M ( lsb msb )
     2DUP 0 ROT> ( lsb msb 0 lsb msb )
     0x20 _cmd ( lsb msb low )
     ROT> 0 ROT> ( low 0 lsb msb ) 0x28 _cmd 8 LSHIFT OR ;
 ( ----- 163 )
 : aspe@ ( addr -- byte, read from EEPROM )
-    0 SWAP 256 /MOD ( 0 lsb msb ) SWAP
+    0 SWAP |L ( 0 msb lsb )
     0xa0 ( 0 msb lsb 0xa0 ) _cmd ;
 : aspe! ( byte addr --, write to EEPROM )
-    256 /MOD ( b lsb msb ) SWAP
+    |L ( b msb lsb )
     0xc0 ( b msb lsb 0xc0 ) _cmd DROP asprdy ;
 ( ----- 165 )
 ( Sega ROM signer. See doc/sega.txt )
@@ -1636,32 +1625,28 @@ CODE 2-
 ;CODE
 ( ----- 334 )
 CODE RSHIFT ( n u -- n )
-    DE POP, ( u )
-    HL POP, ( n )
-    chkPS,
+    DE POP, ( u ) HL POP, ( n ) chkPS,
     A E LDrr,
     A ORr, IFNZ,
-        BEGIN,
-            H SRL, L RR,
-            A DECr,
-        JRNZ, AGAIN,
+        BEGIN, H SRL, L RR, A DECr, JRNZ, AGAIN,
     THEN,
-    HL PUSH,
-;CODE
-( ----- 335 )
+    HL PUSH, ;CODE
 CODE LSHIFT ( n u -- n )
-    DE POP, ( u )
-    HL POP, ( n )
-    chkPS,
+    DE POP, ( u ) HL POP, ( n ) chkPS,
     A E LDrr,
     A ORr, IFNZ,
-        BEGIN,
-            L SLA, H RL,
-            A DECr,
-        JRNZ, AGAIN,
+        BEGIN, L SLA, H RL, A DECr, JRNZ, AGAIN,
     THEN,
-    HL PUSH,
-;CODE
+    HL PUSH, ;CODE
+( ----- 335 )
+CODE |L ( n -- msb lsb )
+    HL POP, chkPS,
+    D 0 LDri, E H LDrr, DE PUSH,
+    E L LDrr, DE PUSH, ;CODE
+CODE |M ( n -- lsb msb )
+    HL POP, chkPS,
+    D 0 LDri, E L LDrr, DE PUSH,
+    E H LDrr, DE PUSH, ;CODE
 ( ----- 350 )
 Core words
 
@@ -1999,24 +1984,17 @@ SYSVARS 0x0c + :** C<*
 : ? @ . ;
 : _
     DUP 9 > IF 10 - 'a' +
-    ELSE '0' + THEN
-;
+    ELSE '0' + THEN ;
 ( For hex display, there are no negatives )
 : .x
-    256 MOD     ( ensure < 0x100 )
-    16 /MOD     ( l h )
-    _ EMIT      ( l )
-    _ EMIT
-;
-: .X
-    256 /MOD    ( l h )
-    .x .x
-;
+    0xff AND 16 /MOD ( l h )
+    _ EMIT _ EMIT ;
+: .X |M .x .x ;
 ( ----- 377 )
 : _ ( a -- a+8 )
     DUP ( a a )
     ':' EMIT DUP .x SPC
-    4 0 DO DUP @ 256 /MOD SWAP .x .x SPC 2+ LOOP
+    4 0 DO DUP @ |L .x .x SPC 2+ LOOP
     DROP ( a )
     8 0 DO
         C@+ DUP 0x20 0x7e =><= NOT IF DROP '.' THEN EMIT
@@ -2417,9 +2395,9 @@ EXX, ( unprotect BC ) ;CODE
 : _cmd
     _wait DROP ROT    ( a1 a2 cmd )
     0 _s+crc          ( a1 a2 crc )
-    ROT 256 /MOD ROT  ( a2 h l crc )
+    ROT |M ROT        ( a2 h l crc )
     _s+crc _s+crc     ( a2 crc )
-    SWAP 256 /MOD ROT ( h l crc )
+    SWAP |M ROT       ( h l crc )
     _s+crc _s+crc     ( crc )
     1 OR              ( ensure stop bit )
     (spix) DROP       ( send CRC )
@@ -2511,7 +2489,7 @@ EXX, ( unprotect BC ) ;CODE
         (spix) DROP  ( a crc )
         SWAP         ( crc a )
     LOOP
-    DROP ( crc ) 256 /MOD ( lsb msb )
+    DROP ( crc ) |M ( lsb msb )
     (spix) DROP (spix) DROP
     _wait DROP 0 (spie) ;
 ( ----- 435 )
@@ -2775,6 +2753,12 @@ CODE TICKS 1 chkPS, ( n=100us )
     AX 0x8600 MOVxI, ( 86h, WAIT ) 0x15 INT,
     DX SI MOVxx, ( restore IP )
 ;CODE
+CODE |M ( n -- lsb msb ) 1 chkPS,
+    CX POPx, AH 0 MOVri,
+    AL CL MOVrr, AX PUSHx, AL CH MOVrr, AX PUSHx, ;CODE
+CODE |L ( n -- msb lsb ) 1 chkPS,
+    CX POPx, AH 0 MOVri,
+    AL CH MOVrr, AX PUSHx, AL CL MOVrr, AX PUSHx, ;CODE
 ( ----- 470 )
 ( Z80 driver for TMS9918. Implements grid protocol. Requires
 TMS_CTLPORT, TMS_DATAPORT and ~FNT from the Font compiler at

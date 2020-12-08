@@ -286,6 +286,10 @@ static void PLUS2() { push(pop()+2); }
 static void RSHIFT() { word u = pop(); push(pop()>>u); }
 static void LSHIFT() { word u = pop(); push(pop()<<u); }
 static void TICKS() { usleep(pop()); }
+static void SPLITL() {
+    word n = pop(); push(n>>8); push(n&0xff); }
+static void SPLITM() {
+    word n = pop(); push(n&0xff); push(n>>8); }
 
 static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
@@ -393,6 +397,8 @@ VM* VM_init(char *bin_path, char *blkfs_path)
     native(LSHIFT);
     native(TICKS);
     native(ROTR);
+    native(SPLITL);
+    native(SPLITM);
     vm.IP = gw(0x04) + 1; // BOOT
     sw(SYSVARS+0x02, gw(0x08)); // CURRENT
     sw(SYSVARS+0x04, gw(0x08)); // HERE

@@ -16,7 +16,7 @@ BX 0 MOVxI, 0x13 INT, ( read sectors 2-15 of boot floppy )
 ( TODO: reading 12 sectors like this probably doesn't work
   on real vintage PC/AT with floppy. Make this more robust. )
 0x800 0 JMPf,
-ORG @ 0x1fe + HERE ! 0x55 A, 0xaa A,
+ORG @ 0x1fe + HERE ! 0x55 C,* 0xaa C,*
 ( ----- 604 )
 CODE (emit) 1 chkPS,
     AX POPx, AH 0x0e MOVri, ( print char ) 0x10 INT,
