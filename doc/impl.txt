@@ -159,9 +159,9 @@ offsets, but thankfully, there aren't many system variables.
 Here's a list of them:
 
 SYSVARS   FUTURE USES          +3c       BLK(*
-+02       CURRENT              +3e       C@*
-+04       HERE                 +40       C!*
-+06       C<?                  +42       C,*
++02       CURRENT              +3e       FUTURE USES
++04       HERE                 +40       FUTURE USES
++06       C<?                  +42       FUTURE USES
 +08       C<* override         +44       FUTURE USES
 +0a       NL ialias            +51       CURRENTPTR
 +0c       C<*                  +53       EMIT ialias
@@ -191,10 +191,7 @@ address. Most of the time, it points to RAM+2, but sometimes,
 when maintaining alternative dicts (during cross compilation
 for example), it can point elsewhere.
 
-NLPTR points to an alternative routine for NL (by default,
-CRLF).
-
-BLK* see B416.
+BLK* "Disk blocks" in usage.txt.
 
 DRIVERS section is reserved for recipe-specific drivers.
 
@@ -226,9 +223,6 @@ few things:
      EMIT -> (emit)
      KEY  -> (key)
      NL   -> CRLF
-     C@*  -> C@
-     C!*  -> C!
-     C,*  -> C,
 3. Set "C<*", the word that C< calls, to (boot<).
 4. Call INTERPRET which interprets boot source code until
    ASCII EOT (4) is met. This usually initializes drivers.

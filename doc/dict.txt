@@ -50,10 +50,6 @@ $ - Initialize
                   aborts.
 ['] x    --       *I* Like "'", but spits the addr as a number
                   literal. If not found, aborts.
-,        n --     Write n in HERE and advance it.
-ALLOT    n --     Move HERE by n bytes
-C,       b --     Write byte b in HERE and advance it.
-C,*      b --     Indirect C,
 FIND     w -- a f Like '?, but for w.
 EMPTY    --       Rewind HERE and CURRENT where they were at
                   system initialization.            
@@ -153,18 +149,19 @@ J           -- n            Copy RS third item to PS
 
 @        a -- n          Set n to value at address a
 !        n a --          Store n in address a
+,        n --            Write n in HERE and advance it.
 ?        a --            Print value of addr a
 +!       n a --          Increase value of addr a by n
 C@       a -- c          Set c to byte at address a
-C@*      a -- c          Indirect C@
 C@+      a -- a+1 c      Fetch c from a and inc a.
 C@-      a -- a-1 c      Fetch c from a and dec a.
 C!       c a --          Store byte c in address a
-C!*      c a --          Indirect C!
 C!+      c a -- a+1      Store byte c in a and inc a.
 C!-      c a -- a-1      Store byte c in a and dec a.
+C,       b --            Write byte b in HERE and advance it.
 *!       a al --         Change alias al's addr to a.
 **!      a sw --         Change ialias sw's addr to a.
+ALLOT    n --            Move HERE by n bytes
 CURRENT  -- a            Set a to wordref of last added entry.
 CURRENT* -- a            A pointer to active CURRENT*. Useful
                          when we have multiple active dicts.
@@ -177,9 +174,6 @@ MOVE-    a1 a2 u --      Copy u bytes from a1 to a2, starting
                          with a1+u, going down.
 MOVE,    a u --          Copy u bytes from a to HERE.
 MOVEW    src dst u --    Same as MOVE, but with words
-
-Important note: MOVE* use C@* and C!* instead of C@ and C! See
-"Indirect memory access" in usage.txt.
 
 MOVEW notes: this word's purpose is to interface with word-
 based systems. src and dst are addressed as *bytes* but u is a
@@ -258,9 +252,8 @@ WORD    -- a   Read one word from buffered input and push its
 There are also ascii const emitters:
 BS CR LF SPC CRLF
 
-NL is an indirect word (see SYSVARS in impl.txt) that aliases to
-CRLF by default and that should generally be used when we want
-to emit a newline.
+NL is an ialias that points to CRLF by default and that should
+generally be used when we want to emit a newline.
 
 # Disk
 

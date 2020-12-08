@@ -82,23 +82,6 @@ addresses in RAM (because the core code is designed to run from
 ROM, we can't have regular variables). You are unlikely to
 need ialiases in regular code.
 
-Aliases and ialiases generally have their name end with "*".
-Core words such as KEY and EMIT, which are ialiases, are
-exceptions.
-
-# Indirect memory access
-
-C@*, C!*, and C,* are the indirect versions of C@, C! and C,.
-They are ialias words and initially point to C@, C! and C,.
-
-Indirect memory access words can be useful to "pipe" processing
-to places outside of regular memory.
-
-Many core words, such as MOVE, use indirect memory access. This
-gives a lot of flexibility to those words, allowing for complex
-data transfers. The cost of the indirection is small because of
-the optimized ways aliases are built.
-
 # Disk blocks
 
 Disk blocks are Collapse OS' main access to permanent storage.
