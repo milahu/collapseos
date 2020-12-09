@@ -30,12 +30,12 @@ static void io_write(int unused, uint16_t addr, uint8_t val)
     }
 }
 
-static uint8_t mem_read(int unused, uint16_t addr)
+uint8_t emul_mem_read(int unused, uint16_t addr)
 {
     return m.mem[addr];
 }
 
-static void mem_write(int unused, uint16_t addr, uint8_t val)
+void emul_mem_write(int unused, uint16_t addr, uint8_t val)
 {
     if (addr < m.ramstart) {
         fprintf(stderr, "Writing to ROM (%d)!\n", addr);
@@ -78,8 +78,8 @@ Machine* emul_init(char *binpath, ushort binoffset)
     }
     m.pchooks_cnt = 0;
     Z80RESET(&m.cpu);
-    m.cpu.memRead = mem_read;
-    m.cpu.memWrite = mem_write;
+    m.cpu.memRead = emul_mem_read;
+    m.cpu.memWrite = emul_mem_write;
     m.cpu.ioRead = io_read;
     m.cpu.ioWrite = io_write;
     return &m;

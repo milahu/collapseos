@@ -32,10 +32,13 @@ stdin/stdout.
 Run `./rc2014 /path/to/rom` (for example, `os.bin` from RC2014's recipe).
 Serial I/O is hooked to stdin/stdout. `CTRL+D` to quit.
 
-There are 2 options. `-s` replaces the ACIA with a Zilog SIO and
-`-c/path/to/image` hooks up a SD card with specified contents.
-
 You can press `CTRL+E` to dump the whole 64K of memory into `memdump`.
+
+Options:
+
+* `-s` replaces the ACIA with a Zilog SIO.
+* `-e` puts a 8K AT28 EEPROM at address `0x2000`.
+* `-c/path/to/image` hooks up a SD card with specified contents.
 
 ## Sega Master System emulator
 

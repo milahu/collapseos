@@ -17,6 +17,7 @@
 #include "sio.h"
 #include "sdc.h"
 #include "rc2014_spi.h"
+#include "at28.h"
 
 #define RAMSTART 0x8000
 #define ACIA_CTL_PORT 0x80
@@ -31,6 +32,7 @@ static ACIA acia;
 static SIO sio;
 static SDC sdc;
 static SPI spi;
+static AT28 at28;
 
 static uint8_t iord_acia_ctl()
 {
@@ -121,15 +123,23 @@ static void _write(uint8_t val)
     if (use_sio) { sio_write(&sio, val); } else { acia_write(&acia, val); }
 }
 
+static byte _at28_mem_read(int unused, ushort addr) {
+    return at28_mem_read(&at28, addr);
+}
+static void _at28_mem_write(int unused, ushort addr, byte val) {
+    at28_mem_write(&at28, addr, val);
+}
+
 static void usage()
 {
-    fprintf(stderr, "Usage: ./rc2014 [-s] [-c sdcard.img] /path/to/rom\n");
+    fprintf(stderr, "Usage: ./rc2014 [-se] [-c sdcard.img] /path/to/rom\n");
 }
 
 int main(int argc, char *argv[])
 {
     FILE *fp = NULL;
     int ch;
+    bool use_at28 = false;
 
     if (argc < 2) {
         usage();
@@ -140,10 +150,13 @@ int main(int argc, char *argv[])
     sdc_init(&sdc);
     spi_init(&spi, spix_sdc);
 
-    while ((ch = getopt(argc, argv, "sc:")) != -1) {
+    while ((ch = getopt(argc, argv, "sec:")) != -1) {
         switch (ch) {
             case 's':
                 use_sio = true;
+                break;
+            case 'e':
+                use_at28 = true;
                 break;
             case 'c':
                 fprintf(stderr, "Setting up SD card image with %s\n", optarg);
@@ -193,6 +206,11 @@ int main(int argc, char *argv[])
     m->iowr[SDC_SPI] = iowr_spi;
     m->iord[SDC_CTL] = iord_spi_ctl;
     m->iowr[SDC_CTL] = iowr_spi_ctl;
+    if (use_at28) {
+        at28_init(&at28, &m->cpu, 0x2000, 0x2000);
+        m->cpu.memRead = _at28_mem_read;
+        m->cpu.memWrite = _at28_mem_write;
+    }
 
     char tosend = 0;
     while (emul_step()) {
