@@ -1048,6 +1048,11 @@ VARIABLE lbluflw VARIABLE lblexec
 ( 7.373MHz target: 737t. outer: 37t inner: 16t )
 ( tickfactor = (737 - 37) / 16 )
 CREATE tickfactor 44 ,
+( Perform a byte write by taking into account the SYSVARS+3e
+  override. )
+: LD(HL)E*, SYSVARS 0x3e + LDA(i), A ORr,
+    IFZ, (HL) E LDrr, ELSE, SYSVARS 0x3e + CALL, THEN, ;
+
 ( ----- 283 )
 H@ ORG ! ( STABLE ABI )
 0 JP, ( 00, main ) NOP, ( unused ) NOP, NOP, ( 04, BOOT )
@@ -1072,6 +1077,7 @@ HERESTART [IF]
     HL HERESTART LDdi,
 [THEN]
     SYSVARS 0x04 + LD(i)HL, ( RAM+04 == HERE )
+    A XORr, SYSVARS 0x3e + LD(i)A, ( 3e == ~C! )
     DE BIN( @ 0x04 ( BOOT ) + LDd(i),
     JR, L1 FWR ( execute, B287 )
 ( ----- 286 )
@@ -1458,9 +1464,8 @@ CODE TICKS
 ( ----- 322 )
 CODE !
     HL POP, DE POP, chkPS,
-    (HL) E LDrr,
-    HL INCd,
-    (HL) D LDrr,
+    LD(HL)E*, HL INCd,
+    E D LDrr, LD(HL)E*,
 ;CODE
 CODE @
     HL POP, chkPS,
@@ -1472,14 +1477,17 @@ CODE @
 ( ----- 323 )
 CODE C!
     HL POP, DE POP, chkPS,
-    (HL) E LDrr,
-;CODE
-
+    LD(HL)E*, ;CODE
 CODE C@
     HL POP, chkPS,
     L (HL) LDrr,
-    H 0 LDri,
-    HL PUSH,
+    H 0 LDri, HL PUSH, ;CODE
+CODE ~C!
+    HL POP, chkPS,
+    SYSVARS 0x3f + LD(i)HL,
+    HLZ, ( makes A zero if Z is set ) IFNZ,
+        A 0xc3 ( JP ) LDri, THEN,
+    ( A is either 0 or c3 ) SYSVARS 0x3e + LD(i)A,
 ;CODE
 ( ----- 324 )
 CODE PC! EXX, ( protect BC )
@@ -1862,12 +1870,6 @@ SYSVARS 0x0c + :** C<*
     LOOP THEN 2DROP ;
 : MOVE, ( a u -- ) H@ OVER ALLOT SWAP MOVE ;
 ( ----- 368 )
-: MOVEW ( src dst u -- )
-    ( u ) 0 DO
-        SWAP DUP I 1 LSHIFT + C@  ( dst src x )
-        ROT TUCK I 1 LSHIFT +     ( src dst x dst )
-        C!                        ( src dst )
-    LOOP 2DROP ;
 : PREV 3 - DUP @ - ;
 : [entry] ( w -- )
     C@+ ( w+1 len ) TUCK MOVE, ( len )
@@ -2162,21 +2164,14 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 ':' X' _ 4 - C! ( give : its name )
 '(' X' _ 4 - C!
 ( ----- 400 )
-( With dst being assumed to be an AT28 EEPROM, perform C!
-  operation while doing the right thing. Checks data integrity
-  and ABORT on mismatch. )
-: _ ( n a -- wait until addr is "stable", err on mismatch )
-    ( as long as writing operation is running, IO/6 will toggle
-      at each read attempt. We know that write is finished when
-      we read the same value twice. )
-    BEGIN ( n1 a )
-        DUP C@      ( n1 a n2 )
-        OVER C@     ( n1 a n2 n3 )
-    = UNTIL
-    ( We're finished writing. do we have a mismatch? )
-    C@ SWAP 0xff AND = NOT IF ABORT" mismatch" THEN ;
-: AT28! ( n a -- ) 2DUP C! _ ;
-: AT28, ( n -- ) H@ 2DUP C! DUP 1+ HERE ! _ ;
+( Write byte E at addr HL, assumed to be an AT28 EEPROM.
+  After that, poll repeatedly that address until writing is
+  complete. )
+(entry) ~AT28 ( warning: don't touch D register )
+    (HL) E LDrr, E (HL) LDrr, ( poll ) BEGIN,
+        A (HL) LDrr, ( poll ) E CPr, ( same as old? )
+        E A LDrr, ( save old poll, Z preserved )
+    JRNZ, AGAIN, RET,
 ( ----- 401 )
 Grid subsystem
 

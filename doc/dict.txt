@@ -152,6 +152,7 @@ J           -- n            Copy RS third item to PS
 ,        n --            Write n in HERE and advance it.
 ?        a --            Print value of addr a
 +!       n a --          Increase value of addr a by n
+~C!      a --            Set C! and ! overrides. See notes.
 C@       a -- c          Set c to byte at address a
 C@+      a -- a+1 c      Fetch c from a and inc a.
 C@-      a -- a-1 c      Fetch c from a and dec a.
@@ -173,13 +174,15 @@ MOVE     a1 a2 u --      Copy u bytes from a1 to a2, starting
 MOVE-    a1 a2 u --      Copy u bytes from a1 to a2, starting
                          with a1+u, going down.
 MOVE,    a u --          Copy u bytes from a to HERE.
-MOVEW    src dst u --    Same as MOVE, but with words
 
-MOVEW notes: this word's purpose is to interface with word-
-based systems. src and dst are addressed as *bytes* but u is a
-*word* count. Every iteration increases src and dst by 2. This
-shouldn't be used on regular memory, it will yield weird
-results. Use it with C!* ialias pointing to a word-based target.
+Notes:
+
+~C!: When supplied a non-zero address, sets the SYSVARS+3e (see
+     impl.txt) override routine address. This should link dir-
+     ectly to assembly code because we call this address. This
+     routine shouldn't end with a call to next, but rather a
+     regular assembly return. Registers used are arch-specific.
+     When supplied 0, unsets override.
 
 # Arithmetic / Bits
 

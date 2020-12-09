@@ -159,10 +159,10 @@ offsets, but thankfully, there aren't many system variables.
 Here's a list of them:
 
 SYSVARS   FUTURE USES          +3c       BLK(*
-+02       CURRENT              +3e       FUTURE USES
-+04       HERE                 +40       FUTURE USES
-+06       C<?                  +42       FUTURE USES
-+08       C<* override         +44       FUTURE USES
++02       CURRENT              +3e       ~C!*
++04       HERE                 +41       FUTURE USES
++06       C<?                  +43       FUTURE USES
++08       C<* override         +45       FUTURE USES
 +0a       NL ialias            +51       CURRENTPTR
 +0c       C<*                  +53       EMIT ialias
 +0e       WORDBUF              +55       KEY ialias
@@ -192,6 +192,10 @@ when maintaining alternative dicts (during cross compilation
 for example), it can point elsewhere.
 
 BLK* "Disk blocks" in usage.txt.
+
+~C!* if nonzero, contains a jump to assembly code that overrides
+the routine that writes a byte to memory and then returns.
+Register usage is arch-dependent, see boot code for details.
 
 DRIVERS section is reserved for recipe-specific drivers.
 
