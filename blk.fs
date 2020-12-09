@@ -1870,7 +1870,6 @@ SYSVARS 0x0c + :** C<*
     LOOP THEN 2DROP ;
 : MOVE, ( a u -- ) H@ OVER ALLOT SWAP MOVE ;
 ( ----- 368 )
-: PREV 3 - DUP @ - ;
 : [entry] ( w -- )
     C@+ ( w+1 len ) TUCK MOVE, ( len )
     ( write prev value )
@@ -1881,19 +1880,15 @@ SYSVARS 0x0c + :** C<*
 : CREATE (entry) 2 ( cellWord ) C, ;
 : VARIABLE CREATE 2 ALLOT ;
 ( ----- 369 )
-: WORD(
-    DUP 1- C@   ( name len field )
-    127 AND     ( 0x7f. remove IMMEDIATE flag )
-    3 +         ( fixed header len )
-    -
-;
 : FORGET
-    ' DUP               ( w w )
+    ' DUP ( w w )
     ( HERE must be at the end of prev's word, that is, at the
       beginning of w. )
-    WORD( HERE !  ( w )
-    PREV CURRENT !
-;
+    DUP 1- C@ ( name len field )
+    0x7f AND  ( remove IMMEDIATE flag )
+    3 +       ( fixed header len )
+    - HERE !  ( w )
+    ( get prev addr ) 3 - DUP @ - CURRENT ! ;
 : EMPTY LIT" _sys" FIND IF DUP HERE ! CURRENT ! THEN ;
 ( ----- 370 )
 : DOES>
