@@ -1078,6 +1078,7 @@ HERESTART [IF]
 [THEN]
     SYSVARS 0x04 + LD(i)HL, ( RAM+04 == HERE )
     A XORr, SYSVARS 0x3e + LD(i)A, ( 3e == ~C! )
+    SYSVARS 0x41 + LD(i)A, ( 41 == ~C!ERR )
     DE BIN( @ 0x04 ( BOOT ) + LDd(i),
     JR, L1 FWR ( execute, B287 )
 ( ----- 286 )
@@ -1689,7 +1690,7 @@ driver code. Load the low part with "353 LOAD", the high part
 with "390 LOAD"
 ( ----- 353 )
 : RAM+ [ SYSVARS LITN ] + ; : BIN+ [ BIN( @ LITN ] + ;
-: HERE 0x04 RAM+ ;
+: HERE 0x04 RAM+ ; : ~C!ERR 0x41 RAM+ ;
 : CURRENT* 0x51 RAM+ ; : CURRENT CURRENT* @ ;
 : H@ HERE @ ;
 : FIND ( w -- a f ) CURRENT @ SWAP _find ;
@@ -2159,14 +2160,18 @@ XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 ':' X' _ 4 - C! ( give : its name )
 '(' X' _ 4 - C!
 ( ----- 400 )
-( Write byte E at addr HL, assumed to be an AT28 EEPROM.
-  After that, poll repeatedly that address until writing is
-  complete. )
+( Write byte E at addr HL, assumed to be an AT28 EEPROM. After
+  that, poll repeatedly that address until writing is complete.
+  If last polled value is different than orig, set ~C!ERR )
 (entry) ~AT28 ( warning: don't touch D register )
-    (HL) E LDrr, E (HL) LDrr, ( poll ) BEGIN,
+    (HL) E LDrr, A E LDrr, ( orig ) EXAFAF', ( save )
+    E (HL) LDrr, ( poll ) BEGIN,
         A (HL) LDrr, ( poll ) E CPr, ( same as old? )
         E A LDrr, ( save old poll, Z preserved )
-    JRNZ, AGAIN, RET,
+    JRNZ, AGAIN,
+    EXAFAF', ( orig ) E SUBr, ( equal? )
+    IFNZ, SYSVARS 0x41 + ( ~C!ERR ) LD(i)A, THEN,
+    RET,
 ( ----- 401 )
 Grid subsystem
 

@@ -160,9 +160,9 @@ Here's a list of them:
 
 SYSVARS   FUTURE USES          +3c       BLK(*
 +02       CURRENT              +3e       ~C!*
-+04       HERE                 +41       FUTURE USES
-+06       C<?                  +43       FUTURE USES
-+08       C<* override         +45       FUTURE USES
++04       HERE                 +41       ~C!ERR
++06       C<?                  +42       FUTURE USES
++08       C<* override         +43       FUTURE USES
 +0a       NL ialias            +51       CURRENTPTR
 +0c       C<*                  +53       EMIT ialias
 +0e       WORDBUF              +55       KEY ialias
@@ -197,6 +197,10 @@ BLK* "Disk blocks" in usage.txt.
 the routine that writes a byte to memory and then returns.
 Register usage is arch-dependent, see boot code for details.
 
+~C!ERR: When an error happens during ~C! write overrides, sets
+this byte to a nonzero value. Otherwise, stays at zero. Has to
+be reset to zero manually after an error.
+
 DRIVERS section is reserved for recipe-specific drivers.
 
 FUTURE USES section is unused for now.          
@@ -214,7 +218,8 @@ very few things.
 2. Set CURRENT to value of LATEST field in stable ABI.
 3. Set HERE to HERESTART const if defined, to CURRENT other-
    wise.
-4. Execute the word referred to by 0x04 (BOOT) in stable ABI.
+4. Initialize ~C! and ~C!ERR to 0.
+5. Execute the word referred to by 0x04 (BOOT) in stable ABI.
 
 In a normal system, BOOT is in core words at B396 and does a
 few things:
