@@ -2765,7 +2765,7 @@ them.  We insert a blank one at the end of those 7. )
     ( blank row ) 0xff _data ;
 : CELL! ( c pos )
     0x7800 OR _ctl ( tilenum )
-    0x20 - ( glyph ) 0x5e MOD _data ;
+    0x20 - ( glyph ) 0x5f MOD _data ;
 ( ----- 472 )
 : CURSOR! ( new old -- )
     DUP 0x3800 OR _ctl [ TMS_DATAPORT LITN ] PC@
@@ -2776,8 +2776,8 @@ them.  We insert a blank one at the end of those 7. )
 : TMS$
     0x8100 _ctl ( blank screen )
     0x7800 _ctl COLS LINES * _zero
-    0x4000 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont LOOP
-    0x4400 _ctl 0x5e 0 DO ~FNT I 7 * + _sfont^ LOOP
+    0x4000 _ctl 0x5f 0 DO ~FNT I 7 * + _sfont LOOP
+    0x4400 _ctl 0x5f 0 DO ~FNT I 7 * + _sfont^ LOOP
     0x820e _ctl ( name table 0x3800 )
     0x8400 _ctl ( pattern table 0x0000 )
     0x87f0 _ctl ( colors 0 and 1 )
