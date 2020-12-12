@@ -24,3 +24,11 @@ prototype, I hard-wired the first chip's WE to high because I
 never want to write to it, despite bugs I might introduce in
 hardware or software (I try a lot of dangerous stuff on my
 machines...).
+
+On top of that, you will likely want to add a physical CE-
+inhibit jumper (a jumper hard-wired to VCC) on the AT28 socket.
+The reason for this is that if the EEPROM you have on your
+socket ends with a SEGA TMR signature, it will be a wrong one,
+but it will still be picked up by the BIOS and Collapse OS will
+refuse to boot. A CE-inhibit switch that you can remove after
+boot will solve the problem.
