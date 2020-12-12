@@ -64,6 +64,26 @@ operation in an inconsistent state. The easiest thing to do it
 to restart the operation from scratch. Those error are not
 frequent unless hardware is faulty.
 
+# Cross-compiling directly to EEPROM
+
+If your target media is a RAM mappable media, you can save prec-
+ious RAM by cross-compiling Collapse OS directly to it. It req-
+uires special handling.
+
+You can begin the process in a regular manner, but right before
+you're about to assemble the boot code, take a pause.
+
+Up until now, you've been loading your cross compiling tools in
+RAM, now, you're about to write Collapse OS. So what you need
+to do is change HERE to the address of your EEPROM. Example:
+
+0x2000 HERE !
+
+If you need to activate special system overrides such as the
+one described in doc/hw/at28.txt, now is the time.
+
+Then, you can continue the process normally.
+
 # Verifying
 
 You can use "/tools/memdump" to dump the memory between your
@@ -76,4 +96,3 @@ back to after your ending offset so that you don't overwrite
 your binary.
 
 Then, you can run "/tools/memdump".
-
