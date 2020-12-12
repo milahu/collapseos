@@ -139,6 +139,7 @@ THEN, HL POP, JR, AGAIN,
     (im1)
 ;
 ( ----- 619 )
+( RC2014 classic with ACIA )
 0xff00 CONSTANT RS_ADDR        0xfffa CONSTANT PS_ADDR
 RS_ADDR 0x80 - CONSTANT SYSVARS
 0x8000 CONSTANT HERESTART
@@ -148,9 +149,26 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 262 LOAD  ( xcomp )            282 LOAD  ( boot.z80.decl )
 270 LOAD  ( xcomp overrides )  283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )   603 605 LOADR ( acia )
-419 LOAD 423 436 LOADR
+419 LOAD  ( SPI relay )        423 436 LOADR ( SD Card )
+400 LOAD  ( AT28 )
 390 LOAD  ( xcomp core high )
 (entry) _
-( Update LATEST )
-PC ORG @ 8 + !
+PC ORG @ 8 + ! ( Update LATEST )
 ," ACIA$ BLK$ " EOT,
+( ----- 620 )
+( RC2014 classic with SIO )
+0xff00 CONSTANT RS_ADDR        0xfffa CONSTANT PS_ADDR
+RS_ADDR 0x80 - CONSTANT SYSVARS
+0x8000 CONSTANT HERESTART
+4 CONSTANT SPI_DATA 5 CONSTANT SPI_CTL 1 CONSTANT SDC_DEVID
+607 LOAD  ( SIO decl )
+5 LOAD    ( z80 assembler )
+262 LOAD  ( xcomp )            282 LOAD  ( boot.z80.decl )
+270 LOAD  ( xcomp overrides )  283 335 LOADR ( boot.z80 )
+353 LOAD  ( xcomp core low )   608 610 LOADR ( SIO )
+419 LOAD  ( SPI relay )        423 436 LOADR ( SD Card )
+400 LOAD  ( AT28 )
+390 LOAD  ( xcomp core high )
+(entry) _
+PC ORG @ 8 + ! ( Update LATEST )
+," SIO$ BLK$ " EOT,
