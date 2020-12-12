@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <stdint.h>
 
 #include "common.h"
 
@@ -40,9 +41,11 @@ int main(int argc, char **argv)
         fprintf(stderr, "Could not open %s\n", argv[1]);
         return 1;
     }
+    uint16_t checksum = 0;
     char s[0x40];
+    // Write all received bytes, keeping a checksum, then print that checksum
     sprintf(s,
-        ": _ 0x%04x 0x%04x DO KEY DUP .x I C! LOOP ; _",
+        ": _ 0 %d %d DO KEY DUP I C! + LOOP .X ; _",
         memptr+bytecount, memptr);
     sendcmd(fd, s);
 
@@ -51,23 +54,22 @@ int main(int argc, char **argv)
         putc('.', stderr);
         fflush(stderr);
         unsigned char c = s[0];
+        checksum += c;
         write(fd, &c, 1);
         usleep(1000); // let it breathe
-        mread(fd, s, 2); // read hex pair
-        s[2] = 0; // null terminate
-        unsigned char c2 = strtol(s, NULL, 16);
-        if (c != c2) {
-            // mismatch!
-            unsigned int pos = ftell(fp);
-            fprintf(stderr, "Mismatch at byte %d! %d != %d.\n", pos, c, c2);
-            // we don't exit now because we need to "consume" our whole program.
-            returncode = 1;
-        }
-        usleep(1000); // let it breathe
+    }
+    fprintf(stderr, "\nBytes sent, checksum...\n");
+    mread(fd, s, 4); // read hex string
+    s[4] = 0; // null terminate
+    uint16_t checksum2 = strtol(s, NULL, 16);
+    if (checksum == checksum2) {
+        fprintf(stderr, "OK\n");
+    } else {
+        fprintf(stderr, "Mismatch! Expected %04x and got %04x.\n", checksum, checksum2);
+        returncode = 1;
     }
     readprompt(fd);
     sendcmdp(fd, "FORGET _");
-    fprintf(stderr, "Done!\n");
     fclose(fp);
     if (fd > 0) {
         close(fd);
