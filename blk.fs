@@ -291,10 +291,11 @@ CREATE lblnext 0 , ( stable ABI until set in B300 )
 ( ----- 026 )
 ( Place BEGIN, where you want to jump back and AGAIN after
   a relative jump operator. Just like BSET and BWR. )
-: BEGIN, PC ;
-: BSET PC SWAP ! ;
+: BEGIN,
+    PC DUP 0x8000 AND IF ABORT" PC must be < 0x8000" THEN ;
+: BSET BEGIN, SWAP ! ;
 ( same as BSET, but we need to write a placeholder )
-: FJR, PC 0 C, ;
+: FJR, BEGIN, 0 C, ;
 : IFZ, JRNZ, FJR, ;
 : IFNZ, JRZ, FJR, ;
 : IFC, JRNC, FJR, ;

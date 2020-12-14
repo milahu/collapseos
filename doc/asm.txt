@@ -60,6 +60,9 @@ labels, write happen before set. The write operation writes a
 dummy placeholder, and then the set operation writes the offset
 at that placeholder's address.
 
+Important limitation: Flow words are broken when PC reaches
+0x8000. The BREAK, word relies on that 15th bit as a flag.
+
 Variable actions are expected to be called with labels in
 front of them. Examples:
 
