@@ -13,6 +13,7 @@
 void mread(int fd, char *s, int count)
 {
     while (count) {
+        BREATHE;
         while (read(fd, s, 1) == 0) {
             BREATHE;
         }

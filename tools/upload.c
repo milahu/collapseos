@@ -41,32 +41,39 @@ int main(int argc, char **argv)
         return 1;
     }
     char s[0x40];
+    sendcmdp(fd, ": K KEY DUP EMIT ;");
+    // P: parse digit. We assume '0-9' or 'a-f' range and return a 0-15 value.
+    sendcmdp(fd, ": P DUP '0' '9' =><= IF '0' ELSE 0x57 THEN - ;");
+    // R: receive hex pairs. we receive values in hex pairs, re-emit them upon
+    //    reception, and then write them to memory.
     sprintf(s,
-        ": _ 0x%04x 0x%04x DO KEY DUP .x I C! LOOP ; _",
+        ": R %d %d DO K P 16 * K P OR I C! LOOP ; R",
         memptr+bytecount, memptr);
     sendcmd(fd, s);
 
     int returncode = 0;
     while (fread(s, 1, 1, fp)) {
+        unsigned char c1, c2;
+        c1 = s[0];
+        sprintf(s, "%02x", c1);
+        for (int i=0; i<2; i++) {
+            c1 = s[i];
+            write(fd, &c1, 1);
+            usleep(1000); // let it breathe
+            mread(fd, &c2, 1); // read ping back
+            if (c1 != c2) {
+                // mismatch!
+                unsigned int pos = ftell(fp);
+                fprintf(stderr, "Mismatch at byte %d! %d != %d.\n", pos, c1, c2);
+                // we don't exit now because we need to "consume" our whole program.
+                returncode = 1;
+            }
+        }
         putc('.', stderr);
         fflush(stderr);
-        unsigned char c = s[0];
-        write(fd, &c, 1);
-        usleep(1000); // let it breathe
-        mread(fd, s, 2); // read hex pair
-        s[2] = 0; // null terminate
-        unsigned char c2 = strtol(s, NULL, 16);
-        if (c != c2) {
-            // mismatch!
-            unsigned int pos = ftell(fp);
-            fprintf(stderr, "Mismatch at byte %d! %d != %d.\n", pos, c, c2);
-            // we don't exit now because we need to "consume" our whole program.
-            returncode = 1;
-        }
-        usleep(1000); // let it breathe
     }
     readprompt(fd);
-    sendcmdp(fd, "FORGET _");
+    sendcmdp(fd, "FORGET K");
     fprintf(stderr, "Done!\n");
     fclose(fp);
     if (fd > 0) {
