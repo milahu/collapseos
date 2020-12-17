@@ -70,9 +70,15 @@ What are we going to do? We're going to punch in a binary
 program to handle that kind of reception! You're gonna feel real
 badass about it too...
 
-# Keyboard tips
+# Keyboard cheatcheet
 
-* "_" is CLEAR+ENTER.
+The TRS-80 4P keyboard doesn't show all available characters.
+When you hold CLEAR, you can do:
+
+_ --> ENTER
+[] --> <>
+^ --> ;
+\ --> /
 
 # Building the binary
 
