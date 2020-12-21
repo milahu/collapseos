@@ -2,18 +2,27 @@
 #include <stdlib.h>
 #include <sys/stat.h>
 
+/* Unpacks blkfs into its source form.
+ *
+ * If numerical "upto" is specified, we stop unpacking when reaching this
+ * blkno.
+ */
 void usage()
 {
-    fprintf(stderr, "Usage: blkunpack < blkfs > blk.fs\n");
+    fprintf(stderr, "Usage: blkunpack [upto] < blkfs > blk.fs\n");
 }
 
 int main(int argc, char *argv[])
 {
     char buf[1024];
     int blkid = 0;
-    if (argc != 1) {
+    int upto = 0;
+    if (argc > 2) {
         usage();
         return 1;
+    }
+    if (argc == 2) {
+        upto = strtol(argv[1], NULL, 10);
     }
     while (fread(buf, 1024, 1, stdin) == 1) {
         int linecnt = 0 ;
@@ -51,6 +60,9 @@ int main(int argc, char *argv[])
             }
         }
         blkid++;
+        if (blkid == upto) {
+            break;
+        }
     }
     return 0;
 }
