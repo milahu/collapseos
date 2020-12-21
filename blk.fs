@@ -804,12 +804,12 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     BLKDTY @ IF '*' EMIT THEN 4 nspcs ;
 : nums 17 1 DO 2 I + aty I . SPC SPC LOOP ;
 ( ----- 127 )
-: mode! ( c -- ) 4 col- CELL! ;
+: mode! ( c -- ) 4 col- CELL! ; : @emit C@ 0x20 MAX EMIT ;
 : contents
     16 0 DO
         large? IF 3 ELSE 0 THEN I 3 + AT-XY
         64 I * BLK( + ( lineaddr ) xoff @ + DUP width + SWAP
-        DO I C@ 0x20 MAX EMIT LOOP LOOP
+        DO I @emit LOOP LOOP
     large? IF 3 16 gutter THEN ;
 : selblk BLK> @ PREVBLK ! BLK@ contents ;
 : pos! ( newpos -- ) EDPOS @ PREVPOS !
@@ -877,7 +877,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
     0 ACC ! UPPER 'Q' = ;
 : bufp ( buf -- )
-    DUP 3 col- + SWAP DO I C@ EMIT LOOP ;
+    DUP 3 col- + SWAP DO I @emit LOOP ;
 : bufs
     1 aty ." I: " IBUF bufp
     2 aty ." F: " FBUF bufp
@@ -1053,7 +1053,6 @@ CREATE tickfactor 44 ,
   override. )
 : LD(HL)E*, SYSVARS 0x3e + LDA(i), A ORr,
     IFZ, (HL) E LDrr, ELSE, SYSVARS 0x3e + CALL, THEN, ;
-
 ( ----- 283 )
 H@ ORG ! ( STABLE ABI )
 0 JP, ( 00, main ) NOP, ( unused ) NOP, NOP, ( 04, BOOT )
