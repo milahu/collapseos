@@ -804,7 +804,8 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     BLKDTY @ IF '*' EMIT THEN 4 nspcs ;
 : nums 17 1 DO 2 I + aty I . SPC SPC LOOP ;
 ( ----- 127 )
-: mode! ( c -- ) 4 col- CELL! ; : @emit C@ 0x20 MAX EMIT ;
+: mode! ( c -- ) 4 col- CELL! ; 
+: @emit C@ 0x20 MAX 0x7f MIN EMIT ;
 : contents
     16 0 DO
         large? IF 3 ELSE 0 THEN I 3 + AT-XY
@@ -819,8 +820,8 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
         width >= IF 64 COLS - xoff ! contents THEN THEN ;
 : setpos ( -- ) pos@ 3 + ( header ) SWAP ( y x ) xoff @ -
     large? IF 3 + ( gutter ) THEN SWAP AT-XY ;
-: cmv ( n -- , char movement ) acc@ * EDPOS @ + pos! ;
 ( ----- 128 )
+: cmv ( n -- , char movement ) acc@ * EDPOS @ + pos! ;
 : buftype ( buf ln -- )
     3 OVER AT-XY KEY DUP EMIT
     DUP 0x20 < IF 2DROP DROP EXIT THEN
