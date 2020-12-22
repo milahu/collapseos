@@ -29,6 +29,8 @@ CODE AT-XY EXX, ( protect BC )
 EXX, ( unprotect BC ) ;CODE
 ( ----- 604 )
 : LINES 24 ; : COLS 80 ;
+: XYMODE 0x70 RAM+ ;
+: CELL! COLS /MOD AT-XY (emit) ;
 CODE BYE
     HL 0 LDdi,
     A 0x16 LDri, ( @EXIT )
