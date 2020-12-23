@@ -827,16 +827,22 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     DUP 0x20 < IF 2DROP DROP EXIT THEN
     ( buf ln c ) 4 col- nspcs SWAP 4 SWAP AT-XY ( buf c )
     SWAP C!+ IN( _zbuf (rdln) IN( SWAP 63 MOVE ;
+: bufp ( buf -- )
+    DUP 3 col- + SWAP DO I @emit LOOP ;
+: bufs
+    1 aty ." I: " IBUF bufp
+    2 aty ." F: " FBUF bufp
+    large? IF 0 3 gutter THEN ;
 ( ----- 129 )
 : $G ACC @ selblk ;
 : $[ BLK> @ acc@ - selblk ;
 : $] BLK> @ acc@ + selblk ;
 : $t PREVBLK @ selblk ;
-: $I 'I' mode! IBUF 1 buftype _i contents 0x20 mode! ;
-: $F 'F' mode! FBUF 2 buftype _F setpos 0x20 mode! ;
-: $Y Y ;
-: $E _E contents ;
-: $X acc@ _X contents ;
+: $I 'I' mode! IBUF 1 buftype _i bufs contents 0x20 mode! ;
+: $F 'F' mode! FBUF 2 buftype _F bufs setpos 0x20 mode! ;
+: $Y Y bufs ;
+: $E _E bufs contents ;
+: $X acc@ _X bufs contents ;
 : $h -1 cmv ; : $l 1 cmv ; : $k -64 cmv ; : $j 64 cmv ;
 : $H EDPOS @ 0x3c0 AND pos! ;
 : $L EDPOS @ 0x3f OR pos! ;
@@ -859,7 +865,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : $f EDPOS @ PREVPOS @ 2DUP = IF 2DROP EXIT THEN
     2DUP > IF DUP pos! SWAP THEN
     ( p1 p2, p1 < p2 ) OVER - 64 MIN ( pos len ) FBUF _zbuf
-    SWAP _cpos FBUF ( len src dst ) ROT MOVE ;
+    SWAP _cpos FBUF ( len src dst ) ROT MOVE bufs ;
 : $R ( replace mode )
     'R' mode!
     BEGIN setpos KEY DUP BS? IF -1 EDPOS +! DROP 0 THEN
@@ -870,22 +876,16 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : $o EDPOS @ 0x3c0 < IF EDPOS @ 64 + EDPOS ! $O THEN ;
 : $D $H 64 icpy
     acc@ 0 DO 16 EDPOS @ 64 / DO I _mvln- LOOP LOOP
-    BLK!! contents ;
+    BLK!! bufs contents ;
 ( ----- 132 )
 : UPPER DUP 'a' 'z' =><= IF 32 - THEN ;
 : handle ( c -- f )
     DUP '0' '9' =><= IF num 0 EXIT THEN
     DUP CMD 2+ C! CMD FIND IF EXECUTE ELSE DROP THEN
     0 ACC ! UPPER 'Q' = ;
-: bufp ( buf -- )
-    DUP 3 col- + SWAP DO I @emit LOOP ;
-: bufs
-    1 aty ." I: " IBUF bufp
-    2 aty ." F: " FBUF bufp
-    large? IF 0 3 gutter THEN ;
 : VE
-    1 XYMODE C! clrscr 0 ACC ! 0 PREVPOS ! nums contents
-    BEGIN xoff? status bufs setpos KEY handle UNTIL
+    1 XYMODE C! clrscr 0 ACC ! 0 PREVPOS ! nums bufs contents
+    BEGIN xoff? status setpos KEY handle UNTIL
     0 XYMODE C! 19 aty (infl) ;
 ( ----- 160 )
 ( AVR Programmer, load range 160-163. doc/avr.txt )
