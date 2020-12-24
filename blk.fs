@@ -681,9 +681,12 @@ CREATE FBUF 64 ALLOT0
     DUP BEGIN C@+ 0x20 < UNTIL -^ 1- ;
 : _rbufsz ( size of linebuf to the right of curpos )
     EDPOS @ 64 MOD 63 -^ ;
+: _lnfix ( --, ensure no ctl chars in line before EDPOS )
+    EDPOS @ DUP 0xffc0 AND 2DUP = IF 2DROP EXIT THEN DO
+    I _cpos DUP C@ 0x20 < IF 0x20 SWAP C! ELSE DROP THEN LOOP ;
 : _i ( i without _pln and _type. used in VE )
     _rbufsz IBUF _blen 2DUP > IF
-        TUCK - ( ilen chars-to-move )
+        _lnfix TUCK - ( ilen chars-to-move )
         SWAP EDPOS @ _cpos 2DUP + ( ctm ilen a a+ilen )
         3 PICK MOVE- ( ctm ilen ) NIP ( ilen )
     ELSE DROP 1+ ( ilen becomes rbuffsize+1 ) THEN
