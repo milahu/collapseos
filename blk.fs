@@ -1939,7 +1939,7 @@ SYSVARS 0x0c + :** C<*
 : BLK! ( -- )
     BLK> @ BLK!* @ EXECUTE
     0 BLKDTY ! ;
-: FLUSH BLKDTY @ IF BLK! THEN ;
+: FLUSH BLKDTY @ IF BLK! THEN -1 BLK> ! ;
 : BLK@ ( n -- )
     DUP BLK> @ = IF DROP EXIT THEN
     FLUSH DUP BLK> ! BLK@* @ EXECUTE ;

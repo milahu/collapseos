@@ -108,6 +108,8 @@ Many blocks contain code. That code can be interpreted through
 LOAD. Programs stored in blocks frequently have "loader blocks"
 that take care of loading all blocks relevant to the program.
 
+# Spanning multiple disks
+
 Blocks spanning multiple disks are tricky. If your media isn't
 large enough to hold all Collapse OS blocks in one unit, you'll
 have to make it span multiple disks. Block reference in
@@ -122,6 +124,12 @@ Although the usage of absolute LOAD calls are minimally used
 (relative LOADs are preferred), they are sometimes unavoidable.
 When you span Collapse OS over multiple disks, don't forget to
 adjust those absolute LOADs.
+
+When you work with multiple disks, you have to remember to FLUSH
+before swapping the disk. This will write current block if it's
+dirty and also invalidate the cache. This way, you're not at
+risk of either overwriting a block on your other disk or LOADing
+cached contents without noticing.
 
 # How blocks are organized
 
