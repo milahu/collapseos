@@ -257,8 +257,8 @@ And there we go! A Collapse OS launchable from floppy!
 # Sending blkfs to floppy
 
 As it is, your system fully supports reading and writing to
-floppy drive 1. It also had *CL< to read a char from *cl and
-*CL> to emit a char to *cl.
+floppy drive 1. It also had CL< to read a char from its RS-232
+port and CL> to emit to it.
 
 That's all you need to have a full Collapse OS with access to
 disk blocks.
@@ -267,16 +267,19 @@ First, make sure your floppies are formatted. Collapse OS is
 currently hardcoded to single side and single density, which
 means there's a limit of 100 blocks per disk.
 
-You'll need to send those blocks through RS-232. Begin by taking
-over the prompt:
+You'll need to send those blocks through RS-232. First, let's
+initialize the driver with CL$. This driver does not require
+the TRS-DOS driver to be loaded. Also, it is hardcoded to
+"no parity, 8 bit words, 9600 bauds". Now, let's have the CL
+take over the prompt:
 
-    ' *CL> ' EMIT **!
-    ' *CL< ' KEY **!
+    ' CL> ' EMIT **!
+    ' CL< ' KEY **!
 
-See B80 for details about those RAM offsets. Your serial link
-now has the prompt. You will also have to make your newlines
-CRLF. The TRS-80 wants CR only, but serial communications (and
-blkup) expect CRLF:
+See "Aliases" in usage.txt for details. Your serial link now has
+the prompt. You will also have to make your newlines CRLF. The
+TRS-80 wants CR only, but serial communications (and blkup)
+expect CRLF:
 
     ' CRLF ' NL **!
 

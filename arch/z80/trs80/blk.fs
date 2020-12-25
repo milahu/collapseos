@@ -100,9 +100,10 @@ EXX, ( unprotect BC ) ;CODE
 : FD! ['] @WRSEC SWAP FD@! ;
 : FD$ ['] FD@ BLK@* ! ['] FD! BLK!* ! ;
 
-: _err LIT" *CLerr" ERR ;
-: *CL< 0 BEGIN DROP 0x0238 @GET UNTIL ;
-: *CL> 0x0238 @PUT NOT IF _err THEN ;
+: CL$ 0x02 0xe8 PC! ( UART RST ) 0xee 0xe9 PC! ( 9600 bauds )
+    0b01101100 0xea PC! ( word8 no parity RTS ) ;
+: CL> BEGIN 0xea PC@ 0x40 AND UNTIL 0xeb PC! ;
+: CL< BEGIN 0xea PC@ 0x80 AND UNTIL 0xeb PC@ ;
 ( ----- 612 )
 ( We process the 0x20 exception by pre-putting a mask in the
   (HL) we're going to write to. If it wasn't a 0x20, we put a
