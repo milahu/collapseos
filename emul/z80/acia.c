@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "acia.h"
 
 static void _check_irq(ACIA *acia)
@@ -49,6 +50,10 @@ uint8_t acia_read(ACIA *acia)
 
 void acia_write(ACIA *acia, uint8_t val)
 {
+    if (acia->control & 0x40) { // RTS high
+        fprintf(stderr, "ACIA RTS high: can't send byte\n");
+        return;
+    }
     acia->status |= 0x01; // RDRF high
     acia->rx = val;
     _check_irq(acia);

@@ -1,0 +1,30 @@
+# Asynchronous Communications Interface Adapters
+
+Machines talking to each other is generally useful and they
+often use ACIA devices to do so. Collapse OS has drivers for
+a few chips of this type and they all have a similar approach:
+unbuffered communication using RTS/CTS handshaking as flow con-
+trol.
+
+The reason for being unbuffered is simplicity and RAM. The logic
+to implement input buffering is non-trivial and, alone, doesn't
+buy us much in terms of reliability: you still have to signal
+the other side when your buffer is nearly full.
+
+Because we don't really need speed, we adopt a one-byte-at-once
+approach: The RTS flag is always high (signalling that it's not
+ready for communication) *except* when calling the ACIA driver's
+"read" word, which is blocking.
+
+That "read" word will pull RTS low, wait for a byte, then pull
+it high again.
+
+This slows down communication, but it's simple and reliable.
+
+Note that this doesn't help making communications with modern
+systems (which are much faster than a typical Collapse OS
+machine and have their buffer output faster than the RTS flag
+can be raised) very much. We have to take extra care, when
+communicating from modern system, not to send too much data too
+fast. But for COS-to-COS communication, this simple system
+works.
