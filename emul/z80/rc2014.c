@@ -108,9 +108,9 @@ static bool hastx()
     return use_sio ? sio_hastx(&sio) : acia_hastx(&acia);
 }
 
-static bool hasrx()
+static bool cantransmit()
 {
-    return use_sio ? sio_hasrx(&sio) : acia_hasrx(&acia);
+    return use_sio ? !sio_hasrx(&sio) : acia_cantransmit(&acia);
 }
 
 static uint8_t _read()
@@ -241,7 +241,7 @@ int main(int argc, char *argv[])
                 break;
             }
         }
-        if (tosend && !hasrx()) {
+        if (tosend && cantransmit()) {
             _write(tosend);
             tosend = 0;
         }

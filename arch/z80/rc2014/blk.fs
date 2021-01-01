@@ -7,15 +7,15 @@
   6850_IO for data register.
   CTL numbers used: 0x16 = no interrupt, 8bit words, 1 stop bit
   64x divide. 0x56 = RTS high )
-CODE 6850<
-    A 0x16 ( RTS low ) LDri, 6850_CTL OUTiA,
-    BEGIN,
-        6850_CTL INAi, 0x01 ANDi, ( is ACIA rcv buf full? )
-    JRZ, ( no, loop ) AGAIN,
-    A 0x56 ( RTS high ) LDri, 6850_CTL OUTiA,
-    ( we have data, fetch and push )
-    6850_IO INAi, PUSHA,
-;CODE
+: _rts 0x16 ( RTS low ) [ 6850_CTL LITN ] PC! ;
+: _rts^ 0x56 ( RTS high ) [ 6850_CTL LITN ] PC! ;
+: 6850<? ( -- c? f )
+    [ 6850_CTL LITN ] PC@ 1 AND ( is rcv buff full ? )
+    NOT IF ( RTS low, then wait 1ms and try again )
+        _rts 10 TICKS ( 1ms ) _rts^
+        [ 6850_CTL LITN ] PC@ 1 AND ( is rcv buff full ? )
+        NOT IF 0 EXIT THEN
+    THEN [ 6850_IO LITN ] PC@ ( c ) 1 ( f ) ;
 ( ----- 602 )
 CODE 6850>
     HL POP, chkPS,
@@ -25,7 +25,7 @@ CODE 6850>
     A L LDrr, 6850_IO OUTiA,
 ;CODE
 ( ----- 603 )
-: (key) 6850< ;
+: (key?) 6850<? ;
 : (emit) 6850> ;
 : 6850$ 0x56 ( RTS high ) [ 6850_CTL LITN ] PC! ;
 ( ----- 605 )
@@ -34,17 +34,16 @@ CODE 6850>
   SIOA_DATA for ch A data register
   SIOB_CTL for ch B control register
   SIOB_DATA for ch B data register )
-CODE SIOA<
-    A 0x05 ( PTR5 ) LDri, SIOA_CTL OUTiA,
-    A 0b01101000 ( De-assert RTS ) LDri, SIOA_CTL OUTiA,
-    BEGIN,
-        SIOA_CTL ( RR0 ) INAi, 0x01 ANDi, ( is rcv buf full? )
-    JRZ, ( no, loop ) AGAIN,
-    A 0x05 ( PTR5 ) LDri, SIOA_CTL OUTiA,
-    A 0b01101010 ( Assert RTS ) LDri, SIOA_CTL OUTiA,
-    ( we have data, fetch and push )
-    SIOA_DATA INAi, PUSHA,
-;CODE
+: _<? ( io ctl -- c? f )
+    DUP ( io ctl ctl ) PC@ 1 AND ( is rcv buff full ? )
+    NOT IF ( io ctl )
+        0x05 ( PTR5 ) OVER PC! 0b01101000 OVER PC! ( RTS low )
+        10 TICKS ( 1ms )
+        0x05 ( PTR5 ) OVER PC! 0b01101010 OVER PC! ( RTS high )
+        PC@ 1 AND ( is rcv buff full ? )
+        NOT IF DROP 0 ( f ) EXIT THEN
+    ELSE DROP THEN ( io ) PC@ ( c ) 1 ( f ) ;
+: SIOA<? [ SIOA_DATA LITN SIOA_CTL LITN ] _<? ;
 ( ----- 606 )
 CODE SIOA>
     HL POP, chkPS,
@@ -60,13 +59,7 @@ CREATE _ ( init data ) 0x18 C, ( CMD3 )
     0x21 C, ( CMD2/PTR1 ) 0 C, ( WR1/Rx no INT )
 : SIOA$ 9 0 DO _ I + C@ [ SIOA_CTL LITN ] PC! LOOP ;
 ( ----- 607 )
-CODE SIOB<
-    BEGIN,
-        SIOB_CTL ( RR0 ) INAi, 0x01 ANDi, ( is rcv buf full? )
-    JRZ, ( no, loop ) AGAIN,
-    ( we have data, fetch and push )
-    SIOB_DATA INAi, PUSHA,
-;CODE
+: SIOB<? [ SIOB_DATA LITN SIOB_CTL LITN ] _<? ;
 CODE SIOB>
     HL POP, chkPS,
     BEGIN,
@@ -105,7 +98,7 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 270 LOAD  ( xcomp overrides )  283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )   605 607 LOADR ( SIO )
 419 LOAD  ( SPI relay )        423 436 LOADR ( SD Card )
-400 LOAD  ( AT28 ) : (key) SIOB< ; : (emit) SIOB> ;
+400 LOAD  ( AT28 ) : (key?) SIOA<? ; : (emit) SIOA> ;
 390 LOAD  ( xcomp core high )
 (entry) _ PC ORG @ 8 + ! ( Update LATEST )
-," SIOB$ BLK$ " EOT,
+," SIOA$ BLK$ " EOT,

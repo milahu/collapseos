@@ -75,7 +75,7 @@ H@ 4 + XCURRENT ! ( make next CODE have 0 prev field )
 0x39 CODE |L
 0x3a CODE |M
 353 LOAD ( xcomp core )
-: (key) 0 PC@ ;
+: (key?) 0 PC@ 1 ;
 : EFS@
     1 3 PC! ( read )
     |M 3 PC! 3 PC! ( blkid )

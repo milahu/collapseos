@@ -10,9 +10,9 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 CODE (emit)
     A 1 LDri, 1 OUTiA, HL POP, A L LDrr, 0 OUTiA,
 ;CODE
-CODE (key)
+CODE (key?) ( TODO: make non-blocking )
     BEGIN, 1 INAi, A INCr, JRZ, AGAIN,
-    A DECr, PUSHA,
+    A DECr, PUSHA, PUSH1,
 ;CODE
 : _sel ( sec )
 ( 32 sectors per track, 512 tracks per disk )

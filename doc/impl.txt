@@ -165,7 +165,7 @@ SYSVARS   FUTURE USES          +3c       BLK(*
 +08       C<* override         +43       FUTURE USES
 +0a       NL ialias            +51       CURRENTPTR
 +0c       C<*                  +53       EMIT ialias
-+0e       WORDBUF              +55       KEY ialias
++0e       WORDBUF              +55       KEY? ialias
 +2e       BOOT C< PTR          +57       FUTURE USES
 +30       IN>
 +32       IN(*                 +70       DRIVERS

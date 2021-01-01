@@ -64,7 +64,7 @@ from it. It goes as follow:
                                                         (cont.)
 ( ----- 611 )
 This module is currently hard-wired to VDP driver, that is, it
-calls vdp's routines during (key) to update character
+calls vdp's routines during (key?) to update character
 selection.
 
 Load range: 632-637
@@ -113,15 +113,15 @@ CREATE _ '0' C, ':' C, 'A' C, '[' C, 'a' C, 0xff C,
     0xe0 AND 0xe0 <
 ;
 ( ----- 616 )
-: (key)
-    _next C@ IF _next C@ 0 _next C! EXIT THEN
-    BEGIN _updsel UNTIL
+: (key?) ( -- c? f )
+    _next C@ IF _next C@ 0 _next C! 1 EXIT THEN
+    _updsel IF
     _prevstat C@
-    0x20 ( BUTC ) OVER AND NOT IF DROP _sel C@ EXIT THEN
-    0x40 ( BUTA ) AND NOT IF 0x8 ( BS ) EXIT THEN
+    0x20 ( BUTC ) OVER AND NOT IF DROP _sel C@ 1 EXIT THEN
+    0x40 ( BUTA ) AND NOT IF 0x8 ( BS ) 1 EXIT THEN
     ( If not BUTC or BUTA, it has to be START )
-    0xd _next C! _sel C@
-;
+    0xd _next C! _sel C@ 1
+    ELSE 0 ( f ) THEN ;
 ( ----- 617 )
 : PAD$
     0xff _prevstat C! 'a' _sel C! 0 _next C! ;

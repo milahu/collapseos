@@ -129,7 +129,7 @@ Keyboard driver
 
 Load range: 566-570
 
-Implement a (key) word that interpret keystrokes from the
+Implement a (key?) word that interpret keystrokes from the
 builtin keyboard. The word waits for a digit to be pressed and
 returns the corresponding ASCII value.
 
@@ -189,35 +189,30 @@ CREATE _atbl
     0x20 C, 'Y' C, 'T' C, 'O' C, 'J' C, 'E' C, 'B' C, 0 C,
     0 C, 'X' C, 'S' C, 'N' C, 'I' C, 'D' C, 'A' C, 0x80 C,
     0 C, 0 C, 0 C, 0 C, 0 C, 0x81 ( 2nd ) C, 0 C, 0x7f C,
-: _2nd@ [ KBD_MEM LITN ] C@ 1 AND ;
-: _2nd! [ KBD_MEM LITN ] C@ 0xfe AND + [ KBD_MEM LITN ] C! ;
-: _alock@ [ KBD_MEM LITN ] C@ 2 AND ;
-: _alock^ [ KBD_MEM LITN ] C@ 2 XOR [ KBD_MEM LITN ] C! ;
+: _@ [ KBD_MEM LITN ] C@ ; : _! [ KBD_MEM LITN ] C! ;
+: _2nd@ _@ 1 AND ; : _2nd! _@ 0xfe AND + _! ;
+: _alpha@ _@ 2 AND ; : _alpha! 2 * _@ 0xfd AND + _! ;
+: _alock@ _@ 4 AND ; : _alock^ _@ 4 XOR _! ;
 ( ----- 619 )
 : _gti ( -- tindex, that it, index in _dtbl or _atbl )
-    0 ( gid ) 0 ( dummy )
-    BEGIN ( loop until a digit is pressed )
-        DROP
-        1+ DUP 7 = IF DROP 0 THEN ( inc gid )
-        1 OVER LSHIFT 0xff -^ ( group dmask ) _get
-    DUP 0xff = NOT UNTIL _wait
-    ( gid dmask )
+    7 0 DO
+        1 I LSHIFT 0xff -^ ( group dmask ) _get
+        DUP 0xff = IF DROP ELSE I ( dmask gid ) LEAVE THEN
+    LOOP _wait
+    SWAP ( gid dmask )
     0xff XOR ( dpos ) 0 ( dindex )
     BEGIN 1+ 2DUP RSHIFT NOT UNTIL 1-
     ( gid dpos dindex ) NIP
     ( gid dindex ) SWAP 8 * + ;
 ( ----- 620 )
-: _tbl^ ( swap input tbl )
-    _atbl = IF _dtbl ELSE _atbl THEN ;
-: (key)
-    0 _2nd! 0 ( lastchr ) BEGIN
-        _alock@ IF _atbl ELSE _dtbl THEN
-        OVER 0x80 ( alpha ) =
-            IF _tbl^ _2nd@ IF _alock^ THEN THEN
-        SWAP 0x81 = _2nd!
-        _gti + C@
-    DUP 0 0x80 >< UNTIL ( loop if not in range )
-    ( lowercase? )
-    _2nd@ IF DUP 'A' 'Z' =><= IF 0x20 OR THEN THEN
-;
+: (key?) ( -- c? f )
+    0 _get 0xff = IF ( no key pressed ) 0 EXIT THEN
+    _alpha@ _alock@ IF NOT THEN IF _atbl ELSE _dtbl THEN
+    _gti + C@ ( c )
+    DUP 0x80 = IF _2nd@ IF _alock^ ELSE 1 _alpha! THEN THEN
+    DUP 0x81 = _2nd!
+    DUP 0 0x80 >< IF ( we have something )
+    ( lower? ) _2nd@ IF DUP 'A' 'Z' =><= IF 0x20 OR THEN THEN
+        0 _2nd! 0 _alpha! 1 ( c f )
+    ELSE ( nothing ) DROP 0 THEN ;
 : KBD$ 0 [ KBD_MEM LITN ] C! ;

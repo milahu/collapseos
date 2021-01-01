@@ -6,7 +6,7 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 445 461 LOADR ( 8086 boot code )
 353 LOAD  ( xcomp core low )
 CODE (emit) AX POPx, 1 INT, ;CODE
-CODE (key) 2 INT, AH 0 MOVri, AX PUSHx, ;CODE
+CODE (key?) 2 INT, AH 0 MOVri, AX PUSHx, AX PUSHx, ;CODE
 : COLS 80 ; : LINES 25 ;
 CODE AT-XY ( x y ) BX POPx, AX POPx, 3 INT, ;CODE
 CODE _ BX POPx, AX POPx, 4 INT, ;CODE

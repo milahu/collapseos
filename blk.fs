@@ -807,7 +807,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     BLKDTY @ IF '*' EMIT THEN 4 nspcs ;
 : nums 17 1 DO 2 I + aty I . SPC SPC LOOP ;
 ( ----- 127 )
-: mode! ( c -- ) 4 col- CELL! ; 
+: mode! ( c -- ) 4 col- CELL! ;
 : @emit C@ 0x20 MAX 0x7f MIN EMIT ;
 : contents
     16 0 DO
@@ -2002,7 +2002,8 @@ SYSVARS 0x0c + :** C<*
 ;
 ( del is same as backspace )
 : BS? DUP 0x7f = SWAP 0x8 = OR ;
-SYSVARS 0x55 + :** KEY
+SYSVARS 0x55 + :** KEY?
+: KEY BEGIN KEY? UNTIL ;
 ( cont.: read one char into input buffer and returns whether we
   should continue, that is, whether CR was not met. )
 ( ----- 379 )
@@ -2104,7 +2105,7 @@ SYSVARS 0x55 + :** KEY
     0x02 RAM+ CURRENT* !
     CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR )
     0 0x08 RAM+ !  ( 08 == C<* override )
-    ['] (emit) ['] EMIT **! ['] (key) ['] KEY **!
+    ['] (emit) ['] EMIT **! ['] (key?) ['] KEY? **!
     ['] CRLF ['] NL **!
     ['] (boot<) ['] C<* **!
     ( boot< always has a char waiting. 06 == C<?* )
@@ -2205,7 +2206,7 @@ Load range: B402-B403
 ( ----- 410 )
 PS/2 keyboard subsystem
 
-Provides (key) from a driver providing the PS/2 protocol. That
+Provides (key?) from a driver providing the PS/2 protocol. That
 is, for a driver taking care of providing all key codes emanat-
 ing from a PS/2 keyboard, this subsystem takes care of mapping
 those keystrokes to ASCII characters. This code is designed to
@@ -2220,7 +2221,7 @@ Load range: 411-414
 
 ( A list of the values associated with the 0x80 possible scan
 codes of the set 2 of the PS/2 keyboard specs. 0 means no
-value. That value is a character that can be read in (key)
+value. That value is a character that can be read in (key?)
 No make code in the PS/2 set 2 reaches 0x80. )
 CREATE PS2_CODES
 ( 00 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,
@@ -2262,19 +2263,20 @@ CREATE PS2_CODES
 ( 78 ) 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C, 0 C,
 ( ----- 414 )
 : _shift? ( kc -- f ) DUP 0x12 = SWAP 0x59 = OR ;
-: _get ( -- kc ) 0 ( dummy ) BEGIN DROP (ps2kc) DUP UNTIL ;
-: (key) _get
-    DUP 0xe0 ( extended ) = IF ( ignore ) DROP (key) EXIT THEN
+: (key?) ( -- c? f )
+    (ps2kc) DUP NOT IF EXIT THEN ( kc )
+    DUP 0xe0 ( extended ) = IF ( ignore ) DROP 0 EXIT THEN
     DUP 0xf0 ( break ) = IF DROP ( )
         ( get next kc and see if it's a shift )
-        _get _shift? IF ( drop shift ) 0 PS2_SHIFT C! THEN
+        BEGIN (ps2kc) ?DUP UNTIL ( kc )
+        _shift? IF ( drop shift ) 0 PS2_SHIFT C! THEN
         ( whether we had a shift or not, we return the next )
-        (key) EXIT THEN
-    DUP 0x7f > IF DROP (key) EXIT THEN
-    DUP _shift? IF DROP 1 PS2_SHIFT C! (key) EXIT THEN
+        0 EXIT THEN
+    DUP 0x7f > IF DROP 0 EXIT THEN
+    DUP _shift? IF DROP 1 PS2_SHIFT C! 0 EXIT THEN
     ( ah, finally, we have a gentle run-of-the-mill KC )
-    PS2_CODES PS2_SHIFT C@ IF 0x80 + THEN + C@
-    ?DUP NOT IF (key) THEN ;
+    PS2_CODES PS2_SHIFT C@ IF 0x80 + THEN + C@ ( c, maybe 0 )
+    ?DUP ( c? f ) ;
 ( ----- 418 )
 SPI relay driver
 

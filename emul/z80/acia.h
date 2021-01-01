@@ -29,7 +29,7 @@ typedef struct {
 
 void acia_init(ACIA *acia);
 bool acia_has_irq(ACIA *acia);
-bool acia_hasrx(ACIA *acia);
+bool acia_cantransmit(ACIA *acia);
 bool acia_hastx(ACIA *acia);
 uint8_t acia_read(ACIA *acia);
 void acia_write(ACIA *acia, uint8_t val);

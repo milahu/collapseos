@@ -31,9 +31,10 @@ bool acia_has_irq(ACIA *acia)
     return acia->in_int;
 }
 
-bool acia_hasrx(ACIA *acia)
+bool acia_cantransmit(ACIA *acia)
 {
-    return acia->status & 0x01; // RDRF
+    return !(acia->status & 0x01 // RDRF
+        || acia->control & 0x40); // RTS
 }
 
 bool acia_hastx(ACIA *acia)

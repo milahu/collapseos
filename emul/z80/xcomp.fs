@@ -9,7 +9,7 @@ RS_ADDR 0x80 - CONSTANT SYSVARS
 283 335 LOADR ( boot.z80 )
 353 LOAD  ( xcomp core low )
 : (emit) 0 PC! ;
-: (key) 0 PC@ ;
+: (key?) 0 PC@ 1 ;
 : EFS@
     1 3 PC! ( read )
     256 /MOD 3 PC! 3 PC! ( blkid )

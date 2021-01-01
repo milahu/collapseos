@@ -10,6 +10,11 @@ top of stack (TOS). For example, in "a b -- c d", b is TOS
 before, d is TOS after. "R:" means that the Return Stack is
 modified.
 
+Some words have a variable stack signature, most often in pair
+with a flag. These are indicated with "?" to tell that the argu-
+ment might not be there. For example, "-- n? f" means that "n"
+might or might not be there.
+
 Word references (wordref): When we say we have a "word
 reference", it's a pointer to a word's *entry type field*. For
 example, the address that "' DUP" puts on the stack is a
@@ -236,24 +241,30 @@ STYPE    a --     EMIT all chars of string at at addr a.
 .X       n --     Print n in hex form. Always 4 characters.
                   Numbers are never considered negative.
                   "-1 .X" --> ffff
-," xxx" --     Write xxx to HERE
-." xxx" --     *I* Compiles string literal xxx followed by a
-               call to STYPE.
-C<?     -- f   Returns whether there's a char waiting in buf.
-C<      -- c   Read one char from buffered input.
-EMIT    c --   Spit char c to output stream
-IN>     -- a   Address of variable containing current pos in
-               input buffer.
-KEY     -- c   Get char c from direct input
-PC!     c a -- Spit c to port a
-PC@     a -- c Fetch c from port a
-WORD    -- a   Read one word from buffered input and push its
-               addr. Always null terminated. If ASCII EOT is
-               encountered, a will point to it (it is cons-
-               idered a word).
+," xxx" --        Write xxx to HERE
+." xxx" --        *I* Compiles string literal xxx followed by a
+                  call to STYPE.
+C<?     -- f      Returns whether there's a char waiting in buf.
+C<      -- c      Read one char from buffered input.
+EMIT    c --      Spit char c to output stream
+IN>     -- a      Address of variable containing current pos in
+                  input buffer.
+KEY?    -- c? f   Polls the keyboard for a key. If a key is
+                  pressed, f is true and c is the char. Other-
+                  wise, f is false and c is *not* on the stack.
+KEY     -- c      Get char c from direct input
+PC!     c a --    Spit c to port a
+PC@     a -- c    Fetch c from port a
+WORD    -- a      Read one word from buffered input and push its
+                  addr. Always null terminated. If ASCII EOT is
+                  encountered, a will point to it (it is cons-
+                  idered a word).
 
 There are also ascii const emitters:
 BS CR LF SPC CRLF
+
+KEY? and EMIT are ialiases to (key?) and (emit) (see TTY proto-
+col in protocol.txt). KEY is a loop over KEY?.
 
 NL is an ialias that points to CRLF by default and that should
 generally be used when we want to emit a newline.
