@@ -1801,9 +1801,9 @@ SYSVARS 0x55 + :** KEY?
     DUP BS? IF
         IN> @ IN( > IF -1 IN> +! BS EMIT THEN SPC> BS EMIT
     ELSE DUP LF = IF DROP CR THEN ( same as CR )
-        DUP EMIT ( echo back )
+        DUP SPC >= IF DUP EMIT ( echo back ) THEN
         DUP IN> @ ! 1 IN> +! THEN ( c )
-    DUP CR = SWAP EOT? OR UNTIL IN( IN> ! ;
+    DUP CR = SWAP EOT? OR UNTIL NL> IN( IN> ! ;
 ( ----- 363 )
 : RDLN<
     IN> @ C@ ( c )
