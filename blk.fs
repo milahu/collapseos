@@ -450,7 +450,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 ( We divide by 2 because each PC represents a word. )
 : PC H@ ORG @ - 1 RSHIFT ;
 ( ----- 052 )
-: _oor ." arg out of range: " .X SPC ." PC: " PC .X NL> ABORT ;
+: _oor ." arg out of range: " .X SPC> ." PC: " PC .X NL> ABORT ;
 : _r8c DUP 7 > IF _oor THEN ;
 : _r32c DUP 31 > IF _oor THEN ;
 : _r16+c _r32c DUP 16 < IF _oor THEN ;
@@ -624,13 +624,13 @@ CREATE FBUF 64 ALLOT0
 : _pln ( lineno -- )
     DUP _lpos DUP 64 + SWAP DO ( lno )
         I EDPOS @ _cpos = IF '^' EMIT THEN
-        I C@ DUP 0x20 < IF DROP 0x20 THEN
+        I C@ DUP SPC < IF DROP SPC THEN
         EMIT
     LOOP ( lno ) 1+ . ;
 : _zbuf 64 0 FILL ; ( buf -- )
 ( ----- 108 )
 : _type ( buf -- )
-    C< DUP 0xd = IF 2DROP EXIT THEN SWAP DUP _zbuf ( c a )
+    C< DUP CR = IF 2DROP EXIT THEN SWAP DUP _zbuf ( c a )
     BEGIN ( c a ) C!+ C< TUCK 0x0d = UNTIL ( c a ) C! ;
 ( user-facing lines are 1-based )
 : T 1- DUP 64 * EDPOS ! _pln ;
@@ -654,19 +654,19 @@ CREATE FBUF 64 ALLOT0
     BEGIN
         C@+ ROT ( a2+1 c2 a1 ) C@+ ROT ( a2+1 a1+1 c1 c2 )
         = NOT IF DROP FBUF THEN ( a2 a1 )
-        TUCK C@ 0xd = ( a1 a2 f1 )
+        TUCK C@ CR = ( a1 a2 f1 )
         OVER BLK) = OR ( a1 a2 f1|f2 )
     UNTIL ( a1 a2 )
     DUP BLK) < IF BLK( - FBUF + -^ EDPOS ! ELSE DROP THEN ;
 : F FBUF _type _F EDPOS @ 64 / _pln ;
 ( ----- 111 )
 : _blen ( buf -- length of str in buf )
-    DUP BEGIN C@+ 0x20 < UNTIL -^ 1- ;
+    DUP BEGIN C@+ SPC < UNTIL -^ 1- ;
 : _rbufsz ( size of linebuf to the right of curpos )
     EDPOS @ 64 MOD 63 -^ ;
 : _lnfix ( --, ensure no ctl chars in line before EDPOS )
     EDPOS @ DUP 0xffc0 AND 2DUP = IF 2DROP EXIT THEN DO
-    I _cpos DUP C@ 0x20 < IF 0x20 SWAP C! ELSE DROP THEN LOOP ;
+    I _cpos DUP C@ SPC < IF SPC SWAP C! ELSE DROP THEN LOOP ;
 : _i ( i without _pln and _type. used in VE )
     _rbufsz IBUF _blen 2DUP > IF
         _lnfix TUCK - ( ilen chars-to-move )
@@ -781,17 +781,17 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : width large? IF 64 ELSE COLS THEN ;
 : acc@ ACC @ 1 MAX ; : pos@ ( x y -- ) EDPOS @ 64 /MOD ;
 : num ACC @ SWAP _pdacc IF ACC ! ELSE DROP THEN ;
-: nspcs ( n -- , spit n space ) 0 DO SPC LOOP ;
+: nspcs ( n -- , spit n space ) 0 DO SPC> LOOP ;
 : aty 0 SWAP AT-XY ;
-: clrscr COLS LINES * 0 DO 0x20 I CELL! LOOP ;
+: clrscr COLS LINES * 0 DO SPC I CELL! LOOP ;
 : gutter ( ln n ) OVER + SWAP DO 67 I AT-XY '|' EMIT LOOP ;
-: status 0 aty ." BLK" SPC BLK> ? SPC ACC ?
-    SPC pos@ . ',' EMIT . xoff @ IF '>' EMIT THEN SPC
+: status 0 aty ." BLK" SPC> BLK> ? SPC> ACC ?
+    SPC> pos@ . ',' EMIT . xoff @ IF '>' EMIT THEN SPC>
     BLKDTY @ IF '*' EMIT THEN 4 nspcs ;
-: nums 17 1 DO 2 I + aty I . SPC SPC LOOP ;
+: nums 17 1 DO 2 I + aty I . SPC> SPC> LOOP ;
 ( ----- 127 )
 : mode! ( c -- ) 4 col- CELL! ;
-: @emit C@ 0x20 MAX 0x7f MIN EMIT ;
+: @emit C@ SPC MAX 0x7f MIN EMIT ;
 : contents
     16 0 DO
         large? IF 3 ELSE 0 THEN I 3 + AT-XY
@@ -810,7 +810,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : cmv ( n -- , char movement ) acc@ * EDPOS @ + pos! ;
 : buftype ( buf ln -- )
     3 OVER AT-XY KEY DUP EMIT
-    DUP 0x20 < IF 2DROP DROP EXIT THEN
+    DUP SPC < IF 2DROP DROP EXIT THEN
     ( buf ln c ) 4 col- nspcs SWAP 4 SWAP AT-XY ( buf c )
     SWAP C!+ IN( _zbuf (rdln) IN( SWAP 63 MOVE ;
 : bufp ( buf -- )
@@ -824,8 +824,8 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : $[ BLK> @ acc@ - selblk ;
 : $] BLK> @ acc@ + selblk ;
 : $t PREVBLK @ selblk ;
-: $I 'I' mode! IBUF 1 buftype _i bufs contents 0x20 mode! ;
-: $F 'F' mode! FBUF 2 buftype _F bufs setpos 0x20 mode! ;
+: $I 'I' mode! IBUF 1 buftype _i bufs contents SPC mode! ;
+: $F 'F' mode! FBUF 2 buftype _F bufs setpos SPC mode! ;
 : $Y Y bufs ;
 : $E _E bufs contents ;
 : $X acc@ _X bufs contents ;
@@ -855,9 +855,9 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : $R ( replace mode )
     'R' mode!
     BEGIN setpos KEY DUP BS? IF -1 EDPOS +! DROP 0 THEN
-        DUP 0x20 >= IF
+        DUP SPC >= IF
         DUP EMIT EDPOS @ _cpos C! 1 EDPOS +! BLK!! 0
-    THEN UNTIL 0x20 mode! contents ;
+    THEN UNTIL SPC mode! contents ;
 : $O _U EDPOS @ 0x3c0 AND DUP pos! _cpos _zbuf BLK!! contents ;
 : $o EDPOS @ 0x3c0 < IF EDPOS @ 64 + EDPOS ! $O THEN ;
 : $D $H 64 icpy
@@ -927,7 +927,7 @@ VARIABLE aspprevx
     ROT TUCK + 0x10 - ( sz a end )
     TUCK SWAP 0 ROT> ( sz end sum end a ) DO ( sz end sum )
         I C@ + LOOP ( sz end sum ) SWAP ( sz sum end )
-    'T' C!+^ 'M' C!+^ 'R' C!+^ 0x20 C!+^ 'S' C!+^
+    'T' C!+^ 'M' C!+^ 'R' C!+^ SPC C!+^ 'S' C!+^
     'E' C!+^ 'G' C!+^ 'A' C!+^ 0 C!+^ 0 C!+^
     ( sum's LSB ) OVER C!+^ ( MSB ) SWAP 8 RSHIFT OVER C! 1+
     ( sz end ) 0 C!+^ 0 C!+^ 0 C!+^ SWAP 0x4a + SWAP C! ;
@@ -1717,7 +1717,7 @@ with "390 LOAD"
 ( ----- 356 )
 SYSVARS 0x53 + :** EMIT
 : STYPE C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
-: BS 8 EMIT ; : SPC 32 EMIT ;
+: BS 0x8 ; : LF 0xa ; : CR 0xd ; : SPC 0x20 ; : SPC> SPC EMIT ;
 : NL> 0x50 RAM+ C@ ?DUP IF EMIT ELSE 13 EMIT 10 EMIT THEN ;
 : ERR STYPE ABORT ;
 : (uflw) LIT" stack underflow" ERR ;
@@ -1962,11 +1962,11 @@ SYSVARS 0x0c + :** C<*
 ( ----- 377 )
 : _ ( a -- a+8 )
     DUP ( a a )
-    ':' EMIT DUP .x SPC
-    4 0 DO DUP @ |L .x .x SPC 2+ LOOP
+    ':' EMIT DUP .x SPC>
+    4 0 DO DUP @ |L .x .x SPC> 2+ LOOP
     DROP ( a )
     8 0 DO
-        C@+ DUP 0x20 0x7e =><= NOT IF DROP '.' THEN EMIT
+        C@+ DUP SPC 0x7e =><= NOT IF DROP '.' THEN EMIT
     LOOP NL> ;
 : DUMP ( n a -- )
     SWAP 8 /MOD SWAP IF 1+ THEN
@@ -1978,10 +1978,10 @@ SYSVARS 0x0c + :** C<*
     ( already at IN( ? )
     IN> @ IN( = IF EXIT THEN
     IN> @ 1- IN> !
-    BS SPC BS
+    BS EMIT SPC> BS EMIT
 ;
 ( del is same as backspace )
-: BS? DUP 0x7f = SWAP 0x8 = OR ;
+: BS? DUP 0x7f = SWAP BS = OR ;
 SYSVARS 0x55 + :** KEY?
 : KEY BEGIN KEY? UNTIL ;
 ( cont.: read one char into input buffer and returns whether we
@@ -1989,8 +1989,8 @@ SYSVARS 0x55 + :** KEY?
 ( ----- 379 )
 : (rdlnc) ( -- c )
     ( buffer overflow? same as if we typed a newline )
-    IN> @ IN) = IF 0x0a ELSE KEY THEN ( c )
-    DUP 0x0a = IF DROP 0xd THEN ( lf? same as cr )
+    IN> @ IN) = IF LF ELSE KEY THEN ( c )
+    DUP LF = IF DROP CR THEN ( lf? same as cr )
     ( backspace? handle and exit )
     DUP BS? IF _bs EXIT THEN
     ( echo back )
@@ -2001,7 +2001,7 @@ SYSVARS 0x55 + :** KEY?
   thus ! automatically null-terminates our string )
     IN> @ ! 1 IN> +! ( c )
     ( if newline, replace with zero to indicate EOL )
-    DUP 0xd = IF DROP 0 THEN ;
+    DUP CR = IF DROP 0 THEN ;
 ( ----- 380 )
 ( Read one line in input buffer and make IN> point to it )
 : (rdln)
@@ -2023,7 +2023,7 @@ SYSVARS 0x55 + :** KEY?
 : RDLN$
     H@ 0x32 ( IN(* ) RAM+ !
     ( plus 2 for extra bytes after buffer: 1 for
-      the last typed 0x0a and one for the following NULL. )
+      the last typed LF and one for the following NULL. )
     IN) IN( - ALLOT
     (infl)
     ['] RDLN< ['] C<* **!
@@ -2033,7 +2033,7 @@ SYSVARS 0x55 + :** KEY?
 : LIST
     BLK@
     16 0 DO
-        I 1+ DUP 10 < IF SPC THEN . SPC
+        I 1+ DUP 10 < IF SPC> THEN . SPC>
         64 I * BLK( + DUP 64 + SWAP DO
             I C@ DUP 0x1f > IF EMIT ELSE DROP LEAVE THEN
         LOOP
@@ -2044,7 +2044,7 @@ SYSVARS 0x55 + :** KEY?
     BEGIN
     WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
     FIND NOT IF (parse) ELSE EXECUTE THEN
-    C<? NOT IF SPC LIT" ok" STYPE NL> THEN
+    C<? NOT IF SPC> LIT" ok" STYPE NL> THEN
     AGAIN ;
 ( Read from BOOT C< PTR and inc it. )
 : (boot<)
@@ -2075,7 +2075,7 @@ SYSVARS 0x55 + :** KEY?
 ( ----- 385 )
 : LOAD+ BLK> @ + LOAD ;
 ( b1 b2 -- )
-: LOADR 1+ SWAP DO I DUP . SPC LOAD LOOP ;
+: LOADR 1+ SWAP DO I DUP . SPC> LOAD LOOP ;
 : LOADR+ BLK> @ + SWAP BLK> @ + SWAP LOADR ;
 ( ----- 390 )
 ( xcomp core high )
@@ -2168,17 +2168,17 @@ Load range: B402-B403
 : XYPOS! COLS LINES * MOD DUP XYPOS @ CURSOR! XYPOS ! ;
 : AT-XY ( x y -- ) COLS * + XYPOS! ;
 '? NEWLN NIP NOT [IF]
-: NEWLN ( ln -- ) COLS * DUP COLS + SWAP DO 0x20 I CELL! LOOP ;
+: NEWLN ( ln -- ) COLS * DUP COLS + SWAP DO SPC I CELL! LOOP ;
 [THEN]
 : _lf XYMODE C@ IF EXIT THEN
     XYPOS @ COLS / 1+ LINES MOD DUP NEWLN
     COLS * XYPOS! ;
-: _bs 0x20 ( blank ) XYPOS @ TUCK CELL! ( pos ) 1- XYPOS! ;
+: _bs SPC XYPOS @ TUCK CELL! ( pos ) 1- XYPOS! ;
 ( ----- 403 )
 : (emit)
-    DUP 0x08 = IF DROP _bs EXIT THEN
-    DUP 0x0d = IF DROP _lf EXIT THEN
-    DUP 0x20 < IF DROP EXIT THEN
+    DUP BS? IF DROP _bs EXIT THEN
+    DUP CR = IF DROP _lf EXIT THEN
+    DUP SPC < IF DROP EXIT THEN
     XYPOS @ CELL!
     XYPOS @ 1+ DUP COLS MOD IF XYPOS! ELSE DROP _lf THEN ;
 : GRID$ 0 XYPOS ! 0 XYMODE C! ;
@@ -2750,7 +2750,7 @@ them.  We insert a blank one at the end of those 7. )
     ( blank row ) 0xff _data ;
 : CELL! ( c pos )
     0x7800 OR _ctl ( tilenum )
-    0x20 - ( glyph ) 0x5f MOD _data ;
+    SPC - ( glyph ) 0x5f MOD _data ;
 ( ----- 472 )
 : CURSOR! ( new old -- )
     DUP 0x3800 OR _ctl [ TMS_DATAPORT LITN ] PC@
