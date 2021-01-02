@@ -1682,14 +1682,13 @@ with "390 LOAD"
 : H@ HERE @ ;
 : FIND ( w -- a f ) CURRENT @ SWAP _find ;
 : IN> 0x30 RAM+ ; ( current position in INBUF )
-: IN( 0x32 RAM+ @ ; ( points to INBUF )
-: IN) 0x40 ( buffer size ) IN( + ; ( INBUF's end )
+: IN( 0x60 RAM+ ; ( points to INBUF )
 : IN$ 0 IN( DUP IN> ! ! ; ( flush input buffer )
 : QUIT
     (resRS) 0 0x08 RAM+ ! ( C<* override ) IN$
     LIT" (main)" FIND DROP EXECUTE
 ;
-1 33 LOADR+
+1 31 LOADR+
 ( ----- 354 )
 : ABORT (resSP) QUIT ;
 : = CMP NOT ; : < CMP -1 = ; : > CMP 1 = ;
@@ -1978,7 +1977,7 @@ SYSVARS 0x55 + :** KEY?
 : RDLN ( Read 1 line in input buff and make IN> point to it )
     IN$ BEGIN
     ( buffer overflow? same as if we typed a newline )
-    IN> @ IN) 1- = IF CR ELSE KEY THEN ( c )
+    IN> @ IN( - 0x3e = IF CR ELSE KEY THEN ( c )
     DUP BS? IF
         IN> @ IN( > IF -1 IN> +! BS EMIT THEN SPC> BS EMIT
     ELSE DUP LF = IF DROP CR THEN ( same as CR )
@@ -1996,13 +1995,6 @@ SYSVARS 0x55 + :** KEY?
     ( update C<? flag )
     IN> @ C@ 0 > 0x06 RAM+ !  ( 06 == C<? ) ;
 ( ----- 381 )
-( Initializes the readln subsystem )
-: RDLN$
-    H@ 0x32 ( IN(* ) RAM+ !
-    IN) IN( - ALLOT IN$
-    ['] RDLN< ['] C<* **!
-    1 0x06 RAM+ !  ( 06 == C<? ) ;
-( ----- 382 )
 : LIST
     BLK@
     16 0 DO
@@ -2012,7 +2004,7 @@ SYSVARS 0x55 + :** KEY?
         LOOP
         NL>
     LOOP ;
-( ----- 383 )
+( ----- 382 )
 : INTERPRET
     BEGIN
     WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
@@ -2028,7 +2020,7 @@ SYSVARS 0x55 + :** KEY?
   is to check whether we're restoring to "_", the word above.
   if yes, then we're in a nested load. Also, the 1 in 0x06 is
   to avoid tons of "ok" displays. )
-( ----- 384 )
+( ----- 383 )
 : LOAD
     BLK> @ >R ( save restorable variables to RSP )
     0x08 RAM+ @ >R  ( 08 == C<* override )
@@ -2045,7 +2037,7 @@ SYSVARS 0x55 + :** KEY?
     ELSE ( not nested )
         R> 0x08 RAM+ ! R> DROP ( BLK> )
     THEN ;
-( ----- 385 )
+( ----- 384 )
 : LOAD+ BLK> @ + LOAD ;
 ( b1 b2 -- )
 : LOADR 1+ SWAP DO I DUP . SPC> LOAD LOOP ;
@@ -2062,7 +2054,8 @@ SYSVARS 0x55 + :** KEY?
     ['] (boot<) ['] C<* **!
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
-    RDLN$ LIT" _sys" [entry]
+    ['] RDLN< ['] C<* **! IN$
+    LIT" _sys" [entry]
     LIT" Collapse OS" STYPE NL> (main) ;
 XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 1 4 LOADR+

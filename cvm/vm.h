@@ -3,7 +3,7 @@
 
 #define SP_ADDR 0xffff
 #define RS_ADDR 0xff00
-#define SYSVARS RS_ADDR-0x80
+#define SYSVARS RS_ADDR-0xb0
 #define MEMSIZE 0x10000
 
 typedef uint8_t byte;

@@ -75,7 +75,7 @@ CODE AT-XY ( x y )
 ( ----- 612 )
 0xff00 CONSTANT RS_ADDR
 0xfffa CONSTANT PS_ADDR
-RS_ADDR 0x80 - CONSTANT SYSVARS
+RS_ADDR 0xa0 - CONSTANT SYSVARS
 30 LOAD   ( 8086 asm )
 262 LOAD  ( xcomp ) 270 LOAD  ( xcomp overrides )
 445 461 LOADR ( 8086 boot code )

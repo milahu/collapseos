@@ -113,7 +113,7 @@ it with /cvm/avra.sh.
 
 We start with the base SMS xcomp and add a few things:
 
-1. at the top: "SYSVARS 0x72 + CONSTANT PS2_MEM"
+1. at the top: "SYSVARS 0xa2 + CONSTANT PS2_MEM"
 2. After VDP load: "621 LOAD : (ps2kc) (ps2kcB) ;" (that binds
    us to port B)
 3. Right after: "411 414 LOADR" (that gives us "(key)")
