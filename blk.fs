@@ -2079,7 +2079,7 @@ SYSVARS 0x55 + :** KEY?
 ( ----- 385 )
 : LOAD+ BLK> @ + LOAD ;
 ( b1 b2 -- )
-: LOADR 1+ SWAP DO I DUP . NL LOAD LOOP ;
+: LOADR 1+ SWAP DO I DUP . SPC LOAD LOOP ;
 : LOADR+ BLK> @ + SWAP BLK> @ + SWAP LOADR ;
 ( ----- 390 )
 ( xcomp core high )
