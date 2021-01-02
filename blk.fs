@@ -1684,11 +1684,9 @@ with "390 LOAD"
 : IN> 0x30 RAM+ ; ( current position in INBUF )
 : IN( 0x60 RAM+ ; ( points to INBUF )
 : IN$ 0 IN( DUP IN> ! ! ; ( flush input buffer )
-: QUIT
-    (resRS) 0 0x08 RAM+ ! ( C<* override ) IN$
-    LIT" (main)" FIND DROP EXECUTE
-;
-1 31 LOADR+
+: C<* 0x0c RAM+  ;
+: QUIT (resRS) 0 C<* ! IN$ LIT" (main)" FIND DROP EXECUTE ;
+1 28 LOADR+
 ( ----- 354 )
 : ABORT (resSP) QUIT ;
 : = CMP NOT ; : < CMP -1 = ; : > CMP 1 = ;
@@ -1784,31 +1782,49 @@ XCURRENT @ _xapply ORG @ 0x13 ( stable ABI oflw ) + !
         DUP '0' '1' =><= NOT IF 2DROP 0 UNLOOP EXIT THEN
         '0' - SWAP 1 LSHIFT + ( a r*2+n ) LOOP
     NIP 1 ;
-( ----- 362 )
-: (parse)           ( a -- n )
+: (parse) ( a -- n )
     _pc IF EXIT THEN
     _ph IF EXIT THEN
     _pb IF EXIT THEN
     _pd IF EXIT THEN
-    ( nothing works )
-    (wnf)
-;
+    ( nothing works ) (wnf) ;
+( ----- 362 )
+: EOT? EOT = ;
+SYSVARS 0x55 + :** KEY?
+: KEY BEGIN KEY? UNTIL ;
+( del is same as backspace )
+: BS? DUP 0x7f = SWAP BS = OR ;
+: RDLN ( Read 1 line in input buff and make IN> point to it )
+    IN$ BEGIN
+    ( buffer overflow? same as if we typed a newline )
+    IN> @ IN( - 0x3e = IF CR ELSE KEY THEN ( c )
+    DUP BS? IF
+        IN> @ IN( > IF -1 IN> +! BS EMIT THEN SPC> BS EMIT
+    ELSE DUP LF = IF DROP CR THEN ( same as CR )
+        DUP EMIT ( echo back )
+        DUP IN> @ ! 1 IN> +! THEN ( c )
+    DUP CR = SWAP EOT? OR UNTIL IN( IN> ! ;
 ( ----- 363 )
+: RDLN<
+    IN> @ C@ ( c )
+    DUP IF ( not EOL? good, inc and return )
+        1 IN> +!
+    ELSE ( EOL ? readline. we still return null though )
+        RDLN
+    THEN ( c )
+    ( update C<? flag )
+    IN> @ C@ 0 > 0x06 RAM+ !  ( 06 == C<? ) ;
+( ----- 364 )
 : C<? 0x06 RAM+ @ ;
-SYSVARS 0x0c + :** C<*
-: C<
-    0x08 RAM+ ( C<* override ) @
-    ?DUP NOT IF C<* ELSE EXECUTE THEN ;
+: C< C<* @ ?DUP NOT IF RDLN< ELSE EXECUTE THEN ;
 : , H@ ! H@ 2+ HERE ! ;
 : C, H@ C!+ HERE ! ;
 : ,"
     BEGIN
         C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
     AGAIN ;
-( ----- 364 )
-: WS? SPC <= ;
-: EOT? EOT = ;
 : EOT, EOT C, ;
+: WS? SPC <= ;
 
 : TOWORD ( -- c, c being the first letter of the word )
     0 ( dummy ) BEGIN
@@ -1969,32 +1985,6 @@ SYSVARS 0x0c + :** C<*
     SWAP 8 /MOD SWAP IF 1+ THEN
     0 DO _ LOOP ;
 ( ----- 378 )
-SYSVARS 0x55 + :** KEY?
-: KEY BEGIN KEY? UNTIL ;
-( del is same as backspace )
-: BS? DUP 0x7f = SWAP BS = OR ;
-( ----- 379 )
-: RDLN ( Read 1 line in input buff and make IN> point to it )
-    IN$ BEGIN
-    ( buffer overflow? same as if we typed a newline )
-    IN> @ IN( - 0x3e = IF CR ELSE KEY THEN ( c )
-    DUP BS? IF
-        IN> @ IN( > IF -1 IN> +! BS EMIT THEN SPC> BS EMIT
-    ELSE DUP LF = IF DROP CR THEN ( same as CR )
-        DUP EMIT ( echo back )
-        DUP IN> @ ! 1 IN> +! THEN ( c )
-    DUP CR = SWAP EOT? OR UNTIL IN( IN> ! ;
-( ----- 380 )
-: RDLN<
-    IN> @ C@ ( c )
-    DUP IF ( not EOL? good, inc and return )
-        1 IN> +!
-    ELSE ( EOL ? readline. we still return null though )
-        RDLN
-    THEN ( c )
-    ( update C<? flag )
-    IN> @ C@ 0 > 0x06 RAM+ !  ( 06 == C<? ) ;
-( ----- 381 )
 : LIST
     BLK@
     16 0 DO
@@ -2004,7 +1994,7 @@ SYSVARS 0x55 + :** KEY?
         LOOP
         NL>
     LOOP ;
-( ----- 382 )
+( ----- 379 )
 : INTERPRET
     BEGIN
     WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
@@ -2016,28 +2006,20 @@ SYSVARS 0x55 + :** KEY?
     ( 2e == BOOT C< PTR )
     0x2e ( BOOT C< PTR ) RAM+ @ DUP C@ ( a c )
     SWAP 1 + 0x2e RAM+ ! ( c ) ;
-( pre-comment for tight LOAD: The 0x08==I check after INTERPRET
-  is to check whether we're restoring to "_", the word above.
-  if yes, then we're in a nested load. Also, the 1 in 0x06 is
-  to avoid tons of "ok" displays. )
-( ----- 383 )
+( ----- 380 )
 : LOAD
     BLK> @ >R ( save restorable variables to RSP )
-    0x08 RAM+ @ >R  ( 08 == C<* override )
+    C<* @ >R
     0x06 RAM+ @ >R  ( C<? )
     0x2e RAM+ @ >R  ( boot ptr )
     BLK@
     BLK( 0x2e RAM+ ! ( Point to beginning of BLK )
-    ['] (boot<) 0x08 RAM+ !
+    ['] (boot<) 0x0c RAM+ !
     1 0x06 RAM+ !  ( 06 == C<? )
     INTERPRET
     R> 0x2e RAM+ ! R> 0x06 RAM+ !
-    I 0x08 RAM+ @ = IF ( nested load )
-        R> DROP ( C<* ) R> BLK@
-    ELSE ( not nested )
-        R> 0x08 RAM+ ! R> DROP ( BLK> )
-    THEN ;
-( ----- 384 )
+    R> C<* ! R> BLK@ ;
+( ----- 381 )
 : LOAD+ BLK> @ + LOAD ;
 ( b1 b2 -- )
 : LOADR 1+ SWAP DO I DUP . SPC> LOAD LOOP ;
@@ -2048,13 +2030,12 @@ SYSVARS 0x55 + :** KEY?
 : BOOT
     0x02 RAM+ CURRENT* !
     CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR )
-    0 0x08 RAM+ !  ( 08 == C<* override )
     0 0x50 RAM+ C! ( NL> )
     ['] (emit) ['] EMIT **! ['] (key?) ['] KEY? **!
-    ['] (boot<) ['] C<* **!
+    ['] (boot<) C<* !
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
-    ['] RDLN< ['] C<* **! IN$
+    0 C<* ! IN$
     LIT" _sys" [entry]
     LIT" Collapse OS" STYPE NL> (main) ;
 XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !

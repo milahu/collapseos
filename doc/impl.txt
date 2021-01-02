@@ -165,7 +165,7 @@ SYSVARS   FUTURE USES          +3c       BLK(*
 +02       CURRENT              +3e       ~C!*
 +04       HERE                 +41       ~C!ERR
 +06       C<?                  +42       FUTURE USES
-+08       C<* override         +50       NL> character
++08       FUTURE USES          +50       NL> character
 +0a       FUTURE USES          +51       CURRENTPTR
 +0c       C<*                  +53       EMIT ialias
 +0e       WORDBUF              +55       KEY? ialias
