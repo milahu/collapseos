@@ -1840,8 +1840,6 @@ SYSVARS 0x0c + :** C<*
     1+ DUP PICK          ( n val )
     SWAP 2 * (roll)      ( val )
     NIP ;
-: 2OVER 3 PICK 3 PICK ;
-: 2SWAP 3 ROLL 3 ROLL ;
 ( ----- 367 )
 : MOVE ( a1 a2 u -- )
     ?DUP IF ( u ) 0 DO ( a1 a2 )
