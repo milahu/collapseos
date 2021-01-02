@@ -253,21 +253,20 @@ KEY?    -- c? f   Polls the keyboard for a key. If a key is
                   pressed, f is true and c is the char. Other-
                   wise, f is false and c is *not* on the stack.
 KEY     -- c      Get char c from direct input
+NL>     --        Emit newline
 PC!     c a --    Spit c to port a
 PC@     a -- c    Fetch c from port a
+SPC     --        Emit space character
 WORD    -- a      Read one word from buffered input and push its
                   addr. Always null terminated. If ASCII EOT is
                   encountered, a will point to it (it is cons-
                   idered a word).
 
-There are also ascii const emitters:
-BS CR LF SPC CRLF
-
 KEY? and EMIT are ialiases to (key?) and (emit) (see TTY proto-
 col in protocol.txt). KEY is a loop over KEY?.
 
-NL is an ialias that points to CRLF by default and that should
-generally be used when we want to emit a newline.
+NL> spits CRLF by default, but can be configured to spit an 
+alternate newline char. See impl.txt.
 
 # Disk
 

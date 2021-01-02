@@ -162,8 +162,8 @@ SYSVARS   FUTURE USES          +3c       BLK(*
 +02       CURRENT              +3e       ~C!*
 +04       HERE                 +41       ~C!ERR
 +06       C<?                  +42       FUTURE USES
-+08       C<* override         +43       FUTURE USES
-+0a       NL ialias            +51       CURRENTPTR
++08       C<* override         +50       NL> character
++0a       FUTURE USES          +51       CURRENTPTR
 +0c       C<*                  +53       EMIT ialias
 +0e       WORDBUF              +55       KEY? ialias
 +2e       BOOT C< PTR          +57       FUTURE USES
@@ -200,6 +200,9 @@ Register usage is arch-dependent, see boot code for details.
 ~C!ERR: When an error happens during ~C! write overrides, sets
 this byte to a nonzero value. Otherwise, stays at zero. Has to
 be reset to zero manually after an error.
+
+NL> is a single byte. If zero (default), NL> spits CR/LF. Other-
+wise, it spits the value of RAM+50.
 
 DRIVERS section is reserved for recipe-specific drivers.
 

@@ -450,7 +450,7 @@ VARIABLE L1 VARIABLE L2 VARIABLE L3 VARIABLE L4
 ( We divide by 2 because each PC represents a word. )
 : PC H@ ORG @ - 1 RSHIFT ;
 ( ----- 052 )
-: _oor ." arg out of range: " .X SPC ." PC: " PC .X NL ABORT ;
+: _oor ." arg out of range: " .X SPC ." PC: " PC .X NL> ABORT ;
 : _r8c DUP 7 > IF _oor THEN ;
 : _r32c DUP 31 > IF _oor THEN ;
 : _r16+c _r32c DUP 16 < IF _oor THEN ;
@@ -610,7 +610,7 @@ See doc/ed.txt
 1 7 LOADR+
 ( ----- 106 )
 CREATE ACC 0 ,
-: _LIST ." Block " DUP . NL LIST ;
+: _LIST ." Block " DUP . NL> LIST ;
 : L BLK> @ _LIST ;
 : B BLK> @ 1- BLK@ L ;
 : N BLK> @ 1+ BLK@ L ;
@@ -1717,9 +1717,8 @@ with "390 LOAD"
 ( ----- 356 )
 SYSVARS 0x53 + :** EMIT
 : STYPE C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
-: BS 8 EMIT ; : CR 13 EMIT ;
-: CRLF CR 10 EMIT ; : SPC 32 EMIT ;
-SYSVARS 0x0a + :** NL
+: BS 8 EMIT ; : SPC 32 EMIT ;
+: NL> 0x50 RAM+ C@ ?DUP IF EMIT ELSE 13 EMIT 10 EMIT THEN ;
 : ERR STYPE ABORT ;
 : (uflw) LIT" stack underflow" ERR ;
 XCURRENT @ _xapply ORG @ 0x06 ( stable ABI uflw ) + !
@@ -1968,7 +1967,7 @@ SYSVARS 0x0c + :** C<*
     DROP ( a )
     8 0 DO
         C@+ DUP 0x20 0x7e =><= NOT IF DROP '.' THEN EMIT
-    LOOP NL ;
+    LOOP NL> ;
 : DUMP ( n a -- )
     SWAP 8 /MOD SWAP IF 1+ THEN
     0 DO _ LOOP ;
@@ -2038,14 +2037,14 @@ SYSVARS 0x55 + :** KEY?
         64 I * BLK( + DUP 64 + SWAP DO
             I C@ DUP 0x1f > IF EMIT ELSE DROP LEAVE THEN
         LOOP
-        NL
+        NL>
     LOOP ;
 ( ----- 383 )
 : INTERPRET
     BEGIN
     WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
     FIND NOT IF (parse) ELSE EXECUTE THEN
-    C<? NOT IF SPC LIT" ok" STYPE NL THEN
+    C<? NOT IF SPC LIT" ok" STYPE NL> THEN
     AGAIN ;
 ( Read from BOOT C< PTR and inc it. )
 : (boot<)
@@ -2085,13 +2084,13 @@ SYSVARS 0x55 + :** KEY?
     0x02 RAM+ CURRENT* !
     CURRENT @ 0x2e RAM+ ! ( 2e == BOOT C< PTR )
     0 0x08 RAM+ !  ( 08 == C<* override )
+    0 0x50 RAM+ C! ( NL> )
     ['] (emit) ['] EMIT **! ['] (key?) ['] KEY? **!
-    ['] CRLF ['] NL **!
     ['] (boot<) ['] C<* **!
     ( boot< always has a char waiting. 06 == C<?* )
     1 0x06 RAM+ ! INTERPRET
     RDLN$ LIT" _sys" [entry]
-    LIT" Collapse OS" STYPE NL (main) ;
+    LIT" Collapse OS" STYPE NL> (main) ;
 XCURRENT @ _xapply ORG @ 0x04 ( stable ABI BOOT ) + !
 1 4 LOADR+
 ( ----- 391 )
