@@ -1,21 +1,4 @@
 ( ----- 000 )
-Collapse OS
-
-This is the first block of Collapse OS' filesystem which cons-
-ists of contiguous blocks of 1024 bytes organized in 16 lines
-of 64 characters. You can display a block's content with the
-"LIST" command. For example, "123 LIST" shows the contents of
-the block 123. If a block contains source code, you can inter-
-pret it with "LOAD".
-
-Conventions: When you see "(cont.)" at the bottom right of a
-block, it means that the next block continues the same kind of
-contents. Block numbers are abbreviated with prefix "B". "BX"
-means "block X".
-
-The master index of this filesystem is at B1. You can navi-
-gate and edit blocks with the Visual Editor at B120.
-( ----- 001 )
 MASTER INDEX
 
 005 Z80 assembler             030 8086 assembler
