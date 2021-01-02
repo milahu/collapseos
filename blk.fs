@@ -1686,7 +1686,7 @@ with "390 LOAD"
 : IN$ 0 IN( DUP IN> ! ! ; ( flush input buffer )
 : C<* 0x0c RAM+  ;
 : QUIT (resRS) 0 C<* ! IN$ LIT" (main)" FIND DROP EXECUTE ;
-1 28 LOADR+
+1 25 LOADR+
 ( ----- 354 )
 : ABORT (resSP) QUIT ;
 : = CMP NOT ; : < CMP -1 = ; : > CMP 1 = ;
@@ -1901,15 +1901,13 @@ SYSVARS 0x55 + :** KEY?
     ( HERE points to where we should write R> )
     R> ,
     ( We're done. Because we've popped RS, we'll exit parent
-      definition )
-;
+      definition ) ;
 : CONSTANT CREATE , DOES> @ ;
-( ----- 371 )
 : [IF]
     IF EXIT THEN
     LIT" [THEN]" BEGIN DUP WORD S= UNTIL DROP ;
 : [THEN] ;
-( ----- 372 )
+( ----- 371 )
 ( n -- Fetches block n and write it to BLK( )
 SYSVARS 0x34 + :** BLK@*
 ( n -- Write back BLK( to storage at block n )
@@ -1920,17 +1918,13 @@ SYSVARS 0x36 + :** BLK!*
 : BLKDTY 0x3a RAM+ ;
 : BLK( 0x3c RAM+ @ ;
 : BLK) BLK( 1024 + ;
-( ----- 373 )
 : BLK$
     H@ 0x3c ( BLK(* ) RAM+ !
     1024 ALLOT
     ( LOAD detects end of block with ASCII EOT. This is why
       we write it there. )
-    EOT,
-    0 BLKDTY !
-    -1 BLK> !
-;
-( ----- 374 )
+    EOT, 0 BLKDTY ! -1 BLK> ! ;
+( ----- 372 )
 : BLK! ( -- ) BLK> @ BLK!* 0 BLKDTY ! ;
 : FLUSH BLKDTY @ IF BLK! THEN -1 BLK> ! ;
 : BLK@ ( n -- )
@@ -1943,7 +1937,7 @@ SYSVARS 0x36 + :** BLK!*
         I C@ IF DROP 0 ( f ) LEAVE THEN LOOP ;
 : COPY ( src dst -- )
     FLUSH SWAP BLK@ BLK> ! BLK! ;
-( ----- 375 )
+( ----- 373 )
 : . ( n -- )
     ?DUP NOT IF '0' EMIT EXIT THEN ( 0 is a special case )
     ( handle negative )
@@ -1954,7 +1948,7 @@ SYSVARS 0x36 + :** BLK!*
         SWAP '0' + SWAP ( d q )
         ?DUP NOT UNTIL
     BEGIN EMIT DUP '9' > UNTIL DROP ( drop stop ) ;
-( ----- 376 )
+( ----- 374 )
 : ? @ . ;
 : _
     DUP 9 > IF 10 - 'a' +
@@ -1964,7 +1958,7 @@ SYSVARS 0x36 + :** BLK!*
     0xff AND 16 /MOD ( l h )
     _ EMIT _ EMIT ;
 : .X |M .x .x ;
-( ----- 377 )
+( ----- 375 )
 : _ ( a -- a+8 )
     DUP ( a a )
     ':' EMIT DUP .x SPC>
@@ -1976,7 +1970,7 @@ SYSVARS 0x36 + :** BLK!*
 : DUMP ( n a -- )
     SWAP 8 /MOD SWAP IF 1+ THEN
     0 DO _ LOOP ;
-( ----- 378 )
+( ----- 376 )
 : LIST
     BLK@
     16 0 DO
@@ -1986,7 +1980,7 @@ SYSVARS 0x36 + :** BLK!*
         LOOP
         NL>
     LOOP ;
-( ----- 379 )
+( ----- 377 )
 : INTERPRET
     BEGIN
     WORD DUP @ 0x0401 = ( EOT ) IF DROP EXIT THEN
@@ -1995,23 +1989,19 @@ SYSVARS 0x36 + :** BLK!*
     AGAIN ;
 ( Read from BOOT C< PTR and inc it. )
 : (boot<)
-    ( 2e == BOOT C< PTR )
-    0x2e ( BOOT C< PTR ) RAM+ @ DUP C@ ( a c )
-    SWAP 1 + 0x2e RAM+ ! ( c ) ;
-( ----- 380 )
+    0x2e ( BOOT C< PTR ) RAM+ @ C@+ ( a+1 c )
+    SWAP 0x2e RAM+ ! ( c ) ;
+( ----- 378 )
 : LOAD
     BLK> @ >R ( save restorable variables to RSP )
     C<* @ >R
-    0x06 RAM+ @ >R  ( C<? )
-    0x2e RAM+ @ >R  ( boot ptr )
-    BLK@
-    BLK( 0x2e RAM+ ! ( Point to beginning of BLK )
+    0x06 RAM+ ( C<? ) @ >R 0x2e RAM+ ( boot ptr ) @ >R
+    BLK@ BLK( 0x2e RAM+ ! ( Point to beginning of BLK )
     ['] (boot<) 0x0c RAM+ !
     1 0x06 RAM+ !  ( 06 == C<? )
     INTERPRET
     R> 0x2e RAM+ ! R> 0x06 RAM+ !
     R> C<* ! R> BLK@ ;
-( ----- 381 )
 : LOAD+ BLK> @ + LOAD ;
 ( b1 b2 -- )
 : LOADR 1+ SWAP DO I DUP . SPC> LOAD LOOP ;
