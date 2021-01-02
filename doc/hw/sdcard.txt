@@ -15,8 +15,9 @@ The subsystem is loaded with "423 436 LOADR".
 
 Initialization of the SDC system is done in multiple steps.
 First, the BLK system needs to be initialized with "BLK$". Then
-you can plug SDC@ and SDC! into BLK with "' SDC@ BLK@* !" and
-"' SDC! BLK! !". That only needs to be done once per boot.
+you can plug SDC@ and SDC! into BLK with "' SDC@ ' BLK@* **!"
+and "' SDC! ' BLK! **!". That only needs to be done once per
+boot.
 
 Then, the SD card that was inserted needs to be initialized. You
 can do it with "SDC$". If you have no error, it means that the

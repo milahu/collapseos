@@ -85,4 +85,4 @@ RS_ADDR 0xa0 - CONSTANT SYSVARS
 610 LOAD  ( AT-XY drivers )
 390 LOAD  ( xcomp core high )
 (entry) _ ( Update LATEST ) PC ORG @ 8 + !
-," BLK$ FD$ ' FD@ BLK@* ! ' FD! BLK!* ! " EOT,
+," BLK$ FD$ ' FD@ ' BLK@* **! ' FD! ' BLK!* **! " EOT,

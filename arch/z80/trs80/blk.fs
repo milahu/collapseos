@@ -98,7 +98,7 @@ EXX, ( unprotect BC ) ;CODE
 ( ----- 610 )
 : FD@ ['] @RDSEC SWAP FD@! ;
 : FD! ['] @WRSEC SWAP FD@! ;
-: FD$ ['] FD@ BLK@* ! ['] FD! BLK!* ! ;
+: FD$ ['] FD@ ['] BLK@* **! ['] FD! ['] BLK!* **! ;
 
 : CL$ 0x02 0xe8 PC! ( UART RST ) 0xee 0xe9 PC! ( 9600 bauds )
     0b01101100 0xea PC! ( word8 no parity RTS ) ;

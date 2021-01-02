@@ -38,6 +38,6 @@ CODE (key?) ( TODO: make non-blocking )
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," BLK$ FD$ ' FD@ BLK@* ! ' FD! BLK!* ! " EOT,
+," BLK$ FD$ ' FD@ ' BLK@* **! ' FD! ' BLK!* **! " EOT,
 ORG @ |M 2 PC! 2 PC!
 H@ |M 2 PC! 2 PC!

@@ -39,7 +39,7 @@ CREATE ~FNT CPFNT5x7
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," TMS$ GRID$ PS2$ BLK$ ' SDC@ BLK@* ! (im1) " EOT,
+," TMS$ GRID$ PS2$ BLK$ ' SDC@ ' BLK@* **! (im1) " EOT,
 ORG @ 0x100 - DUP |M 2 PC! 2 PC!
 DUP 1 ( 16K ) segasig
 0x4000 + |M 2 PC! 2 PC!

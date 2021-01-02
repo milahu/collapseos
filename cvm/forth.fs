@@ -9,7 +9,7 @@ SYSVARS 0xa0 + CONSTANT GRID_MEM
 (entry) _
 ( Update LATEST )
 PC ORG @ 8 + !
-," BLK$ ' EFS@ BLK@* ! ' EFS! BLK!* ! GRID$ " EOT,
+," BLK$ ' EFS@ ' BLK@* **! ' EFS! ' BLK!* **! GRID$ " EOT,
 ORG @ |M 2 PC! 2 PC!
 H@ |M 2 PC! 2 PC!
 

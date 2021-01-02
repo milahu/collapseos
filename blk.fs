@@ -833,7 +833,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : $H EDPOS @ 0x3c0 AND pos! ;
 : $L EDPOS @ 0x3f OR pos! ;
 : $g ACC @ 1 MAX 1- 64 * pos! ;
-: $@ BLK> @ BLK@* @ EXECUTE 0 BLKDTY ! contents ;
+: $@ BLK> @ BLK@* 0 BLKDTY ! contents ;
 ( ----- 130 )
 : $w EDPOS @ BLK( + acc@ 0 DO
     BEGIN C@+ WS? UNTIL BEGIN C@+ WS? NOT UNTIL LOOP
@@ -1911,9 +1911,9 @@ SYSVARS 0x55 + :** KEY?
 : [THEN] ;
 ( ----- 372 )
 ( n -- Fetches block n and write it to BLK( )
-: BLK@* 0x34 RAM+ ;
+SYSVARS 0x34 + :** BLK@*
 ( n -- Write back BLK( to storage at block n )
-: BLK!* 0x36 RAM+ ;
+SYSVARS 0x36 + :** BLK!*
 ( Current blk pointer in ( )
 : BLK> 0x38 RAM+ ;
 ( Whether buffer is dirty )
@@ -1931,13 +1931,11 @@ SYSVARS 0x55 + :** KEY?
     -1 BLK> !
 ;
 ( ----- 374 )
-: BLK! ( -- )
-    BLK> @ BLK!* @ EXECUTE
-    0 BLKDTY ! ;
+: BLK! ( -- ) BLK> @ BLK!* 0 BLKDTY ! ;
 : FLUSH BLKDTY @ IF BLK! THEN -1 BLK> ! ;
 : BLK@ ( n -- )
     DUP BLK> @ = IF DROP EXIT THEN
-    FLUSH DUP BLK> ! BLK@* @ EXECUTE ;
+    FLUSH DUP BLK> ! BLK@* ;
 : BLK!! 1 BLKDTY ! ;
 : WIPE BLK( 1024 0 FILL BLK!! ;
 : WIPED? ( -- f )
