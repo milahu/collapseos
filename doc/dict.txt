@@ -265,7 +265,7 @@ WORD    -- a      Read one word from buffered input and push its
                   idered a word).
 
 These ASCII consts are defined:
-BS CR LF SPC
+EOT BS CR LF SPC
 
 KEY? and EMIT are ialiases to (key?) and (emit) (see TTY proto-
 col in protocol.txt). KEY is a loop over KEY?.

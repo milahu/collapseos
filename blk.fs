@@ -1717,7 +1717,8 @@ with "390 LOAD"
 ( ----- 356 )
 SYSVARS 0x53 + :** EMIT
 : STYPE C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
-: BS 0x8 ; : LF 0xa ; : CR 0xd ; : SPC 0x20 ; : SPC> SPC EMIT ;
+: EOT 0x4 ; : BS 0x8 ; : LF 0xa ; : CR 0xd ; : SPC 0x20 ;
+: SPC> SPC EMIT ;
 : NL> 0x50 RAM+ C@ ?DUP IF EMIT ELSE 13 EMIT 10 EMIT THEN ;
 : ERR STYPE ABORT ;
 : (uflw) LIT" stack underflow" ERR ;
@@ -1806,14 +1807,13 @@ SYSVARS 0x0c + :** C<*
         C< DUP 34 ( ASCII " ) = IF DROP EXIT THEN C,
     AGAIN ;
 ( ----- 364 )
-: WS? 33 < ;
-: EOT? 4 = ; ( 4 == ASCII EOT, CTRL+D )
-: EOT, 4 C, ;
+: WS? SPC <= ;
+: EOT? EOT = ;
+: EOT, EOT C, ;
 
-: TOWORD
+: TOWORD ( -- c, c being the first letter of the word )
     0 ( dummy ) BEGIN
-        DROP C< DUP WS? NOT OVER EOT? OR
-    UNTIL ;
+        DROP C< DUP WS? NOT OVER EOT? OR UNTIL ;
 ( ----- 365 )
 ( Read word from C<, copy to WORDBUF, null-terminate, and
   return WORDBUF. )
