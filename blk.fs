@@ -1717,8 +1717,8 @@ with "390 LOAD"
 ( ----- 356 )
 SYSVARS 0x53 + :** EMIT
 : STYPE C@+ ( a len ) 0 DO C@+ EMIT LOOP DROP ;
-: BS 8 EMIT ; : LF 10 EMIT ; : CR 13 EMIT ;
-: CRLF CR LF ; : SPC 32 EMIT ;
+: BS 8 EMIT ; : CR 13 EMIT ;
+: CRLF CR 10 EMIT ; : SPC 32 EMIT ;
 SYSVARS 0x0a + :** NL
 : ERR STYPE ABORT ;
 : (uflw) LIT" stack underflow" ERR ;
@@ -1970,10 +1970,8 @@ SYSVARS 0x0c + :** C<*
         C@+ DUP 0x20 0x7e =><= NOT IF DROP '.' THEN EMIT
     LOOP NL ;
 : DUMP ( n a -- )
-    LF
     SWAP 8 /MOD SWAP IF 1+ THEN
-    0 DO _ LOOP
-;
+    0 DO _ LOOP ;
 ( ----- 378 )
 ( handle backspace: go back one char in IN>, if possible, then
   emit BS + SPC + BS )
@@ -2009,8 +2007,7 @@ SYSVARS 0x55 + :** KEY?
 ( Read one line in input buffer and make IN> point to it )
 : (rdln)
     ( EOT or less triggers line flush )
-    (infl) BEGIN (rdlnc) 5 < UNTIL
-    LF IN( IN> ! ;
+    (infl) BEGIN (rdlnc) 5 < UNTIL IN( IN> ! ;
 ( And finally, implement C<* )
 : RDLN<
     IN> @ C@
