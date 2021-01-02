@@ -11,10 +11,10 @@ There is also the RECV program at B612.
 ( ----- 602 )
 1 8 LOADR+
 ( ----- 603 )
-CODE (key?) ( -- c? f ) ( TODO: make non-blocking )
-    A 0x01 LDri, ( @KEY )
+CODE (key?) ( -- c? f )
+    A 0x08 LDri, ( @KBD )
     0x28 RST,
-    PUSHA, PUSH1,
+    IFZ, PUSHA, THEN, PUSHZ,
 ;CODE
 CODE (emit) EXX, ( protect BC )
     BC POP, ( c == @DSP arg ) chkPS,

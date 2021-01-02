@@ -41,6 +41,11 @@ static void pchookfunc(Machine *m)
             wmove(w, y, x-1);
         }
         break;
+    case 0x08: // @KBD TODO: make non-blocking
+        debug_panel();
+        m->cpu.R1.br.A = wgetch(w);
+        m->cpu.R1.br.F |= F_Z;
+        break;
     case 0x0f: // @VDCTL
         wmove(w, m->cpu.R1.br.H, m->cpu.R1.br.L);
         break;
