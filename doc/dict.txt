@@ -249,6 +249,7 @@ C<      -- c      Read one char from buffered input.
 EMIT    c --      Spit char c to output stream
 IN>     -- a      Address of variable containing current pos in
                   input buffer.
+IN$     --        Flush input buffer
 KEY?    -- c? f   Polls the keyboard for a key. If a key is
                   pressed, f is true and c is the char. Other-
                   wise, f is false and c is *not* on the stack.
@@ -256,6 +257,7 @@ KEY     -- c      Get char c from direct input
 NL>     --        Emit newline
 PC!     c a --    Spit c to port a
 PC@     a -- c    Fetch c from port a
+RDLN    --        Read a line in IN(
 SPC>    --        Emit space character
 WORD    -- a      Read one word from buffered input and push its
                   addr. Always null terminated. If ASCII EOT is

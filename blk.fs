@@ -812,7 +812,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     3 OVER AT-XY KEY DUP EMIT
     DUP SPC < IF 2DROP DROP EXIT THEN
     ( buf ln c ) 4 col- nspcs SWAP 4 SWAP AT-XY ( buf c )
-    SWAP C!+ IN( _zbuf (rdln) IN( SWAP 63 MOVE ;
+    SWAP C!+ IN( _zbuf RDLN IN( SWAP 63 MOVE ;
 : bufp ( buf -- )
     DUP 3 col- + SWAP DO I @emit LOOP ;
 : bufs
@@ -872,7 +872,7 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
 : VE
     1 XYMODE C! clrscr 0 ACC ! 0 PREVPOS ! nums bufs contents
     BEGIN xoff? status setpos KEY handle UNTIL
-    0 XYMODE C! 19 aty (infl) ;
+    0 XYMODE C! 19 aty IN$ ;
 ( ----- 160 )
 ( AVR Programmer, load range 160-163. doc/avr.txt )
 ( page size in words, 64 is default on atmega328P )
@@ -1684,9 +1684,9 @@ with "390 LOAD"
 : IN> 0x30 RAM+ ; ( current position in INBUF )
 : IN( 0x32 RAM+ @ ; ( points to INBUF )
 : IN) 0x40 ( buffer size ) IN( + ; ( INBUF's end )
-: (infl) 0 IN( DUP IN> ! ! ; ( flush input buffer )
+: IN$ 0 IN( DUP IN> ! ! ; ( flush input buffer )
 : QUIT
-    (resRS) 0 0x08 RAM+ ! ( C<* override ) (infl)
+    (resRS) 0 0x08 RAM+ ! ( C<* override ) IN$
     LIT" (main)" FIND DROP EXECUTE
 ;
 1 33 LOADR+
@@ -1972,63 +1972,38 @@ SYSVARS 0x0c + :** C<*
     SWAP 8 /MOD SWAP IF 1+ THEN
     0 DO _ LOOP ;
 ( ----- 378 )
-( handle backspace: go back one char in IN>, if possible, then
-  emit BS + SPC + BS )
-: _bs
-    ( already at IN( ? )
-    IN> @ IN( = IF EXIT THEN
-    IN> @ 1- IN> !
-    BS EMIT SPC> BS EMIT
-;
-( del is same as backspace )
-: BS? DUP 0x7f = SWAP BS = OR ;
 SYSVARS 0x55 + :** KEY?
 : KEY BEGIN KEY? UNTIL ;
-( cont.: read one char into input buffer and returns whether we
-  should continue, that is, whether CR was not met. )
+( del is same as backspace )
+: BS? DUP 0x7f = SWAP BS = OR ;
 ( ----- 379 )
-: (rdlnc) ( -- c )
+: RDLN ( Read 1 line in input buff and make IN> point to it )
+    IN$ BEGIN
     ( buffer overflow? same as if we typed a newline )
-    IN> @ IN) = IF LF ELSE KEY THEN ( c )
-    DUP LF = IF DROP CR THEN ( lf? same as cr )
-    ( backspace? handle and exit )
-    DUP BS? IF _bs EXIT THEN
-    ( echo back )
-    DUP EMIT ( c )
-    ( write and advance )
-    DUP ( keep as result ) ( c c )
-( We take advantage of the fact that c's MSB is always zero and
-  thus ! automatically null-terminates our string )
-    IN> @ ! 1 IN> +! ( c )
-    ( if newline, replace with zero to indicate EOL )
-    DUP CR = IF DROP 0 THEN ;
+    IN> @ IN) 1- = IF CR ELSE KEY THEN ( c )
+    DUP BS? IF
+        IN> @ IN( > IF -1 IN> +! BS EMIT THEN SPC> BS EMIT
+    ELSE DUP LF = IF DROP CR THEN ( same as CR )
+        DUP EMIT ( echo back )
+        DUP IN> @ ! 1 IN> +! THEN ( c )
+    DUP CR = SWAP EOT? OR UNTIL IN( IN> ! ;
 ( ----- 380 )
-( Read one line in input buffer and make IN> point to it )
-: (rdln)
-    ( EOT or less triggers line flush )
-    (infl) BEGIN (rdlnc) 5 < UNTIL IN( IN> ! ;
-( And finally, implement C<* )
 : RDLN<
-    IN> @ C@
+    IN> @ C@ ( c )
     DUP IF ( not EOL? good, inc and return )
         1 IN> +!
     ELSE ( EOL ? readline. we still return null though )
-        (rdln)
-    THEN
+        RDLN
+    THEN ( c )
     ( update C<? flag )
-    IN> @ C@ 0 > 0x06 RAM+ !  ( 06 == C<? )
-;
+    IN> @ C@ 0 > 0x06 RAM+ !  ( 06 == C<? ) ;
 ( ----- 381 )
 ( Initializes the readln subsystem )
 : RDLN$
     H@ 0x32 ( IN(* ) RAM+ !
-    ( plus 2 for extra bytes after buffer: 1 for
-      the last typed LF and one for the following NULL. )
-    IN) IN( - ALLOT
-    (infl)
+    IN) IN( - ALLOT IN$
     ['] RDLN< ['] C<* **!
-    1 0x06 RAM+ !  ( 06 == C<? )
-;
+    1 0x06 RAM+ !  ( 06 == C<? ) ;
 ( ----- 382 )
 : LIST
     BLK@
