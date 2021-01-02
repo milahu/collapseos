@@ -1944,22 +1944,16 @@ SYSVARS 0x36 + :** BLK!*
 : COPY ( src dst -- )
     FLUSH SWAP BLK@ BLK> ! BLK! ;
 ( ----- 375 )
-: _
-    999 SWAP        ( stop indicator )
-    BEGIN
-        ?DUP NOT IF EXIT THEN
-        10 /MOD         ( r q )
-        SWAP '0' + SWAP ( d q )
-    AGAIN ;
 : . ( n -- )
     ?DUP NOT IF '0' EMIT EXIT THEN ( 0 is a special case )
     ( handle negative )
     DUP 0< IF '-' EMIT -1 * THEN
-    _
+    999 SWAP        ( stop indicator )
     BEGIN
-        DUP '9' > IF DROP EXIT THEN  ( stop indicator )
-        EMIT
-    AGAIN ;
+        10 /MOD ( r q )
+        SWAP '0' + SWAP ( d q )
+        ?DUP NOT UNTIL
+    BEGIN EMIT DUP '9' > UNTIL DROP ( drop stop ) ;
 ( ----- 376 )
 : ? @ . ;
 : _
