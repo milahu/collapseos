@@ -45,6 +45,20 @@ To avoid using dict memory in compilation targets, we
 pre-declare label variables here, which means we have a limited
 number of it. We have 4: L1, L2, L3, L4.
 
+# Ad-hoc assembly
+
+A frequent usage of the assembler is to cross-assemble a new
+Collapse OS binary. However, it can also be used to assemble
+code for immediate usage on the machine that assemble.
+
+A frequent mistake when doing so is to forget to set BIN( and
+ORG. BIN( must match your system's binary offset (you get get
+it with "0 BIN+") even for the most simple of code because
+otherwise, ";CODE" will jump to the wrong offset.
+
+ORG is less critical, but can lead to problems if not set, so
+you should take the habit of setting it with "H@ ORG !".
+
 # Flow
 
 There are 2 label types: backward and forward. For each type,
