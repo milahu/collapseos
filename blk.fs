@@ -4,6 +4,7 @@ MASTER INDEX
 005 Z80 assembler             030 8086 assembler
 050 AVR assembler             70-99 unused
 100 Block editor              120 Visual Editor
+150 Remote Shell
 160 AVR SPI programmer        165 Sega ROM signer
 170-259 unused                260 Cross compilation
 280 Z80 boot code             350 Core words
@@ -873,6 +874,14 @@ CREATE PREVPOS 0 , CREATE PREVBLK 0 , CREATE xoff 0 ,
     1 XYMODE C! clrscr 0 ACC ! 0 PREVPOS ! nums bufs contents
     BEGIN xoff? status setpos KEY handle UNTIL
     0 XYMODE C! 19 aty IN$ ;
+( ----- 150 )
+( Remote Shell )
+0 :* rsh<? 0 :* rsh>
+: rsh BEGIN
+    rsh<? IF
+        DUP 4 ( EOT ) = IF DROP EXIT THEN EMIT THEN
+    KEY? IF DUP 0x80 < IF rsh> ELSE DROP EXIT THEN THEN
+    AGAIN ;
 ( ----- 160 )
 ( AVR Programmer, load range 160-163. doc/avr.txt )
 ( page size in words, 64 is default on atmega328P )

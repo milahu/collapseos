@@ -1,0 +1,22 @@
+# Remote Shell
+
+You can control a remote system from Collapse OS using the
+Remote Shell application at B150. All you need are words that
+follow the EMIT and KEY? signatures. Serial lines drivers
+provide those words.
+
+To use the remote shell, first plug your words into RSH aliases:
+
+' FOO> ' rsh> *! ' FOO<? ' rsh<? *!
+
+FOO> being the "EMIT" word and "FOO<?" being the KEY? word.
+
+Then, it's only a matter of running "rsh". This will repeatedly
+poll rsh<? and emit whatever is coming from there and at the
+same time, poll KEY? and push whatever key you type to rsh>.
+
+You can stop the remote shell by typing any character over 0x7f.
+For example, on a TRS-80 4P, the BREAK key yields 0x80 and will
+break the loop.
+
+See hw/acia.txt for tips on configuring a serial line.
