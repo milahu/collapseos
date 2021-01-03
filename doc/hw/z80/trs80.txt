@@ -270,8 +270,15 @@ means there's a limit of 100 blocks per disk.
 You'll need to send those blocks through RS-232. First, let's
 initialize the driver with CL$. This driver does not require
 the TRS-DOS driver to be loaded. Also, it is hardcoded to
-"no parity, 8 bit words, 9600 bauds". Now, let's have the CL
-take over the prompt:
+"no parity, 8 bit words". And takes a "baud code" as an argu-
+ment. It's a 0-15 value with these meanings:
+
+00 50          01 75           02 110          03 134.5 
+04 150         05 300          06 600          07 1200 
+08 1800        09 2000         0a 2400         0b 3800 
+0c 4800        0d 7200         0e 9600         0f 19200
+
+After CL$ is called, let's have the CL take over the prompt:
 
     ' CL> ' EMIT **!
     ' CL< ' KEY **!

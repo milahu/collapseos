@@ -9,7 +9,7 @@ Load with "602 LOAD".
 
 There is also the RECV program at B612.
 ( ----- 602 )
-1 8 LOADR+
+1 9 LOADR+
 ( ----- 603 )
 CODE (key?) ( -- c? f )
     A 0x08 LDri, ( @KBD )
@@ -100,10 +100,19 @@ EXX, ( unprotect BC ) ;CODE
 : FD! ['] @WRSEC SWAP FD@! ;
 : FD$ ['] FD@ ['] BLK@* **! ['] FD! ['] BLK!* **! ;
 
-: CL$ 0x02 0xe8 PC! ( UART RST ) 0xee 0xe9 PC! ( 9600 bauds )
-    0b01101100 0xea PC! ( word8 no parity RTS ) ;
+( ----- 611 )
+: CL$ ( baudcode -- )
+0x02 0xe8 PC! ( UART RST ) DUP 4 LSHIFT OR 0xe9 PC! ( bauds )
+    0b01101101 0xea PC! ( word8 no parity no-RTS ) ;
 : CL> BEGIN 0xea PC@ 0x40 AND UNTIL 0xeb PC! ;
-: CL< BEGIN 0xea PC@ 0x80 AND UNTIL 0xeb PC@ ;
+CODE _
+    0xea INAi, 0x80 ANDi, IFZ, PUSH0, ELSE,
+    0xeb INAi, PUSHA, PUSH1, THEN,
+;CODE
+: CL<? _ IF 1 EXIT THEN
+    0b01101100 0xea PC! ( RTS )
+    1 TICKS ( 100 us ) _
+    0b01101101 0xea PC! ( no-RTS ) ;
 ( ----- 612 )
 ( We process the 0x20 exception by pre-putting a mask in the
   (HL) we're going to write to. If it wasn't a 0x20, we put a

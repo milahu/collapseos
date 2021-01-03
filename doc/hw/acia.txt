@@ -28,3 +28,16 @@ can be raised) very much. We have to take extra care, when
 communicating from modern system, not to send too much data too
 fast. But for COS-to-COS communication, this simple system
 works.
+
+# Broken hardware
+
+Some designs are broken with this scheme. For example, the
+RS2014 SIO module hard-wires CTS to GND because the FTDI
+connector doesn't have such a pin (modern computers can always
+handle the load).
+
+In these cases, a solution would be to use Break signals as a
+workaround, but I prefer avoiding complexity for now. So when
+you deal with broken design, you'll have to sidestep it either
+by implementing your own Break handling or by lowering com-
+munication speed.
