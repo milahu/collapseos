@@ -21,6 +21,16 @@ manage to build and install Collapse OS without external resources (i.e.
 internet) on a machine of her design, built from scavenged parts with low-tech
 tools.
 
+## Git repository no longer updated
+
+In the wake of my rejection of modern software and complexity, I've stopped
+using git to manage versioning in Collapse OS because I consider RCS to be
+sufficient. The commit adding this message is therefore the last I'm adding.
+
+Further improvements of Collapse OS are available on [Collapse OS' website][web]
+as tarballs of the project including RCS metadata. Those tarballs are updated
+regularly.
+
 ## Getting started
 
 Documentation is in text files in `doc/`. Begin with `intro.txt`.
