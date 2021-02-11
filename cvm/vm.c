@@ -211,10 +211,6 @@ static void PICK() {
     word x = pop();
     push(gw(vm.SP+x*2));
 }
-static void _roll_() { //   "1 2 3 4 4 (roll)" --> "1 3 4 4"
-    word x = pop();
-    while (x) { vm.mem[vm.SP+x+(word)2] = vm.mem[vm.SP+x]; x--; }
-}
 static void DROP2() { pop(); pop(); }
 static void DUP2() { // a b -- a b a b
     word b = pop(); word a = pop();
@@ -255,8 +251,14 @@ static void RI() { push(gw(vm.RS)); }
 static void RI_() { push(gw(vm.RS-2)); }
 static void RJ() { push(gw(vm.RS-4)); }
 static void BYE() { vm.running = false; }
-static void _resSP_() { vm.SP = SP_ADDR; }
-static void _resRS_() { vm.RS = RS_ADDR; }
+static void QUIT() {
+    vm.RS = RS_ADDR;
+    vm.IP = gw(0x0a) + 1; // (main)
+}
+static void ABORT() {
+    vm.SP = SP_ADDR;
+    QUIT();
+}
 static void Seq() {
     word s1 = pop(); word s2 = pop();
     byte len = vm.mem[s1];
@@ -362,7 +364,6 @@ VM* VM_init(char *bin_path, char *blkfs_path)
     native(SWAP);
     native(OVER);
     native(PICK);
-    native(_roll_);
     native(DROP2);
     native(DUP2);
     native(S0);
@@ -385,8 +386,8 @@ VM* VM_init(char *bin_path, char *blkfs_path)
     native(RI_);
     native(RJ);
     native(BYE);
-    native(_resSP_);
-    native(_resRS_);
+    native(ABORT);
+    native(QUIT);
     native(Seq);
     native(CMP);
     native(_find);
