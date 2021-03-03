@@ -74,6 +74,8 @@ static word pop() {
     if (vm.SP >= SP_ADDR) { vm.uflw = true; return 0; }
     return vm.mem[vm.SP++] | vm.mem[vm.SP++] << 8;
 }
+word VM_PS_pop() { return pop(); }
+
 // push word to SP
 static void push(word x) {
     vm.SP -= 2;
@@ -84,6 +86,7 @@ static void push(word x) {
     sw(vm.SP, x);
     if (vm.SP < vm.minSP) { vm.minSP = vm.SP; }
 }
+void VM_PS_push(word n) { push(n); }
 // pop word from RS
 static word popRS() {
     if (vm.uflw) return 0;
@@ -300,6 +303,18 @@ static void SPLITL() {
     word n = pop(); push(n>>8); push(n&0xff); }
 static void SPLITM() {
     word n = pop(); push(n&0xff); push(n>>8); }
+static void CRC16() {
+	word n = pop(); word c = pop();
+	c = c ^ n << 8;
+	for (int i=0; i<8; i++) {
+		if (c & 0x8000) {
+			c = c << 1 ^ 0x1021;
+		} else {
+			c = c << 1;
+		}
+	}
+	push(c);
+}
 
 static void native(NativeWord func) {
     vm.nativew[vm.nativew_count++] = func;
@@ -405,7 +420,7 @@ VM* VM_init(char *bin_path, char *blkfs_path)
     native(ROTR);
     native(SPLITL);
     native(SPLITM);
-    native(FIND);
+    native(CRC16);
     vm.IP = gw(0x04) + 1; // BOOT
     sw(SYSVARS+0x02, gw(0x08)); // CURRENT
     sw(SYSVARS+0x04, gw(0x08)); // HERE
