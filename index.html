@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Collapse OS &mdash; Bootstrap post-collapse technology</title>
+    <link rel="stylesheet" href="css/main.css" type="text/css">
+</head>
+<body>
+<h1>Collapse OS</h1>
+<p><em>Bootstrap post-collapse technology</em></p>
+<p>
+<a href="why.html">Winter is coming</a> and Collapse OS aims to soften the
+blow.  It is a Forth <a href="forth.html">(why Forth?)</a> operating system and
+a collection of tools and documentation with a single purpose: preserve the
+ability to program microcontrollers through <a href="civ.html">civilizational
+collapse</a>. It is designed to:
+</p>
+
+<ol>
+    <li>Run on minimal and improvised machines.</li>
+    <li>Interface through improvised means (serial, keyboard, display).</li>
+    <li>Edit text and binary contents.</li>
+    <li>Compile assembler source for a wide range of MCUs and CPUs.</li>
+    <li>Read and write from a wide range of storage devices.</li>
+    <li>Assemble itself and deploy to another machine.</li>
+</ol>
+
+<p>
+Additionally, the goal of this project is to be as self-contained as possible.
+With a copy of this project, a capable and
+<a href="why.html#creative">creative</a> person should be able to manage to
+build and install Collapse OS without external resources (i.e.  internet) on a
+machine of her design, built from scavenged parts with low-tech tools.
+</p>
+
+<h2>Features</h2>
+<ul>
+    <li>
+      Runs on Z80, 8086, 6809 and 6502 machines with very little resources.
+      <a href="hardware.html">See hardware support list</a>.
+    </li>
+    <li>Can assemble Z80, AVR, 8086, 6809 and 6502 binaries.</li>
+    <li>Can disassemble 6502 and 6809.</li>
+    <li>Can program AVR microcontrollers.</li>
+    <li>
+      Has a command line text editor similar to Forth's traditional editor as
+      well as a visual text editor inspired by UNIX' VI.
+    </li>
+    <li>Has a visual binary editor.</li>
+    <li>Has the full power of a reasonably well-featured Forth interpreter.</li>
+    <li>
+        Can be built from a POSIX environment with minimal tooling: only cc and
+        make are needed.
+    </li>
+    <li>Excluding machine-specific ports, less than 2000 lines of code.</li>
+</ul>
+
+<h2>Lives in Dusk OS</h2>
+<p>
+As of July 2023, the Collapse OS project lives in
+<a href="http://duskos.org">Dusk OS</a>, an operating system designed to be
+maximally useful during what I call <a href="why.html">the first stage of
+collapse</a> (Collapse OS is for the second stage).
+</p>
+<p>
+It's still the same self-contained, self-hosting OS that it was before, it's
+just that instead of seeding its bootstrapping process from POSIX, it does so
+from Dusk OS (which itself bootstraps from POSIX).
+</p>
+<p>
+Going through Dusk OS dispenses us from having to maintain a POSIX VM for
+Collapse OS because Dusk invokes Collapse OS' cross-compiling process through
+a thin compatibility layer (both are Forths with many semantics similarities).
+</p>
+<p>
+Also, the "old" Collapse OS, due to how it cross-compiles itself, had to
+maintain a binary blob to kickstart the POSIX VM and that binary blob was
+sometimes quite a hassle to update properly (chicken and egg type of problems).
+This blob also irked bootstrapping purists. It doesn't exist anymore. Dusk
+doesn't have such a blob either, making Collapse OS bootstrapping process
+entirely blob-less.
+</p>
+<p>
+You don't have to familiarize yourself with Dusk OS to build one of the <a
+href="hardware.html">Collapse OS ports</a>. Each port's build process wraps the
+Dusk OS part in its Makefile and yields a Collapse OS image that has no
+relation to Dusk.
+</p>
+<p>
+This transition isn't quite done yet, but it's well underway. One thing I
+haven't done yet is test all supported hardware. If you're trying to deploy
+Collapse OS on supported hardware now, I'd recommend using the "old" Collapse
+OS, confirm that it works, then try the new one and let me know if you notice
+a regression.
+</p>
+
+<a name="try"><h2>Getting started</h2></a>
+<p>
+The best place to start is with the <a href="https://git.sr.ht/~vdupras/collapseos-rc2014">
+RC2014 port of Collapse OS</a>. It's the "canonical" machine-specific port of
+the project so it's the best maintained. The port has a built-in emulator so
+trying Collapse OS is one "make emul" away.
+</p>
+<p>
+One thing that the RC2014 port doesn't have, however, is a Grid subsystem, so
+you can't use it to try applications like the Visual Editor. To do so, you can
+use the <a href="https://git.sr.ht/~vdupras/collapseos-pc">PC/AT port of
+Collapse OS</a>. Emulation of that port is done with QEMU.
+</p>
+<p>
+If you're looking for the old Collapse OS distribution, from when it wasn't
+living inside Dusk OS yet, you can <a href="download.html">download it here</a>.
+</p>
+
+<p>
+Documentation is in text files in Dusk's "fs/doc/cos" directory. Begin with
+"intro.txt". Alternatively, James Stanley hosts an
+<a href="https://incoherency.co.uk/collapseos/">online Collapse OS documentation browser</a>.
+However, at the time of this writing, this documentation was still generated
+from the "old" Collapse OS, so it's outdated.
+</p>
+
+<p>
+Another interesting alternative for documentation is
+<a href="https://schierlm.github.io/CollapseOS-Web-Emulator/documentation.html">Michael Schierl's PDF export of it</a>
+(<a href="https://github.com/schierlm/CollapseOS-Web-Emulator/tree/master/pdf">code that generates it</a>).
+Unlike James' export, it's not automatically kept up to date, but it's a great
+way to print the whole thing at once.
+However, at the time of this writing, this documentation was still generated
+from the "old" Collapse OS, so it's outdated.
+</p>
+
+<p>
+You can also try Collapse OS directly on your browser with
+<a href="https://schierlm.github.io/CollapseOS-Web-Emulator/">Michael Schierl's JS
+Collapse OS emulator</a> which is awesome but it isn't always up to date. The
+"Javascript Forth" version is especially awesome: it's not a z80 emulator, but
+a <em>javascript port of Collapse OS</em>!
+</p>
+
+<a name="funding"><h2>Funding</h2></a>
+<p>
+You are inspired by Collapse OS and would like to fund its development? I don't
+do any kind of crowdfunding, but if you happen to be a rich philanthropist,
+<a href="http://duskos.org/funding.html">maybe we can do something.</a>
+</p>
+<h2>Discussion</h2>
+<p>My name is Virgil Dupras and I can be reached at hsoft@hardcoded.net.</p>
+<p>
+Discussion about Collapse OS takes place on a
+<a href="http://duskos.org/discuss.html">private mailing list</a>.
+</p>
+<p>
+There's also <a href="https://tumbleforth.hardcoded.net">Tumble Forth</a>, a blog
+I've started where I write articles around Collapse OS and Dusk OS. Interesting
+discussions can happen around those articles.
+</p>
+<h2>Related efforts</h2>
+<p>Here is a list of related efforts that I find noteworthy:</p>
+<ul>
+    <li><a href="http://duskos.org">Dusk OS</a></li>
+    <li><a href="https://tumbleforth.hardcoded.net">Tumble Forth</a></li>
+    <li><a href="https://blogbyjoshcogliati.blogspot.com/2021/05/public-domain-books-to-restart-computer.html">Public Domain Books to Restart Computer Technology</a></li>
+    <li><a href="https://github.com/civboot/civboot">Civboot: a civilizational bootstrapper</a></li>
+    <li><a href="https://simplifier.neocities.org">Simplifier</a></li>
+    <li><a href="https://www.repairfaq.org/">Sci.Electronics.Repair FAQ</a></li>
+    <li><a href="http://vtda.org">The Vintage Technology Digital Archive</a></li>
+    <li><a href="https://www.apple.asimov.net/">A big collection of Apple-related documentation</a>
+    <li><a href="https://github.com/profdc9/">Daniel Marks' electronic designs focusing on resilience</a></li>
+    <li><a href="https://github.com/schierlm/collapseos-uxn">Michael Schierl's UXN port of Collapse OS</a></li>
+    <li><a href="https://richardheinberg.com/museletter-353-deadly-optimism-useful-pessimism">Deadly Optimism, Useful Pessimism</a></li>
+</ul>
+</body>
+</html>
