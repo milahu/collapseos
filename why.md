@@ -1,0 +1,121 @@
+# [Collapse OS](readme.md) — Why?
+
+I expect our [global supply chain to collapse](civ.md) before we reach 2030. With this collapse, we won't be able to produce most of our electronics because their production depends on a very complex supply chain that we won't be able to achieve again for decades (ever?).
+
+The fast rate of progress we've seen since the advent of electronics happened in very specific conditions that won't be there post-collapse, so we can't hope to be able to bootstrap new electronic technology as fast as we did without a good "starter kit" to help us do so.
+
+Electronics yield enormous power, a power that will give significant advantages to communities that manage to continue mastering it. This will usher a new age of *scavenger electronics*: parts can't be manufactured any more, but we have billions of parts lying around. Those who can manage to create new designs from those parts with low-tech tools will be very powerful.
+
+Among these scavenged parts are microcontrollers, which are especially powerful but need complex tools (often computers) to program them. Computers, after a few decades, will break down beyond repair and we won't be able to program microcontrollers any more.
+
+To avoid this fate, we need to have a system that can be designed from scavenged parts and program microcontrollers. We also need the generation of engineers that will follow us to be able to *create* new designs instead of inheriting a legacy of machines that they can't recreate and barely maintain.
+
+This is where Collapse OS comes in.
+
+<span id="twostages"></span>
+
+## There are two stages of collapse
+
+With regards to this project, there are two important stages of collapse. The first one is when the global supply chain is broken and the second one is when, in a particular community, the last modern computer dies.
+
+There are decades between the two. Sure, modern technology is generally fragile and unfixable, but there are many robust modern computers and those that are lucky enough to run a [self-contained operating system](http://duskos.org) will continue to provide a modern computing environment for decades.
+
+Therefore, you and I are likely to be dead before Collapse OS is actually useful. However, communities with good foresight will immediately start to work on creating post-collapse computers because a lot of work will have to be poured on their own local copy of it before it runs smoothly on the hardware they manage to scavenge and retrofit. They also have to become proficient in maintaining it. Their children also have to.
+
+That's the perspective we have to keep in mind in this project. Collapse OS doesn't have to run smoothly, but it has to be easy to grok in its entirety and, most importantly, gather vital knowledge about as many components as possible in one self-contained place.
+
+## Open questions
+
+### What's in a collapse
+
+The subject of collapse makes people react in different ways, some of them irrational. When I read comments people write about Collapse OS, many of them seem to assume that I expect a Mad Max style of collapse. It's surprising to me because nothing on this website suggests this, and it never has.
+
+If Mad Max is the first image that come to your mind when you think of civilizational collapse, I invite you to rethink your assessment and, maybe, do some introspection as to why your train of thoughts ended there. This introspection might yield interesting results. Meanwhile, please read this text again with new eyes and a refreshed, calm mind.
+
+<span id="futile"></span>
+
+### Futile?
+
+This project is only relevant if the collapse is of a specific magnitude. A weak-enough collapse and it's useless (just a few fabs that close down, a few wars here and there, hunger, disease, but people are nevertheless able to maintain current technology levels). A big enough collapse and it's even more useless (who needs microcontrollers when you're running away from cannibals).
+
+But if the collapse magnitude is right, then this project will change the course of our history, which makes it worth trying.
+
+This idea is also fragile because it might not be feasible. It's difficult to predict post-collapse conditions, so the "self-contained" part might fail and prove useless to many post-collapse communities.
+
+But nevertheless, this idea seems too powerful to not try it. And even if it proves futile, it's a lot of fun to try.
+
+<span id="morebits"></span>
+
+### 32-bit? 16-bit?
+
+Why go as far as 8-bit machines? There are some 32-bit ARM chips around that are protoboard-friendly.
+
+First, because I think there are more scavenge-friendly 8-bit chips around than scavenge-friendly 16-bit or 32-bit chips.
+
+Second, because those chips will be easier to replicate in a post-collapse fab. The z80 has 9000 transistors. 9000! Compared to the millions we have in any modern CPU, that's nothing! If the first chips we're able to create post-collapse have a low transistor count, we might as well design a system that works well on simpler chips.
+
+That being said, nothing stops the project from including the capability of programming an ARM or RISC-V chip.
+
+### What is scavenge-friendly?
+
+By "scavenge-friendly electronic parts", I mean parts that can be assembled with low-tech tools. I mostly mean parts with a "through hole" mounting type (in opposition with "surface mount").
+
+"But I do tons of hobbyist electronics with surface mount!", some could say. Yeah, sure, but how do you wire it? You order a PCB from OSH Park? That's not very scavenge-friendly.
+
+One solution could be breakout boards, but if your ability to use a surface mount chip is limited by the availability of breakout boards of a type that matches your chip, then it severly limits your likeliness of finding a usable chip in your scavenging operations.
+
+"But you still need protoboards with through hole!", some could say. In a sense, yes, wiring is much easier with protoboards, but you could still manage to cobble up something together with a hand-perforated board. Also, protoboards are reusable. If you have a limited supply of them, you can still desolder an old design and reuse the protoboard in a new one. So, a post-collapse community with a limited supply of protoboards can still achieve a lot.
+
+Some modern CPUs are available in through hole packages, but because surface mount is so much more popular, in modern electronics, than through hole, you are very unlikely to stumble upon one of those chips in scavenging operations. Hence, "I think there are more scavenge-friendly 8-bit chips around than 16-bits or 32-bits ones".
+
+### What makes old hardware sturdier than new?
+
+It's not that modern ICs are more fragile than old ones (maybe they are, after all, more can go wrong with millions of transistors than with thousands), it's that old designs are simpler than modern ones and thus more repairable.
+
+In other words, if you have two broken Sega Master Systems, you are more likely to be able to combine them into one functional one with low tech tools than if you have two broken modern laptops. (This of course depends on the type of breakeage, but let's assume it's something deep).
+
+### On what basis do you believe that a collapse of the global supply chain is probable by 2030?
+
+[Answer here.](civ.md)
+
+### Electronics evolved rapidly without any help before. Why can't we pull it again?
+
+These technological breakthroughs happened in a context of cheap energy. Unless we have a "unicorn tech" (nuclear fusion for example) giving us cheaper energy than 1960's oil, we will never again see these days of extraordinarily cheap energy.
+
+Without cheap energy, we have less energy to divert to scientific advancement, so we stagnate. After a collapse, most of our infrastructure will be destroyed or unusable. The investment needed to get a proper infrastructure back on its feet will be impossible to make without cheap energy, so we won't.
+
+This is why low-tech is so important, because low-tech is compatible with a context where energy is expensive.
+
+Of course, if you believe in unicorn technology, then Collapse OS, and low-tech in general, is futile. Yet again, a matter of belief. I never believed in unicorns.
+
+### Is computing worth saving?
+
+Some people doubt that computers will stay relevant after a civilizational collapse. I mostly agree. The drastic simplification of our society will mean that we have a lot less information to manage. We'll be a lot more busy with more pressing activities than processing data.
+
+However, the goal of Collapse OS is not to save computing, but *electronics*. Managing electricity will stay immensely useful.
+
+### Aren't there more important things to do than an operating system?
+
+Yes! Yes! Yes! A metric ton of projects are more important than Collapse OS with regards to civilizational collapse. This doesn't make Collapse OS useless.
+
+I created Collapse OS because I think that I have a very specific combination of knowledge and skills that allow me to fill this niche with a minimal time investment.
+
+Some people say "When collapse comes, you'll be way too busy with survival to spend time with Collapse OS". When you look at survival from an individualistic point of view (which is the point of view of the stereotypical "prepper"), that is very true. Don't waste time with Collapse OS.
+
+However, when you look at it from a communal perspective, Collapse OS starts to make sense. Once a particular community *already* took care of its immediate survival and is looking at going from "surviving" to "thriving", if it has Collapse OS and someone who can make sense of it, then that community will have a great asset.
+
+<span id="creative"></span>
+
+### What do you mean by "creative"?
+
+I see a creative person as someone who has a high collision rate between the millions of ideas floating in their mind.
+
+To solve problems, a creative person will rely on a smaller, simpler toolbox than a non-creative person and will constantly sollicit its creativity to combine those tools to solve the problem at hand. A less creative person will rely on a larger toolbox filled with more specialized tools.
+
+Collapse OS has a sharp focus on simplicity and compactness. Its toolbox is, by design, small and filled with simple tools. It therefore sollicits the creativity of its user. An insufficiently creative user will exhaust their brain juice too quickly to make good use of Collapse OS.
+
+### Just use Linux
+
+People who are less technical have trouble seeing the point of this project and ask "why can't we just use Linux?". People who have actually lifted Linux' hood don't ask that question because they actually understand the magnitude of complexity involved, but if you haven't, it's a legitimate question to ask.
+
+I was writing some sort of car analogy here to try to explain things to you, about lifting the hood understanding what you're seeing rather than be like "ooh, that's a nice looking engine, it has a shiny logo on it" but it didn't work very well. And in the end, it doesn't matter much because if you're not technical, you should indeed just use Linux and hope for the best.
